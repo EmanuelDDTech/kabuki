@@ -2,6 +2,7 @@
 
 <template>
   <main>
-    <h1>Kabuki Cards</h1>
+    <h2>Preventa</h2>
+    <h2>Producto Cerrado</h2>
   </main>
 </template>
