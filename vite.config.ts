@@ -13,6 +13,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
+      '@assets': fileURLToPath(new URL('./src/assets', import.meta.url)),
       '@layouts': fileURLToPath(new URL('./src/modules/layouts', import.meta.url)),
       '@products': fileURLToPath(new URL('./src/modules/products', import.meta.url)),
       '@cart': fileURLToPath(new URL('./src/modules/cart', import.meta.url)),
