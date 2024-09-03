@@ -9,7 +9,7 @@
       </p>
     </div>
     <div class="mt-4 pl-2 mb-2 justify-between">
-      <p class="font-normal text-black mb-3">League Battle Deck -Charizard ex- PREVENTA</p>
+      <p class="font-normal text-black mb-5">League Battle Deck -Charizard ex- PREVENTA</p>
       <div class="flex gap-2 items-center relative">
         <p class="text-xl text-black font-bold mt-0">$300</p>
         <p class="text-base text-gray-500 line-through font-normal mt-0">$340</p>
