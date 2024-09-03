@@ -1,7 +1,7 @@
 <template>
   <header class="border-b">
     <div class="flex justify-between items-center max-w-7xl mx-auto py-3">
-      <div class="w-40"><img src="@assets/img/logo.avif" alt=""></div>
+      <RouterLink :to="{name: 'home'}" class="w-40"><img src="@assets/img/logo.avif" alt=""></RouterLink :to="{name: 'home'}">
       <SearchBar />
       <nav class="flex gap-4 text-base">
         <RouterLink :to="{name: 'home'}" class="flex items-center">Registrarse</RouterLink>
