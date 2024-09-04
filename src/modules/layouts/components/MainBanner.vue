@@ -33,24 +33,21 @@ const modules = [Navigation, Pagination, Mousewheel];
 <style scoped>
 .swiper {
   width: 100%;
-  min-height: 400px;
-  max-height: 600px;
+  min-height: 300px;
+  max-height: 500px;
 }
 
 .swiper-slide {
-  text-align: center;
   font-size: 18px;
   background: #fff;
 
   /* Center slide text vertically */
   display: flex;
-  justify-content: center;
-  align-items: center;
-  width: auto;
+  place-content: center;
 }
 
 .swiper-slide img {
   object-fit: cover;
-  min-height: 400px;
+  min-height: 300px;
 }
 </style>
