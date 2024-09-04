@@ -1,12 +1,11 @@
 <script setup lang="ts">
-import ArrowLeft from '@/modules/icons/ArrowLeft.vue';
-import ArrowRight from '@/modules/icons/ArrowRight.vue';
-import ProductCard from '@/modules/products/components/ProductCard.vue';
 import SwiperSlider from '@/modules/slider/components/SwiperSlider.vue';
+import MainBanner from '../components/MainBanner.vue';
 </script>
 
 <template>
   <main>
+    <MainBanner />
     <section class="bg-gray-100 px-3">
       <div class="max-w-screen-xl mx-auto py-14">
         <SwiperSlider />
