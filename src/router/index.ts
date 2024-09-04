@@ -1,5 +1,5 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import GeneralLayout from '@layouts/pages/GeneralLayout.vue'
+import { createRouter, createWebHistory } from 'vue-router';
+import GeneralLayout from '@layouts/pages/GeneralLayout.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -16,11 +16,11 @@ const router = createRouter({
         {
           path: '/productos',
           name: 'products',
-          component: () => import('@products/pages/ProductsView.vue')
-        }
-      ]
+          component: () => import('@products/pages/ProductsView.vue'),
+        },
+      ],
     },
-  ]
-})
+  ],
+});
 
-export default router
+export default router;
