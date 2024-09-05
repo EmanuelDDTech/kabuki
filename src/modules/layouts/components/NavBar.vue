@@ -10,7 +10,7 @@
     >
       <div>
         <img
-          :src="'./src/assets/img/' + route.img"
+          :src="'/src/assets/img/' + route.img"
           :alt="route.text"
           class="group-hover:animate-customBounce transition-transform ease-out"
         />
