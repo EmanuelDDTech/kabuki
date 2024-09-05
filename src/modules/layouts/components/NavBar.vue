@@ -10,7 +10,7 @@
     >
       <div>
         <img
-          :src="'/src/assets/img/' + route.img"
+          :src="getImageUrl(route.img)"
           :alt="route.text"
           class="group-hover:animate-customBounce transition-transform ease-out"
         />
@@ -34,6 +34,8 @@ interface Props {
 }
 
 defineProps<Props>();
-</script>
 
-<style scoped></style>
+const getImageUrl = (imageName: string) => {
+  return new URL(`/src/assets/img/${imageName}`, import.meta.url).href;
+};
+</script>
