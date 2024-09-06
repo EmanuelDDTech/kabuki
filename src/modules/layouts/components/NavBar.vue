@@ -8,12 +8,14 @@
       :to="{ name: route.name }"
       :key="route.name"
       class="group py-3 px-3 mx-2 min-w-[100px] w-[100px] relative hover:text-blue-500 transition-all duration-300 after:transition-all after:duration-300 after:content-[''] after:w-0 after:absolute after:h-[2px] after:bottom-0 after:right-2/4 after:bg-blue-500 after:translate-x-2/4 hover:after:w-full"
+      draggable="false"
     >
       <div>
         <img
           :src="getImageUrl(route.img)"
           :alt="route.text"
           class="group-hover:animate-customBounce transition-transform ease-out flex-grow-0 flex-shrink-0 basis-auto"
+          draggable="false"
         />
       </div>
       {{ route.text }}
@@ -22,10 +24,7 @@
 </template>
 
 <script setup lang="ts">
-// import { onMounted, ref } from 'vue';
 import { RouterLink } from 'vue-router';
-
-// const imageRow = ref<HTMLDivElement | null>(null);
 
 interface route {
   name: string;
