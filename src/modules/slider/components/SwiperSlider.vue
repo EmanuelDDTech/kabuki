@@ -1,7 +1,13 @@
 <template>
   <div>
     <header class="flex mb-6">
-      <h2 class="text-4xl font-bold">Preventa</h2>
+      <div class="flex flex-col sm:flex-row items-center gap-3">
+        <div class="flex gap-3 order-2 sm:order-1">
+          <LightingIcon class="w-9 h-9 text-white bg-black p-2 rounded-full" />
+          <h2 class="text-4xl font-bold">Preventa</h2>
+        </div>
+        <CountdownTimer :duration="100000" :isStarted="true" class="ml-4 order-1 sm:order-2" />
+      </div>
 
       <div class="flex-1 flex justify-end gap-3 text-gray-500">
         <button id="swiper-prev" @click="slidePrev()">
@@ -104,6 +110,8 @@ import ArrowLeft from '@/modules/icons/ArrowLeft.vue';
 import ArrowRight from '@/modules/icons/ArrowRight.vue';
 import type { SwiperClass } from 'swiper/react';
 import { ref } from 'vue';
+import LightingIcon from '@/modules/icons/LightingIcon.vue';
+import CountdownTimer from '@/modules/counter/components/CountdownTimer.vue';
 
 const modules = [Pagination, Navigation];
 
