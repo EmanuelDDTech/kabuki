@@ -20,7 +20,7 @@ const routes = [
 <template>
   <main>
     <MainBanner />
-    <NavBar :routes="routes" class="px-3" />
+    <NavBar :routes="routes" />
     <section class="bg-gray-100 px-3">
       <div class="max-w-screen-xl mx-auto py-14">
         <SwiperSlider />
