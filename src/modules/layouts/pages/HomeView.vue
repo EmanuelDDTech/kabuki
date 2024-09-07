@@ -2,6 +2,8 @@
 import SwiperSlider from '@/modules/slider/components/SwiperSlider.vue';
 import MainBanner from '../components/MainBanner.vue';
 import NavBar from '../components/NavBar.vue';
+import LightingIcon from '@/modules/icons/LightingIcon.vue';
+import DiscountIcon from '@/modules/icons/DiscountIcon.vue';
 
 const routes = [
   { name: '', text: 'Surgin Sparks', img: 'surgin_sparks.jpg' },
@@ -23,12 +25,17 @@ const routes = [
     <NavBar :routes="routes" />
     <section class="bg-gray-100 px-3">
       <div class="max-w-screen-xl mx-auto py-14">
-        <SwiperSlider />
+        <SwiperSlider
+          :title="'Preventa'"
+          :countdown="true"
+          :finish-date="new Date('Fri Sep 30 2024 22:00:00 GMT-0600 (hora estándar central)')"
+          :icon="LightingIcon"
+        />
       </div>
     </section>
     <section class="px-3">
-      <div class="max-w-screen-xl mx-auto py-8">
-        <h2>Ofertas</h2>
+      <div class="max-w-screen-xl mx-auto py-14">
+        <SwiperSlider :title="'Ofertas'" :icon="DiscountIcon" />
       </div>
     </section>
     <section class="px-3">
