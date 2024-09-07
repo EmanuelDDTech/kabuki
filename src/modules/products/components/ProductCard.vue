@@ -1,5 +1,7 @@
 <template>
-  <article class="relative max-w-72 min-w-56 bg-white shadow-md rounded-3xl p-2 cursor-pointer">
+  <article
+    class="relative max-w-72 min-w-56 bg-white shadow-md rounded-3xl p-2 cursor-pointer border border-gray-100"
+  >
     <div
       class="aspect-[4/3] overflow-x-hidden rounded-2xl relative flex items-center justify-center"
     >
