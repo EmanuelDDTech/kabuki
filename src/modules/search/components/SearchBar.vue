@@ -1,22 +1,16 @@
 <template>
-  <div class="flex items-center max-w-md bg-white rounded-lg shadow-md" x-data="{ search: '' }">
-    <div class="w-full">
-      <input
-        type="search"
-        class="w-full px-4 py-1 text-gray-800 rounded-full focus:outline-none"
-        placeholder="buscar"
-        x-model="search"
-      />
-    </div>
-    <div>
+  <div
+    class="flex items-center max-w-lg bg-white text-gray-400 rounded-lg flex-1 border-2 border-gray-300"
+    x-data="{ search: '' }"
+  >
+    <div class="border-r-2 border-gray-300">
       <!-- :class="(search.length > 0) ? 'bg-purple-500' : 'bg-gray-500 cursor-not-allowed'"
       :disabled="search.length == 0" -->
       <button
         type="submit"
-        class="flex items-center bg-blue-500 justify-center w-9 h-9 text-white rounded-r-lg"
+        class="flex items-center justify-center w-9 aspect-square rounded-r-lg p-1 hover:text-blue-500 transition-colors"
       >
         <svg
-          class="w-5 h-5"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -30,6 +24,14 @@
           ></path>
         </svg>
       </button>
+    </div>
+    <div class="w-full">
+      <input
+        type="search"
+        class="w-full px-4 py-1 text-gray-800 rounded-full focus:outline-none"
+        placeholder="buscar"
+        x-model="search"
+      />
     </div>
   </div>
 </template>
