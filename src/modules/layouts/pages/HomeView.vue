@@ -23,7 +23,7 @@ const routes = [
   <main>
     <MainBanner />
     <NavBar :routes="routes" />
-    <section class="bg-gray-100 px-3">
+    <section class="bg-gray-50 px-3">
       <div class="max-w-screen-xl mx-auto py-14">
         <SwiperSlider
           :title="'Preventa'"
