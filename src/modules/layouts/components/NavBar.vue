@@ -1,7 +1,7 @@
 <template>
   <nav
     id=".image-row"
-    class="flex justify-between text-base border-b max-w-screen-xl mx-auto text-center leading-none py-9 overflow-x-auto snap-mandatory"
+    class="flex justify-between text-base max-w-screen-xl mx-auto text-center leading-none py-9 overflow-x-auto snap-mandatory"
   >
     <RouterLink
       v-for="route in routes"
