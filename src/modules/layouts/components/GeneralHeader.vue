@@ -1,6 +1,9 @@
 <template>
   <header class="min-h-16">
-    <div id="header" class="max-w-7xl mx-auto rounded-full px-6 left-0 right-0 z-10 bg-white">
+    <div
+      id="header"
+      class="max-w-7xl mx-auto rounded-full px-6 left-0 right-0 z-10 bg-white sticky"
+    >
       <div class="flex justify-between items-center mx-auto py-3 relative">
         <RouterLink :to="{ name: 'home' }" class="w-40 text-2xl font-bold hidden lg:block">
           <!-- <img src="@assets/img/logo.avif" alt=""/> -->
@@ -49,6 +52,7 @@ onMounted(() => {
   window.addEventListener('scroll', () => {
     let scrollTop = window.scrollY || document.documentElement.scrollTop;
     if (scrollTop > 200) {
+      header?.classList.remove('sticky');
       header?.classList.add('fixed');
       header?.classList.add('-top-24');
 
@@ -68,6 +72,8 @@ onMounted(() => {
         header?.classList.add('shadow-md');
       }
     } else {
+      header?.classList.add('sticky');
+
       header?.classList.remove('fixed');
       header?.classList.remove('-top-24');
       header?.classList.remove('top-2');
@@ -75,6 +81,8 @@ onMounted(() => {
 
       header?.classList.remove('transition-all');
       header?.classList.remove('duration-500');
+
+      showMobileMenu.value = false;
     }
     lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; // Para Mobile o cuando el scroll es negativo
   });
