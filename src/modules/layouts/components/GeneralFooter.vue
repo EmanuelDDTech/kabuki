@@ -1,7 +1,28 @@
 <template>
-  <div>
-    <h2>Footer</h2>
-  </div>
+  <footer class="border-t-2 border-gray-200 px-3">
+    <div
+      class="bg-white flex flex-col md:flex-row gap-3 items-center justify-center md:justify-between py-6 max-w-screen-xl mx-auto"
+    >
+      <span class="text-sm text-gray-400 sm:text-center"
+        >© {{ new Date().getFullYear() }}
+        <a href="" class="hover:text-blue-500" target="_blank">Shori Kame Cards</a>
+      </span>
+      <ul class="flex flex-wrap items-center mt-3 sm:mt-0 text-gray-400">
+        <li>
+          <a href="#" class="mr-4 text-sm hover:text-blue-500 md:mr-6">Sobre nosotros</a>
+        </li>
+        <li>
+          <a href="#" class="mr-4 text-sm hover:text-blue-500 md:mr-6">Promociones</a>
+        </li>
+        <li>
+          <a href="#" class="mr-4 text-sm hover:text-blue-500 md:mr-6">Contacto</a>
+        </li>
+        <li>
+          <a href="#" class="text-sm hover:text-blue-500">Aviso de privacidad</a>
+        </li>
+      </ul>
+    </div>
+  </footer>
 </template>
 
 <script setup lang="ts"></script>
