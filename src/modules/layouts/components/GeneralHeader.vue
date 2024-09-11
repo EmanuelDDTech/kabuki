@@ -1,5 +1,5 @@
 <template>
-  <header class="min-h-16">
+  <header class="min-h-16 border-b-2 border-gray-200 px-3">
     <div
       id="header"
       class="max-w-7xl mx-auto rounded-full px-6 left-0 right-0 z-10 bg-white sticky"
