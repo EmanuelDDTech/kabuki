@@ -126,7 +126,7 @@ interface Props {
   title: string;
   products?: Product[];
   countdown?: boolean;
-  finishDate?: date;
+  finishDate?: Date;
   icon?: Object;
 }
 

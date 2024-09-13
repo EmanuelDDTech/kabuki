@@ -1,37 +1,55 @@
 <template>
-  <main class="max-w-screen-xl mx-auto">
-    <section class="flex gap-16 my-16">
-      <div class="flex gap-6 w-3/5">
-        <aside class="flex flex-col gap-3 w-36">
-          <div
-            class="flex justify-center items-center bg-gray-200 rounded-lg aspect-square cursor-pointer border-2 border-gray-200 hover:border-black transition-colors"
-          >
-            <img id="1" src="@assets/img/producto.webp" alt="Imagen de producto" class="w-4/5" />
-          </div>
-          <div
-            class="flex justify-center items-center bg-gray-200 rounded-lg aspect-square cursor-pointer border-2 border-gray-200 hover:border-black transition-colors"
-          >
-            <img id="2" src="@assets/img/producto.webp" alt="Imagen de producto" class="w-4/5" />
-          </div>
-          <div
-            class="flex justify-center items-center bg-gray-200 rounded-lg aspect-square cursor-pointer border-2 border-gray-200 hover:border-black transition-colors"
-          >
-            <img id="3" src="@assets/img/producto.webp" alt="Imagen de producto" class="w-4/5" />
-          </div>
-          <div
-            class="flex justify-center items-center bg-gray-200 rounded-lg aspect-square cursor-pointer border-2 border-gray-200 hover:border-black transition-colors"
-          >
-            <img id="4" src="@assets/img/producto.webp" alt="Imagen de producto" class="w-4/5" />
-          </div>
-          <div
-            class="flex justify-center items-center bg-gray-200 rounded-lg aspect-square cursor-pointer border-2 border-gray-200 hover:border-black transition-colors"
-          >
-            <img id="5" src="@assets/img/producto.webp" alt="Imagen de producto" class="w-4/5" />
-          </div>
-        </aside>
-        <div class="flex justify-center items-center bg-gray-200 rounded-lg w-full aspect-square">
-          <img src="@assets/img/producto.webp" alt="Imagen activa" class="w-4/5" />
-        </div>
+  <main class="px-6">
+    <section class="max-w-screen-xl mx-auto flex flex-col lg:flex-row gap-16 my-16">
+      <div class="flex flex-col justify-center items-center gap-3 w-full lg:w-2/4">
+        <swiper
+          :style="{
+            '--swiper-navigation-color': '#fff',
+            '--swiper-pagination-color': '#fff',
+          }"
+          :spaceBetween="10"
+          :thumbs="{ swiper: thumbsSwiper }"
+          :modules="modules"
+          class="mySwiper2 w-full max-w-[640px]"
+        >
+          <swiper-slide class="bg-gray-200 rounded-lg cursor-pointer p-5 sm:p-10"
+            ><img src="@assets/img/producto.webp" class="w-4/5" /></swiper-slide
+          ><swiper-slide class="bg-gray-200 rounded-lg cursor-pointer p-5 sm:p-10"
+            ><img src="@assets/img/producto.webp" class="w-4/5" /></swiper-slide
+          ><swiper-slide class="bg-gray-200 rounded-lg cursor-pointer p-5 sm:p-10"
+            ><img src="@assets/img/producto.webp" class="w-4/5" /></swiper-slide
+          ><swiper-slide class="bg-gray-200 rounded-lg cursor-pointer p-5 sm:p-10"
+            ><img src="@assets/img/producto.webp" class="w-4/5" /></swiper-slide
+          ><swiper-slide class="bg-gray-200 rounded-lg cursor-pointer p-5 sm:p-10"
+            ><img src="@assets/img/producto.webp" class="w-4/5"
+          /></swiper-slide>
+        </swiper>
+        <swiper
+          @swiper="setThumbsSwiper"
+          :spaceBetween="10"
+          :slidesPerView="5"
+          :freeMode="true"
+          :watchSlidesProgress="true"
+          :modules="modules"
+          class="mySwiper w-full max-w-[640px]"
+        >
+          <swiper-slide
+            class="bg-gray-200 rounded-lg cursor-pointer p-1 sm:p-3 border-2 border-gray-200 hover:border-black transition-colors"
+            ><img src="@assets/img/producto.webp" class="w-4/5" /></swiper-slide
+          ><swiper-slide
+            class="bg-gray-200 rounded-lg cursor-pointer p-1 sm:p-3 border-2 border-gray-200 hover:border-black transition-colors"
+            ><img src="@assets/img/producto.webp" class="w-4/5" /></swiper-slide
+          ><swiper-slide
+            class="bg-gray-200 rounded-lg cursor-pointer p-1 sm:p-3 border-2 border-gray-200 hover:border-black transition-colors"
+            ><img src="@assets/img/producto.webp" class="w-4/5" /></swiper-slide
+          ><swiper-slide
+            class="bg-gray-200 rounded-lg cursor-pointer p-1 sm:p-3 border-2 border-gray-200 hover:border-black transition-colors"
+            ><img src="@assets/img/producto.webp" class="w-4/5" /></swiper-slide
+          ><swiper-slide
+            class="bg-gray-200 rounded-lg cursor-pointer p-1 sm:p-3 border-2 border-gray-200 hover:border-black transition-colors"
+            ><img src="@assets/img/producto.webp" class="w-4/5"
+          /></swiper-slide>
+        </swiper>
       </div>
       <div>
         <h1 class="text-3xl font-semibold mb-3">League Battle Deck - Charizard ex</h1>
@@ -109,10 +127,14 @@
           <h2 class="text-xl font-bold mb-3">Variantes</h2>
 
           <ul class="flex gap-3">
-            <li class="w-24 aspect-square p-3 rounded-lg bg-gray-200 cursor-pointer">
+            <li
+              class="w-24 aspect-square p-3 rounded-lg bg-gray-200 cursor-pointer border-2 border-gray-200 hover:border-black transition-colors"
+            >
               <img src="@assets/img/producto.webp" alt="Product image" />
             </li>
-            <li class="w-24 aspect-square p-3 rounded-lg bg-gray-200 cursor-pointer">
+            <li
+              class="w-24 aspect-square p-3 rounded-lg bg-gray-200 cursor-pointer border-2 border-gray-200 hover:border-black transition-colors"
+            >
               <img src="@assets/img/producto.webp" alt="Product image" />
             </li>
           </ul>
@@ -149,12 +171,57 @@
         </div>
       </div>
     </section>
+    <section class="max-w-screen-xl mx-auto mb-10">
+      <h2 class="text-2xl font-bold mb-6">Detalles del producto</h2>
+
+      <ul class="leading-6 text-gray-500">
+        <li class="list-disc ml-4"><p>1 mazo de 60 cartas listo para jugar</p></li>
+        <li class="list-disc ml-4"><p>6 dados para contar daños</p></li>
+        <li class="list-disc ml-4"><p>1 dado para lanzar una moneda</p></li>
+        <li class="list-disc ml-4"><p>2 marcadores de condición de las monedas</p></li>
+        <li class="list-disc ml-4"><p>1 caja para el mazo</p></li>
+        <li class="list-disc ml-4"><p>1 caja de accesorios</p></li>
+        <li class="list-disc ml-4"><p>1 hoja de estrategia</p></li>
+        <li class="list-disc ml-4"><p>1 tarjeta de código para jugar el mazo en línea</p></li>
+      </ul>
+    </section>
   </main>
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue';
+import { Swiper, SwiperSlide } from 'swiper/vue';
+import 'swiper/css';
+import 'swiper/css/free-mode';
+import 'swiper/css/navigation';
+import 'swiper/css/thumbs';
+import { FreeMode, Navigation, Thumbs } from 'swiper/modules';
 import WishlistIcon from '@/modules/cart/components/wishlistIcon.vue';
 import ShareIcon from '../components/ShareIcon.vue';
+import type { SwiperClass } from 'swiper/react';
+
+const thumbsSwiper = ref<SwiperClass | null>(null);
+
+const modules = [FreeMode, Navigation, Thumbs];
+
+const setThumbsSwiper = (swiper: SwiperClass) => {
+  thumbsSwiper.value = swiper;
+};
 </script>
 
-<style scoped></style>
+<style scoped>
+.mySwiper2 .swiper-slide {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.mySwiper .swiper-slide {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  aspect-ratio: 1/1;
+  width: 114px;
+  max-height: 114px;
+}
+</style>
