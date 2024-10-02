@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import GeneralLayout from '@layouts/pages/GeneralLayout.vue';
 import NotFound404 from '@/modules/common/pages/NotFound404.vue';
-import isAuthenticatedGuard from '@/modules/auth/guards/is-authenticated.guard';
 import AuthAPI from '@/modules/auth/api/AuthAPI';
 
 const router = createRouter({
@@ -68,33 +67,34 @@ const router = createRouter({
     {
       path: '/admin',
       redirect: { name: 'adminDashboard' },
+      meta: { requiresAuth: true },
       name: 'admin',
-      component: () => import('@/modules/admin/layouts/AdminLayout.vue'),
+      component: () => import('@admin/layouts/AdminLayout.vue'),
       children: [
         {
           path: 'dashboard',
           name: 'adminDashboard',
-          component: () => import('@/modules/admin/pages/AdminDashboard.vue'),
+          component: () => import('@admin/pages/AdminDashboard.vue'),
         },
         {
           path: 'ventas',
           name: 'sales',
-          component: () => import('@/modules/admin/pages/AdminDashboard.vue'),
+          component: () => import('@admin/pages/AdminDashboard.vue'),
         },
         {
           path: 'compras',
           name: 'purchases',
-          component: () => import('@/modules/admin/pages/AdminDashboard.vue'),
+          component: () => import('@admin/pages/AdminDashboard.vue'),
         },
         {
           path: 'productos',
           name: 'adminProducts',
-          component: () => import('@/modules/admin/pages/ProductosView.vue'),
+          component: () => import('@admin/pages/ProductsView.vue'),
         },
         {
           path: 'usuarios',
           name: 'adminUsers',
-          component: () => import('@/modules/admin/pages/AdminDashboard.vue'),
+          component: () => import('@admin/pages/AdminDashboard.vue'),
         },
       ],
     },

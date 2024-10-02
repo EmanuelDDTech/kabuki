@@ -1,4 +1,4 @@
-<script setup>
+<script lang="ts" setup>
 import ProductForm from '@/modules/admin/components/ProductForm.vue';
 </script>
 

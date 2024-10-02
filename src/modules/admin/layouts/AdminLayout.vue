@@ -1,4 +1,4 @@
-<script setup>
+<script lang="ts" setup>
 import AdminFooter from '@/modules/admin/components/AdminFooter.vue';
 import AdminHeader from '@/modules/admin/components/AdminHeader.vue';
 import AdminSidebar from '@/modules/admin/components/AdminSidebar.vue';

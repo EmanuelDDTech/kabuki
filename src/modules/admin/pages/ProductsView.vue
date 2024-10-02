@@ -1,4 +1,4 @@
-<script setup>
+<script lang="ts" setup>
 import { inject } from 'vue';
 // import { useProductStore } from '@/stores/products';
 import { formatCurrency } from '@/helpers';

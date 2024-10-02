@@ -1,4 +1,4 @@
-<script setup>
+<script lang="ts" setup>
 import AdminLink from '@/modules/admin/components/AdminLink.vue';
 import DashboardIcon from '@/modules/admin/components/icons/DashboardIcon.vue';
 import ProductIcon from '@/modules/admin/components/icons/ProductIcon.vue';
