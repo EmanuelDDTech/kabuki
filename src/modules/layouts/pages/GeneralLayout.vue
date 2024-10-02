@@ -13,5 +13,3 @@ import TopNavBar from '../components/TopNavBar.vue';
 import GeneralHeader from '../components/GeneralHeader.vue';
 import GeneralFooter from '../components/GeneralFooter.vue';
 </script>
-
-<style scoped></style>

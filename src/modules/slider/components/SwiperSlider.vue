@@ -34,7 +34,6 @@
       :slidesPerView="5"
       :slidesPerGroup="1"
       :onSwiper="handleSwiperInit"
-      navigation
       :breakpoints="{
         // when window width is >= 320px
         0: {

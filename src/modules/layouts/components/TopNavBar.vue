@@ -24,19 +24,38 @@
             >Registrarse</RouterLink
           >
         </div>
-        <div class="flex pl-4 font-semibold">
+        <div class="flex pl-4 font-semibold" v-if="!user.isSet">
           <RouterLink
-            :to="{ name: 'home' }"
+            :to="{ name: 'register' }"
             class="flex items-center pr-4 border-r-2 border-gray-300 hover:text-blue-500 transition-colors"
             >Registrarse</RouterLink
           >
           <RouterLink
-            :to="{ name: 'home' }"
+            :to="{ name: 'login' }"
             class="flex items-center pl-4 hover:text-blue-500 transition-colors"
             >Ingresar</RouterLink
           >
+        </div>
+        <div class="flex pl-4 font-semibold" v-if="user.isSet">
+          <RouterLink
+            :to="{ name: 'register' }"
+            class="flex items-center pr-4 border-r-2 border-gray-300 hover:text-blue-500 transition-colors"
+            >Hola: {{ user.getUserName }}</RouterLink
+          >
+          <button
+            @click="user.logout"
+            class="flex items-center pl-4 hover:text-blue-500 transition-colors"
+          >
+            Cerrar sesión
+          </button>
         </div>
       </nav>
     </div>
   </div>
 </template>
+
+<script lang="ts" setup>
+import { useUserStore } from '@/modules/auth/stores/user';
+
+const user = useUserStore();
+</script>

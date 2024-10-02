@@ -14,7 +14,7 @@
           <RouterLink :to="{ name: 'home' }"
             ><NotificationIcon class="w-7 aspect-square hover:text-blue-500 transition-colors" />
           </RouterLink>
-          <RouterLink :to="{ name: 'home' }"
+          <RouterLink :to="{ name: 'cart' }"
             ><CartIcon class="w-7 aspect-square hover:text-blue-500 transition-colors"
           /></RouterLink>
         </nav>
