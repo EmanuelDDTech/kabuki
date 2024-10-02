@@ -69,32 +69,32 @@ const router = createRouter({
       redirect: { name: 'adminDashboard' },
       meta: { requiresAuth: true },
       name: 'admin',
-      component: () => import('@admin/layouts/AdminLayout.vue'),
+      component: () => import('@/modules/admin/layouts/AdminLayout.vue'),
       children: [
         {
           path: 'dashboard',
           name: 'adminDashboard',
-          component: () => import('@admin/pages/AdminDashboard.vue'),
+          component: () => import('@/modules/admin/pages/AdminDashboard.vue'),
         },
         {
           path: 'ventas',
           name: 'sales',
-          component: () => import('@admin/pages/AdminDashboard.vue'),
+          component: () => import('@/modules/admin/pages/AdminDashboard.vue'),
         },
         {
           path: 'compras',
           name: 'purchases',
-          component: () => import('@admin/pages/AdminDashboard.vue'),
+          component: () => import('@/modules/admin/pages/AdminDashboard.vue'),
         },
         {
           path: 'productos',
           name: 'adminProducts',
-          component: () => import('@admin/pages/ProductsView.vue'),
+          component: () => import('@/modules/admin/pages/ProductsView.vue'),
         },
         {
           path: 'usuarios',
           name: 'adminUsers',
-          component: () => import('@admin/pages/AdminDashboard.vue'),
+          component: () => import('@/modules/admin/pages/AdminDashboard.vue'),
         },
       ],
     },

@@ -12,8 +12,7 @@
       "@assets/*": ["./src/assets/*"],
       "@layouts/*": ["./src/modules/layouts/*"],
       "@products/*": ["./src/modules/products/*"],
-      "@cart/*": ["./src/modules/cart/*"],
-      "@admin/*": ["./src/modules/admin/*"]
+      "@cart/*": ["./src/modules/cart/*"]
     }
   }
 }
