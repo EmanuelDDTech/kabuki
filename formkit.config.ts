@@ -14,6 +14,9 @@ const config = {
         input:
           '$reset bg-blue-500 hover:bg-blue-600 rounded-lg text-white font-bold w-full p-3 mt-10',
       },
+      button: {
+        input: 'bg-blue-500 hover:bg-blue-600 rounded-lg text-white font-bold w-auto p-3',
+      },
     }),
   },
 };
