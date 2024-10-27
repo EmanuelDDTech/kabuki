@@ -2,6 +2,6 @@
 import { RouterView } from 'vue-router';
 </script>
 
-<template>
+<template data-theme="light">
   <RouterView />
 </template>
