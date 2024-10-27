@@ -21,4 +21,13 @@ export default {
       },
     });
   },
+  async isAdmin() {
+    const token = localStorage.getItem('AUTH_TOKEN');
+
+    return await api.get('/auth/admin', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  },
 };

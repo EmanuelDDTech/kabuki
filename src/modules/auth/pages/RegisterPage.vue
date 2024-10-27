@@ -113,6 +113,7 @@
 import { inject } from 'vue';
 import { reset } from '@formkit/vue';
 import AuthAPI from '../api/AuthAPI';
+import Swal from 'sweetalert2';
 
 const toast: any = inject('toast');
 
@@ -120,12 +121,24 @@ const handleSubmit = async ({ password_confirm, ...formData }) => {
   try {
     const { data } = await AuthAPI.register(formData);
 
-    toast.open({
-      message: data.msg,
-      type: 'success',
-    });
+    // toast.open({
+    //   message: data.msg,
+    //   type: 'success',
+    // });
 
-    console.log('Llego hasta aqui');
+    Swal.fire({
+      title: 'Ya casi está listo!',
+      text: 'Revisa el correo que mandamos para la verificación de la cuenta.',
+      imageUrl: 'https://unsplash.it/400/200',
+      imageWidth: 400,
+      imageHeight: 200,
+      imageAlt: 'Custom image',
+      customClass: {
+        title: 'text-2xl text-black font-bold',
+        htmlContainer: 'text-base text-gray-500',
+        confirmButton: 'bg-blue-500',
+      },
+    });
 
     reset('registerForm');
   } catch (error: any) {

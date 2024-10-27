@@ -1,7 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import GeneralLayout from '@layouts/pages/GeneralLayout.vue';
 import NotFound404 from '@/modules/common/pages/NotFound404.vue';
-import AuthAPI from '@/modules/auth/api/AuthAPI';
+import isAdminGuard from '@/modules/auth/guards/is-admin.guard';
+import isAuthenticatedGuard from '@/modules/auth/guards/is-authenticated.guard';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -27,13 +28,13 @@ const router = createRouter({
         },
         {
           path: '/carrito',
-          meta: { requiresAuth: true },
+          beforeEnter: [isAuthenticatedGuard],
           name: 'cart',
           component: () => import('@cart/pages/CartView.vue'),
         },
         {
           path: '/pagar',
-          meta: { requiresAuth: true },
+          beforeEnter: [isAuthenticatedGuard],
           name: 'pay',
           component: () => import('@cart/pages/PayView.vue'),
         },
@@ -67,6 +68,7 @@ const router = createRouter({
     {
       path: '/admin',
       redirect: { name: 'adminDashboard' },
+      beforeEnter: [isAuthenticatedGuard, isAdminGuard],
       name: 'admin',
       component: () => import('@/modules/admin/layouts/AdminLayout.vue'),
       children: [
@@ -91,6 +93,26 @@ const router = createRouter({
           component: () => import('@/modules/admin/pages/ProductsView.vue'),
         },
         {
+          path: 'productos/crear',
+          name: 'adminCreateProducts',
+          component: () => import('@/modules/admin/pages/CreateProductView.vue'),
+        },
+        {
+          path: 'categorias',
+          name: 'adminCategories',
+          component: () => import('@/modules/admin/pages/CategoriesView.vue'),
+        },
+        {
+          path: 'categorias/crear',
+          name: 'adminCreateCategory',
+          component: () => import('@/modules/admin/pages/createCategoryView copy.vue'),
+        },
+        {
+          path: 'categorias/actualizar/:id',
+          name: 'adminUpdateCategory',
+          component: () => import('@/modules/admin/pages/updateCategoryView.vue'),
+        },
+        {
           path: 'usuarios',
           name: 'adminUsers',
           component: () => import('@/modules/admin/pages/AdminDashboard.vue'),
@@ -101,24 +123,13 @@ const router = createRouter({
     // Not Found
     {
       path: '/:pathMatch(.*)*',
-      //redirect: '/',
       component: NotFound404,
     },
   ],
 });
 
 router.beforeEach(async (to, from, next) => {
-  const requiresAuth = to.matched.some((url) => url.meta.requiresAuth);
   if (!to.path.includes('auth')) localStorage.setItem('lastPath', to.path);
-  if (requiresAuth) {
-    try {
-      await AuthAPI.auth();
-      next();
-    } catch (error) {
-      next({ name: 'login' });
-    }
-  } else {
-    next();
-  }
+  next();
 });
 export default router;

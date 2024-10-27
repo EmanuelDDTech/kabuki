@@ -1,17 +1,17 @@
 import type { NavigationGuardNext, RouteLocationNormalized } from 'vue-router';
 import AuthAPI from '../api/AuthAPI';
 
-const isAuthenticatedGuard = async (
+const isAdminGuard = async (
   to: RouteLocationNormalized,
   from: RouteLocationNormalized,
   next: NavigationGuardNext,
 ) => {
   try {
-    await AuthAPI.auth();
+    await AuthAPI.isAdmin();
     return next();
   } catch (error) {
-    return next({ name: 'login' });
+    return next({ name: 'home' });
   }
 };
 
-export default isAuthenticatedGuard;
+export default isAdminGuard;
