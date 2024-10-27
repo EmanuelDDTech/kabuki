@@ -14,6 +14,7 @@ const sidebarRoutes = [
   { name: 'purchases', text: 'Compras', icon: PurchasesIcon },
   // { name: 'appointments', text: 'Citas', icon: AppointmentIcon },
   { name: 'adminProducts', text: 'Productos', icon: ProductIcon },
+  { name: 'adminCategories', text: 'Categorías', icon: ProductIcon },
   // { name: 'adminServices', text: 'Servicios', icon: ServicesIcon },
   { name: 'adminUsers', text: 'Users', icon: UsersIcon },
 ];

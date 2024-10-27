@@ -31,6 +31,18 @@
       />
 
       <FormKit
+        type="text"
+        label="SKU"
+        name="sku"
+        placeholder="SKU del producto"
+        validation="required"
+        :validation-messages="{
+          required: 'El sku es obligatorio',
+        }"
+        v-model="productStore.product.sku"
+      />
+
+      <FormKit
         type="number"
         label="Precio"
         name="price"
@@ -65,10 +77,10 @@
         @change="uploadImage"
       />
 
-      <div v-if="image" class="my-5">
+      <!-- <div v-if="image" class="my-5">
         <p class="font-semibold mb-4">Imagen Producto:</p>
         <img class="w-80 mb-6" :src="productStore.product.image" />
-      </div>
+      </div> -->
 
       <FormKit
         type="text"
@@ -79,76 +91,93 @@
         :validation-messages="{
           required: 'El Nombre es obligatorio',
         }"
-        v-model="productStore.product.descripcion"
+        v-model="productStore.product.description"
       />
 
-      <FormKit type="submit">{{
-        productStore.product.id === '' ? 'Crear Producto' : 'Actualizar Producto'
-      }}</FormKit>
+      <FormKit
+        type="select"
+        label="Categoría"
+        placeholder="-- Selecciona una categoría --"
+        :options="categoryStore.categoryOptions"
+        validation="required"
+        :validation-messages="{
+          required: 'La categoría es obligatoria',
+        }"
+        v-model="productStore.product.product_category_id"
+      />
+
+      <FormKit type="submit">Actualizar Producto</FormKit>
     </FormKit>
   </div>
 </template>
 
-<script setup>
-import LeftArrow from '@/components/Icons/LeftArrow.vue';
-import useImage from '@/composables/useImage';
-import ProductsAPI from '@/api/ProductsAPI';
+<script lang="ts" setup>
+import LeftArrow from '@/modules/icons/ArrowLeft.vue';
+// import useImage from '@/composables/useImage';
+// import ProductsAPI from '@/api/ProductsAPI';
 import { reset } from '@formkit/vue';
 import { inject, onBeforeUnmount, onBeforeMount, watch } from 'vue';
-import { useProductStore } from '@/stores/products';
+import { useProductStore } from '../stores/product';
+import { useCategoryStore } from '../stores/category';
+import ProductAPI from '../api/ProductAPI';
+import { useRouter } from 'vue-router';
+
+interface Props {
+  id?: number;
+}
+
+const props = defineProps<Props>();
 
 const productStore = useProductStore();
-// const { product, setProduct, cleanProduct } = useProductStore();
-const toast = inject('toast');
-const { url, image, uploadImage } = useImage();
+const categoryStore = useCategoryStore();
 
-const props = defineProps({
-  id: {
-    type: String,
-  },
-});
+const toast: any = inject('toast');
+const router = useRouter();
+// const { url, image, uploadImage } = useImage();
 
 onBeforeMount(async () => {
-  if (props.id) {
-    try {
-      await productStore.setProduct(props.id);
-      url.value = productStore.product.image;
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  // if (props.id) {
+  //   try {
+  //     await productStore.setProduct(props.id);
+  //     url.value = productStore.product.image;
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
 });
 
 onBeforeUnmount(() => {
-  productStore.cleanProduct();
-  url.value = null;
+  // productStore.cleanProduct();
+  // url.value = null;
 });
 
-watch(url, (newUrl, oldUrl) => {
-  productStore.product.image = newUrl;
-});
+// watch(url, (newUrl, oldUrl) => {
+//   productStore.product.image = newUrl;
+// });
 
 const handleSubmit = async () => {
-  const { id, ...productData } = productStore.product;
-
   try {
-    if (!id) {
-      const { data } = await ProductsAPI.create(productData);
+    if (productStore.product.id === 0) {
+      const { data } = await ProductAPI.create(productStore.product);
 
       toast.open({
-        message: data.msg,
+        message: 'Producto creado correctamente',
         type: 'success',
       });
-
       reset('createProductForm');
-      url.value = null;
-    } else {
-      const { data } = await ProductsAPI.update(id, productData);
+      productStore.cleanProduct();
+      productStore.addProduct(data);
+      // url.value = null;
 
-      toast.open({
-        message: data.msg,
-        type: 'success',
-      });
+      setTimeout(() => {
+        router.push({ name: 'adminProducts' });
+      }, 1000);
+    } else {
+      // const { data } = await ProductsAPI.update(id, productData);
+      // toast.open({
+      //   message: data.msg,
+      //   type: 'success',
+      // });
     }
   } catch (error) {
     toast.open({
@@ -156,5 +185,9 @@ const handleSubmit = async () => {
       type: 'error',
     });
   }
+};
+
+const uploadImage = () => {
+  return;
 };
 </script>

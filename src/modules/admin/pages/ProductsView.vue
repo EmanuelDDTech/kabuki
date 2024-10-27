@@ -50,7 +50,7 @@ const deleteProduct = async (id) => {
     <section class="flex h-full flex-col justify-center">
       <div class="mx-auto w-full rounded-sm flex flex-col">
         <RouterLink
-          :to="{ name: 'adminProducts' }"
+          :to="{ name: 'adminCreateProducts' }"
           class="mb-6 w-36 self-end text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm text-center p-2"
         >
           Crear Producto
