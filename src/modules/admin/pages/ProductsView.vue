@@ -1,12 +1,12 @@
 <script lang="ts" setup>
 import { inject } from 'vue';
-// import { useProductStore } from '@/stores/products';
+import { useProductStore } from '../stores/product';
 import { formatCurrency } from '@/helpers';
 import EditIcon from '@/modules/admin/components/icons/EditIcon.vue';
-// import ProductsAPI from '@/api/ProductsAPI';
+import ProductsAPI from '../api/ProductAPI';
 import Swal from 'sweetalert2';
 
-// const productStore = useProductStore();
+const productStore = useProductStore();
 const toast = inject('toast');
 
 const deleteConfirmation = (id) => {
@@ -81,36 +81,34 @@ const deleteProduct = async (id) => {
               </tr>
             </thead>
 
-            <!-- <tbody
+            <tbody
               class="divide-y divide-gray-100 text-sm shadow"
               v-for="product in productStore.products"
-              :key="product._id"
+              :key="product.id"
             >
               <tr>
                 <td class="p-2">
-                  <img
-                    class="w-16"
-                    src="https://i.ibb.co/KqdgGY4/cosmetic-packaging-mockup-1150-40280.webp"
-                    alt="product image"
-                  />
+                  <img class="w-32" :src="product.product_galleries[0].url" alt="product image" />
                 </td>
                 <td class="p-2">
-                  <div class="font-medium text-gray-800">{{ product.name }}</div>
+                  <div class="text-base font-medium text-gray-800">{{ product.name }}</div>
                 </td>
                 <td class="p-2">
-                  <div class="text-left">{{ product.stock }}</div>
+                  <div class="text-base text-left">{{ product.stock }}</div>
                 </td>
                 <td class="p-2">
-                  <div class="text-left font-medium text-green-500">{{ formatCurrency(0) }}</div>
+                  <div class="text-base text-left font-medium text-red-500">
+                    {{ formatCurrency(0) }}
+                  </div>
                 </td>
                 <td class="p-2">
-                  <div class="text-left font-medium text-green-500">
+                  <div class="text-base text-left font-medium text-green-500">
                     {{ formatCurrency(product.price) }}
                   </div>
                 </td>
                 <td class="p-2">
                   <div class="flex justify-center">
-                    <button @click="deleteConfirmation(product._id)">
+                    <button @click="deleteConfirmation(product.id)">
                       <svg
                         class="h-8 w-8 rounded-full p-1 hover:bg-gray-100 hover:text-red-600"
                         fill="none"
@@ -127,15 +125,15 @@ const deleteProduct = async (id) => {
                       </svg>
                     </button>
 
-                    <RouterLink :to="{ name: 'updateProduct', params: { id: product._id } }">
+                    <!-- <RouterLink :to="{ name: 'updateProduct', params: { id: product.id } }">
                       <EditIcon
                         class="h-8 w-8 p-1 rounded-full hover:bg-gray-100 hover:text-blue-600"
                       />
-                    </RouterLink>
+                    </RouterLink> -->
                   </div>
                 </td>
               </tr>
-            </tbody> -->
+            </tbody>
           </table>
         </div>
       </div>

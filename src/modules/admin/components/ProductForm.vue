@@ -73,14 +73,42 @@
         name="image"
         label="Imagen"
         accept=".jpg, .webp, .png, .avif"
-        multiple="false"
-        @change="uploadImage"
+        multiple="true"
+        @change="onFileChange"
       />
 
-      <!-- <div v-if="image" class="my-5">
+      <!-- <div>
         <p class="font-semibold mb-4">Imagen Producto:</p>
-        <img class="w-80 mb-6" :src="productStore.product.image" />
+        <div class="flex gap-1 cursor-grab">
+          <article v-for="image in images" class="my-5" :key="image.order">
+            <img class="w-80 mb-6" :src="image.url" />
+          </article>
+        </div>
       </div> -->
+
+      <div id="draggable" class="grid grid-cols-5 gap-2 cursor-grab mb-4">
+        <article
+          v-for="image in images"
+          :key="image.url"
+          class="relative draggable-item border-solid flex-1 flex aspect-square border border-gray-300 text-gray-300 justify-center items-center"
+        >
+          <div>
+            <img :src="image.url" class="handle w-full aspect-square max-w-32" />
+            <DeleteIcon
+              class="cursor-pointer absolute top-0 right-0"
+              @click="deleteImage(image.url)"
+            />
+          </div>
+        </article>
+
+        <article
+          v-for="i in 5 - images.length"
+          :key="i"
+          class="border-dashed flex-1 flex aspect-square border border-gray-300 text-gray-300 justify-center items-center"
+        >
+          <ImageIcon class="w-12" />
+        </article>
+      </div>
 
       <FormKit
         type="text"
@@ -106,21 +134,23 @@
         v-model="productStore.product.product_category_id"
       />
 
-      <FormKit type="submit">Actualizar Producto</FormKit>
+      <FormKit type="submit">Crear Producto</FormKit>
     </FormKit>
   </div>
 </template>
 
 <script lang="ts" setup>
 import LeftArrow from '@/modules/icons/ArrowLeft.vue';
-// import useImage from '@/composables/useImage';
-// import ProductsAPI from '@/api/ProductsAPI';
 import { reset } from '@formkit/vue';
-import { inject, onBeforeUnmount, onBeforeMount, watch } from 'vue';
+import { inject, onMounted, onUnmounted } from 'vue';
+import { Sortable } from '@shopify/draggable';
 import { useProductStore } from '../stores/product';
 import { useCategoryStore } from '../stores/category';
-import ProductAPI from '../api/ProductAPI';
 import { useRouter } from 'vue-router';
+import useImage from '@/modules/products/composables/useImage';
+import ImageIcon from '@/modules/common/icons/ImageIcon.vue';
+import DeleteIcon from '@/modules/common/icons/DeleteIcon.vue';
+import ProductGalleryAPI from '../api/ProductGalleryAPI';
 
 interface Props {
   id?: number;
@@ -131,43 +161,44 @@ const props = defineProps<Props>();
 const productStore = useProductStore();
 const categoryStore = useCategoryStore();
 
+const { onFileChange, images, deleteImage, updateOrder, deleteImageAll } = useImage();
+
 const toast: any = inject('toast');
 const router = useRouter();
-// const { url, image, uploadImage } = useImage();
 
-onBeforeMount(async () => {
-  // if (props.id) {
-  //   try {
-  //     await productStore.setProduct(props.id);
-  //     url.value = productStore.product.image;
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // }
+onMounted(() => {
+  const sortable = new Sortable(document.querySelector('#draggable'), {
+    draggable: '.draggable-item',
+    handle: '.handle',
+  });
+
+  sortable.on('sortable:stop', (e) => saveSortedImages(e));
 });
 
-onBeforeUnmount(() => {
-  // productStore.cleanProduct();
-  // url.value = null;
+onUnmounted(() => {
+  if (productStore.product.id === 0) {
+    deleteImageAll();
+  }
+  productStore.cleanProduct();
+  productStore.getProducts();
 });
-
-// watch(url, (newUrl, oldUrl) => {
-//   productStore.product.image = newUrl;
-// });
 
 const handleSubmit = async () => {
   try {
     if (productStore.product.id === 0) {
-      const { data } = await ProductAPI.create(productStore.product);
+      const { id, ...productData } = productStore.product;
+      const data = await productStore.create(productData);
+      await ProductGalleryAPI.create({
+        product_id: data.id,
+        images: images.value,
+      });
+
+      reset('createProductForm');
 
       toast.open({
         message: 'Producto creado correctamente',
         type: 'success',
       });
-      reset('createProductForm');
-      productStore.cleanProduct();
-      productStore.addProduct(data);
-      // url.value = null;
 
       setTimeout(() => {
         router.push({ name: 'adminProducts' });
@@ -180,6 +211,7 @@ const handleSubmit = async () => {
       // });
     }
   } catch (error) {
+    console.log(error);
     toast.open({
       message: error.response.data.msg,
       type: 'error',
@@ -187,7 +219,18 @@ const handleSubmit = async () => {
   }
 };
 
-const uploadImage = () => {
-  return;
+const saveSortedImages = async (e) => {
+  setTimeout(() => {
+    const imagesElements = document.querySelectorAll('#draggable .draggable-item img');
+    const imagesOrder = [];
+
+    imagesElements.forEach((imageElement, index) => {
+      const url = imageElement.src;
+      const order = index + 1;
+      imagesOrder.push({ order, url });
+    });
+
+    updateOrder(imagesOrder);
+  }, 50);
 };
 </script>

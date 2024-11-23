@@ -1,48 +1,20 @@
 import api from '@/lib/axios';
 
 export default {
-  async create(name: string) {
+  async create(data) {
     const token = localStorage.getItem('AUTH_TOKEN');
-    return await api.post('/categoria', {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      name,
-    });
+    return await api.post('/categoria', data);
   },
   async getAll() {
-    const token = localStorage.getItem('AUTH_TOKEN');
-    const { data } = await api.get('/categoria', {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
-    return data;
+    return await api.get('/categoria');
   },
-
   async delete(id: number) {
-    return api.delete(`/categoria/${id}`);
+    return await api.delete(`/categoria/${id}`);
   },
-
   async findOne(id: number) {
-    const token = localStorage.getItem('AUTH_TOKEN');
-    const { data } = await api.get(`/categoria/${id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
-    return data;
+    return await api.get(`/categoria/${id}`);
   },
-
-  async update(id: number, name: string) {
-    const token = localStorage.getItem('AUTH_TOKEN');
-    return api.put(`/categoria/${id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      name,
-    });
+  async update(id: Number, data: Object) {
+    return await api.put(`/categoria/${id}`, data);
   },
 };

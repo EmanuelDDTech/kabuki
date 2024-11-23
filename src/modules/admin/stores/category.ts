@@ -55,12 +55,15 @@ export const useCategoryStore = defineStore('category', () => {
   };
 
   const getCategories = async () => {
-    categories.value = await CategoryAPI.getAll();
+    const { data } = await CategoryAPI.getAll();
+    categories.value = data;
   };
 
   const findCategory = async (id: number) => {
-    category.value = await CategoryAPI.findOne(id);
-    selectedFilters.value = await FilterCategoryAPI.findAll(id);
+    const { data } = await CategoryAPI.findOne(id);
+    category.value = data;
+    const { data: data2 } = await FilterCategoryAPI.findAll(id);
+    selectedFilters.value = data2;
   };
 
   const deleteFilterCategory = async (group) => {

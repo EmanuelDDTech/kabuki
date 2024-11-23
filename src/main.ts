@@ -2,6 +2,11 @@ import './assets/main.css';
 
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
+
+// Firebase
+import { VueFire, VueFireAuth } from 'vuefire';
+import { firebaseApp } from './config/firebase';
+
 import { plugin, defaultConfig } from '@formkit/vue';
 import { useToast } from 'vue-toast-notification';
 import config from '../formkit.config';
@@ -19,6 +24,12 @@ const $toast = useToast({
 const app = createApp(App);
 
 app.provide('toast', $toast);
+
+app.use(VueFire, {
+  firebaseApp,
+  modules: [VueFireAuth()],
+});
+
 app.use(createPinia());
 app.use(plugin, defaultConfig(config));
 app.use(router);

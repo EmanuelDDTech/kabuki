@@ -128,14 +128,14 @@ const handleSubmit = async () => {
 
   try {
     if (!id) {
-      const { data } = await CategoryAPI.create(name);
+      const { data } = await CategoryAPI.create({ name });
       const { id: categId } = data.category;
 
       categoryStore.selectedFilters.forEach(async (selectedFilter) => {
         const filter_group_id = selectedFilter.filter_group.id;
         const product_category_id = categId;
 
-        await FilterCategoryAPI.create(filter_group_id, product_category_id);
+        await FilterCategoryAPI.create({ filter_group_id, product_category_id });
       });
 
       toast.open({
@@ -152,7 +152,7 @@ const handleSubmit = async () => {
       }, 1000);
       // url.value = null;
     } else {
-      const { data } = await CategoryAPI.update(id, name);
+      const { data } = await CategoryAPI.update(id, { name });
 
       categoryStore.selectedFilters.forEach(async (selectedFilter) => {
         if (selectedFilter.id) return;
@@ -160,7 +160,7 @@ const handleSubmit = async () => {
         const filter_group_id = selectedFilter.filter_group.id;
         const product_category_id = id;
 
-        await FilterCategoryAPI.create(filter_group_id, product_category_id);
+        await FilterCategoryAPI.create({ filter_group_id, product_category_id });
       });
 
       toast.open({

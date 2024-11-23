@@ -9,7 +9,6 @@ const initialProductValues = {
   sku: '',
   description: '',
   price: 0,
-  image: 'URL de la imagen del product',
   discount: 0,
   stock: 0,
   product_category_id: 0,
@@ -32,7 +31,14 @@ export const useProductStore = defineStore('products', () => {
   };
 
   const getProducts = async () => {
-    products.value = await ProductAPI.getAll();
+    const { data } = await ProductAPI.getAll();
+    products.value = data;
+  };
+
+  const create = async (data: any) => {
+    const { data: resultData } = await ProductAPI.create(data);
+    product.value = resultData;
+    return resultData;
   };
 
   return {
@@ -42,9 +48,12 @@ export const useProductStore = defineStore('products', () => {
 
     // Getters
     // productList: computed(() => [...products.value]),
+    imageExist: computed((product) => (product.product_galleries ? true : false)),
+    getProducts,
 
     //Actions
     cleanProduct,
     addProduct,
+    create,
   };
 });
