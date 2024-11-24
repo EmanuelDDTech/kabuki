@@ -48,6 +48,13 @@
             />
             <span class="self-center whitespace-nowrap">ShoriKameCards</span>
           </RouterLink>
+          <RouterLink
+            :to="{ name: 'home' }"
+            class="gap-2 hidden sm:inline-flex ml-5 text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:ring-green-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center items-center mr-3"
+          >
+            <HomeGoIcon class="w-6" />
+            Ir a la página
+          </RouterLink>
           <!-- <form action="#" method="GET" class="hidden lg:block lg:pl-32">
             <label for="topbar-search" class="sr-only">Search</label>
             <div class="mt-1 relative lg:w-64">
@@ -76,26 +83,21 @@
           </form> -->
         </div>
         <div class="flex items-center">
+          <RouterLink
+            :to="{ name: 'register' }"
+            class="flex items-center pr-4 border-r-2 border-gray-300 hover:text-blue-500 transition-colors"
+            ><p>
+              Hola: <span class="font-bold"> {{ user.getUserName }} </span>
+            </p>
+          </RouterLink>
           <button
-            id="toggleSidebarMobileSearch"
-            type="button"
-            class="lg:hidden text-gray-500 hover:text-gray-900 hover:bg-gray-100 p-2 rounded-lg"
+            @click="user.logout"
+            class="flex gap-2 items-center pl-4 hover:text-blue-500 transition-colors"
           >
-            <span class="sr-only">Search</span>
-            <svg
-              class="w-6 h-6"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                fill-rule="evenodd"
-                d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                clip-rule="evenodd"
-              ></path>
-            </svg>
+            Cerrar sesión
+            <LogoutIcon class="w-6" />
           </button>
-          <div class="hidden lg:flex items-center">
+          <!-- <div class="hidden lg:flex items-center">
             <span class="text-base font-normal text-gray-500 mr-5">Open source ❤️</span>
             <div class="-mb-1">
               <a
@@ -109,8 +111,8 @@
                 >Star</a
               >
             </div>
-          </div>
-          <a
+          </div> -->
+          <!-- <a
             href="#"
             class="hidden sm:inline-flex ml-5 text-white bg-cyan-600 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center items-center mr-3"
           >
@@ -130,9 +132,17 @@
               ></path>
             </svg>
             Upgrade to Pro
-          </a>
+          </a> -->
         </div>
       </div>
     </div>
   </nav>
 </template>
+
+<script setup>
+import { useUserStore } from '@/modules/auth/stores/user';
+import HomeGoIcon from '@/modules/common/icons/HomeGoIcon.vue';
+import LogoutIcon from '@/modules/common/icons/LogoutIcon.vue';
+
+const user = useUserStore();
+</script>

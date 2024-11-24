@@ -125,11 +125,11 @@ const deleteProduct = async (id) => {
                       </svg>
                     </button>
 
-                    <!-- <RouterLink :to="{ name: 'updateProduct', params: { id: product.id } }">
+                    <RouterLink :to="{ name: 'adminUpdateProducts', params: { id: product.id } }">
                       <EditIcon
                         class="h-8 w-8 p-1 rounded-full hover:bg-gray-100 hover:text-blue-600"
                       />
-                    </RouterLink> -->
+                    </RouterLink>
                   </div>
                 </td>
               </tr>

@@ -98,6 +98,11 @@ const router = createRouter({
           component: () => import('@/modules/admin/pages/CreateProductView.vue'),
         },
         {
+          path: 'productos/actualizar/:id',
+          name: 'adminUpdateProducts',
+          component: () => import('@/modules/admin/pages/UpdateProductView.vue'),
+        },
+        {
           path: 'categorias',
           name: 'adminCategories',
           component: () => import('@/modules/admin/pages/CategoriesView.vue'),
@@ -105,7 +110,7 @@ const router = createRouter({
         {
           path: 'categorias/crear',
           name: 'adminCreateCategory',
-          component: () => import('@/modules/admin/pages/createCategoryView copy.vue'),
+          component: () => import('@/modules/admin/pages/CreateCategoryView.vue'),
         },
         {
           path: 'categorias/actualizar/:id',
