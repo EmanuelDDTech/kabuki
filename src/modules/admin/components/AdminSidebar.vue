@@ -7,6 +7,7 @@ import SalesIcon from '@/modules/admin/components/icons/SalesIcon.vue';
 import AppointmentIcon from '@/modules/admin/components/icons/AppointmentIcon.vue';
 import PurchasesIcon from '@/modules/admin/components/icons/PurchasesIcon.vue';
 import ServicesIcon from '@/modules/admin/components/icons/ServicesIcon.vue';
+import CategoryIcon from '@/modules/common/icons/CategoryIcon.vue';
 
 const sidebarRoutes = [
   { name: 'adminDashboard', text: 'Dashboard', icon: DashboardIcon },
@@ -14,7 +15,7 @@ const sidebarRoutes = [
   { name: 'purchases', text: 'Compras', icon: PurchasesIcon },
   // { name: 'appointments', text: 'Citas', icon: AppointmentIcon },
   { name: 'adminProducts', text: 'Productos', icon: ProductIcon },
-  { name: 'adminCategories', text: 'Categorías', icon: ProductIcon },
+  { name: 'adminCategories', text: 'Categorías', icon: CategoryIcon },
   // { name: 'adminServices', text: 'Servicios', icon: ServicesIcon },
   { name: 'adminUsers', text: 'Users', icon: UsersIcon },
 ];
