@@ -1,6 +1,10 @@
 <template>
   <swiper
     :spaceBetween="0"
+    :autoplay="{
+      delay: 3000,
+      disableOnInteraction: false,
+    }"
     navigation
     :slidesPerView="1"
     :modules="modules"
@@ -8,9 +12,6 @@
       clickable: true,
     }"
     :loop="true"
-    :autoplay="{
-      delay: 3000,
-    }"
   >
     <swiper-slide><img src="@assets/img/banner.jpg" alt="" /></swiper-slide>
     <swiper-slide><img src="@assets/img/banner.jpg" alt="" /></swiper-slide>
@@ -25,9 +26,9 @@
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import 'swiper/css';
 import 'swiper/css/pagination';
-import { Mousewheel, Navigation, Pagination } from 'swiper/modules';
+import { Autoplay, Mousewheel, Navigation, Pagination } from 'swiper/modules';
 
-const modules = [Navigation, Pagination, Mousewheel];
+const modules = [Navigation, Pagination, Mousewheel, Autoplay];
 </script>
 
 <style scoped>
