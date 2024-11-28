@@ -1,7 +1,10 @@
 import { defineStore } from 'pinia';
-import { computed, onMounted, ref } from 'vue';
-import type { Product } from '../interfaces/product.interface';
+import { computed, ref, watch } from 'vue';
 import ProductAPI from '../api/ProductAPI';
+import { useFilterCategoryStore } from '@/modules/filter/store/filterCategory';
+import FilterValueProductAPI from '../api/FilterValueProductAPI';
+
+const filterCategory = useFilterCategoryStore();
 
 const initialProductValues = {
   id: 0,
@@ -14,46 +17,89 @@ const initialProductValues = {
   product_category_id: 0,
 };
 
-export const useProductStore = defineStore('products', () => {
-  const products = ref<Product[]>([]);
-  const product = ref<Product>(initialProductValues);
+export const useProductStore = defineStore('product', () => {
+  const id = ref(0);
+  const name = ref('');
+  const sku = ref('');
+  const description = ref('');
+  const price = ref(0);
+  const discount = ref(0);
+  const stock = ref(0);
+  const product_category_id = ref(0);
 
-  onMounted(async () => {
-    await getProducts();
-  });
+  const gallery = ref([]);
+  const filters = ref([]);
+  // const deletedFilters = ref([]);
 
   const cleanProduct = () => {
-    product.value = initialProductValues;
-  };
+    id.value = 0;
+    name.value = '';
+    sku.value = '';
+    description.value = '';
+    price.value = 0;
+    discount.value = 0;
+    stock.value = 0;
+    product_category_id.value = 0;
+    gallery.value = [];
 
-  const addProduct = (product: Product) => {
-    products.value.push(product);
-  };
-
-  const getProducts = async () => {
-    const { data } = await ProductAPI.getAll();
-    products.value = data;
+    filters.value = [];
   };
 
   const create = async (data: any) => {
     const { data: resultData } = await ProductAPI.create(data);
-    product.value = resultData;
+    id.value = resultData.id;
+
     return resultData;
   };
 
+  const selectFilter = (filterId: number) => {
+    if (filters.value.includes(filterId)) {
+      filters.value = filters.value.filter((filter) => filter !== filterId);
+    } else {
+      filters.value.push(filterId);
+    }
+  };
+
+  const saveFilters = async () => {
+    const data = {
+      productId: id.value,
+      filters: filters.value,
+    };
+
+    await FilterValueProductAPI.save(data);
+  };
+
+  const clearFilters = () => {
+    filters.value = [];
+  };
+
+  watch(product_category_id, async () => {
+    clearFilters();
+    if (!product_category_id.value || product_category_id.value === 0) return;
+    await filterCategory.findFilters(product_category_id.value);
+  });
+
   return {
     // Properties
-    products,
-    product,
+    id,
+    name,
+    sku,
+    description,
+    price,
+    discount,
+    stock,
+    product_category_id,
+    filters,
 
     // Getters
     // productList: computed(() => [...products.value]),
     imageExist: computed((product) => (product.product_galleries ? true : false)),
-    getProducts,
 
     //Actions
     cleanProduct,
-    addProduct,
     create,
+    selectFilter,
+    saveFilters,
+    clearFilters,
   };
 });

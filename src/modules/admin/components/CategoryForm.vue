@@ -75,12 +75,12 @@ import LeftArrow from '@/modules/icons/ArrowLeft.vue';
 // import useImage from '@/composables/useImage';
 // import ProductsAPI from '@/api/ProductsAPI';
 import { reset } from '@formkit/vue';
-import { inject, onBeforeUnmount, onBeforeMount, watch, onMounted } from 'vue';
+import { inject, onBeforeUnmount, onBeforeMount, onMounted } from 'vue';
 import { useCategoryStore } from '@/modules/admin/stores/category';
 import FilterForm from './FilterForm.vue';
 import CategoryAPI from '../api/CategoryAPI';
 import { useRouter } from 'vue-router';
-import FilterCategoryAPI from '../api/FilterCategoryAPI';
+import FilterCategoryAPI from '@/modules/filter/api/FilterCategoryAPI';
 import DeleteIcon from '@/modules/common/icons/DeleteIcon.vue';
 
 interface Props {
@@ -118,10 +118,6 @@ onBeforeUnmount(() => {
   categoryStore.cleanCategory();
   // url.value = null;
 });
-
-// watch(url, (newUrl, oldUrl) => {
-//   productStore.product.image = newUrl;
-// });
 
 const handleSubmit = async () => {
   const { id, name } = categoryStore.category;

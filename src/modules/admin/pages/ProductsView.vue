@@ -1,12 +1,11 @@
 <script lang="ts" setup>
-import { inject } from 'vue';
-import { useProductStore } from '../stores/product';
+import { inject, onMounted } from 'vue';
+import { useProductsStore } from '@/modules/products/stores/products';
 import { formatCurrency } from '@/helpers';
 import EditIcon from '@/modules/admin/components/icons/EditIcon.vue';
-import ProductsAPI from '../api/ProductAPI';
 import Swal from 'sweetalert2';
 
-const productStore = useProductStore();
+const productStore = useProductsStore();
 const toast = inject('toast');
 
 const deleteConfirmation = (id) => {
@@ -41,6 +40,10 @@ const deleteProduct = async (id) => {
   //   });
   // }
 };
+
+onMounted(async () => {
+  await productStore.getProducts();
+});
 </script>
 
 <template>
@@ -50,7 +53,7 @@ const deleteProduct = async (id) => {
     <section class="flex h-full flex-col justify-center">
       <div class="mx-auto w-full rounded-sm flex flex-col">
         <RouterLink
-          :to="{ name: 'adminCreateProducts' }"
+          :to="{ name: 'adminCreateProduct' }"
           class="mb-6 w-36 self-end text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm text-center p-2"
         >
           Crear Producto

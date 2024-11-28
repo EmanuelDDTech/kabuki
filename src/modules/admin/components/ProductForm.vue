@@ -27,7 +27,7 @@
         :validation-messages="{
           required: 'El Nombre es obligatorio',
         }"
-        v-model="productStore.product.name"
+        v-model="product.name"
       />
 
       <FormKit
@@ -39,7 +39,7 @@
         :validation-messages="{
           required: 'El sku es obligatorio',
         }"
-        v-model="productStore.product.sku"
+        v-model="product.sku"
       />
 
       <FormKit
@@ -52,7 +52,7 @@
         :validation-messages="{
           required: 'El precio es obligatorio',
         }"
-        v-model="productStore.product.price"
+        v-model="product.price"
       />
 
       <FormKit
@@ -65,7 +65,7 @@
           required: 'La cantidad es obligatoria',
         }"
         step="1"
-        v-model="productStore.product.stock"
+        v-model="product.stock"
       />
 
       <FormKit
@@ -119,7 +119,7 @@
         :validation-messages="{
           required: 'El Nombre es obligatorio',
         }"
-        v-model="productStore.product.description"
+        v-model="product.description"
       />
 
       <FormKit
@@ -131,8 +131,29 @@
         :validation-messages="{
           required: 'La categoría es obligatoria',
         }"
-        v-model="productStore.product.product_category_id"
+        v-model="product.product_category_id"
       />
+
+      <div v-if="product.product_category_id !== 0" class="flex flex-col gap-6 mt-6">
+        <div v-for="filter in filterCategory.filters" :key="filter.id">
+          <h3 class="font-bold">{{ filter.filter_group.name }}</h3>
+          <ul class="grid grid-cols-3 gap-2 mt-3">
+            <li
+              v-for="filterValue in filter.filter_group.filter_values"
+              :key="filterValue.id"
+              class="flex justify-center items-center text-center border py-1 px-2 rounded-md hover:cursor-pointer"
+              :class="
+                product.filters.includes(filterValue.id)
+                  ? 'border-blue-500 text-white bg-blue-500'
+                  : 'border-gray-400 text-gray-500'
+              "
+              @click="product.selectFilter(filterValue.id)"
+            >
+              {{ filterValue.name }}
+            </li>
+          </ul>
+        </div>
+      </div>
 
       <FormKit type="submit">Crear Producto</FormKit>
     </FormKit>
@@ -140,17 +161,18 @@
 </template>
 
 <script lang="ts" setup>
-import LeftArrow from '@/modules/icons/ArrowLeft.vue';
-import { reset } from '@formkit/vue';
+import { useRouter } from 'vue-router';
 import { inject, onMounted, onUnmounted } from 'vue';
+import { reset } from '@formkit/vue';
 import { Sortable } from '@shopify/draggable';
+import ProductGalleryAPI from '../api/ProductGalleryAPI';
 import { useProductStore } from '../stores/product';
 import { useCategoryStore } from '../stores/category';
-import { useRouter } from 'vue-router';
+import { useFilterCategoryStore } from '@/modules/filter/store/filterCategory';
 import useImage from '@/modules/products/composables/useImage';
+import LeftArrow from '@/modules/icons/ArrowLeft.vue';
 import ImageIcon from '@/modules/common/icons/ImageIcon.vue';
 import DeleteIcon from '@/modules/common/icons/DeleteIcon.vue';
-import ProductGalleryAPI from '../api/ProductGalleryAPI';
 
 interface Props {
   id?: number;
@@ -158,8 +180,9 @@ interface Props {
 
 const props = defineProps<Props>();
 
-const productStore = useProductStore();
+const product = useProductStore();
 const categoryStore = useCategoryStore();
+const filterCategory = useFilterCategoryStore();
 
 const { onFileChange, images, deleteImage, updateOrder, deleteImageAll } = useImage();
 
@@ -176,22 +199,30 @@ onMounted(() => {
 });
 
 onUnmounted(() => {
-  if (productStore.product.id === 0) {
+  if (product.id === 0) {
     deleteImageAll();
   }
-  productStore.cleanProduct();
-  productStore.getProducts();
+  product.cleanProduct();
 });
 
 const handleSubmit = async () => {
   try {
-    if (productStore.product.id === 0) {
-      const { id, ...productData } = productStore.product;
-      const data = await productStore.create(productData);
+    if (product.id === 0) {
+      const productData = {
+        name: product.name,
+        sku: product.sku,
+        description: product.description,
+        price: product.price,
+        discount: product.discount,
+        stock: product.stock,
+        product_category_id: product.product_category_id,
+      };
+      const data = await product.create(productData);
       await ProductGalleryAPI.create({
         product_id: data.id,
         images: images.value,
       });
+      await product.saveFilters();
 
       reset('createProductForm');
 
@@ -211,7 +242,6 @@ const handleSubmit = async () => {
       // });
     }
   } catch (error) {
-    console.log(error);
     toast.open({
       message: error.response.data.msg,
       type: 'error',

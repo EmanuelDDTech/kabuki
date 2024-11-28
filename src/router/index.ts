@@ -94,7 +94,7 @@ const router = createRouter({
         },
         {
           path: 'productos/crear',
-          name: 'adminCreateProducts',
+          name: 'adminCreateProduct',
           component: () => import('@/modules/admin/pages/CreateProductView.vue'),
         },
         {

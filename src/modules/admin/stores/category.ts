@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 import { computed, onMounted, ref } from 'vue';
 import CategoryAPI from '../api/CategoryAPI';
 import type { Category, FilterCategory, FilterGroup } from '../interfaces/category.interface';
-import FilterCategoryAPI from '../api/FilterCategoryAPI';
+import FilterCategoryAPI from '../../filter/api/FilterCategoryAPI';
 
 export const useCategoryStore = defineStore('category', () => {
   const categories = ref<Category[] | null>(null);
