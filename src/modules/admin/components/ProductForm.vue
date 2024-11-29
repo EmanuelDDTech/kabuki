@@ -9,7 +9,9 @@
         <p>Volver</p>
       </div>
     </RouterLink>
-    <h2 class="text-2xl font-semibold mb-6">Crear Producto</h2>
+    <h2 class="text-2xl font-semibold mb-6">
+      {{ product.id === 0 ? 'Crear Producto' : 'Actualizar Producto' }}
+    </h2>
 
     <FormKit
       id="createProductForm"
@@ -88,7 +90,7 @@
 
       <div id="draggable" class="grid grid-cols-5 gap-2 cursor-grab mb-4">
         <article
-          v-for="image in images"
+          v-for="image in product.gallery"
           :key="image.url"
           class="relative draggable-item border-solid flex-1 flex aspect-square border border-gray-300 text-gray-300 justify-center items-center"
         >
@@ -102,7 +104,7 @@
         </article>
 
         <article
-          v-for="i in 5 - images.length"
+          v-for="i in 5 - product.gallery.length"
           :key="i"
           class="border-dashed flex-1 flex aspect-square border border-gray-300 text-gray-300 justify-center items-center"
         >
@@ -155,13 +157,15 @@
         </div>
       </div>
 
-      <FormKit type="submit">Crear Producto</FormKit>
+      <FormKit type="submit">{{
+        product.id === 0 ? 'Crear Producto' : 'Actualizar Producto'
+      }}</FormKit>
     </FormKit>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { inject, onMounted, onUnmounted } from 'vue';
 import { reset } from '@formkit/vue';
 import { Sortable } from '@shopify/draggable';
@@ -187,6 +191,7 @@ const filterCategory = useFilterCategoryStore();
 const { onFileChange, images, deleteImage, updateOrder, deleteImageAll } = useImage();
 
 const toast: any = inject('toast');
+const route = useRoute();
 const router = useRouter();
 
 onMounted(() => {
@@ -196,6 +201,14 @@ onMounted(() => {
   });
 
   sortable.on('sortable:stop', (e) => saveSortedImages(e));
+});
+
+onMounted(() => {
+  const { id } = route.params;
+
+  if (!id) return;
+
+  product.findProduct(id);
 });
 
 onUnmounted(() => {
@@ -235,11 +248,27 @@ const handleSubmit = async () => {
         router.push({ name: 'adminProducts' });
       }, 1000);
     } else {
-      // const { data } = await ProductsAPI.update(id, productData);
-      // toast.open({
-      //   message: data.msg,
-      //   type: 'success',
-      // });
+      const productData = {
+        name: product.name,
+        sku: product.sku,
+        description: product.description,
+        price: product.price,
+        discount: product.discount,
+        stock: product.stock,
+        product_category_id: product.product_category_id,
+      };
+
+      const data = await product.update(productData);
+      await product.saveFilters();
+
+      toast.open({
+        message: data.msg,
+        type: 'success',
+      });
+
+      setTimeout(() => {
+        router.push({ name: 'adminProducts' });
+      }, 1000);
     }
   } catch (error) {
     toast.open({

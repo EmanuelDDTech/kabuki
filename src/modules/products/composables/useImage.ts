@@ -19,7 +19,7 @@ export default function useImage() {
   const onFileChange = (e: any) => {
     const files = e.target.files;
 
-    if (images.value.length >= 5) {
+    if (productStore.gallery.length >= 5) {
       toast.open({
         message: 'Máximo de imágenes alcanzado',
         type: 'error',
@@ -42,10 +42,10 @@ export default function useImage() {
           // Upload is complete
           getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
             const image = {};
-            image.order = images.value.length + 1;
+            image.order = productStore.gallery.length + 1;
             image.url = downloadURL;
 
-            images.value.push(image);
+            productStore.gallery.push(image);
           });
         },
       );
@@ -53,20 +53,20 @@ export default function useImage() {
   };
 
   const updateOrder = (imagesOrder) => {
-    console.log('Actualizando');
-    images.value = imagesOrder;
+    productStore.gallery = imagesOrder;
   };
 
   const deleteImage = async (imageUrl) => {
     const imageRef = storageRef(storage, imageUrl);
     await deleteObject(imageRef);
 
-    const newImages = images.value.filter((img) => img.url !== imageUrl);
-    images.value = newImages;
+    const newImages = productStore.gallery.filter((img) => img.url !== imageUrl);
+    console.log(newImages);
+    productStore.gallery = newImages;
   };
 
   const deleteImageAll = () => {
-    images.value.forEach(async (image) => {
+    productStore.gallery.forEach(async (image) => {
       const imageRef = storageRef(storage, image.url);
       try {
         await deleteObject(imageRef);
@@ -74,7 +74,7 @@ export default function useImage() {
         console.log(error);
       }
     });
-    images.value = [];
+    productStore.gallery = [];
   };
 
   return {

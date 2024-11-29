@@ -8,4 +8,10 @@ export default {
   async getAll() {
     return await api.get('/producto/products');
   },
+  async findById(id: any) {
+    return await api.get(`/producto/products/${id}`);
+  },
+  async update(id: any, data: object) {
+    return await api.put(`/producto/products/${id}`, data);
+  },
 };

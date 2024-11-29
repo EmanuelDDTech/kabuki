@@ -2,11 +2,12 @@ import api from '@/lib/axios';
 
 export default {
   async create(data) {
-    const token = localStorage.getItem('AUTH_TOKEN');
-    return await api.post('/product-gallery', data, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    return await api.post('/product-gallery', data);
+  },
+  async findByProductId(productId) {
+    return await api.get(`/product-gallery/${productId}`);
+  },
+  async updateGallery(id: any, data: object) {
+    return await api.put(`/product-gallery/${id}`, data);
   },
 };
