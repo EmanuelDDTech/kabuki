@@ -80,12 +80,12 @@ const router = createRouter({
         {
           path: 'ventas',
           name: 'sales',
-          component: () => import('@/modules/admin/pages/AdminDashboard.vue'),
+          component: () => import('@/modules/admin/pages/SalesView.vue'),
         },
         {
           path: 'compras',
           name: 'purchases',
-          component: () => import('@/modules/admin/pages/AdminDashboard.vue'),
+          component: () => import('@/modules/admin/pages/PurchasesView.vue'),
         },
         {
           path: 'productos',
@@ -95,12 +95,12 @@ const router = createRouter({
         {
           path: 'productos/crear',
           name: 'adminCreateProduct',
-          component: () => import('@/modules/admin/pages/CreateProductView.vue'),
+          component: () => import('@/modules/product/pages/CreateProductView.vue'),
         },
         {
           path: 'productos/actualizar/:id',
           name: 'adminUpdateProducts',
-          component: () => import('@/modules/admin/pages/UpdateProductView.vue'),
+          component: () => import('@/modules/product/pages/UpdateProductView.vue'),
         },
         {
           path: 'categorias',
@@ -120,7 +120,7 @@ const router = createRouter({
         {
           path: 'usuarios',
           name: 'adminUsers',
-          component: () => import('@/modules/admin/pages/AdminDashboard.vue'),
+          component: () => import('@/modules/admin/pages/UsersView.vue'),
         },
       ],
     },

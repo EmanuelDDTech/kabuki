@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { onMounted, ref } from 'vue';
 import type { Product } from '../interfaces';
-import ProductAPI from '@/modules/admin/api/ProductAPI';
+import ProductAPI from '@/modules/product/api/ProductAPI';
 
 export const useProductsStore = defineStore('products', () => {
   const products = ref<Product[]>([]);

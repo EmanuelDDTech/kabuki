@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import ProductForm from '@/modules/admin/components/ProductForm.vue';
+import ProductForm from '@/modules/product/components/ProductForm.vue';
 </script>
 
 <template>

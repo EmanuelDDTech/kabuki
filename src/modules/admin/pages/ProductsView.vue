@@ -4,9 +4,13 @@ import { useProductsStore } from '@/modules/products/stores/products';
 import { formatCurrency } from '@/helpers';
 import EditIcon from '@/modules/admin/components/icons/EditIcon.vue';
 import Swal from 'sweetalert2';
+import ProductAPI from '@/modules/product/api/ProductAPI';
+import useImage from '@/modules/products/composables/useImage';
 
 const productStore = useProductsStore();
 const toast = inject('toast');
+
+const { deleteByProductId } = useImage();
 
 const deleteConfirmation = (id) => {
   Swal.fire({
@@ -25,20 +29,21 @@ const deleteConfirmation = (id) => {
   });
 };
 
-const deleteProduct = async (id) => {
-  // try {
-  //   const { data } = await ProductsAPI.delete(id);
-  //   toast.open({
-  //     message: data.msg,
-  //     type: 'success',
-  //   });
-  //   productStore.products = productStore.products.filter((product) => product._id !== id);
-  // } catch (error) {
-  //   toast.open({
-  //     message: error.response.data.msg,
-  //     type: 'error',
-  //   });
-  // }
+const deleteProduct = async (id: any) => {
+  try {
+    await deleteByProductId(id);
+    const { data } = await ProductAPI.delete(id);
+    toast.open({
+      message: 'Producto eliminado correctamente',
+      type: 'success',
+    });
+    productStore.getProducts();
+  } catch (error) {
+    toast.open({
+      message: error.response.data.msg,
+      type: 'error',
+    });
+  }
 };
 
 onMounted(async () => {

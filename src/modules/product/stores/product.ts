@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 import { computed, ref, watch } from 'vue';
 import ProductAPI from '../api/ProductAPI';
 import { useFilterCategoryStore } from '@/modules/filter/store/filterCategory';
-import FilterValueProductAPI from '../api/FilterValueProductAPI';
+import FilterValueProductAPI from '@/modules/admin/api/FilterValueProductAPI';
 import ProductGalleryAPI from '../api/ProductGalleryAPI';
 
 const filterCategory = useFilterCategoryStore();

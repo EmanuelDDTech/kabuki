@@ -7,7 +7,8 @@ import {
   getDownloadURL,
   deleteObject,
 } from 'firebase/storage';
-import { useProductStore } from '@/modules/admin/stores/product';
+import { useProductStore } from '@/modules/product/stores/product';
+import ProductGalleryAPI from '@/modules/product/api/ProductGalleryAPI';
 
 const productStore = useProductStore();
 
@@ -61,7 +62,6 @@ export default function useImage() {
     await deleteObject(imageRef);
 
     const newImages = productStore.gallery.filter((img) => img.url !== imageUrl);
-    console.log(newImages);
     productStore.gallery = newImages;
   };
 
@@ -77,6 +77,20 @@ export default function useImage() {
     productStore.gallery = [];
   };
 
+  const deleteByProductId = async (id: any) => {
+    try {
+      const { data } = await ProductGalleryAPI.findByProductId(id);
+
+      await Promise.all(
+        data.map(async (image) => {
+          await deleteImage(image.url);
+        }),
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return {
     images,
 
@@ -85,5 +99,6 @@ export default function useImage() {
     updateOrder,
     deleteImage,
     deleteImageAll,
+    deleteByProductId,
   };
 }

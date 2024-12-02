@@ -14,4 +14,7 @@ export default {
   async update(id: any, data: object) {
     return await api.put(`/producto/products/${id}`, data);
   },
+  async delete(id: any) {
+    return await api.delete(`/producto/products/${id}`);
+  },
 };
