@@ -233,7 +233,7 @@ const handleSubmit = async () => {
       const data = await product.create(productData);
       await ProductGalleryAPI.create({
         product_id: data.id,
-        images: images.value,
+        images: product.gallery,
       });
       await product.saveFilters();
 
