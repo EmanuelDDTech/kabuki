@@ -118,6 +118,16 @@ const router = createRouter({
           component: () => import('@/modules/admin/pages/updateCategoryView.vue'),
         },
         {
+          path: 'banners',
+          name: 'adminBanners',
+          component: () => import('@/modules/banner/pages/BannersView.vue'),
+        },
+        {
+          path: 'banners/crear',
+          name: 'adminCreateBanner',
+          component: () => import('@/modules/banner/pages/CreateBannerView.vue'),
+        },
+        {
           path: 'usuarios',
           name: 'adminUsers',
           component: () => import('@/modules/admin/pages/UsersView.vue'),

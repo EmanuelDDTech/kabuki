@@ -63,6 +63,7 @@ export default function useImage() {
 
     const newImages = productStore.gallery.filter((img) => img.url !== imageUrl);
     productStore.gallery = newImages;
+    return;
   };
 
   const deleteImageAll = () => {
