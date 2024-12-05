@@ -19,7 +19,13 @@ export function converToDDMMYYYY(isoDate) {
   return formattedDate;
 }
 
-export function displayDDMMYYYY(strDate) {
+export function displayYYYYMMDD(strDate) {
   const formattedDate = format(strDate, 'yyyy-MM-dd');
+  return formattedDate;
+}
+
+export function convertToYYYYMMDD(isoDate) {
+  const newDate = parseISO(isoDate);
+  const formattedDate = format(newDate, 'yyyy-MM-dd');
   return formattedDate;
 }

@@ -10,8 +10,7 @@
       </div>
     </RouterLink>
     <h2 class="text-2xl font-semibold mb-6">
-      <!-- {{ id ? 'Actualizar Categoría' : 'Crear Categoría' }} -->
-      Crear Categoría
+      {{ id ? 'Actualizar Banner' : 'Crear Banner' }}
     </h2>
 
     <FormKit
@@ -85,8 +84,8 @@
           :validation-messages="{
             required: 'La fecha de inicio es obligatoria',
           }"
-          :min="date"
           value-format="full"
+          v-model="banner.startISO"
         />
 
         <FormKit
@@ -94,14 +93,13 @@
           label="Termino"
           name="end"
           help="Día de termino del banner"
-          :min="date"
           value-format="full"
+          v-model="banner.endISO"
         />
       </div>
 
       <FormKit type="submit">
-        <!-- {{ !id ? 'Crear Categoría' : 'Actualizar Categoría' }} -->
-        Crear Categoría
+        {{ !id ? 'Crear Banner' : 'Actualizar Banner' }}
       </FormKit>
     </FormKit>
   </div>
@@ -109,10 +107,16 @@
 
 <script lang="ts" setup>
 import ArrowLeft from '@/modules/icons/ArrowLeft.vue';
-import { displayDDMMYYYY } from '@/helpers/date';
+import { displayYYYYMMDD } from '@/helpers/date';
 import { useBannerStore } from '../stores/banner';
-import { inject, onUnmounted } from 'vue';
+import { inject, onMounted, onUnmounted } from 'vue';
 import { useRouter } from 'vue-router';
+
+interface Props {
+  id?: number;
+}
+
+const props = defineProps<Props>();
 
 const banner = useBannerStore();
 // const { onFileChange } = useImage();
@@ -120,7 +124,12 @@ const banner = useBannerStore();
 const toast: any = inject('toast');
 const router = useRouter();
 
-const date = displayDDMMYYYY(new Date());
+const date = displayYYYYMMDD(new Date());
+
+onMounted(() => {
+  if (!props.id) return;
+  banner.findBanner(props.id);
+});
 
 onUnmounted(async () => {
   if (banner.isImageUploaded) {
@@ -144,7 +153,19 @@ const handleSubmit = async ({ start, end, ...formData }) => {
       });
 
       setTimeout(() => {
-        router.push({ name: 'adminProducts' });
+        router.push({ name: 'adminBanners' });
+      }, 1000);
+    } else {
+      const data = await banner.update();
+      banner.cleanBanner();
+
+      toast.open({
+        message: data.msg,
+        type: 'success',
+      });
+
+      setTimeout(() => {
+        router.push({ name: 'adminBanners' });
       }, 1000);
     }
   } catch (error) {

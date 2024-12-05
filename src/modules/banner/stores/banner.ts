@@ -1,6 +1,6 @@
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { defineStore } from 'pinia';
-import { convertToISO } from '@/helpers/date';
+import { convertToISO, convertToYYYYMMDD } from '@/helpers/date';
 import { uid } from 'uid';
 import { getDownloadURL, ref as storageRef, uploadBytesResumable } from 'firebase/storage';
 import { useFirebaseStorage } from 'vuefire';
@@ -17,6 +17,9 @@ export const useBannerStore = defineStore('banner', () => {
   const end = ref('');
 
   const newUrl = ref('');
+
+  const startISO = ref('');
+  const endISO = ref('');
 
   const storage = useFirebaseStorage();
   const { deleteImage } = useImage();
@@ -39,10 +42,40 @@ export const useBannerStore = defineStore('banner', () => {
       end: end.value,
     };
 
-    const { data: resultData } = await BannerAPI.create(data);
-    id.value = resultData.id;
+    try {
+      const { data: resultData } = await BannerAPI.create(data);
+      id.value = resultData.id;
 
-    return resultData;
+      return resultData;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const update = async () => {
+    if (isImageUploaded.value) {
+      if (url.value !== '') {
+        deleteBannerImage(url.value);
+      }
+      url.value = newUrl.value;
+      newUrl.value = '';
+    }
+
+    const data = {
+      name: name.value,
+      url: url.value,
+      order: order.value,
+      redirect: redirect.value,
+      start: start.value,
+      end: end.value,
+    };
+
+    try {
+      const { data: resultData } = await BannerAPI.update(id.value, data);
+      return resultData;
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const setStartDate = (startDate: string) => {
@@ -90,6 +123,32 @@ export const useBannerStore = defineStore('banner', () => {
     end.value = '';
   };
 
+  const findBanner = async (bannerId: number) => {
+    try {
+      const { data } = await BannerAPI.getById(bannerId);
+
+      id.value = data.id;
+      name.value = data.name;
+      url.value = data.url;
+      order.value = data.order;
+      redirect.value = data.redirect;
+      start.value = data.start;
+      end.value = data.end;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  watch(start, (newStart, oldStart) => {
+    if (newStart === '') return;
+    startISO.value = convertToYYYYMMDD(newStart);
+  });
+
+  watch(end, (newEnd, oldEnd) => {
+    if (newEnd === '') return;
+    endISO.value = convertToYYYYMMDD(newEnd);
+  });
+
   const isImageUploaded = computed(() => (newUrl.value ? newUrl.value : null));
 
   return {
@@ -105,13 +164,17 @@ export const useBannerStore = defineStore('banner', () => {
 
     // Methods
     create,
+    update,
     setStartDate,
     setEndDate,
     saveImage,
     deleteBannerImage,
     cleanBanner,
+    findBanner,
 
     // Getters
     isImageUploaded,
+    startISO,
+    endISO,
   };
 });

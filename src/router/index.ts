@@ -128,6 +128,11 @@ const router = createRouter({
           component: () => import('@/modules/banner/pages/CreateBannerView.vue'),
         },
         {
+          path: 'banners/actualizar/:id',
+          name: 'adminUpdateBanner',
+          component: () => import('@/modules/banner/pages/UpdateBannerView.vue'),
+        },
+        {
           path: 'usuarios',
           name: 'adminUsers',
           component: () => import('@/modules/admin/pages/UsersView.vue'),

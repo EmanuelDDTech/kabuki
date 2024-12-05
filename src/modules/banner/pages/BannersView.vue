@@ -1,5 +1,3 @@
-<script lang="ts" setup></script>
-
 <template>
   <main class="mt-6 mx-4 p-4 sm:p-6 xl:p-8 bg-white shadow rounded-lg">
     <h1 class="text-2xl font-semibold mb-6">Banners</h1>
@@ -13,7 +11,7 @@
           Crear Banner
         </RouterLink>
 
-        <!-- <div class="overflow-x-auto">
+        <div class="overflow-x-auto">
           <table class="w-full table-auto">
             <thead class="shadow bg-gray-50 text-xs font-semibold uppercase text-gray-400">
               <tr>
@@ -24,48 +22,50 @@
                   <div class="text-left font-semibold">Nombre</div>
                 </th>
                 <th class="p-2">
-                  <div class="text-left font-semibold">Disponibles</div>
+                  <div class="text-left font-semibold">Orden</div>
                 </th>
                 <th class="p-2">
-                  <div class="text-left font-semibold">Costo</div>
+                  <div class="text-left font-semibold">Redirección</div>
                 </th>
                 <th class="p-2">
-                  <div class="text-left font-semibold">Precio</div>
+                  <div class="text-left font-semibold">Rango de fechas</div>
                 </th>
                 <th class="p-2">
-                  <div class="text-center font-semibold">Action</div>
+                  <div class="text-center font-semibold">Acciones</div>
                 </th>
               </tr>
             </thead>
 
             <tbody
               class="divide-y divide-gray-100 text-sm shadow"
-              v-for="product in productStore.products"
-              :key="product.id"
+              v-for="banner in banners.banners"
+              :key="banner.id"
             >
               <tr>
                 <td class="p-2">
-                  <img class="w-32" :src="product.product_galleries[0].url" alt="product image" />
+                  <img class="w-32" :src="banner.url" alt="product image" />
                 </td>
                 <td class="p-2">
-                  <div class="text-base font-medium text-gray-800">{{ product.name }}</div>
+                  <div class="text-base font-medium text-gray-800">{{ banner.name }}</div>
                 </td>
                 <td class="p-2">
-                  <div class="text-base text-left">{{ product.stock }}</div>
+                  <div class="text-base text-left">{{ banner.order }}</div>
                 </td>
                 <td class="p-2">
-                  <div class="text-base text-left font-medium text-red-500">
-                    {{ formatCurrency(0) }}
+                  <div class="text-base text-left font-medium text-gray-800">
+                    {{ banner.redirect }}
                   </div>
                 </td>
                 <td class="p-2">
-                  <div class="text-base text-left font-medium text-green-500">
-                    {{ formatCurrency(product.price) }}
+                  <div class="text-base text-left font-medium text-gray-800">
+                    <p>
+                      {{ `${converToDDMMYYYY(banner.start)} al ${converToDDMMYYYY(banner.end)}` }}
+                    </p>
                   </div>
                 </td>
                 <td class="p-2">
                   <div class="flex justify-center">
-                    <button @click="deleteConfirmation(product.id)">
+                    <button>
                       <svg
                         class="h-8 w-8 rounded-full p-1 hover:bg-gray-100 hover:text-red-600"
                         fill="none"
@@ -82,7 +82,7 @@
                       </svg>
                     </button>
 
-                    <RouterLink :to="{ name: 'adminUpdateProducts', params: { id: product.id } }">
+                    <RouterLink :to="{ name: 'adminUpdateBanner', params: { id: banner.id } }">
                       <EditIcon
                         class="h-8 w-8 p-1 rounded-full hover:bg-gray-100 hover:text-blue-600"
                       />
@@ -92,8 +92,21 @@
               </tr>
             </tbody>
           </table>
-        </div> -->
+        </div>
       </div>
     </section>
   </main>
 </template>
+
+<script lang="ts" setup>
+import { onMounted } from 'vue';
+import { converToDDMMYYYY } from '@/helpers/date';
+import { useBannersStore } from '@/modules/banner/stores/banners';
+import EditIcon from '@/modules/admin/components/icons/EditIcon.vue';
+
+const banners = useBannersStore();
+
+onMounted(() => {
+  banners.getBanners();
+});
+</script>
