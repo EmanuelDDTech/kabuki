@@ -135,11 +135,12 @@ onUnmounted(async () => {
   if (banner.isImageUploaded) {
     await banner.deleteBannerImage(banner.newUrl);
   }
+  banner.cleanBanner();
 });
 
 const handleSubmit = async ({ start, end, ...formData }) => {
-  banner.setStartDate(start);
-  banner.setEndDate(end);
+  // banner.setStartDate(start);
+  // banner.setEndDate(end);
 
   try {
     if (banner.id === 0) {

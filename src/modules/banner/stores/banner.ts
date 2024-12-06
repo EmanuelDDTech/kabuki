@@ -33,6 +33,9 @@ export const useBannerStore = defineStore('banner', () => {
       newUrl.value = '';
     }
 
+    setStartDate(startISO.value);
+    setEndDate(endISO.value);
+
     const data = {
       name: name.value,
       url: url.value,
@@ -60,6 +63,8 @@ export const useBannerStore = defineStore('banner', () => {
       url.value = newUrl.value;
       newUrl.value = '';
     }
+    setStartDate(startISO.value);
+    setEndDate(endISO.value);
 
     const data = {
       name: name.value,
@@ -79,7 +84,9 @@ export const useBannerStore = defineStore('banner', () => {
   };
 
   const setStartDate = (startDate: string) => {
+    console.log('startDate: ' + startDate);
     const formattedStart = convertToISO(startDate);
+    console.log('startDate: ' + formattedStart);
     start.value = formattedStart;
   };
 
@@ -121,6 +128,9 @@ export const useBannerStore = defineStore('banner', () => {
     redirect.value = '';
     start.value = '';
     end.value = '';
+
+    startISO.value = '';
+    endISO.value = '';
   };
 
   const findBanner = async (bannerId: number) => {
@@ -134,20 +144,23 @@ export const useBannerStore = defineStore('banner', () => {
       redirect.value = data.redirect;
       start.value = data.start;
       end.value = data.end;
+
+      startISO.value = convertToYYYYMMDD(start.value);
+      endISO.value = convertToYYYYMMDD(end.value);
     } catch (error) {
       console.log(error);
     }
   };
 
-  watch(start, (newStart, oldStart) => {
-    if (newStart === '') return;
-    startISO.value = convertToYYYYMMDD(newStart);
-  });
+  // watch(start, (newStart, oldStart) => {
+  //   if (newStart === '') return;
+  //   startISO.value = convertToYYYYMMDD(newStart);
+  // });
 
-  watch(end, (newEnd, oldEnd) => {
-    if (newEnd === '') return;
-    endISO.value = convertToYYYYMMDD(newEnd);
-  });
+  // watch(end, (newEnd, oldEnd) => {
+  //   if (newEnd === '') return;
+  //   endISO.value = convertToYYYYMMDD(newEnd);
+  // });
 
   const isImageUploaded = computed(() => (newUrl.value ? newUrl.value : null));
 

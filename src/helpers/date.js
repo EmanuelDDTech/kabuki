@@ -2,9 +2,10 @@ import { parse, formatISO, parseISO, format } from 'date-fns';
 import es from 'date-fns/locale/es';
 
 export function convertToISO(strDate) {
-  const date = format(strDate, 'dd/MM/yyyy');
-  const newDate = parse(date, 'dd/MM/yyyy', new Date());
-  return formatISO(newDate);
+  const isoDate = parseISO(strDate);
+  // const date = format(isoDate, 'dd/MM/yyyy');
+  // const newDate = parse(date, 'dd/MM/yyyy', new Date());
+  return formatISO(isoDate);
 }
 
 export function displayDate(date) {
