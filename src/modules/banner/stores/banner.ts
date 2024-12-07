@@ -84,9 +84,7 @@ export const useBannerStore = defineStore('banner', () => {
   };
 
   const setStartDate = (startDate: string) => {
-    console.log('startDate: ' + startDate);
     const formattedStart = convertToISO(startDate);
-    console.log('startDate: ' + formattedStart);
     start.value = formattedStart;
   };
 
@@ -151,16 +149,6 @@ export const useBannerStore = defineStore('banner', () => {
       console.log(error);
     }
   };
-
-  // watch(start, (newStart, oldStart) => {
-  //   if (newStart === '') return;
-  //   startISO.value = convertToYYYYMMDD(newStart);
-  // });
-
-  // watch(end, (newEnd, oldEnd) => {
-  //   if (newEnd === '') return;
-  //   endISO.value = convertToYYYYMMDD(newEnd);
-  // });
 
   const isImageUploaded = computed(() => (newUrl.value ? newUrl.value : null));
 

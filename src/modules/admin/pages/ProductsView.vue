@@ -8,7 +8,7 @@ import ProductAPI from '@/modules/product/api/ProductAPI';
 import useImage from '@/modules/products/composables/useImage';
 
 const productStore = useProductsStore();
-const toast = inject('toast');
+const toast: any = inject('toast');
 
 const { deleteByProductId } = useImage();
 

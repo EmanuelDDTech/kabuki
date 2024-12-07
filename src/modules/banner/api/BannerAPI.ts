@@ -13,4 +13,7 @@ export default {
   async update(id: number, data: object) {
     return await api.put(`/banner/${id}`, data);
   },
+  async delete(id: number) {
+    return await api.delete(`/banner/${id}`);
+  },
 };
