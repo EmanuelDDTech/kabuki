@@ -112,7 +112,7 @@
         </article>
       </div>
 
-      <FormKit
+      <!-- <FormKit
         type="text"
         label="Descripción"
         name="descripcion"
@@ -122,7 +122,13 @@
           required: 'El Nombre es obligatorio',
         }"
         v-model="product.description"
-      />
+      /> -->
+
+      <div class="mb-2">
+        <label class="block text-gray-600 mb-2">Descripción</label>
+
+        <QuillEditor theme="snow" ref="myEditor" content-type="html" />
+      </div>
 
       <FormKit
         type="select"
@@ -166,9 +172,11 @@
 
 <script lang="ts" setup>
 import { useRoute, useRouter } from 'vue-router';
-import { inject, onMounted, onUnmounted } from 'vue';
+import { inject, onMounted, onUnmounted, ref, watch } from 'vue';
 import { reset } from '@formkit/vue';
 import { Sortable } from '@shopify/draggable';
+import { QuillEditor } from '@vueup/vue-quill';
+import '@vueup/vue-quill/dist/vue-quill.snow.css';
 import ProductGalleryAPI from '../api/ProductGalleryAPI';
 import { useProductStore } from '@/modules/product/stores/product';
 import { useCategoryStore } from '../../admin/stores/category';
@@ -194,6 +202,8 @@ const toast: any = inject('toast');
 const route = useRoute();
 const router = useRouter();
 
+const myEditor = ref<string | null>(null);
+
 onMounted(() => {
   const sortable = new Sortable(document.querySelector('#draggable'), {
     draggable: '.draggable-item',
@@ -211,6 +221,10 @@ onMounted(() => {
   product.findProduct(id);
 });
 
+onMounted(() => {
+  // const editor: HTMLElement | null = document.getElementById('editor');
+});
+
 onUnmounted(() => {
   if (product.id === 0) {
     deleteImageAll();
@@ -219,6 +233,8 @@ onUnmounted(() => {
 });
 
 const handleSubmit = async () => {
+  product.description = myEditor.value.getHTML();
+
   try {
     if (product.id === 0) {
       const productData = {
@@ -292,4 +308,11 @@ const saveSortedImages = async (e) => {
     updateOrder(imagesOrder);
   }, 50);
 };
+
+watch(
+  () => product.description,
+  (newValue) => {
+    myEditor.value.setHTML(newValue);
+  },
+);
 </script>
