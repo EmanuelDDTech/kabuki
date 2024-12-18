@@ -18,11 +18,11 @@
             class="flex items-center pr-4 hover:text-blue-500 transition-colors"
             >Promociones</RouterLink
           >
-          <RouterLink
+          <!-- <RouterLink
             :to="{ name: 'home' }"
             class="flex items-center pr-4 hover:text-blue-500 transition-colors"
             >Registrarse</RouterLink
-          >
+          > -->
         </div>
         <div class="flex pl-4 font-semibold" v-if="!user.isSet">
           <RouterLink
