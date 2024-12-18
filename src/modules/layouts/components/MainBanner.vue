@@ -13,12 +13,9 @@
     }"
     :loop="true"
   >
-    <swiper-slide><img src="@assets/img/banner.jpg" alt="" /></swiper-slide>
-    <swiper-slide><img src="@assets/img/banner.jpg" alt="" /></swiper-slide>
-    <swiper-slide><img src="@assets/img/banner.jpg" alt="" /></swiper-slide>
-    <swiper-slide><img src="@assets/img/banner.jpg" alt="" /></swiper-slide>
-    <swiper-slide><img src="@assets/img/banner.jpg" alt="" /></swiper-slide>
-    <swiper-slide><img src="@assets/img/banner.jpg" alt="" /></swiper-slide>
+    <swiper-slide v-for="banner in banners.banners" :key="banner.id"
+      ><img :src="banner.url" alt=""
+    /></swiper-slide>
   </swiper>
 </template>
 
@@ -27,8 +24,15 @@ import { Swiper, SwiperSlide } from 'swiper/vue';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import { Autoplay, Mousewheel, Navigation, Pagination } from 'swiper/modules';
+import { useBannersStore } from '@/modules/banner/stores/banners';
+import { onMounted } from 'vue';
 
+const banners = useBannersStore();
 const modules = [Navigation, Pagination, Mousewheel, Autoplay];
+
+onMounted(async () => {
+  await banners.getBanners();
+});
 </script>
 
 <style scoped>
