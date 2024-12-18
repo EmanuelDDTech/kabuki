@@ -5,9 +5,13 @@
       class="max-w-7xl mx-auto rounded-full px-6 left-0 right-0 z-10 bg-white sticky"
     >
       <div class="flex justify-between items-center mx-auto py-3 relative">
-        <RouterLink :to="{ name: 'home' }" class="w-40 text-2xl font-bold hidden lg:block">
-          <!-- <img src="@assets/img/logo.avif" alt=""/> -->
-          ShoriKameCards
+        <RouterLink :to="{ name: 'home' }" class="text-xl font-bold flex items-center lg:ml-2.5">
+          <img
+            src="@/assets/img/shorikame-logo-edited.webp"
+            class="h-12 mr-2"
+            alt="Windster Logo"
+          />
+          <span class="self-center whitespace-nowrap">ShoriKameCards</span>
         </RouterLink>
         <SearchBar />
         <nav class="gap-6 text-base text-gray-400 hidden lg:flex">

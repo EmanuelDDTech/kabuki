@@ -36,11 +36,7 @@
               ></path>
             </svg>
           </button>
-          <RouterLink
-            :to="{ name: 'admin' }"
-            href="#"
-            class="text-xl font-bold flex items-center lg:ml-2.5"
-          >
+          <RouterLink :to="{ name: 'admin' }" class="text-xl font-bold flex items-center lg:ml-2.5">
             <img
               src="@/assets/img/shorikame-logo-edited.webp"
               class="h-12 mr-2"
