@@ -25,10 +25,16 @@
       </p>
     </div>
     <div class="mt-4 pl-2 mb-2 justify-between">
-      <p class="font-normal text-black mb-5">League Battle Deck -Charizard ex- PREVENTA</p>
-      <div class="flex gap-2 items-center relative">
-        <p class="text-xl text-black font-bold mt-0">$300</p>
-        <p class="text-base text-gray-500 line-through font-normal mt-0">$340</p>
+      <p class="font-normal text-black mb-5">
+        {{ product ? product.name : 'League Battle Deck -Charizard ex- PREVENTA' }}
+      </p>
+      <div class="flex flex-col items-start relative">
+        <p class="text-xl text-black font-bold mt-0">
+          {{ product.discount ? formatCurrency(product.discount) : formatCurrency(product.price) }}
+        </p>
+        <p v-if="product.discount" class="text-base text-gray-500 line-through font-normal mt-0">
+          {{ formatCurrency(product.price) }}
+        </p>
         <div class="group cursor-pointer bg-gray-100 p-2 rounded-full absolute right-2 bottom-0">
           <WishlistIcon class="h-6 aspect-square text-gray-500 group-hover:opacity-70" />
         </div>
@@ -40,8 +46,13 @@
 <script setup lang="ts">
 import WishlistIcon from '@/modules/cart/components/wishlistIcon.vue';
 import { useRouter } from 'vue-router';
+import { formatCurrency } from '@/helpers';
+
+interface Props {
+  product?: object;
+}
+
+const props = defineProps<Props>();
 
 const router = useRouter();
 </script>
-
-<style scoped></style>
