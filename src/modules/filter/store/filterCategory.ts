@@ -2,7 +2,6 @@ import { defineStore } from 'pinia';
 import { onMounted, ref, watch } from 'vue';
 import FilterCategoryAPI from '../api/FilterCategoryAPI';
 import { useRoute, useRouter } from 'vue-router';
-import { parseJSON } from 'date-fns';
 import { useProductsStore } from '@/modules/products/stores/products';
 
 export const useFilterCategoryStore = defineStore('filterCategory', () => {
@@ -14,10 +13,16 @@ export const useFilterCategoryStore = defineStore('filterCategory', () => {
 
   const products = useProductsStore();
 
-  onMounted(async () => {
+  // onMounted(async () => {
+  //   console.log('Desde onMounted');
+  //   activeFilters.value = { ...route.query };
+  //   await getProducts();
+  // });
+
+  const getFilters = async () => {
     activeFilters.value = { ...route.query };
     await getProducts();
-  });
+  };
 
   const findFilters = async (categId: number) => {
     const { data } = await FilterCategoryAPI.findAll(categId);
@@ -63,12 +68,18 @@ export const useFilterCategoryStore = defineStore('filterCategory', () => {
     return window.location.href.split('?')[1];
   };
 
+  const clearActiveFilters = () => {
+    activeFilters.value = {};
+  };
+
   return {
     filters,
     activeFilters,
 
     // Methods
+    getFilters,
     findFilters,
     updateFilters,
+    clearActiveFilters,
   };
 });

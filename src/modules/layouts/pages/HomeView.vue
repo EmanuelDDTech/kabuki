@@ -7,16 +7,66 @@ import DiscountIcon from '@/modules/icons/DiscountIcon.vue';
 import ClosedBoxIcon from '../components/ClosedBoxIcon.vue';
 
 const routes = [
-  { name: '', text: 'Surgin Sparks', img: 'surgin_sparks.jpg' },
-  { name: '', text: 'Stellar Crown', img: 'stellar_crown.jpg' },
-  { name: '', text: 'Shrouded Fable', img: 'shrouded_fable.jpg' },
-  { name: '', text: 'Twilight Masquerade', img: 'twilight_masquerade.jpg' },
-  { name: '', text: 'Temporal Forces', img: 'temporal_forces.jpg' },
-  { name: '', text: 'Paldean Fates', img: 'paldean_fate.jpg' },
-  { name: '', text: 'Paradox Rift', img: 'paradox_rift.jpg' },
-  { name: '', text: 'Obsidian Flames', img: 'obsidian_flames.jpg' },
-  { name: '', text: 'Paldea Evolved', img: 'paldea_evolve.jpg' },
-  { name: '', text: 'Scarlet & Violet', img: 'scarlet_violet.jpg' },
+  {
+    name: 'products',
+    text: 'Surgin Sparks',
+    img: 'surgin_sparks.jpg',
+    query: { expansion: 'surgin-sparks' },
+  },
+  {
+    name: 'products',
+    text: 'Stellar Crown',
+    img: 'stellar_crown.jpg',
+    query: { expansion: 'stellar-crown' },
+  },
+  {
+    name: 'products',
+    text: 'Shrouded Fable',
+    img: 'shrouded_fable.jpg',
+    query: { expansion: 'shrouded-fable' },
+  },
+  {
+    name: 'products',
+    text: 'Twilight Masquerade',
+    img: 'twilight_masquerade.jpg',
+    query: { expansion: 'twilight-masquerade' },
+  },
+  {
+    name: 'products',
+    text: 'Temporal Forces',
+    img: 'temporal_forces.jpg',
+    query: { expansion: 'temporal-forces' },
+  },
+  {
+    name: 'products',
+    text: 'Paldean Fates',
+    img: 'paldean_fate.jpg',
+    query: { expansion: 'paldean-fates' },
+  },
+  {
+    name: 'products',
+    text: 'Paradox Rift',
+    img: 'paradox_rift.jpg',
+    query: { expansion: 'paradox-rift' },
+  },
+  {
+    name: 'products',
+    text: 'Obsidian Flames',
+    img: 'obsidian_flames.jpg',
+    query: { expansion: 'obsidian-flames' },
+  },
+  {
+    name: 'products',
+    text: 'Paldea Evolved',
+    img: 'paldea_evolve.jpg',
+    query: { expansion: 'paldea-evolved' },
+  },
+  {
+    name: 'products',
+    text: 'Scarlet & Violet',
+    img: 'scarlet_violet.jpg',
+    query: { expansion: 'scarlet-&-violet' },
+  },
 ];
 </script>
 

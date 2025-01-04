@@ -5,7 +5,7 @@
   >
     <RouterLink
       v-for="route in routes"
-      :to="{ name: route.name }"
+      :to="{ name: route.name, query: route.query }"
       :key="route.name"
       class="group py-3 px-3 mx-2 min-w-[100px] w-[100px] relative hover:text-blue-500 transition-all duration-300 after:transition-all after:duration-300 after:content-[''] after:w-0 after:absolute after:h-[2px] after:bottom-0 after:right-2/4 after:bg-blue-500 after:translate-x-2/4 hover:after:w-full"
       draggable="false"

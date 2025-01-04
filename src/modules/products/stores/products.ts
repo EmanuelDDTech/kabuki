@@ -19,7 +19,10 @@ export const useProductsStore = defineStore('products', () => {
   const getProductsWithFilters = async (query: string) => {
     const { data } = await productsAPI.findProducts(query);
     products.value = data;
-    console.log(products.value);
+  };
+
+  const clearProducts = () => {
+    products.value = [];
   };
 
   return {
@@ -28,5 +31,6 @@ export const useProductsStore = defineStore('products', () => {
     // Methods
     getProducts,
     getProductsWithFilters,
+    clearProducts,
   };
 });

@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { onMounted } from 'vue';
+import { onMounted, onUnmounted } from 'vue';
 import ProductCard from '../components/ProductCard.vue';
 import { useFilterCategoryStore } from '@/modules/filter/store/filterCategory';
-import { useRoute } from 'vue-router';
 import { useProductsStore } from '../stores/products';
 
 const filters = useFilterCategoryStore();
@@ -10,6 +9,12 @@ const products = useProductsStore();
 
 onMounted(async () => {
   await filters.findFilters(1);
+  await filters.getFilters();
+});
+
+onUnmounted(async () => {
+  filters.clearActiveFilters();
+  products.clearProducts();
 });
 </script>
 
