@@ -6,12 +6,14 @@
     <div
       class="aspect-[4/3] overflow-x-hidden rounded-2xl relative flex items-center justify-center"
     >
-      <img class="h-4/5" :src="product.url" />
+      <img class="h-4/5" :src="product ? product.url : defaultProduct.url" />
       <p
         @click.stop="addItem(product)"
         class="absolute right-2 top-2 rounded-full p-2 cursor-pointer group"
         :class="
-          cart.isItemInCart(product.id) ? 'text-white bg-yellow-400' : 'text-gray-500 bg-gray-100'
+          cart.isItemInCart(product ? product.id : defaultProduct.id)
+            ? 'text-white bg-yellow-400'
+            : 'text-gray-500 bg-gray-100'
         "
       >
         <svg
@@ -43,7 +45,7 @@
         </p> -->
 
         <p class="text-xl text-black font-bold mt-0">
-          {{ formatCurrency(product.price) }}
+          {{ formatCurrency(product ? product.price : defaultProduct.price) }}
         </p>
         <p class="text-base text-gray-500 line-through font-normal mt-0">
           {{ formatCurrency(150) }}
@@ -72,6 +74,12 @@ interface Props {
 }
 
 const props = defineProps<Props>();
+
+const defaultProduct = {
+  url: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/products%2F04da6c7dd79.jpg?alt=media&token=a77642f5-7194-4256-b4cd-bc6dfef5b897',
+  id: 1,
+  price: 100,
+};
 
 const router = useRouter();
 
