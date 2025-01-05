@@ -5,5 +5,11 @@
       "dest": "/",
       "status": 200
     }
+  ],
+  "rewrites": [
+    {
+      "source": "/assets/(.*)",
+      "destination": "/dist/assets/$1"
+    }
   ]
 }
