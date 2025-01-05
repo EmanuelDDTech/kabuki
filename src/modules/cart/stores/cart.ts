@@ -1,8 +1,9 @@
 import { defineStore } from 'pinia';
-import { computed, ref, watchEffect } from 'vue';
+import { computed, onMounted, ref, watchEffect } from 'vue';
+import CartAPI from '../api/CartAPI';
 
 export const useCartStore = defineStore('cart', () => {
-  const coupon = useCouponStore();
+  // const coupon = useCouponStore();
   const items = ref([]);
   const subtotal = ref(0);
   const taxes = ref(0);
@@ -12,24 +13,50 @@ export const useCartStore = defineStore('cart', () => {
   const TAX_RATE = 0.1;
 
   watchEffect(() => {
-    subtotal.value = items.value.reduce((total, item) => total + item.price * item.quantity, 0);
+    subtotal.value = items.value.reduce(
+      (total, item) => total + item.product.price * item.quantity,
+      0,
+    );
     taxes.value = Number((subtotal.value * TAX_RATE).toFixed(2));
-    total.value = Number((subtotal.value + taxes.value - coupon.discount).toFixed(2));
+    total.value = Number((subtotal.value + taxes.value).toFixed(2));
   });
 
-  function addItem(item) {
-    const index = isItemInCart(item.id);
+  onMounted(() => {
+    getCart();
+  });
 
-    if (index >= 0) {
-      if (isProductAvailable(items.value[index])) {
-        alert('Has alcanzado el límite');
-        return;
+  async function getCart() {
+    const { data } = await CartAPI.get();
+    items.value = data;
+  }
+
+  async function addItem(item) {
+    if (isItemInCart(item.id)) {
+      try {
+        await CartAPI.delete({ productId: item.id });
+        items.value = items.value.filter((itemCart) => itemCart.product.id !== item.id);
+      } catch (error) {
+        console.log(error);
       }
-
-      items.value[index].quantity++;
     } else {
-      items.value.push({ ...item, quantity: 1, id: item.id });
+      try {
+        await CartAPI.add({ productId: item.id });
+        await getCart();
+      } catch (error) {
+        console.log(error);
+      }
     }
+
+    // if (index >= 0) {
+    //   if (isProductAvailable(items.value[index])) {
+    //     alert('Has alcanzado el límite');
+    //     return;
+    //   }
+
+    //   items.value[index].quantity++;
+    // } else {
+    //   items.value.push({ ...item, quantity: 1, id: item.id });
+    // }
   }
 
   function updateQuantity(id, quantity) {
@@ -55,7 +82,12 @@ export const useCartStore = defineStore('cart', () => {
     total.value = 0;
   }
 
-  const isItemInCart = (id) => items.value.findIndex((item) => item.id === id);
+  function isItemInCart(id) {
+    const exist = items.value.findIndex((item) => item.product.id === id);
+    if (exist === -1) return false;
+
+    return true;
+  }
   const isProductAvailable = (item) =>
     item.quantity >= item.availability || item.quantity >= MAX_PRODUCTS;
 
@@ -73,9 +105,11 @@ export const useCartStore = defineStore('cart', () => {
     checkProductAvailability,
 
     // Methods
+    getCart,
     addItem,
     removeItem,
     updateQuantity,
     checkout,
+    isItemInCart,
   };
 });

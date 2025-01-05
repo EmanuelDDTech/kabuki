@@ -6,11 +6,17 @@
     <div
       class="aspect-[4/3] overflow-x-hidden rounded-2xl relative flex items-center justify-center"
     >
-      <img class="h-4/5" src="@assets/img/producto.webp" />
-      <p class="absolute right-2 top-2 rounded-full p-2 cursor-pointer group bg-gray-100">
+      <img class="h-4/5" :src="product.url" />
+      <p
+        @click.stop="addItem(product)"
+        class="absolute right-2 top-2 rounded-full p-2 cursor-pointer group"
+        :class="
+          cart.isItemInCart(product.id) ? 'text-white bg-yellow-400' : 'text-gray-500 bg-gray-100'
+        "
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          class="h-6 aspect-square group-hover:opacity-70 text-gray-500"
+          class="h-6 aspect-square group-hover:opacity-70"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -37,7 +43,7 @@
         </p> -->
 
         <p class="text-xl text-black font-bold mt-0">
-          {{ formatCurrency(100) }}
+          {{ formatCurrency(product.price) }}
         </p>
         <p class="text-base text-gray-500 line-through font-normal mt-0">
           {{ formatCurrency(150) }}
@@ -54,6 +60,12 @@
 import WishlistIcon from '@/modules/cart/components/wishlistIcon.vue';
 import { useRouter } from 'vue-router';
 import { formatCurrency } from '@/helpers';
+import { useCartStore } from '@/modules/cart/stores/cart';
+import { inject } from 'vue';
+
+const cart = useCartStore();
+
+const toast = inject('toast');
 
 interface Props {
   product?: object;
@@ -62,4 +74,19 @@ interface Props {
 const props = defineProps<Props>();
 
 const router = useRouter();
+
+const addItem = async (item) => {
+  try {
+    await cart.addItem(item);
+    toast.open({
+      message: 'Carrito actualizado correctamente',
+      type: 'success',
+    });
+  } catch (error) {
+    toast.open({
+      message: 'Error al actualizar el carrito',
+      type: 'error',
+    });
+  }
+};
 </script>
