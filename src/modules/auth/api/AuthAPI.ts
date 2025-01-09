@@ -12,6 +12,9 @@ export default {
   async login(data: Login) {
     return await api.post('/auth/login', data);
   },
+  async googleLogin(data: Object) {
+    return await api.post('/auth/google', data);
+  },
   async auth() {
     const token = localStorage.getItem('AUTH_TOKEN');
 

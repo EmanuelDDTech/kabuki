@@ -2,6 +2,7 @@ import './assets/main.css';
 
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
+import GoogleSignInPlugin from 'vue3-google-signin';
 
 // Firebase
 import { VueFire, VueFireAuth } from 'vuefire';
@@ -28,6 +29,9 @@ app.provide('toast', $toast);
 app.use(VueFire, {
   firebaseApp,
   modules: [VueFireAuth()],
+});
+app.use(GoogleSignInPlugin, {
+  clientId: '409428805948-oabs342a3r6b7e21q6922d5buubkiph0.apps.googleusercontent.com',
 });
 
 app.use(createPinia());
