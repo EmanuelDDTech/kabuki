@@ -72,16 +72,28 @@ export const useCartStore = defineStore('cart', () => {
     await CartAPI.update({ productId, quantity: newQuantity });
   }
   async function increaseQuantity(productId, quantity) {
-    const newQuantity = quantity + 1;
-    items.value = items.value.map((item) => {
-      if (item.product.id === productId) {
-        item.quantity++;
+    try {
+      const newQuantity = quantity + 1;
+      items.value = items.value.map((item) => {
+        if (item.product.id === productId) {
+          item.quantity++;
+          return item;
+        }
         return item;
-      }
-      return item;
-    });
+      });
 
-    await CartAPI.update({ productId, quantity: newQuantity });
+      await CartAPI.update({ productId, quantity: newQuantity });
+    } catch (error) {
+      items.value = items.value.map((item) => {
+        if (item.product.id === productId) {
+          item.quantity--;
+          return item;
+        }
+        return item;
+      });
+
+      throw error;
+    }
   }
 
   async function removeItem(productId: number) {
