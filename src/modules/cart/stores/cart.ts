@@ -59,13 +59,34 @@ export const useCartStore = defineStore('cart', () => {
     // }
   }
 
-  function updateQuantity(id, quantity) {
-    items.value = items.value.map((item) => (item.id === id ? { ...item, quantity } : item));
+  async function reduceQuantity(productId, quantity) {
+    const newQuantity = quantity - 1;
+    items.value = items.value.map((item) => {
+      if (item.product.id === productId) {
+        item.quantity--;
+        return item;
+      }
+      return item;
+    });
+
+    await CartAPI.update({ productId, quantity: newQuantity });
+  }
+  async function increaseQuantity(productId, quantity) {
+    const newQuantity = quantity + 1;
+    items.value = items.value.map((item) => {
+      if (item.product.id === productId) {
+        item.quantity++;
+        return item;
+      }
+      return item;
+    });
+
+    await CartAPI.update({ productId, quantity: newQuantity });
   }
 
-  function removeItem(id) {
-    if (confirm('¿Estás seguro de eliminar el producto?') === false) return;
-    items.value = items.value.filter((item) => item.id !== id);
+  async function removeItem(productId: number) {
+    await CartAPI.delete({ productId });
+    items.value = items.value.filter((item) => item.product.id !== productId);
   }
 
   async function checkout() {
@@ -108,7 +129,8 @@ export const useCartStore = defineStore('cart', () => {
     getCart,
     addItem,
     removeItem,
-    updateQuantity,
+    reduceQuantity,
+    increaseQuantity,
     checkout,
     isItemInCart,
   };
