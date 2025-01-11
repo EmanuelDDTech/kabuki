@@ -21,8 +21,10 @@
       </div>
 
       <div class="flex text-sm gap-6 mt-2 text-gray-500">
-        <p class="cursor-pointer hover:text-red-600">Eliminar</p>
-        <p class="cursor-pointer hover:text-blue-600">Compartir</p>
+        <p class="cursor-pointer hover:text-red-600" @click="removeItem(item.product.id)">
+          Eliminar
+        </p>
+        <!-- <p class="cursor-pointer hover:text-blue-600">Compartir</p> -->
       </div>
     </div>
     <div class="flex items-center">
@@ -33,6 +35,7 @@
 
 <script setup lang="ts">
 import { inject } from 'vue';
+import Swal from 'sweetalert2';
 import ProductQuantity from '@/modules/counter/components/ProductQuantity.vue';
 import { formatCurrency } from '@/helpers';
 import { useCartStore } from '@/modules/cart/stores/cart';
@@ -90,6 +93,33 @@ const sum = async (productId, quantity, stock) => {
       type: 'error',
     });
   }
+};
+
+const removeItem = async (productId: number) => {
+  Swal.fire({
+    title: 'Seguro quieres eliminar este producto?',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Si, Eliminar!',
+    cancelButtonText: 'Cancelar',
+  }).then(async (result) => {
+    if (result.isConfirmed) {
+      try {
+        await cart.removeItem(productId);
+        toast.open({
+          message: 'Producto eliminado correctamente',
+          type: 'success',
+        });
+      } catch (error) {
+        toast.open({
+          message: error.response.data.msg,
+          type: 'error',
+        });
+      }
+    }
+  });
 };
 </script>
 
