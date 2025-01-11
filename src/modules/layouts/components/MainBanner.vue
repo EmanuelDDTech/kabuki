@@ -14,8 +14,8 @@
     :loop="true"
   >
     <swiper-slide v-for="banner in banners.banners" :key="banner.id"
-      ><img :src="banner.url" alt=""
-    /></swiper-slide>
+      ><router-link :to="banner.redirect"><img :src="banner.url" alt="" /></router-link
+    ></swiper-slide>
   </swiper>
 </template>
 
@@ -37,14 +37,14 @@ onMounted(async () => {
 
 <style scoped>
 .swiper {
-  width: 100%;
-  min-height: 300px;
-  max-height: 500px;
+  height: 500px;
+  /* max-height: 500px; */
 }
 
 .swiper-slide {
   font-size: 18px;
   background: #fff;
+  height: 100%;
 
   /* Center slide text vertically */
   display: flex;
@@ -53,6 +53,6 @@ onMounted(async () => {
 
 .swiper-slide img {
   object-fit: cover;
-  min-height: 300px;
+  height: 100%;
 }
 </style>
