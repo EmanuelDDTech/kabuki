@@ -3,9 +3,9 @@
     <div class="max-w-screen-xl mx-auto flex gap-10 mt-8">
       <div class="flex-1">
         <section class="flex-1 shadow-md border border-gray-100 p-4 rounded-lg">
-        <h2 class="text-2xl font-bold border-b-2 border-gray-200 pb-3">Carrito</h2>
+          <h2 class="text-2xl font-bold border-b-2 border-gray-200 pb-3">Carrito</h2>
 
-        <CartProduct v-for="item in cart.items" :key="item.product.id" :item="item" />
+          <CartProduct v-for="item in cart.items" :key="item.product.id" :item="item" />
         </section>
 
         <section class="mt-6 shadow-md border border-gray-100 p-4 rounded-lg">
@@ -155,17 +155,21 @@
       <div>
         <aside class="h-full">
           <div class="w-72 shadow-md border border-gray-100 p-4 rounded-lg sticky top-3">
-        <h3 class="text-xl">
-          Subtotal: <span class="font-bold">{{ formatCurrency(cart.total) }}</span>
-        </h3>
+            <h3 class="text-xl">
+              Subtotal: <span class="font-bold">{{ formatCurrency(cart.total) }}</span>
+            </h3>
             <button
               @click="cart.checkout()"
-          class="block text-center w-full rounded-full bg-yellow-300 hover:bg-yellow-400 py-1 mt-3 text-sm transition-colors"
+              class="block text-center w-full rounded-full bg-yellow-300 hover:bg-yellow-400 py-1 mt-3 text-sm transition-colors"
             >
               Pagar
             </button>
+
+            <div v-show="cart.payNow" class="mt-3">
+              <div id="paypal-button-container"></div>
+            </div>
           </div>
-      </aside>
+        </aside>
       </div>
     </div>
   </main>
@@ -195,6 +199,7 @@ const toast = inject('toast');
 onMounted(() => {
   address.getAddresses();
 
+  addPaypalScript();
 });
 
 const saveAddress = async () => {
@@ -264,6 +269,114 @@ const deleteAddress = async (id: number) => {
       type: 'error',
     });
   }
+};
+
+const addPaypalScript = () => {
+  const scriptSdkPaypal = document.createElement('script');
+  scriptSdkPaypal.src = `https://www.paypal.com/sdk/js?client-id=${import.meta.env.VITE_PAYPAL_CLIENT_ID}&buyer-country=MX&currency=MXN&components=buttons&disable-funding=venmo,paylater,card`;
+  scriptSdkPaypal.onload = () => {
+    createPaypalButtons();
+  };
+  // scriptSdkPaypal.data-sdk-integration-source = "developer-studio";
+
+  document.head.append(scriptSdkPaypal);
+};
+
+const createPaypalButtons = () => {
+  window.paypal
+    .Buttons({
+      style: {
+        shape: 'pill',
+        layout: 'vertical',
+        color: 'blue',
+        label: 'paypal',
+      },
+      message: {
+        amount: 100,
+      },
+
+      async createOrder() {
+        try {
+          const response = await fetch(`${import.meta.env.VITE_API_URL}/paypal/orders`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            // use the "body" param to optionally pass additional order information
+            // like product ids and quantities
+            body: JSON.stringify({
+              cart: [
+                {
+                  id: 'YOUR_PRODUCT_ID',
+                  quantity: 'YOUR_PRODUCT_QUANTITY',
+                },
+              ],
+            }),
+          });
+
+          const orderData = await response.json();
+
+          if (orderData.id) {
+            return orderData.id;
+          }
+          const errorDetail = orderData?.details?.[0];
+          const errorMessage = errorDetail
+            ? `${errorDetail.issue} ${errorDetail.description} (${orderData.debug_id})`
+            : JSON.stringify(orderData);
+
+          throw new Error(errorMessage);
+        } catch (error) {
+          console.error(error);
+          // resultMessage(`Could not initiate PayPal Checkout...<br><br>${error}`);
+        }
+      },
+
+      async onApprove(data, actions) {
+        try {
+          const response = await fetch(
+            `${import.meta.env.VITE_API_URL}/paypal/orders/${data.orderID}/capture`,
+            {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+            },
+          );
+          const orderData = await response.json();
+          // Three cases to handle:
+          //   (1) Recoverable INSTRUMENT_DECLINED -> call actions.restart()
+          //   (2) Other non-recoverable errors -> Show a failure message
+          //   (3) Successful transaction -> Show confirmation or thank you message
+          const errorDetail = orderData?.details?.[0];
+          if (errorDetail?.issue === 'INSTRUMENT_DECLINED') {
+            // (1) Recoverable INSTRUMENT_DECLINED -> call actions.restart()
+            // recoverable state, per
+            // https://developer.paypal.com/docs/checkout/standard/customize/handle-funding-failures/
+            return actions.restart();
+          } else if (errorDetail) {
+            // (2) Other non-recoverable errors -> Show a failure message
+            throw new Error(`${errorDetail.description} (${orderData.debug_id})`);
+          } else if (!orderData.purchase_units) {
+            throw new Error(JSON.stringify(orderData));
+          } else {
+            // (3) Successful transaction -> Show confirmation or thank you message
+            // Or go to another URL:  actions.redirect('thank_you.html');
+            const transaction =
+              orderData?.purchase_units?.[0]?.payments?.captures?.[0] ||
+              orderData?.purchase_units?.[0]?.payments?.authorizations?.[0];
+            //   resultMessage(
+            //     `Transaction ${transaction.status}: ${transaction.id}<br>
+            // <br>See console for all available details`,
+            //   );
+            console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
+          }
+        } catch (error) {
+          console.error(error);
+          // resultMessage(`Sorry, your transaction could not be processed...<br><br>${error}`);
+        }
+      },
+    })
+    .render('#paypal-button-container');
 };
 </script>
 
