@@ -12,6 +12,8 @@ export const useCartStore = defineStore('cart', () => {
   const MAX_PRODUCTS = 10;
   const TAX_RATE = 0.1;
 
+  const payNow = ref(false);
+
   watchEffect(() => {
     subtotal.value = items.value.reduce(
       (total, item) => total + item.product.price * item.quantity,
@@ -102,10 +104,7 @@ export const useCartStore = defineStore('cart', () => {
   }
 
   async function checkout() {
-    // try {
-    // } catch (error) {
-    //   console.error(error)
-    // }
+    payNow.value = true;
   }
 
   function $reset() {
@@ -136,6 +135,7 @@ export const useCartStore = defineStore('cart', () => {
     isEmpty,
     items,
     checkProductAvailability,
+    payNow,
 
     // Methods
     getCart,
