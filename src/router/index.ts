@@ -38,6 +38,12 @@ const router = createRouter({
           name: 'pay',
           component: () => import('@cart/pages/PayView.vue'),
         },
+        {
+          path: '/gracias/:saleOrderId',
+          beforeEnter: [isAuthenticatedGuard],
+          name: 'thanks',
+          component: () => import('@cart/pages/ThanksView.vue'),
+        },
       ],
     },
 
