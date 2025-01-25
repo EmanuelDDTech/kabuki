@@ -178,7 +178,7 @@
 
 <script setup lang="ts">
 import { inject, onMounted } from 'vue';
-import { RouterLink } from 'vue-router';
+import { useRouter } from 'vue-router';
 import CartProduct from '../components/CartProduct.vue';
 import { useCartStore } from '../stores/cart';
 import { formatCurrency } from '@/helpers';
@@ -191,9 +191,8 @@ import Swal from 'sweetalert2';
 
 const cart = useCartStore();
 const address = useAddressStore();
-// const addressValidationClient = new AddressValidationClient({
-//   keyFilename: '/credential/google-credentials.json',
-// });
+
+const router = useRouter();
 
 const toast = inject('toast');
 
@@ -372,11 +371,18 @@ const createPaypalButtons = () => {
             const transaction =
               orderData?.purchase_units?.[0]?.payments?.captures?.[0] ||
               orderData?.purchase_units?.[0]?.payments?.authorizations?.[0];
+
+            const saleOrder = await cart.createSaleOrder();
+            await cart.deleteCart();
+            address.clearSelectedAddress();
+
+            router.push({ name: 'thanks', params: { saleOrderId: saleOrder.id } });
+
             //   resultMessage(
             //     `Transaction ${transaction.status}: ${transaction.id}<br>
             // <br>See console for all available details`,
             //   );
-            console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
+            // console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
           }
         } catch (error) {
           console.error(error);
