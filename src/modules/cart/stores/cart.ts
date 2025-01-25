@@ -1,26 +1,40 @@
 import { defineStore } from 'pinia';
-import { computed, onMounted, ref, watchEffect } from 'vue';
+import { computed, onMounted, ref, watch, watchEffect } from 'vue';
 import CartAPI from '../api/CartAPI';
 
 export const useCartStore = defineStore('cart', () => {
   // const coupon = useCouponStore();
   const items = ref([]);
   const subtotal = ref(0);
-  const taxes = ref(0);
+  // const taxes = ref(0);
   const total = ref(0);
 
   const MAX_PRODUCTS = 10;
   const TAX_RATE = 0.1;
 
   const payNow = ref(false);
+  const paypalCart = ref([]);
 
   watchEffect(() => {
     subtotal.value = items.value.reduce(
       (total, item) => total + item.product.price * item.quantity,
       0,
     );
-    taxes.value = Number((subtotal.value * TAX_RATE).toFixed(2));
-    total.value = Number((subtotal.value + taxes.value).toFixed(2));
+    // taxes.value = Number((subtotal.value * TAX_RATE).toFixed(2));
+    total.value = Number(subtotal.value.toFixed(2));
+  });
+
+  watchEffect(() => {
+    paypalCart.value = items.value.map((item) => {
+      return {
+        name: item.product.name,
+        unitAmount: {
+          currencyCode: 'MXN',
+          value: item.product.price.toString(),
+        },
+        quantity: item.quantity.toString(),
+      };
+    });
   });
 
   onMounted(() => {
@@ -110,7 +124,7 @@ export const useCartStore = defineStore('cart', () => {
   function $reset() {
     items.value = [];
     subtotal.value = 0;
-    taxes.value = 0;
+    // taxes.value = 0;
     total.value = 0;
   }
 
@@ -130,12 +144,13 @@ export const useCartStore = defineStore('cart', () => {
 
   return {
     subtotal,
-    taxes,
+    // taxes,
     total,
     isEmpty,
     items,
     checkProductAvailability,
     payNow,
+    paypalCart,
 
     // Methods
     getCart,
