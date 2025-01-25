@@ -159,10 +159,11 @@
               Subtotal: <span class="font-bold">{{ formatCurrency(cart.total) }}</span>
             </h3>
             <button
-              @click="cart.checkout()"
+              v-show="!cart.payNow"
+              @click="checkout()"
               class="block text-center w-full rounded-full bg-yellow-300 hover:bg-yellow-400 py-1 mt-3 text-sm transition-colors"
             >
-              Pagar
+              Proceder al pago
             </button>
 
             <div v-show="cart.payNow" class="mt-3">
@@ -271,6 +272,17 @@ const deleteAddress = async (id: number) => {
   }
 };
 
+const checkout = () => {
+  if (address.selectedAddress !== 0) {
+    cart.checkout();
+  } else {
+    toast.open({
+      message: 'No se ha seleccionado ninguna dirección de entrega',
+      type: 'error',
+    });
+  }
+};
+
 const addPaypalScript = () => {
   const scriptSdkPaypal = document.createElement('script');
   scriptSdkPaypal.src = `https://www.paypal.com/sdk/js?client-id=${import.meta.env.VITE_PAYPAL_CLIENT_ID}&buyer-country=MX&currency=MXN&components=buttons&disable-funding=venmo,paylater,card`;
@@ -305,12 +317,8 @@ const createPaypalButtons = () => {
             // use the "body" param to optionally pass additional order information
             // like product ids and quantities
             body: JSON.stringify({
-              cart: [
-                {
-                  id: 'YOUR_PRODUCT_ID',
-                  quantity: 'YOUR_PRODUCT_QUANTITY',
-                },
-              ],
+              cart: cart.paypalCart,
+              total: cart.total,
             }),
           });
 
