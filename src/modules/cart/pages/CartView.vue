@@ -376,7 +376,7 @@ const createPaypalButtons = () => {
             await cart.deleteCart();
             address.clearSelectedAddress();
 
-            router.push({ name: 'thanks', params: { saleOrderId: saleOrder.id } });
+            router.push({ name: 'thanks', params: { saleOrderId: saleOrder.order.id } });
 
             //   resultMessage(
             //     `Transaction ${transaction.status}: ${transaction.id}<br>
