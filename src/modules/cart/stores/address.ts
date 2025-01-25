@@ -73,6 +73,10 @@ export const useAddressStore = defineStore('address', () => {
     selectedAddress.value = 0;
   };
 
+  const clearSelectedAddress = () => {
+    selectedAddress.value = 0;
+  };
+
   return {
     selectedAddress,
     newAddress,
@@ -93,5 +97,6 @@ export const useAddressStore = defineStore('address', () => {
     selectAddress,
     editAddress,
     deleteAddress,
+    clearSelectedAddress,
   };
 });
