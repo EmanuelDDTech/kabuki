@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import { computed, onMounted, ref, watch, watchEffect } from 'vue';
 import CartAPI from '../api/CartAPI';
+import SaleAPI from '../api/SaleAPI';
 
 export const useCartStore = defineStore('cart', () => {
   // const coupon = useCouponStore();
@@ -62,17 +63,6 @@ export const useCartStore = defineStore('cart', () => {
         console.log(error);
       }
     }
-
-    // if (index >= 0) {
-    //   if (isProductAvailable(items.value[index])) {
-    //     alert('Has alcanzado el límite');
-    //     return;
-    //   }
-
-    //   items.value[index].quantity++;
-    // } else {
-    //   items.value.push({ ...item, quantity: 1, id: item.id });
-    // }
   }
 
   async function reduceQuantity(productId, quantity) {
@@ -134,13 +124,49 @@ export const useCartStore = defineStore('cart', () => {
 
     return true;
   }
-  const isProductAvailable = (item) =>
-    item.quantity >= item.availability || item.quantity >= MAX_PRODUCTS;
+  // const isProductAvailable = (item) =>
+  //   item.quantity >= item.availability || item.quantity >= MAX_PRODUCTS;
 
   const isEmpty = computed(() => items.value.length === 0);
   const checkProductAvailability = computed(() => {
     return (item) => (item.availability < MAX_PRODUCTS ? item.availability : MAX_PRODUCTS);
   });
+
+  async function createSaleOrder() {
+    const saleData = {
+      state: 'sale',
+      require_payment: false,
+      amount_total: total.value,
+      is_payed: true,
+      invoice_required: false,
+      products: getSaleProductsData(),
+    };
+
+    const { data } = await SaleAPI.create(saleData);
+    return data;
+  }
+
+  function getSaleProductsData() {
+    const productsData = items.value.map((item) => {
+      const product = {
+        productId: item.product.id,
+        quantity: item.quantity,
+        price_unit: item.product.price,
+        subtotal: item.quantity * item.product.price,
+      };
+      return product;
+    });
+
+    return productsData;
+  }
+
+  const deleteCart = async () => {
+    items.value.forEach(async (item) => {
+      await CartAPI.delete({ productId: item.product.id });
+    });
+
+    items.value = [];
+  };
 
   return {
     subtotal,
@@ -160,5 +186,7 @@ export const useCartStore = defineStore('cart', () => {
     increaseQuantity,
     checkout,
     isItemInCart,
+    createSaleOrder,
+    deleteCart,
   };
 });
