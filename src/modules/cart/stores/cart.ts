@@ -2,6 +2,9 @@ import { defineStore } from 'pinia';
 import { computed, onMounted, ref, watch, watchEffect } from 'vue';
 import CartAPI from '../api/CartAPI';
 import SaleAPI from '../api/SaleAPI';
+import { useAddressStore } from './address';
+
+const address = useAddressStore();
 
 export const useCartStore = defineStore('cart', () => {
   // const coupon = useCouponStore();
@@ -140,6 +143,7 @@ export const useCartStore = defineStore('cart', () => {
       is_payed: true,
       invoice_required: false,
       products: getSaleProductsData(),
+      address_id: address.selectedAddress,
     };
 
     const { data } = await SaleAPI.create(saleData);
