@@ -4,6 +4,7 @@ import ProductAPI from '../api/ProductAPI';
 import { useFilterCategoryStore } from '@/modules/filter/store/filterCategory';
 import FilterValueProductAPI from '@/modules/admin/api/FilterValueProductAPI';
 import ProductGalleryAPI from '../api/ProductGalleryAPI';
+import type { Product } from '../interfaces/product.interface';
 
 const filterCategory = useFilterCategoryStore();
 
@@ -31,6 +32,11 @@ export const useProductStore = defineStore('product', () => {
   const gallery = ref([]);
   const filters = ref([]);
   // const deletedFilters = ref([]);
+
+  const searchQuery = ref('');
+  const searchedProducts = ref<Product[] | []>([]);
+
+  let timeout: any = null;
 
   const cleanProduct = () => {
     id.value = 0;
@@ -107,10 +113,34 @@ export const useProductStore = defineStore('product', () => {
     }
   };
 
+  const searchProducts = async () => {
+    if (searchQuery.value === '') {
+      searchedProducts.value = [];
+      return;
+    }
+    try {
+      const { data } = await ProductAPI.search(searchQuery.value);
+      searchedProducts.value = data;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const clearSearchQuery = () => {
+    searchQuery.value = '';
+  };
+
   watch(product_category_id, async () => {
     clearFilters();
     if (!product_category_id.value || product_category_id.value === 0) return;
     await filterCategory.findFilters(product_category_id.value);
+  });
+
+  watch(searchQuery, async () => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => {
+      searchProducts();
+    }, 300);
   });
 
   return {
@@ -125,6 +155,8 @@ export const useProductStore = defineStore('product', () => {
     product_category_id,
     filters,
     gallery,
+    searchQuery,
+    searchedProducts,
 
     // Getters
     // productList: computed(() => [...products.value]),
@@ -138,5 +170,7 @@ export const useProductStore = defineStore('product', () => {
     saveFilters,
     clearFilters,
     findProduct,
+    searchProducts,
+    clearSearchQuery,
   };
 });
