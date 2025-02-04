@@ -17,4 +17,7 @@ export default {
   async delete(id: any) {
     return await api.delete(`/producto/products/${id}`);
   },
+  async search(query: string) {
+    return await api.get(`/producto/buscar?q=${query}`);
+  },
 };
