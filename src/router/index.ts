@@ -139,6 +139,21 @@ const router = createRouter({
           component: () => import('@/modules/banner/pages/UpdateBannerView.vue'),
         },
         {
+          path: 'campaigns',
+          name: 'adminCampaigns',
+          component: () => import('@/modules/campaign/pages/CampaignsView.vue'),
+        },
+        {
+          path: 'campaigns/crear',
+          name: 'adminCreateCampaign',
+          component: () => import('@/modules/campaign/pages/CreateCampaignView.vue'),
+        },
+        {
+          path: 'campaigns/actualizar/:id',
+          name: 'adminUpdateCampaign',
+          component: () => import('@/modules/campaign/pages/UpdateCampaignView.vue'),
+        },
+        {
           path: 'usuarios',
           name: 'adminUsers',
           component: () => import('@/modules/admin/pages/UsersView.vue'),
