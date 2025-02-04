@@ -9,6 +9,7 @@ import PurchasesIcon from '@/modules/admin/components/icons/PurchasesIcon.vue';
 import ServicesIcon from '@/modules/admin/components/icons/ServicesIcon.vue';
 import CategoryIcon from '@/modules/common/icons/CategoryIcon.vue';
 import BannerIcon from '@/modules/common/icons/BannerIcon.vue';
+import TagIcon from '@/modules/common/icons/TagIcon.vue';
 
 const sidebarRoutes = [
   { name: 'adminDashboard', text: 'Dashboard', icon: DashboardIcon },
@@ -19,6 +20,7 @@ const sidebarRoutes = [
   { name: 'adminCategories', text: 'Categorías', icon: CategoryIcon },
   { name: 'adminBanners', text: 'Banners', icon: BannerIcon },
   // { name: 'adminServices', text: 'Servicios', icon: ServicesIcon },
+  { name: 'adminCampaigns', text: 'Campañas', icon: TagIcon },
   { name: 'adminUsers', text: 'Users', icon: UsersIcon },
 ];
 </script>
