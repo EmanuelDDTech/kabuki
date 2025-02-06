@@ -51,9 +51,9 @@
           /></swiper-slide>
         </swiper>
       </div>
-      <div>
-        <h1 class="text-3xl font-semibold mb-3">League Battle Deck - Charizard ex</h1>
-        <ul class="flex gap-7 items-center">
+      <div class="w-full">
+        <h1 class="text-3xl font-semibold mb-3">{{ product.name }}</h1>
+        <!-- <ul class="flex gap-7 items-center">
           <li>
             <div class="flex items-center">
               <svg
@@ -113,10 +113,10 @@
             </div>
           </li>
           <li class="list-disc">100 Reviews</li>
-        </ul>
+        </ul> -->
 
         <div class="mt-8">
-          <p class="text-4xl font-bold">$272.00 MX</p>
+          <p class="text-4xl font-bold">{{ formatCurrency(product.price) }}</p>
           <div class="flex gap-3 items-end">
             <p class="text-xl text-gray-500 line-through font-normal mt-0">$340.00</p>
             <p class="text-xl text-green-600">20% descuento</p>
@@ -189,7 +189,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import 'swiper/css';
 import 'swiper/css/free-mode';
@@ -199,6 +199,9 @@ import { FreeMode, Navigation, Thumbs } from 'swiper/modules';
 import WishlistIcon from '@/modules/cart/components/wishlistIcon.vue';
 import ShareIcon from '../components/ShareIcon.vue';
 import type { SwiperClass } from 'swiper/react';
+import { useRoute } from 'vue-router';
+import { useProductStore } from '@/modules/product/stores/product';
+import { formatCurrency } from '@/helpers';
 
 const thumbsSwiper = ref<SwiperClass | null>(null);
 
@@ -207,6 +210,14 @@ const modules = [FreeMode, Navigation, Thumbs];
 const setThumbsSwiper = (swiper: SwiperClass) => {
   thumbsSwiper.value = swiper;
 };
+
+const product = useProductStore();
+
+const route = useRoute();
+
+onMounted(async () => {
+  await product.findProduct(route.params.id);
+});
 </script>
 
 <style scoped>
