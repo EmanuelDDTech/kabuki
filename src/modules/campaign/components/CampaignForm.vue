@@ -157,7 +157,7 @@ onMounted(() => {
 });
 
 onUnmounted(async () => {
-  banner.cleanBanner();
+  campaign.cleanCampaign();
 });
 
 const handleSubmit = async ({ start, end, ...formData }) => {
