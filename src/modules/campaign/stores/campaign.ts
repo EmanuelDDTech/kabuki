@@ -178,6 +178,17 @@ export const useCampaignStore = defineStore('campaign', () => {
     }
   };
 
+  const deleteCampaign = async (id: number) => {
+    try {
+      await CampaignProductAPI.deleteByCampaignId(id);
+      await CampaignAPI.delete(id);
+
+      campaigns.value = campaigns.value.filter((campaign) => campaign.id !== id);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return {
     campaigns,
     campaign,
@@ -196,5 +207,6 @@ export const useCampaignStore = defineStore('campaign', () => {
     findCampaign,
     deleteProduct,
     updateCampaign,
+    deleteCampaign,
   };
 });
