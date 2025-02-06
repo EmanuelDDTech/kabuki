@@ -16,4 +16,7 @@ export default {
   async delete(id: number) {
     return await api.delete(`/campanas-productos/${id}`);
   },
+  async deleteByCampaignId(id: number) {
+    return await api.delete(`/campanas-productos/campana/${id}`);
+  },
 };
