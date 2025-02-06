@@ -59,7 +59,7 @@
                 </td>
                 <td class="p-2">
                   <div class="flex justify-center">
-                    <button @click="deleteConfirmation(campaign.id, campaign.url)">
+                    <button @click="deleteConfirmation(campaign.id)">
                       <svg
                         class="h-8 w-8 rounded-full p-1 hover:bg-gray-100 hover:text-red-600"
                         fill="none"
@@ -106,32 +106,31 @@ onMounted(() => {
   campaign.getCampaignsAll();
 });
 
-const deleteConfirmation = (id: number, image: string) => {
-  // Swal.fire({
-  //   title: 'Seguro quieres eliminar este banner?',
-  //   text: 'No podrá ser revertido!',
-  //   icon: 'warning',
-  //   showCancelButton: true,
-  //   confirmButtonColor: '#3085d6',
-  //   cancelButtonColor: '#d33',
-  //   confirmButtonText: 'Si, Eliminar!',
-  //   cancelButtonText: 'Cancelar',
-  // }).then(async (result) => {
-  //   if (result.isConfirmed) {
-  //     try {
-  //       await banners.deleteBanner(id, image);
-  //       toast.open({
-  //         message: 'Banner eliminado correctamente',
-  //         type: 'success',
-  //       });
-  //       banners.getBanners();
-  //     } catch (error) {
-  //       toast.open({
-  //         message: error.response.data.msg,
-  //         type: 'error',
-  //       });
-  //     }
-  //   }
-  // });
+const deleteConfirmation = (id: number) => {
+  Swal.fire({
+    title: 'Seguro quieres eliminar esta campaña?',
+    text: 'No podrá ser revertido!',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Si, Eliminar!',
+    cancelButtonText: 'Cancelar',
+  }).then(async (result) => {
+    if (result.isConfirmed) {
+      try {
+        await campaign.deleteCampaign(id);
+        toast.open({
+          message: 'Campaña eliminada correctamente',
+          type: 'success',
+        });
+      } catch (error) {
+        toast.open({
+          message: error.response.data.msg,
+          type: 'error',
+        });
+      }
+    }
+  });
 };
 </script>
