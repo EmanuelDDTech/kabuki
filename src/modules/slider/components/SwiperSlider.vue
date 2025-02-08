@@ -61,44 +61,8 @@
       }"
       :loop="true"
     >
-      <SwiperSlide>
-        <ProductCard />
-      </SwiperSlide>
-      <SwiperSlide>
-        <ProductCard />
-      </SwiperSlide>
-      <SwiperSlide>
-        <ProductCard />
-      </SwiperSlide>
-      <SwiperSlide>
-        <ProductCard />
-      </SwiperSlide>
-      <SwiperSlide>
-        <ProductCard />
-      </SwiperSlide>
-      <SwiperSlide>
-        <ProductCard />
-      </SwiperSlide>
-      <SwiperSlide>
-        <ProductCard />
-      </SwiperSlide>
-      <SwiperSlide>
-        <ProductCard />
-      </SwiperSlide>
-      <SwiperSlide>
-        <ProductCard />
-      </SwiperSlide>
-      <SwiperSlide>
-        <ProductCard />
-      </SwiperSlide>
-      <SwiperSlide>
-        <ProductCard />
-      </SwiperSlide>
-      <SwiperSlide>
-        <ProductCard />
-      </SwiperSlide>
-      <SwiperSlide>
-        <ProductCard />
+      <SwiperSlide v-for="campaignProduct in campaignProducts" :key="campaignProduct.id">
+        <CampaignCard :campaign-product="campaignProduct" />
       </SwiperSlide>
     </Swiper>
   </div>
@@ -109,13 +73,13 @@ import { Navigation, Pagination } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import { Swiper, SwiperSlide } from 'swiper/vue';
-import ProductCard from '@/modules/products/components/ProductCard.vue';
 import ArrowLeft from '@/modules/icons/ArrowLeft.vue';
 import ArrowRight from '@/modules/icons/ArrowRight.vue';
 import type { SwiperClass } from 'swiper/react';
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import CountdownTimer from '@/modules/counter/components/CountdownTimer.vue';
 import type { Product } from '@product/interfaces';
+import CampaignCard from '@/modules/campaign/components/CampaignCard.vue';
 
 const modules = [Pagination, Navigation];
 
@@ -123,14 +87,18 @@ const swiper = ref<SwiperClass | null>(null);
 
 interface Props {
   title: string;
-  products?: Product[];
+  campaignProducts?: Product[];
   countdown?: boolean;
   finishDate?: Date;
   icon?: Object;
 }
 
-withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<Props>(), {
   countdown: false,
+});
+
+onMounted(() => {
+  console.log(props.finishDate);
 });
 
 function handleSwiperInit(swiperInstance: SwiperClass) {
