@@ -45,7 +45,7 @@ const stopTimer = ref<boolean>(false);
 
 const props = defineProps<{
   duration: number;
-  finishDate?: date;
+  finishDate?: Date;
 }>();
 
 let intervalId: number;
