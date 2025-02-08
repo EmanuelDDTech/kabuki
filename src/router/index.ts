@@ -44,6 +44,27 @@ const router = createRouter({
           name: 'thanks',
           component: () => import('@cart/pages/ThanksView.vue'),
         },
+        {
+          path: '/politicas',
+          component: () => import('@/modules/policies/layout/PoliciesLayout.vue'),
+          children: [
+            {
+              path: 'reembolso',
+              name: 'refundPolicy',
+              component: () => import('@/modules/policies/pages/RefundPolicyView.vue'),
+            },
+            {
+              path: 'devolucion',
+              name: 'returnPolicy',
+              component: () => import('@/modules/policies/pages/ReturnPolicyView.vue'),
+            },
+            {
+              path: 'condiciones',
+              name: 'termsAndQuestions',
+              component: () => import('@/modules/policies/pages/TermsAndQuestionsView.vue'),
+            },
+          ],
+        },
       ],
     },
 
