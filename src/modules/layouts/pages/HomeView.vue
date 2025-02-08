@@ -5,6 +5,10 @@ import NavBar from '../components/NavBar.vue';
 import LightingIcon from '@/modules/icons/LightingIcon.vue';
 import DiscountIcon from '@/modules/icons/DiscountIcon.vue';
 import ClosedBoxIcon from '../components/ClosedBoxIcon.vue';
+import { useCampaignStore } from '@/modules/campaign/stores/campaign';
+import { onMounted } from 'vue';
+
+const campaign = useCampaignStore();
 
 const routes = [
   {
@@ -68,27 +72,41 @@ const routes = [
     query: { expansion: 'scarlet-&-violet' },
   },
 ];
+
+const campaignTypes = {
+  Preventa: LightingIcon,
+  Oferta: DiscountIcon,
+};
+
+onMounted(() => {
+  campaign.getCampaignsAll();
+});
 </script>
 
 <template>
   <main>
     <MainBanner />
     <NavBar :routes="routes" />
-    <section class="bg-gray-50 px-3">
-      <div class="max-w-screen-xl mx-auto py-14">
+    <section class="px-3">
+      <div
+        class="max-w-screen-xl mx-auto py-14"
+        v-for="campaign in campaign.campaigns"
+        :key="campaign.id"
+      >
         <SwiperSlider
-          :title="'Preventa'"
-          :countdown="true"
-          :finish-date="new Date('Fri Sep 30 2024 22:00:00 GMT-0600 (hora estándar central)')"
-          :icon="LightingIcon"
+          :title="campaign.campaign_type.name"
+          :countdown="campaign.campaign_type.name === 'Preventa' ? true : false"
+          :finish-date="new Date('Fri Feb 28 2025 22:00:00 GMT-0600 (hora estándar central)')"
+          :icon="campaignTypes[campaign.campaign_type.name]"
+          :campaign-products="campaign.campaign_products"
         />
       </div>
     </section>
-    <section class="px-3">
+    <!-- <section class="px-3">
       <div class="max-w-screen-xl mx-auto py-14">
         <SwiperSlider :title="'Ofertas'" :icon="DiscountIcon" />
       </div>
-    </section>
+    </section> -->
     <section class="px-3">
       <div class="max-w-screen-xl mx-auto py-8">
         <header class="flex gap-3 mb-6">
