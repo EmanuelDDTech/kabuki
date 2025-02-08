@@ -9,10 +9,18 @@
       </span>
       <ul class="flex flex-wrap items-center mt-3 sm:mt-0 text-gray-400">
         <li>
-          <a href="#" class="mr-4 text-sm hover:text-blue-500 md:mr-6">Sobre nosotros</a>
+          <router-link
+            :to="{ name: 'returnPolicy' }"
+            class="mr-4 text-sm hover:text-blue-500 md:mr-6"
+            >Política de Devolución</router-link
+          >
         </li>
         <li>
-          <a href="#" class="mr-4 text-sm hover:text-blue-500 md:mr-6">Promociones</a>
+          <router-link
+            :to="{ name: 'termsAndQuestions' }"
+            class="mr-4 text-sm hover:text-blue-500 md:mr-6"
+            >Términos y Condiciones</router-link
+          >
         </li>
         <li>
           <a href="#" class="mr-4 text-sm hover:text-blue-500 md:mr-6">Contacto</a>
