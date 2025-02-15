@@ -37,8 +37,8 @@ onMounted(async () => {
 
 <style scoped>
 .swiper {
-  height: 500px;
-  /* max-height: 500px; */
+  /* height: 500px; */
+  max-height: 500px;
 }
 
 .swiper-slide {
