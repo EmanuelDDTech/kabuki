@@ -1,6 +1,6 @@
 <template>
-  <header class="min-h-16 border-b-2 border-gray-200">
-    <div id="header" class="max-w-7xl mx-auto rounded-full left-0 right-0 z-10 bg-white sticky">
+  <header id="header" class="min-h-16 border-gray-200 sticky top-0 z-10 rounded-full">
+    <div class="max-w-7xl mx-auto z-10 bg-white rounded-full">
       <div class="flex justify-between items-center px-6 py-3 relative">
         <RouterLink
           :to="{ name: 'home' }"
@@ -28,7 +28,7 @@
           class="w-7 ml-6 aspect-square text-gray-400 block lg:hidden"
         />
         <MobileMenu
-          class="absolute top-0 right-0 transition-all block lg:hidden"
+          class="absolute top-0 right-0 transition-all block lg:hidden z-10"
           :class="showMobileMenu ? 'translate-x-0' : 'translate-x-64'"
           @hide-menu="hideMenu"
         />
@@ -57,29 +57,23 @@ onMounted(() => {
   window.addEventListener('scroll', () => {
     let scrollTop = window.scrollY || document.documentElement.scrollTop;
     if (scrollTop > 200) {
-      header?.classList.remove('sticky');
-      header?.classList.add('fixed');
       header?.classList.add('-top-24');
 
       header?.classList.add('transition-all');
       header?.classList.add('duration-500');
+      header?.classList.add('shadow-md');
 
       if (scrollTop > lastScrollTop) {
         // Scroll hacia abajo
         header?.classList.add('-top-24');
         header?.classList.remove('top-2');
-        header?.classList.remove('shadow-md');
         showMobileMenu.value = false;
       } else {
         // Scroll hacia arriba
         header?.classList.remove('-top-24');
         header?.classList.add('top-2');
-        header?.classList.add('shadow-md');
       }
     } else {
-      header?.classList.add('sticky');
-
-      header?.classList.remove('fixed');
       header?.classList.remove('-top-24');
       header?.classList.remove('top-2');
       header?.classList.remove('shadow-md');
