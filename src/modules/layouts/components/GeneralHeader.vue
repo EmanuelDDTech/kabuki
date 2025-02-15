@@ -93,11 +93,17 @@ onMounted(() => {
 
 const showMenu = () => {
   showMobileMenu.value = true;
-  document.body.style.overflowX = '';
 };
 
 const hideMenu = () => {
   showMobileMenu.value = false;
-  document.body.style.overflowX = 'hidden';
 };
 </script>
+
+<style>
+@media (width < 1024px) {
+  html {
+    overflow-x: hidden;
+  }
+}
+</style>
