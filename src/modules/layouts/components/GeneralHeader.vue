@@ -5,7 +5,10 @@
       class="max-w-7xl mx-auto rounded-full px-6 left-0 right-0 z-10 bg-white sticky"
     >
       <div class="flex justify-between items-center mx-auto py-3 relative">
-        <RouterLink :to="{ name: 'home' }" class="text-xl font-bold flex items-center lg:ml-2.5">
+        <RouterLink
+          :to="{ name: 'home' }"
+          class="text-xl font-bold items-center lg:ml-2.5 hidden lg:flex"
+        >
           <img
             src="@/assets/img/shorikame-logo-edited.webp"
             class="h-12 mr-2"
@@ -18,7 +21,7 @@
           <RouterLink :to="{ name: 'home' }"
             ><NotificationIcon class="w-7 aspect-square hover:text-blue-500 transition-colors" />
           </RouterLink>
-          
+
           <RouterLink :to="{ name: 'cart' }"
             ><CartIcon class="w-7 aspect-square hover:text-blue-500 transition-colors"
           /></RouterLink>

@@ -1,9 +1,9 @@
 <template>
   <div class="border-b-2 border-gray-200 px-3">
     <div class="flex justify-center lg:justify-end items-center max-w-7xl mx-auto py-2">
-      <RouterLink :to="{ name: 'home' }" class="w-40 text-2xl font-bold lg:hidden">
-        <!-- <img src="@assets/img/logo.avif" alt=""/> -->
-        ShoriKameCards
+      <RouterLink :to="{ name: 'home' }" class="text-2xl font-bold lg:hidden flex">
+        <img src="@/assets/img/shorikame-logo-edited.webp" class="h-12 mr-2" alt="Windster Logo" />
+        <span class="self-center whitespace-nowrap">ShoriKameCards</span>
       </RouterLink>
       <!-- <SearchBar /> -->
       <nav class="text-base hidden lg:flex">
