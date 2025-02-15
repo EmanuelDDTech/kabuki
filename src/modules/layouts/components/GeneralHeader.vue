@@ -32,7 +32,7 @@
         />
         <MobileMenu
           class="absolute top-0 right-0 transition-all block lg:hidden z-10"
-          :class="showMobileMenu ? 'translate-x-0' : 'translate-x-64'"
+          :class="showMobileMenu ? 'translate-x-0' : 'translate-x-full'"
           @hide-menu="hideMenu"
         />
       </div>
@@ -54,6 +54,7 @@ const showMobileMenu = ref(false);
 const routes = [{ name: 'products', text: 'Productos' }];
 
 onMounted(() => {
+  document.body.style.overflowX = 'hidden';
   const header: null | HTMLElement = document.querySelector('#header');
   let lastScrollTop = window.scrollY || document.documentElement.scrollTop;
 
@@ -92,9 +93,11 @@ onMounted(() => {
 
 const showMenu = () => {
   showMobileMenu.value = true;
+  document.body.style.overflowX = '';
 };
 
 const hideMenu = () => {
   showMobileMenu.value = false;
+  document.body.style.overflowX = 'hidden';
 };
 </script>
