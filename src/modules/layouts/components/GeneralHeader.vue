@@ -1,10 +1,7 @@
 <template>
-  <header class="min-h-16 border-b-2 border-gray-200 px-3">
-    <div
-      id="header"
-      class="max-w-7xl mx-auto rounded-full px-6 left-0 right-0 z-10 bg-white sticky"
-    >
-      <div class="flex justify-between items-center mx-auto py-3 relative">
+  <header class="min-h-16 border-b-2 border-gray-200">
+    <div id="header" class="max-w-7xl mx-auto rounded-full left-0 right-0 z-10 bg-white sticky">
+      <div class="flex justify-between items-center px-6 py-3 relative">
         <RouterLink
           :to="{ name: 'home' }"
           class="text-xl font-bold items-center lg:ml-2.5 hidden lg:flex"
@@ -31,7 +28,7 @@
           class="w-7 ml-6 aspect-square text-gray-400 block lg:hidden"
         />
         <MobileMenu
-          class="absolute top-0 -right-6 transition-all block lg:hidden"
+          class="absolute top-0 right-0 transition-all block lg:hidden"
           :class="showMobileMenu ? 'translate-x-0' : 'translate-x-64'"
           @hide-menu="hideMenu"
         />
