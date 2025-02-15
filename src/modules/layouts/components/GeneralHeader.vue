@@ -1,7 +1,10 @@
 <template>
-  <header id="header" class="min-h-16 border-gray-200 sticky top-0 z-10 rounded-full">
-    <div class="max-w-7xl mx-auto z-10 bg-white rounded-full">
-      <div class="flex justify-between items-center px-6 py-3 relative">
+  <header
+    id="header"
+    class="max-w-7xl min-h-16 mx-auto border-gray-200 sticky top-2 z-10 rounded-full"
+  >
+    <div class="mx-auto z-10 bg-white rounded-full relative">
+      <div class="flex justify-between items-center px-6 py-3">
         <RouterLink
           :to="{ name: 'home' }"
           class="text-xl font-bold items-center lg:ml-2.5 hidden lg:flex"
