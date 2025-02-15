@@ -113,12 +113,12 @@ onMounted(() => {
           <ClosedBoxIcon class="w-9 aspect-square text-white bg-black p-2 rounded-full" />
           <h2 class="text-4xl font-bold">Producto cerrado</h2>
         </header>
-        <div class="flex gap-6">
+        <div class="block lg:flex gap-6">
           <aside
-            class="min-h-full min-w-96 border border-gray-100 bg-gray-50 rounded-lg shadow-lg"
+            class="aspect-video lg:aspect-auto lg:min-h-full min-w-96 border border-gray-100 bg-gray-50 rounded-lg shadow-lg"
           ></aside>
-          <ul class="flex-1 grid grid-cols-2 gap-6">
-            <li class="shadow-lg p-6 rounded-lg border border-gray-100">
+          <ul class="flex-1 grid grid-cols-1 md:grid-cols-2 gap-6">
+            <li class="shadow-lg p-6 rounded-lg border border-gray-100 aspect-video">
               <h3 class="text-xl font-bold">Booster Box</h3>
               <p class="text-gray-400 mb-3">"Más cartas, más poder."</p>
               <div class="flex gap-3">
@@ -136,7 +136,7 @@ onMounted(() => {
                 </article>
               </div>
             </li>
-            <li class="shadow-lg p-6 rounded-lg border border-gray-100">
+            <li class="shadow-lg p-6 rounded-lg border border-gray-100 aspect-video">
               <h3 class="text-xl font-bold">Elite Trainer Box</h3>
               <p class="text-gray-400 mb-3">"Todo lo que necesitas."</p>
               <div class="flex gap-3">
@@ -154,7 +154,7 @@ onMounted(() => {
                 </article>
               </div>
             </li>
-            <li class="shadow-lg p-6 rounded-lg border border-gray-100">
+            <li class="shadow-lg p-6 rounded-lg border border-gray-100 aspect-video">
               <h3 class="text-xl font-bold">Premium Collection</h3>
               <p class="text-gray-400 mb-3">"Exclusividad garantizada."</p>
               <div class="flex gap-3">
@@ -172,7 +172,7 @@ onMounted(() => {
                 </article>
               </div>
             </li>
-            <li class="shadow-lg p-6 rounded-lg border border-gray-100">
+            <li class="shadow-lg p-6 rounded-lg border border-gray-100 aspect-video">
               <h3 class="text-xl font-bold">Special Collection</h3>
               <p class="text-gray-400 mb-3">"Ediciones únicas."</p>
               <div class="flex gap-3">
