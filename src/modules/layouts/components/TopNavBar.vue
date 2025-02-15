@@ -8,15 +8,15 @@
       <!-- <SearchBar /> -->
       <nav class="text-base hidden lg:flex">
         <div class="flex gap-3 border-r-2 border-gray-300 text-gray-400">
-          <RouterLink
+          <!-- <RouterLink
             :to="{ name: 'home' }"
             class="flex items-center pr-4 hover:text-blue-500 transition-colors"
             >Sobre Nosotros</RouterLink
-          >
+          > -->
           <RouterLink
-            :to="{ name: 'home' }"
+            :to="{ name: 'products' }"
             class="flex items-center pr-4 hover:text-blue-500 transition-colors"
-            >Promociones</RouterLink
+            >Productos</RouterLink
           >
           <!-- <RouterLink
             :to="{ name: 'home' }"
