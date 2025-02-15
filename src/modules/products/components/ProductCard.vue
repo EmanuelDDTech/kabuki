@@ -45,7 +45,7 @@
         </p> -->
 
         <p class="text-xl text-black font-bold mt-0">
-          {{ formatCurrency(product ? product.price : defaultProduct.price) }}
+          {{ formatCurrency(product.discount ? product.discount : product.price) }}
         </p>
         <p class="text-base text-gray-500 line-through font-normal mt-0">
           {{ formatCurrency(150) }}
