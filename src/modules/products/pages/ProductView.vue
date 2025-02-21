@@ -249,19 +249,10 @@ const addItem = async (item) => {
 <style>
 .mySwiper2 .swiper-slide {
   @apply flex justify-center items-center;
-  /* display: flex;
-  justify-content: center;
-  align-items: center; */
 }
 
 .mySwiper .swiper-slide {
   @apply flex justify-center items-center aspect-square w-28 max-h-28;
-  /* display: flex;
-  justify-content: center;
-  align-items: center;
-  aspect-ratio: 1/1;
-  width: 114px;
-  max-height: 114px; */
 }
 
 .mySwiper .swiper-slide.swiper-slide-thumb-active {
