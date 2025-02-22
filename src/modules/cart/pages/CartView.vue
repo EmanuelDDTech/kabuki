@@ -150,13 +150,42 @@
             </button>
           </div>
         </section>
+
+        <section class="mt-6 shadow-md border border-gray-100 p-4 rounded-lg">
+          <h2 class="text-2xl font-bold border-b-2 border-gray-200 pb-3 mb-6">Método de envío</h2>
+
+          <ul class="flex justify-around items-center gap-6">
+            <li
+              v-for="deliveryData in delivery.deliveriesAvailable"
+              :key="deliveryData.id"
+              class="flex flex-col items-center cursor-pointer p-2 rounded-md border hover:border-blue-600 transition-colors hover:shadow hover:shadow-blue-600"
+              @click="selectCarrier(deliveryData)"
+              :class="
+                deliveryData.id === delivery.carrierSelected?.id
+                  ? 'border-blue-600 shadow shadow-blue-600'
+                  : 'border-transparent'
+              "
+            >
+              <img :src="deliveryData.image" :alt="`Logo ${deliveryData.name}`" class="w-40" />
+              <h3 class="font-bold text-lg">
+                {{ formatCurrency(deliveryData.delivery_price_rules[0].list_base_price) }}
+              </h3>
+            </li>
+          </ul>
+        </section>
       </div>
 
       <div>
         <aside class="h-full">
           <div class="w-72 shadow-md border border-gray-100 p-4 rounded-lg sticky top-3">
-            <h3 class="text-xl">
+            <h3 class="text-lg flex justify-between">
               Subtotal: <span class="font-bold">{{ formatCurrency(cart.total) }}</span>
+            </h3>
+            <h3
+              v-if="delivery.isCarrierSelected"
+              class="text-lg flex justify-between mt-2 border-b-2 border-gray-100"
+            >
+              Envío: <span class="font-bold">{{ formatCurrency(delivery.amountShipping) }}</span>
             </h3>
             <button
               v-show="!cart.payNow"
@@ -188,9 +217,12 @@ import { useAddressStore } from '../stores/address';
 import LeftArrow from '@/modules/icons/ArrowLeft.vue';
 import AddressCard from '../components/AddressCard.vue';
 import Swal from 'sweetalert2';
+import { useDeliveryStore } from '../stores/delivery';
+import type { Delivery } from '../interfaces/delivery.interface';
 
 const cart = useCartStore();
 const address = useAddressStore();
+const delivery = useDeliveryStore();
 
 const router = useRouter();
 
@@ -198,6 +230,7 @@ const toast = inject('toast');
 
 onMounted(() => {
   address.getAddresses();
+  delivery.findDeliveriesAvailable(44298);
 
   addPaypalScript();
 });
@@ -271,15 +304,31 @@ const deleteAddress = async (id: number) => {
   }
 };
 
+const selectCarrier = async (deliveryData: Delivery) => {
+  delivery.setAmountShipping(deliveryData.delivery_price_rules[0].list_base_price);
+  delivery.setCarrierSelected(deliveryData);
+};
+
 const checkout = () => {
-  if (address.selectedAddress !== 0) {
-    cart.checkout();
-  } else {
+  if (address.selectedAddress === 0) {
     toast.open({
       message: 'No se ha seleccionado ninguna dirección de entrega',
       type: 'error',
     });
+
+    return;
   }
+
+  if (!delivery.isCarrierSelected) {
+    toast.open({
+      message: 'No se ha seleccionado ningún método de pago',
+      type: 'error',
+    });
+
+    return;
+  }
+
+  cart.checkout();
 };
 
 const addPaypalScript = () => {
