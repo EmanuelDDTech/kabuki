@@ -3,8 +3,10 @@ import { computed, onMounted, ref, watch, watchEffect } from 'vue';
 import CartAPI from '../api/CartAPI';
 import SaleAPI from '../api/SaleAPI';
 import { useAddressStore } from './address';
+import { useDeliveryStore } from './delivery';
 
 const address = useAddressStore();
+const delivery = useDeliveryStore();
 
 export const useCartStore = defineStore('cart', () => {
   // const coupon = useCouponStore();
@@ -135,15 +137,18 @@ export const useCartStore = defineStore('cart', () => {
     return (item) => (item.availability < MAX_PRODUCTS ? item.availability : MAX_PRODUCTS);
   });
 
-  async function createSaleOrder() {
+  async function createSaleOrder(transaction: string) {
     const saleData = {
       state: 'sale',
       require_payment: false,
-      amount_total: total.value,
+      amount_total: total.value + delivery.amountShipping,
       is_payed: true,
       invoice_required: false,
       products: getSaleProductsData(),
       address_id: address.selectedAddress,
+      transaction_id: transaction,
+      amount_shipping: delivery.amountShipping,
+      delivery_carrier_id: delivery.carrierSelected?.id,
     };
 
     const { data } = await SaleAPI.create(saleData);
