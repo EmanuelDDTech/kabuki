@@ -30,6 +30,11 @@ export const useDeliveryStore = defineStore('delivery', () => {
     carrierSelected.value = delivery;
   };
 
+  const clearSelectedAddress = () => {
+    amountShipping.value = 0;
+    carrierSelected.value = null;
+  };
+
   return {
     carriers,
     deliveriesAvailable,
@@ -43,5 +48,6 @@ export const useDeliveryStore = defineStore('delivery', () => {
     findDeliveriesAvailable,
     setAmountShipping,
     setCarrierSelected,
+    clearSelectedAddress,
   };
 });
