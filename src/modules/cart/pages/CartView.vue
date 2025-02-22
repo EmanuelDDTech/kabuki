@@ -183,12 +183,21 @@
             <h3 class="text-lg flex justify-between">
               Subtotal: <span class="font-bold">{{ formatCurrency(cart.total) }}</span>
             </h3>
+
             <h3
               v-if="delivery.isCarrierSelected"
-              class="text-lg flex justify-between mt-2 border-b-2 border-gray-100"
+              class="text-lg flex justify-between mt-2 pb-3 border-b-2 border-gray-100"
             >
               Envío: <span class="font-bold">{{ formatCurrency(delivery.amountShipping) }}</span>
             </h3>
+
+            <h3 class="text-lg flex justify-between mt-3">
+              Total:
+              <span class="font-bold">{{
+                formatCurrency(cart.total + delivery.amountShipping)
+              }}</span>
+            </h3>
+
             <button
               v-show="!cart.payNow"
               @click="checkout()"
@@ -368,7 +377,9 @@ const createPaypalButtons = () => {
             // like product ids and quantities
             body: JSON.stringify({
               cart: cart.paypalCart,
-              total: cart.total,
+              itemsTotal: cart.total,
+              shippingAmount: delivery.amountShipping,
+              shippingAddress: address.getSelectedAddress,
             }),
           });
 
@@ -423,9 +434,10 @@ const createPaypalButtons = () => {
               orderData?.purchase_units?.[0]?.payments?.captures?.[0] ||
               orderData?.purchase_units?.[0]?.payments?.authorizations?.[0];
 
-            const saleOrder = await cart.createSaleOrder();
+            const saleOrder = await cart.createSaleOrder(transaction.id);
             await cart.deleteCart();
             address.clearSelectedAddress();
+            delivery.clearSelectedAddress();
 
             router.push({ name: 'thanks', params: { saleOrderId: saleOrder.order.id } });
 
