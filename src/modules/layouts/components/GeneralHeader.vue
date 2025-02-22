@@ -1,11 +1,14 @@
 <template>
-  <header class="min-h-16 border-b-2 border-gray-200 px-3">
-    <div
-      id="header"
-      class="max-w-7xl mx-auto rounded-full px-6 left-0 right-0 z-10 bg-white sticky"
-    >
-      <div class="flex justify-between items-center mx-auto py-3 relative">
-        <RouterLink :to="{ name: 'home' }" class="text-xl font-bold flex items-center lg:ml-2.5">
+  <header
+    id="header"
+    class="max-w-7xl min-h-16 mx-auto border-gray-200 sticky top-2 z-10 rounded-full"
+  >
+    <div class="mx-auto z-10 bg-white rounded-full relative">
+      <div class="flex justify-between items-center px-6 py-3">
+        <RouterLink
+          :to="{ name: 'home' }"
+          class="text-xl font-bold items-center lg:ml-2.5 hidden lg:flex"
+        >
           <img
             src="@/assets/img/shorikame-logo-edited.webp"
             class="h-12 mr-2"
@@ -18,7 +21,7 @@
           <RouterLink :to="{ name: 'home' }"
             ><NotificationIcon class="w-7 aspect-square hover:text-blue-500 transition-colors" />
           </RouterLink>
-          
+
           <RouterLink :to="{ name: 'cart' }"
             ><CartIcon class="w-7 aspect-square hover:text-blue-500 transition-colors"
           /></RouterLink>
@@ -28,8 +31,8 @@
           class="w-7 ml-6 aspect-square text-gray-400 block lg:hidden"
         />
         <MobileMenu
-          class="absolute top-0 -right-6 transition-all block lg:hidden"
-          :class="showMobileMenu ? 'translate-x-0' : 'translate-x-64'"
+          class="absolute top-0 right-0 transition-all block lg:hidden z-10"
+          :class="showMobileMenu ? 'translate-x-0' : 'translate-x-full'"
           @hide-menu="hideMenu"
         />
       </div>
@@ -51,35 +54,30 @@ const showMobileMenu = ref(false);
 const routes = [{ name: 'products', text: 'Productos' }];
 
 onMounted(() => {
+  document.body.style.overflowX = 'hidden';
   const header: null | HTMLElement = document.querySelector('#header');
   let lastScrollTop = window.scrollY || document.documentElement.scrollTop;
 
   window.addEventListener('scroll', () => {
     let scrollTop = window.scrollY || document.documentElement.scrollTop;
     if (scrollTop > 200) {
-      header?.classList.remove('sticky');
-      header?.classList.add('fixed');
       header?.classList.add('-top-24');
 
       header?.classList.add('transition-all');
       header?.classList.add('duration-500');
+      header?.classList.add('shadow-md');
 
       if (scrollTop > lastScrollTop) {
         // Scroll hacia abajo
         header?.classList.add('-top-24');
         header?.classList.remove('top-2');
-        header?.classList.remove('shadow-md');
         showMobileMenu.value = false;
       } else {
         // Scroll hacia arriba
         header?.classList.remove('-top-24');
         header?.classList.add('top-2');
-        header?.classList.add('shadow-md');
       }
     } else {
-      header?.classList.add('sticky');
-
-      header?.classList.remove('fixed');
       header?.classList.remove('-top-24');
       header?.classList.remove('top-2');
       header?.classList.remove('shadow-md');
@@ -101,3 +99,11 @@ const hideMenu = () => {
   showMobileMenu.value = false;
 };
 </script>
+
+<style>
+@media (width < 1024px) {
+  html {
+    overflow-x: hidden;
+  }
+}
+</style>

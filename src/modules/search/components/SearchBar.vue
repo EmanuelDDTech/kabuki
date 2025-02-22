@@ -29,7 +29,7 @@
       <input
         type="search"
         class="w-full px-4 py-1 text-gray-800 rounded-full focus:outline-none"
-        placeholder="buscar"
+        placeholder="Buscar"
         x-model="search"
       />
     </div>

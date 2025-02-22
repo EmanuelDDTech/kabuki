@@ -55,7 +55,7 @@ onUnmounted(async () => {
     </section>
     <section class="flex-1 mb-10">
       <h1 class="text-2xl font-bold border-b border-b-gray-200 mb-6">Busqueda</h1>
-      <div class="grid grid-cols-4 gap-4">
+      <div class="grid grid-cols-[repeat(auto-fill,minmax(244px,1fr))] gap-4">
         <ProductCard
           v-for="product in products.products"
           :key="product.product_id"

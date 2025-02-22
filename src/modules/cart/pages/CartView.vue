@@ -1,6 +1,6 @@
 <template>
   <main class="min-h-screen px-3 mb-8">
-    <div class="max-w-screen-xl mx-auto flex gap-10 mt-8">
+    <div class="max-w-screen-xl mx-auto block lg:flex gap-10 mt-8">
       <div class="flex-1">
         <section class="flex-1 shadow-md border border-gray-100 p-4 rounded-lg">
           <h2 class="text-2xl font-bold border-b-2 border-gray-200 pb-3">Carrito</h2>
@@ -176,8 +176,10 @@
       </div>
 
       <div>
-        <aside class="h-full">
-          <div class="w-72 shadow-md border border-gray-100 p-4 rounded-lg sticky top-3">
+        <aside class="h-full mt-6 lg:mt-0">
+          <div
+            class="w-full max-w-96 lg:w-72 shadow-md border border-gray-100 p-4 rounded-lg sticky top-3 mx-auto"
+          >
             <h3 class="text-lg flex justify-between">
               Subtotal: <span class="font-bold">{{ formatCurrency(cart.total) }}</span>
             </h3>

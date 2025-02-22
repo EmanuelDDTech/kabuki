@@ -1,6 +1,6 @@
 <template>
-  <article class="flex gap-3 my-8">
-    <div class="w-40 p-3">
+  <article class="flex flex-col items-center sm:flex-row gap-3 my-8">
+    <div class="max-w-64 sm:max-w-40 p-3">
       <img :src="item.product.product_galleries[0].url" alt="Imagen de producto" class="w-full" />
     </div>
     <div class="flex-1 flex flex-col justify-center">
