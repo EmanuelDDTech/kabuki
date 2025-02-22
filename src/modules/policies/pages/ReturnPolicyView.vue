@@ -2,7 +2,7 @@
   <div class="min-h-screen justify-center bg-white p-4">
     <div class="bg-white rounded-lg p-6 w-full">
       <h1 class="text-2xl font-semibold text-gray-800 mb-4">Política de Devolución</h1>
-      <div class="h-64 rounded-md text-gray-600 text-sm">
+      <div class="rounded-md text-gray-600 text-sm">
         <p>
           Los productos coleccionables tienden a tener muchas restricciones para ser devueltos por
           lo tanto, No manejamos devoluciones ni retornos para nuestros productos, pero si hay algun
