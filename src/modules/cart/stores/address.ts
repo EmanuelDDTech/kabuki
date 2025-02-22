@@ -88,6 +88,9 @@ export const useAddressStore = defineStore('address', () => {
     isSelected: computed(() => {
       return (id: number) => id === selectedAddress.value;
     }),
+    getSelectedAddress: computed(
+      () => savedAddresses.value.filter((address) => address.id === selectedAddress.value)[0],
+    ),
 
     // Methods
     setCreateNew,
