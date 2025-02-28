@@ -177,6 +177,14 @@ export const useCartStore = defineStore('cart', () => {
     items.value = [];
   };
 
+  const cartWeight = computed(() =>
+    items.value.reduce((totalWeight, item) => totalWeight + item.product.weight * item.quantity, 0),
+  );
+
+  watch(items, async (newValue, oldValue) => {
+    await delivery.findDeliveriesAvailable(44298, cartWeight.value);
+  });
+
   return {
     subtotal,
     // taxes,
@@ -197,5 +205,8 @@ export const useCartStore = defineStore('cart', () => {
     isItemInCart,
     createSaleOrder,
     deleteCart,
+
+    // Getters
+    cartWeight,
   };
 });

@@ -14,6 +14,7 @@ const initialProductValues = {
   sku: '',
   description: '',
   price: 0,
+  weight: 0,
   discount: 0,
   stock: 0,
   product_category_id: 0,
@@ -25,6 +26,7 @@ export const useProductStore = defineStore('product', () => {
   const sku = ref('');
   const description = ref('');
   const price = ref(0);
+  const weight = ref(0);
   const discount = ref(null);
   const stock = ref(0);
   const product_category_id = ref(0);
@@ -44,6 +46,7 @@ export const useProductStore = defineStore('product', () => {
     sku.value = '';
     description.value = '';
     price.value = 0;
+    weight.value = 0;
     discount.value = null;
     stock.value = 0;
     product_category_id.value = 0;
@@ -99,6 +102,7 @@ export const useProductStore = defineStore('product', () => {
       sku.value = productData.sku;
       description.value = productData.description;
       price.value = productData.price;
+      weight.value = productData.weight;
       discount.value =
         productData.campaign_products.length > 0
           ? productData.campaign_products[0].campaign_price
@@ -159,6 +163,7 @@ export const useProductStore = defineStore('product', () => {
     sku,
     description,
     price,
+    weight,
     discount,
     stock,
     product_category_id,

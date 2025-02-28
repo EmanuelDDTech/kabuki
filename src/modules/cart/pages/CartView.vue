@@ -241,7 +241,6 @@ const toast = inject('toast');
 
 onMounted(() => {
   address.getAddresses();
-  delivery.findDeliveriesAvailable(44298);
 
   addPaypalScript();
 });

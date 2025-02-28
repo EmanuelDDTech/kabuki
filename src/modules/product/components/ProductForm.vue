@@ -59,6 +59,21 @@
 
       <FormKit
         type="number"
+        label="Peso (Kg)"
+        name="weight"
+        min="0"
+        number="float"
+        step="any"
+        placeholder="Peso del producto"
+        validation="required"
+        :validation-messages="{
+          required: 'El peso es obligatorio',
+        }"
+        v-model="product.weight"
+      />
+
+      <FormKit
+        type="number"
         label="Cantidad"
         name="stock"
         placeholder="Cantidad de producto"
@@ -242,6 +257,7 @@ const handleSubmit = async () => {
         sku: product.sku,
         description: product.description,
         price: product.price,
+        weight: product.weight,
         discount: product.discount,
         stock: product.stock,
         product_category_id: product.product_category_id,
@@ -269,6 +285,7 @@ const handleSubmit = async () => {
         sku: product.sku,
         description: product.description,
         price: product.price,
+        weight: product.weight,
         discount: product.discount,
         stock: product.stock,
         product_category_id: product.product_category_id,
