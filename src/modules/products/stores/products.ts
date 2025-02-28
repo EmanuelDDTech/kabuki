@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import type { Product } from '../interfaces';
 import ProductAPI from '@/modules/product/api/ProductAPI';
 import productsAPI from '../api/productsAPI';
@@ -32,5 +32,8 @@ export const useProductsStore = defineStore('products', () => {
     getProducts,
     getProductsWithFilters,
     clearProducts,
+
+    // Getters
+    areProducts: computed(() => products.value.length > 0),
   };
 });

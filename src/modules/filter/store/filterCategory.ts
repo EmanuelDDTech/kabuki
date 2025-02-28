@@ -12,6 +12,7 @@ export const useFilterCategoryStore = defineStore('filterCategory', () => {
   const router = useRouter();
 
   const products = useProductsStore();
+  const showFilters = ref(false);
 
   // onMounted(async () => {
   //   console.log('Desde onMounted');
@@ -72,14 +73,25 @@ export const useFilterCategoryStore = defineStore('filterCategory', () => {
     activeFilters.value = {};
   };
 
+  const showFilterOptions = () => {
+    showFilters.value = true;
+  };
+
+  const hideFilterOptions = () => {
+    showFilters.value = false;
+  };
+
   return {
     filters,
     activeFilters,
+    showFilters,
 
     // Methods
     getFilters,
     findFilters,
     updateFilters,
     clearActiveFilters,
+    showFilterOptions,
+    hideFilterOptions,
   };
 });
