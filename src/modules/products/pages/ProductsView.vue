@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted } from 'vue';
+import { onBeforeMount, onMounted, onUnmounted, ref } from 'vue';
 import ProductCard from '../components/ProductCard.vue';
 import { useFilterCategoryStore } from '@/modules/filter/store/filterCategory';
 import { useProductsStore } from '../stores/products';
@@ -9,15 +9,32 @@ import XMarkIcon from '@/modules/layouts/components/XMarkIcon.vue';
 const filters = useFilterCategoryStore();
 const products = useProductsStore();
 
+const priceRange = ref();
+
+onBeforeMount(async () => {
+  await filters.findFilters(1);
+});
+
 onMounted(async () => {
   await filters.findFilters(1);
   await filters.getFilters();
+
+  if (filters.activePriceFilter) {
+    priceRange.value.update([filters.minPrice, filters.maxPrice]);
+  } else if (!filters.existenceOnly) {
+    await filters.getProducts();
+  }
 });
 
 onUnmounted(async () => {
   filters.clearActiveFilters();
   products.clearProducts();
 });
+
+const setPriceRange = async (e: any) => {
+  await filters.setPriceRange(e);
+  await filters.getProducts();
+};
 </script>
 
 <template>
@@ -31,16 +48,50 @@ onUnmounted(async () => {
         >
           <h3 class="font-bold text-xl border-b border-b-gray-200 mb-3">Filtros</h3>
 
-          <div v-for="filterGroup in filters.filters" :key="filterGroup.id">
+          <div class="flex justify-between items-center py-1 px-2 mb-3 hover:bg-gray-100 rounded">
+            <label for="existenceOnly" class="cursor-pointer leading-none"
+              >Solo con existencia</label
+            >
+            <input
+              id="existenceOnly"
+              type="checkbox"
+              v-model="filters.existenceOnly"
+              class="cursor-pointer"
+            />
+          </div>
+
+          <div>
+            <label for="price" class="font-bold">Precio</label>
+            <Vueform>
+              <SliderElement
+                @change="setPriceRange"
+                ref="priceRange"
+                name="price"
+                :format="{
+                  prefix: '$',
+                  thousand: ' ',
+                }"
+                :step="100"
+                :min="0"
+                :max="10000"
+                :default="[filters.minPrice, filters.maxPrice]"
+                class="mt-8"
+              />
+            </Vueform>
+          </div>
+
+          <div v-for="filterGroup in filters.filters" :key="filterGroup.id" class="mt-4">
             <h4 class="font-bold mb-1">{{ filterGroup.filter_group.name }}</h4>
 
             <div
               v-for="filterValue in filterGroup.filter_group.filter_values"
               :key="filterValue.id"
               :ref_for="filterValue.name"
-              class="flex justify-between hover:bg-gray-100 py-1 px-2 rounded"
+              class="flex text-sm justify-between items-center hover:bg-gray-100 py-1 px-2 rounded"
             >
-              <label :for="filterValue.name" class="cursor-pointer">{{ filterValue.name }}</label>
+              <label :for="filterValue.name" class="cursor-pointer leading-none">{{
+                filterValue.name
+              }}</label>
               <input
                 @change="filters.updateFilters(filterGroup.filter_group.slug, filterValue.slug)"
                 :checked="
@@ -63,9 +114,7 @@ onUnmounted(async () => {
         <div
           class="my-3 px-4 transition-all"
           :class="
-            !filters.showFilters
-              ? 'max-w-32 max-h-[25px]'
-              : 'max-w-[450px] max-h-[500px] overflow-scroll'
+            !filters.showFilters ? 'max-h-[25px]' : 'max-w-[450px] max-h-[500px] overflow-scroll'
           "
         >
           <div class="flex justify-between w-60">
@@ -80,7 +129,7 @@ onUnmounted(async () => {
             />
           </div>
 
-          <div class="mt-3">
+          <div class="mt-3 flex flex-col gap-3">
             <!-- <div v-for="filterGroup in filters.filters" :key="filterGroup.id">
             <h4 class="font-bold mb-2">{{ filterGroup.filter_group.name }}</h4>
 

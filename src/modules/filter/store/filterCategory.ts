@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { onMounted, ref, watch } from 'vue';
+import { computed, onMounted, reactive, ref, watch } from 'vue';
 import FilterCategoryAPI from '../api/FilterCategoryAPI';
 import { useRoute, useRouter } from 'vue-router';
 import { useProductsStore } from '@/modules/products/stores/products';
@@ -7,12 +7,15 @@ import { useProductsStore } from '@/modules/products/stores/products';
 export const useFilterCategoryStore = defineStore('filterCategory', () => {
   const filters = ref([]);
   const activeFilters = ref({});
+  const existenceOnly = ref(false);
 
   const route = useRoute();
   const router = useRouter();
 
   const products = useProductsStore();
   const showFilters = ref(false);
+  const minPrice = ref(0);
+  const maxPrice = ref(10000);
 
   // onMounted(async () => {
   //   console.log('Desde onMounted');
@@ -21,8 +24,12 @@ export const useFilterCategoryStore = defineStore('filterCategory', () => {
   // });
 
   const getFilters = async () => {
-    activeFilters.value = { ...route.query };
-    await getProducts();
+    const { existence, minPrice: min, maxPrice: max, ...query } = route.query;
+    activeFilters.value = query;
+
+    if (existence === 'true') existenceOnly.value = true;
+    if (min) minPrice.value = parseInt(min);
+    if (max) maxPrice.value = parseInt(max);
   };
 
   const findFilters = async (categId: number) => {
@@ -48,20 +55,37 @@ export const useFilterCategoryStore = defineStore('filterCategory', () => {
     }
 
     await updateURL();
-  };
-
-  const updateURL = async () => {
-    await router.push({
-      query: {
-        ...route.query,
-        ...activeFilters.value,
-      },
-    });
-
     await getProducts();
   };
 
+  const updateURL = async () => {
+    const queryParams = {
+      ...activeFilters.value,
+    };
+
+    if (existenceOnly.value) {
+      queryParams.existence = 'true';
+    } else {
+      delete queryParams.existence;
+    }
+
+    if (minPrice.value !== 0 || maxPrice.value !== 10000) {
+      queryParams.minPrice = minPrice.value;
+      queryParams.maxPrice = maxPrice.value;
+    } else {
+      delete queryParams.minPrice;
+      delete queryParams.maxPrice;
+    }
+
+    await router.push({
+      query: queryParams,
+    });
+
+    // await getProducts();
+  };
+
   const getProducts = async () => {
+    console.log('Buscando');
     await products.getProductsWithFilters(createStringQuery());
   };
 
@@ -73,7 +97,7 @@ export const useFilterCategoryStore = defineStore('filterCategory', () => {
     activeFilters.value = {};
   };
 
-  const showFilterOptions = () => {
+  const showFilterOptions = async () => {
     showFilters.value = true;
   };
 
@@ -81,17 +105,35 @@ export const useFilterCategoryStore = defineStore('filterCategory', () => {
     showFilters.value = false;
   };
 
+  const setPriceRange = async (e: any) => {
+    minPrice.value = e['0'];
+    maxPrice.value = e['1'];
+
+    await updateURL();
+  };
+
+  watch(existenceOnly, async () => {
+    await updateURL();
+    await getProducts();
+  });
+
   return {
     filters,
     activeFilters,
     showFilters,
+    existenceOnly,
+    minPrice,
+    maxPrice,
+    activePriceFilter: computed(() => minPrice.value !== 0 || maxPrice.value !== 10000),
 
     // Methods
+    getProducts,
     getFilters,
     findFilters,
     updateFilters,
     clearActiveFilters,
     showFilterOptions,
     hideFilterOptions,
+    setPriceRange,
   };
 });
