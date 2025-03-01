@@ -17,6 +17,10 @@ import router from './router';
 
 import 'vue-toast-notification/dist/theme-sugar.css';
 
+// Vueform
+import Vueform from '@vueform/vueform';
+import vueformConfig from './../vueform.config';
+
 const $toast = useToast({
   duration: 5000,
   position: 'top-right',
@@ -37,5 +41,6 @@ app.use(GoogleSignInPlugin, {
 app.use(createPinia());
 app.use(plugin, defaultConfig(config));
 app.use(router);
+app.use(Vueform, vueformConfig);
 
 app.mount('#app');
