@@ -11,3 +11,18 @@
 body {
   font-family: 'Roboto Condensed Variable', sans-serif;
 }
+
+:root,
+:before,
+:after,
+* {
+  --vf-primary: #16a34a;
+
+  --vf-bg-passive: oklch(0.872 0.01 258.338);
+}
+
+input[type='checkbox'] {
+  appearance: auto !important; /* Asegura que el checkbox se renderice */
+  width: 12px;
+  height: 12px;
+}
