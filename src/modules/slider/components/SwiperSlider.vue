@@ -97,9 +97,9 @@ const props = withDefaults(defineProps<Props>(), {
   countdown: false,
 });
 
-onMounted(() => {
-  console.log(props.finishDate);
-});
+// onMounted(() => {
+//   console.log(props.finishDate);
+// });
 
 function handleSwiperInit(swiperInstance: SwiperClass) {
   swiper.value = swiperInstance;

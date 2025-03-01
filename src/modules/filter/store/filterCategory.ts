@@ -85,7 +85,6 @@ export const useFilterCategoryStore = defineStore('filterCategory', () => {
   };
 
   const getProducts = async () => {
-    console.log('Buscando');
     await products.getProductsWithFilters(createStringQuery());
   };
 
