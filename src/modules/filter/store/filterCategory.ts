@@ -15,7 +15,7 @@ export const useFilterCategoryStore = defineStore('filterCategory', () => {
   const products = useProductsStore();
   const showFilters = ref(false);
   const minPrice = ref(0);
-  const maxPrice = ref(10000);
+  const maxPrice = ref(5000);
 
   // onMounted(async () => {
   //   console.log('Desde onMounted');
