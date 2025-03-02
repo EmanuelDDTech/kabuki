@@ -1,10 +1,12 @@
 import { defineStore } from 'pinia';
-import { computed, onMounted, reactive, ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import FilterCategoryAPI from '../api/FilterCategoryAPI';
 import { useRoute, useRouter } from 'vue-router';
 import { useProductsStore } from '@/modules/products/stores/products';
 
 export const useFilterCategoryStore = defineStore('filterCategory', () => {
+  const MAX_PRICE = 5000;
+
   const filters = ref([]);
   const activeFilters = ref({});
   const existenceOnly = ref(false);
@@ -15,7 +17,7 @@ export const useFilterCategoryStore = defineStore('filterCategory', () => {
   const products = useProductsStore();
   const showFilters = ref(false);
   const minPrice = ref(0);
-  const maxPrice = ref(5000);
+  const maxPrice = ref(MAX_PRICE);
 
   // onMounted(async () => {
   //   console.log('Desde onMounted');
@@ -69,7 +71,7 @@ export const useFilterCategoryStore = defineStore('filterCategory', () => {
       delete queryParams.existence;
     }
 
-    if (minPrice.value !== 0 || maxPrice.value !== 10000) {
+    if (minPrice.value !== 0 || maxPrice.value !== MAX_PRICE) {
       queryParams.minPrice = minPrice.value;
       queryParams.maxPrice = maxPrice.value;
     } else {
@@ -85,6 +87,7 @@ export const useFilterCategoryStore = defineStore('filterCategory', () => {
   };
 
   const getProducts = async () => {
+    console.log('Buscando...');
     await products.getProductsWithFilters(createStringQuery());
   };
 
@@ -116,6 +119,10 @@ export const useFilterCategoryStore = defineStore('filterCategory', () => {
     await getProducts();
   });
 
+  const getMaxPrice = () => {
+    return MAX_PRICE;
+  };
+
   return {
     filters,
     activeFilters,
@@ -123,7 +130,7 @@ export const useFilterCategoryStore = defineStore('filterCategory', () => {
     existenceOnly,
     minPrice,
     maxPrice,
-    activePriceFilter: computed(() => minPrice.value !== 0 || maxPrice.value !== 10000),
+    activePriceFilter: computed(() => minPrice.value !== 0 || maxPrice.value !== MAX_PRICE),
 
     // Methods
     getProducts,
@@ -134,5 +141,8 @@ export const useFilterCategoryStore = defineStore('filterCategory', () => {
     showFilterOptions,
     hideFilterOptions,
     setPriceRange,
+
+    // Getters
+    getMaxPrice,
   };
 });
