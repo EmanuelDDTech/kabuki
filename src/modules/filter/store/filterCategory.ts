@@ -5,7 +5,7 @@ import { useRoute, useRouter } from 'vue-router';
 import { useProductsStore } from '@/modules/products/stores/products';
 
 export const useFilterCategoryStore = defineStore('filterCategory', () => {
-  const MAX_PRICE = 5000;
+  const MAX_PRICE = 10000;
 
   const filters = ref([]);
   const activeFilters = ref({});

@@ -1,12 +1,25 @@
 import type { Ref } from 'vue';
 
 export interface Product {
-  id: number;
-  name: string;
-  sku: string;
-  description: string;
-  price: number;
-  discount: number;
-  stock: number;
-  product_category_id: number;
+  id: Number;
+  name: String;
+  sku?: String;
+  description?: String;
+  price?: Number;
+  discount?: Number;
+  stock?: Number;
+  product_category_id?: Number;
+  createdAt?: Date;
+  updatedAt?: Date;
+  weight?: Number;
+  product_galleries: ProductGallery[];
+}
+
+export interface ProductGallery {
+  id?: Number;
+  order?: Number;
+  url: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+  product_id?: Number;
 }

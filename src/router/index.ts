@@ -45,6 +45,12 @@ const router = createRouter({
           component: () => import('@cart/pages/ThanksView.vue'),
         },
         {
+          path: '/mis-compras',
+          beforeEnter: [isAuthenticatedGuard],
+          name: 'myPurchases',
+          component: () => import('@/modules/cart/pages/MyPurchasesView.vue'),
+        },
+        {
           path: '/politicas',
           component: () => import('@/modules/policies/layout/PoliciesLayout.vue'),
           children: [
