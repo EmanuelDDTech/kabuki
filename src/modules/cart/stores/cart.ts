@@ -152,6 +152,7 @@ export const useCartStore = defineStore('cart', () => {
     };
 
     const { data } = await SaleAPI.create(saleData);
+    payNow.value = false;
     return data;
   }
 
