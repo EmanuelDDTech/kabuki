@@ -14,8 +14,17 @@ export const useBannersStore = defineStore('banners', () => {
   };
 
   const deleteBanner = async (id: number, image: string) => {
-    await deleteImage(image);
-    await BannerAPI.delete(id);
+    try {
+      await deleteImage(image);
+    } catch (error) {
+      console.error(error);
+    }
+
+    try {
+      await BannerAPI.delete(id);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return {
