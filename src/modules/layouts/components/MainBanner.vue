@@ -2,7 +2,7 @@
   <swiper
     :spaceBetween="0"
     :autoplay="{
-      delay: 3000,
+      delay: 6000,
       disableOnInteraction: false,
     }"
     navigation
@@ -14,7 +14,7 @@
     :loop="true"
   >
     <swiper-slide v-for="banner in banners.banners" :key="banner.id"
-      ><router-link :to="banner.redirect"><img :src="banner.url" alt="" /></router-link
+      ><a :href="banner.redirect"><img :src="banner.url" alt="Imagen del banner" /></a
     ></swiper-slide>
   </swiper>
 </template>
