@@ -8,6 +8,7 @@ const saleStore = useSaleStore();
 
 interface Props {
   sale: Sale;
+  admin?: Boolean;
 }
 
 defineProps<Props>();
@@ -47,7 +48,9 @@ defineProps<Props>();
         <div class="pt-0">
           <div class="flex justify-between items-center">
             <div class="font-medium">{{ formatCurrency(sale.amount_total) }}</div>
-            <router-link :to="{ name: 'myPurchases' }" class="text-blue-500"
+            <router-link
+              :to="{ name: admin ? 'adminSaleInfo' : 'purchaseInfo', params: { saleId: sale.id } }"
+              class="text-blue-500"
               >Ver detalles del pedido</router-link
             >
           </div>
