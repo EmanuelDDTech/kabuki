@@ -51,6 +51,12 @@ const router = createRouter({
           component: () => import('@/modules/cart/pages/MyPurchasesView.vue'),
         },
         {
+          path: '/mis-compras/:saleId',
+          beforeEnter: [isAuthenticatedGuard],
+          name: 'purchaseInfo',
+          component: () => import('@/modules/cart/pages/PurchaseView.vue'),
+        },
+        {
           path: '/politicas',
           component: () => import('@/modules/policies/layout/PoliciesLayout.vue'),
           children: [
@@ -114,6 +120,11 @@ const router = createRouter({
           path: 'ventas',
           name: 'sales',
           component: () => import('@/modules/admin/pages/SalesView.vue'),
+        },
+        {
+          path: 'ventas/:saleId',
+          name: 'adminSaleInfo',
+          component: () => import('@/modules/admin/pages/SaleView.vue'),
         },
         {
           path: 'compras',
