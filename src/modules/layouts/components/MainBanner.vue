@@ -14,7 +14,8 @@
     :loop="true"
   >
     <swiper-slide v-for="banner in banners.banners" :key="banner.id"
-      ><a :href="banner.redirect"><img :src="banner.url" alt="Imagen del banner" /></a
+      ><router-link :to="banner.redirect"
+        ><img :src="banner.url" alt="Imagen del banner" /></router-link
     ></swiper-slide>
   </swiper>
 </template>
