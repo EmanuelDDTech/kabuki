@@ -5,6 +5,7 @@ import type { Sale } from '../interfaces/sale.interface';
 
 export const useSaleStore = defineStore('sale', () => {
   const myPurchases = ref<Sale[]>([]);
+  const purchaseInfo = ref<Sale | null>(null);
 
   const loading = ref(false);
 
@@ -35,16 +36,31 @@ export const useSaleStore = defineStore('sale', () => {
       return names;
     });
 
+  const getPurchaseInfo = () => {
+    return purchaseInfo.value;
+  };
+
+  const getPurchaseById = async (id: number) => {
+    const { data } = await SaleAPI.getById(id);
+    purchaseInfo.value = data;
+  };
+
   return {
     myPurchases,
+    purchaseInfo,
 
     // Methods
     getPurchases,
+    getPurchaseById,
 
     // Getters
     getMyPurchases,
     isLoading: computed(() => loading.value),
     isEmpty: computed(() => myPurchases.value.length === 0),
     namesCombined,
+    getPurchaseInfo,
+    address: computed(() => {
+      return `${purchaseInfo.value.address.street}, ${purchaseInfo.value.address.colony}, ${purchaseInfo.value.address.city}, ${purchaseInfo.value.address.state}, ${purchaseInfo.value.address.country}`;
+    }),
   };
 });
