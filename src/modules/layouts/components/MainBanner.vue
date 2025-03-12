@@ -2,7 +2,7 @@
   <swiper
     :spaceBetween="0"
     :autoplay="{
-      delay: 6000,
+      delay: 8000,
       disableOnInteraction: false,
     }"
     navigation
