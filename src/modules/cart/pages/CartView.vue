@@ -343,7 +343,7 @@ const checkout = () => {
 
 const addPaypalScript = () => {
   const scriptSdkPaypal = document.createElement('script');
-  scriptSdkPaypal.src = `https://www.paypal.com/sdk/js?client-id=${import.meta.env.VITE_PAYPAL_CLIENT_ID}&buyer-country=MX&currency=MXN&components=buttons&disable-funding=venmo,paylater,card`;
+  scriptSdkPaypal.src = `https://www.paypal.com/sdk/js?client-id=${import.meta.env.VITE_PAYPAL_CLIENT_ID}&currency=MXN&components=buttons&disable-funding=venmo,paylater,card`;
   scriptSdkPaypal.onload = () => {
     createPaypalButtons();
   };
