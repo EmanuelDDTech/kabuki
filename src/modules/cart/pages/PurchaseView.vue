@@ -28,7 +28,7 @@ onMounted(async () => {
       <div class="py-7">
         <div class="text-lg text-slate-900">
           <span class="mr-2">Número de pedido:</span
-          ><span class="text-green-600">{{ saleStore.purchaseInfo.id }}</span>
+          ><span class="text-green-600">{{ saleStore.purchaseInfo?.id }}</span>
         </div>
       </div>
 
@@ -56,10 +56,10 @@ onMounted(async () => {
         <div class="text-sm text-slate-700 mt-3 mb-6">
           <p class="mb-1">
             {{
-              `${saleStore.purchaseInfo.address.street}, ${saleStore.purchaseInfo.address.colony}, ${saleStore.purchaseInfo.address.city}, ${saleStore.purchaseInfo.address.state}, ${saleStore.purchaseInfo.address.country}.`
+              `${saleStore.purchaseInfo?.address.street}, ${saleStore.purchaseInfo?.address.colony}, ${saleStore.purchaseInfo?.address.city}, ${saleStore.purchaseInfo?.address.state}, ${saleStore.purchaseInfo?.address.country}.`
             }}
           </p>
-          <p>{{ saleStore.purchaseInfo.address.phone }}</p>
+          <p>{{ saleStore.purchaseInfo?.address.phone }}</p>
         </div>
 
         <h3 class="text-lg text-slate-900">Resumen</h3>
@@ -82,7 +82,7 @@ onMounted(async () => {
           <div class="flex justify-between py-3 border-t border-slate-200">
             <span class="text-base">Total</span>
             <span class="text-lg text-slate-900 font-semibold">{{
-              formatCurrency(saleStore.purchaseInfo?.amount_shipping)
+              formatCurrency(saleStore.purchaseInfo?.amount_total)
             }}</span>
           </div>
         </div>
