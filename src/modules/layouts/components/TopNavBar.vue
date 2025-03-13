@@ -1,5 +1,5 @@
 <template>
-  <div class="border-b-2 border-gray-200 px-3" @mouseleave="hideProductOptions">
+  <div class="border-b-2 border-gray-200 px-3" @mouseleave="hideOptions">
     <div class="flex justify-center lg:justify-end items-center max-w-7xl mx-auto py-2">
       <RouterLink :to="{ name: 'home' }" class="text-2xl font-bold lg:hidden flex">
         <img src="@/assets/img/shorikame-logo-edited.webp" class="h-12 mr-2" alt="Windster Logo" />
@@ -51,9 +51,20 @@
         <div class="flex pl-4 text-slate-700" v-if="user.isSet">
           <div
             class="flex items-center pr-4 border-r-2 border-gray-300 transition-colors cursor-pointer relative"
+            @mouseenter="showProfileOptions"
           >
             <span class="mr-2">Hola:</span>
             <span class="font-semibold text-slate-900">{{ user.getUserName }}</span>
+
+            <FloatingOptions v-if="isProfileOptionsVisible" class="min-w-48">
+              <template #options>
+                <router-link
+                  :to="{ name: 'myPurchases' }"
+                  class="whitespace-nowrap px-4 py-2 hover:bg-gray-100 transition-colors rounded"
+                  >Mis compras</router-link
+                >
+              </template>
+            </FloatingOptions>
           </div>
           <button
             @click="user.logout"
@@ -77,10 +88,12 @@ import { useFilterCategoryStore } from '@/modules/filter/store/filterCategory';
 const user = useUserStore();
 const filters = useFilterCategoryStore();
 const isProductOptionsVisible = ref(false);
+const isProfileOptionsVisible = ref(false);
 
 const route = useRoute();
 
 const showProductOptions = () => {
+  isProfileOptionsVisible.value = false;
   isProductOptionsVisible.value = true;
 };
 
@@ -95,5 +108,19 @@ const updateProducts = () => {
       await filters.getProducts();
     }, 100);
   }
+};
+
+const showProfileOptions = () => {
+  isProductOptionsVisible.value = false;
+  isProfileOptionsVisible.value = true;
+};
+
+const hideProfileOptions = () => {
+  isProfileOptionsVisible.value = false;
+};
+
+const hideOptions = () => {
+  hideProductOptions();
+  hideProfileOptions();
 };
 </script>
