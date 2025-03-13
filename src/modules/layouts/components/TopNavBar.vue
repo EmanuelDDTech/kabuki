@@ -1,5 +1,5 @@
 <template>
-  <div class="border-b-2 border-gray-200 px-3">
+  <div class="border-b-2 border-gray-200 px-3" @mouseleave="hideOptions">
     <div class="flex justify-center lg:justify-end items-center max-w-7xl mx-auto py-2">
       <RouterLink :to="{ name: 'home' }" class="text-2xl font-bold lg:hidden flex">
         <img src="@/assets/img/shorikame-logo-edited.webp" class="h-12 mr-2" alt="Windster Logo" />
@@ -7,22 +7,34 @@
       </RouterLink>
       <!-- <SearchBar /> -->
       <nav class="text-base hidden lg:flex">
-        <div class="flex gap-3 border-r-2 border-gray-300 text-gray-400">
+        <div class="flex gap-3 border-r-2 border-gray-300 text-gray-400 relative">
           <!-- <RouterLink
             :to="{ name: 'home' }"
             class="flex items-center pr-4 hover:text-blue-500 transition-colors"
             >Sobre Nosotros</RouterLink
           > -->
-          <RouterLink
-            :to="{ name: 'products' }"
-            class="flex items-center pr-4 hover:text-blue-500 transition-colors"
-            >Productos</RouterLink
+          <button
+            class="flex items-center pr-4 font-bold text-slate-900 transition-colors"
+            @mouseenter="showProductOptions"
           >
-          <!-- <RouterLink
-            :to="{ name: 'home' }"
-            class="flex items-center pr-4 hover:text-blue-500 transition-colors"
-            >Registrarse</RouterLink
-          > -->
+            Productos
+          </button>
+          <FloatingOptions v-if="isProductOptionsVisible">
+            <template #options>
+              <router-link
+                :to="{ name: 'products', query: { 'tipo-de-producto': 'producto-cerrado' } }"
+                class="whitespace-nowrap px-4 py-2 hover:bg-gray-100 transition-colors rounded"
+                @click="updateProducts"
+                >Producto cerrado</router-link
+              >
+              <router-link
+                :to="{ name: 'products', query: { 'tipo-de-producto': 'cartas-sueltas' } }"
+                class="whitespace-nowrap px-4 py-2 hover:bg-gray-100 transition-colors rounded"
+                @click="updateProducts"
+                >Carta suelta</router-link
+              >
+            </template>
+          </FloatingOptions>
         </div>
         <div class="flex pl-4 font-semibold" v-if="!user.isSet">
           <RouterLink
@@ -36,12 +48,24 @@
             >Ingresar</RouterLink
           >
         </div>
-        <div class="flex pl-4 font-semibold" v-if="user.isSet">
-          <RouterLink
-            :to="{ name: 'register' }"
-            class="flex items-center pr-4 border-r-2 border-gray-300 hover:text-blue-500 transition-colors"
-            >Hola: {{ user.getUserName }}</RouterLink
+        <div class="flex pl-4 text-slate-700" v-if="user.isSet">
+          <div
+            class="flex items-center pr-4 border-r-2 border-gray-300 transition-colors cursor-pointer relative"
+            @mouseenter="showProfileOptions"
           >
+            <span class="mr-2">Hola:</span>
+            <span class="font-semibold text-slate-900">{{ user.getUserName }}</span>
+
+            <FloatingOptions v-if="isProfileOptionsVisible" class="min-w-48">
+              <template #options>
+                <router-link
+                  :to="{ name: 'myPurchases' }"
+                  class="whitespace-nowrap px-4 py-2 hover:bg-gray-100 transition-colors rounded"
+                  >Mis compras</router-link
+                >
+              </template>
+            </FloatingOptions>
+          </div>
           <button
             @click="user.logout"
             class="flex items-center pl-4 hover:text-blue-500 transition-colors"
@@ -56,6 +80,47 @@
 
 <script lang="ts" setup>
 import { useUserStore } from '@/modules/auth/stores/user';
+import FloatingOptions from './FloatingOptions.vue';
+import { ref } from 'vue';
+import { useRoute } from 'vue-router';
+import { useFilterCategoryStore } from '@/modules/filter/store/filterCategory';
 
 const user = useUserStore();
+const filters = useFilterCategoryStore();
+const isProductOptionsVisible = ref(false);
+const isProfileOptionsVisible = ref(false);
+
+const route = useRoute();
+
+const showProductOptions = () => {
+  isProfileOptionsVisible.value = false;
+  isProductOptionsVisible.value = true;
+};
+
+const hideProductOptions = () => {
+  isProductOptionsVisible.value = false;
+};
+
+const updateProducts = () => {
+  if (route.name === 'products') {
+    setTimeout(async () => {
+      await filters.getFilters();
+      await filters.getProducts();
+    }, 100);
+  }
+};
+
+const showProfileOptions = () => {
+  isProductOptionsVisible.value = false;
+  isProfileOptionsVisible.value = true;
+};
+
+const hideProfileOptions = () => {
+  isProfileOptionsVisible.value = false;
+};
+
+const hideOptions = () => {
+  hideProductOptions();
+  hideProfileOptions();
+};
 </script>

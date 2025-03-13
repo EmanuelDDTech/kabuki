@@ -85,7 +85,7 @@
   </article>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import WishlistIcon from '@/modules/cart/components/wishlistIcon.vue';
 import { useRouter } from 'vue-router';
 import { formatCurrency } from '@/helpers';
