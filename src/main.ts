@@ -21,15 +21,20 @@ import 'vue-toast-notification/dist/theme-sugar.css';
 import Vueform from '@vueform/vueform';
 import vueformConfig from './../vueform.config';
 
+// Unhead
+import { createHead } from '@unhead/vue/client';
+
 const $toast = useToast({
   duration: 5000,
   position: 'top-right',
 });
 
 const app = createApp(App);
+const head = createHead();
 
 app.provide('toast', $toast);
 
+app.use(head);
 app.use(VueFire, {
   firebaseApp,
   modules: [VueFireAuth()],
