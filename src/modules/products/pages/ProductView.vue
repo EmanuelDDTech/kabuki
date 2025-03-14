@@ -32,6 +32,7 @@ const toast = inject('toast');
 
 useSeoMeta({
   title: () => product.name || 'Cargando... ',
+  description: () => (product.name ? `Compra ${product.name} al mejor precio.` : 'Cargando...'),
   ogTitle: () => product.name || 'Cargando...',
   ogImage: () => product.gallery[0]?.url,
 });
