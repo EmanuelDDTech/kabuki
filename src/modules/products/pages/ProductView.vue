@@ -1,3 +1,83 @@
+<script setup lang="ts">
+import { inject, onMounted, onUnmounted, ref, watchEffect } from 'vue';
+import { Swiper, SwiperSlide } from 'swiper/vue';
+import { useHead, useSeoMeta } from '@unhead/vue';
+import 'swiper/css';
+import 'swiper/css/free-mode';
+import 'swiper/css/navigation';
+import 'swiper/css/thumbs';
+import { FreeMode, Navigation, Thumbs } from 'swiper/modules';
+import WishlistIcon from '@/modules/cart/components/wishlistIcon.vue';
+import ShareIcon from '../components/ShareIcon.vue';
+import type { SwiperClass } from 'swiper/react';
+import { useRoute } from 'vue-router';
+import { useProductStore } from '@/modules/product/stores/product';
+import { formatCurrency } from '@/helpers';
+import { useCartStore } from '@/modules/cart/stores/cart';
+
+const thumbsSwiper = ref<SwiperClass | null>(null);
+
+const modules = [FreeMode, Navigation, Thumbs];
+
+const setThumbsSwiper = (swiper: SwiperClass) => {
+  thumbsSwiper.value = swiper;
+};
+
+const product = useProductStore();
+const cart = useCartStore();
+
+const route = useRoute();
+
+const toast = inject('toast');
+
+useSeoMeta({
+  title: () => product.name || 'Cargando... ',
+  ogTitle: () => product.name || 'Cargando...',
+  ogImage: () => product.gallery[0]?.url,
+});
+
+onMounted(async () => {
+  await product.findProduct(route.params.id);
+
+  const descripcionContainer = document.querySelector('#description-container');
+  const productDescription = document.createElement('DIV');
+  productDescription.innerHTML = product.description;
+  descripcionContainer?.appendChild(productDescription);
+});
+
+onUnmounted(() => {
+  product.cleanProduct();
+});
+
+const addItem = async (item) => {
+  try {
+    await cart.addItem(item);
+    toast.open({
+      message: 'Carrito actualizado correctamente',
+      type: 'success',
+    });
+  } catch (error) {
+    toast.open({
+      message: 'Error al actualizar el carrito',
+      type: 'error',
+    });
+  }
+};
+
+// watchEffect(() => {
+//   if (product.name) {
+//     useHead({
+//       title: `${product.name} | Shorikame Cards`,
+//       meta: [
+//         { name: 'description', content: product.name },
+//         { property: 'og:title', content: product.name },
+//         { property: 'og:image', content: product.gallery[0]?.url },
+//       ],
+//     });
+//   }
+// });
+</script>
+
 <template>
   <main class="px-6">
     <section class="max-w-screen-xl mx-auto flex flex-col lg:flex-row gap-16 my-16">
@@ -185,66 +265,6 @@
     <!-- <section class="max-w-screen-xl mx-auto mb-10"></section> -->
   </main>
 </template>
-
-<script setup lang="ts">
-import { inject, onMounted, onUnmounted, ref } from 'vue';
-import { Swiper, SwiperSlide } from 'swiper/vue';
-import 'swiper/css';
-import 'swiper/css/free-mode';
-import 'swiper/css/navigation';
-import 'swiper/css/thumbs';
-import { FreeMode, Navigation, Thumbs } from 'swiper/modules';
-import WishlistIcon from '@/modules/cart/components/wishlistIcon.vue';
-import ShareIcon from '../components/ShareIcon.vue';
-import type { SwiperClass } from 'swiper/react';
-import { useRoute } from 'vue-router';
-import { useProductStore } from '@/modules/product/stores/product';
-import { formatCurrency } from '@/helpers';
-import { useCartStore } from '@/modules/cart/stores/cart';
-
-const thumbsSwiper = ref<SwiperClass | null>(null);
-
-const modules = [FreeMode, Navigation, Thumbs];
-
-const setThumbsSwiper = (swiper: SwiperClass) => {
-  thumbsSwiper.value = swiper;
-};
-
-const product = useProductStore();
-const cart = useCartStore();
-
-const route = useRoute();
-
-const toast = inject('toast');
-
-onMounted(async () => {
-  await product.findProduct(route.params.id);
-
-  const descripcionContainer = document.querySelector('#description-container');
-  const productDescription = document.createElement('DIV');
-  productDescription.innerHTML = product.description;
-  descripcionContainer?.appendChild(productDescription);
-});
-
-onUnmounted(() => {
-  product.cleanProduct();
-});
-
-const addItem = async (item) => {
-  try {
-    await cart.addItem(item);
-    toast.open({
-      message: 'Carrito actualizado correctamente',
-      type: 'success',
-    });
-  } catch (error) {
-    toast.open({
-      message: 'Error al actualizar el carrito',
-      type: 'error',
-    });
-  }
-};
-</script>
 
 <style>
 .mySwiper2 .swiper-slide {
