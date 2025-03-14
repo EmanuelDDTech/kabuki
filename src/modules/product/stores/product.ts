@@ -4,7 +4,7 @@ import ProductAPI from '../api/ProductAPI';
 import { useFilterCategoryStore } from '@/modules/filter/store/filterCategory';
 import FilterValueProductAPI from '@/modules/admin/api/FilterValueProductAPI';
 import ProductGalleryAPI from '../api/ProductGalleryAPI';
-import type { Product } from '../interfaces/product.interface';
+import type { Product, ProductGallery } from '../interfaces/product.interface';
 
 const filterCategory = useFilterCategoryStore();
 
@@ -31,7 +31,7 @@ export const useProductStore = defineStore('product', () => {
   const stock = ref(0);
   const product_category_id = ref(0);
 
-  const gallery = ref([]);
+  const gallery = ref<ProductGallery[]>([]);
   const filters = ref([]);
   // const deletedFilters = ref([]);
 
