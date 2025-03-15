@@ -6,7 +6,9 @@ import LightingIcon from '@/modules/icons/LightingIcon.vue';
 import DiscountIcon from '@/modules/icons/DiscountIcon.vue';
 import ClosedBoxIcon from '../components/ClosedBoxIcon.vue';
 import { useCampaignStore } from '@/modules/campaign/stores/campaign';
-import { onMounted } from 'vue';
+import { onBeforeMount, onMounted } from 'vue';
+import { converToDDMMYYYY, displayDate } from '@/helpers/date';
+import { date } from '@vueform/vueform';
 
 const campaign = useCampaignStore();
 
@@ -78,8 +80,8 @@ const campaignTypes = {
   Oferta: DiscountIcon,
 };
 
-onMounted(() => {
-  campaign.getCampaignsAll();
+onBeforeMount(async () => {
+  await campaign.getCampaignsAll();
 });
 </script>
 
@@ -90,15 +92,15 @@ onMounted(() => {
     <section class="px-3">
       <div
         class="max-w-screen-xl mx-auto py-14"
-        v-for="campaign in campaign.campaigns"
-        :key="campaign.id"
+        v-for="campaignData in campaign.campaigns"
+        :key="campaignData.id"
       >
         <SwiperSlider
-          :title="campaign.campaign_type.name"
-          :countdown="campaign.campaign_type.name === 'Preventa' ? true : false"
-          :finish-date="new Date('Fri Feb 28 2025 22:00:00 GMT-0600 (hora estándar central)')"
-          :icon="campaignTypes[campaign.campaign_type.name]"
-          :campaign-products="campaign.campaign_products"
+          :title="`${campaignData.campaign_type.name} ${campaignData.name}`"
+          :countdown="campaignData.campaign_type.name === 'Preventa' ? true : false"
+          :finish-date="campaignData.to"
+          :icon="campaignTypes[campaignData.campaign_type.name]"
+          :campaign-products="campaignData.campaign_products"
         />
       </div>
     </section>
