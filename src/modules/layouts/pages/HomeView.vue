@@ -146,15 +146,30 @@ onMounted(async () => {
               <p class="text-gray-400 mb-3">"Más cartas, más poder."</p>
               <div class="flex gap-3">
                 <article class="flex flex-col gap-2 justify-center items-center">
-                  <img src="@assets/img/producto.webp" alt="" class="object-contain w-3/5" />
+                  <img
+                    src="@assets/img/producto.webp"
+                    alt="Imagen de producto"
+                    class="object-contain w-3/5"
+                    loading="lazy"
+                  />
                   <p class="font-bold">$2,500.00</p>
                 </article>
                 <article class="flex flex-col gap-2 justify-center items-center">
-                  <img src="@assets/img/producto.webp" alt="" class="object-contain w-3/5" />
+                  <img
+                    src="@assets/img/producto.webp"
+                    alt="Imagen de producto"
+                    class="object-contain w-3/5"
+                    loading="lazy"
+                  />
                   <p class="font-bold">$2,500.00</p>
                 </article>
                 <article class="flex flex-col gap-2 justify-center items-center">
-                  <img src="@assets/img/producto.webp" alt="" class="object-contain w-3/5" />
+                  <img
+                    src="@assets/img/producto.webp"
+                    alt="Imagen de producto"
+                    class="object-contain w-3/5"
+                    loading="lazy"
+                  />
                   <p class="font-bold">$2,500.00</p>
                 </article>
               </div>
@@ -164,15 +179,30 @@ onMounted(async () => {
               <p class="text-gray-400 mb-3">"Todo lo que necesitas."</p>
               <div class="flex gap-3">
                 <article class="flex flex-col gap-2 justify-center items-center">
-                  <img src="@assets/img/producto.webp" alt="" class="object-contain w-3/5" />
+                  <img
+                    src="@assets/img/producto.webp"
+                    alt="Imagen de producto"
+                    class="object-contain w-3/5"
+                    loading="lazy"
+                  />
                   <p class="font-bold">$2,500.00</p>
                 </article>
                 <article class="flex flex-col gap-2 justify-center items-center">
-                  <img src="@assets/img/producto.webp" alt="" class="object-contain w-3/5" />
+                  <img
+                    src="@assets/img/producto.webp"
+                    alt="Imagen de producto"
+                    class="object-contain w-3/5"
+                    loading="lazy"
+                  />
                   <p class="font-bold">$2,500.00</p>
                 </article>
                 <article class="flex flex-col gap-2 justify-center items-center">
-                  <img src="@assets/img/producto.webp" alt="" class="object-contain w-3/5" />
+                  <img
+                    src="@assets/img/producto.webp"
+                    alt="Imagen de producto"
+                    class="object-contain w-3/5"
+                    loading="lazy"
+                  />
                   <p class="font-bold">$2,500.00</p>
                 </article>
               </div>
@@ -182,15 +212,30 @@ onMounted(async () => {
               <p class="text-gray-400 mb-3">"Exclusividad garantizada."</p>
               <div class="flex gap-3">
                 <article class="flex flex-col gap-2 justify-center items-center">
-                  <img src="@assets/img/producto.webp" alt="" class="object-contain w-3/5" />
+                  <img
+                    src="@assets/img/producto.webp"
+                    alt="Imagen de producto"
+                    class="object-contain w-3/5"
+                    loading="lazy"
+                  />
                   <p class="font-bold">$2,500.00</p>
                 </article>
                 <article class="flex flex-col gap-2 justify-center items-center">
-                  <img src="@assets/img/producto.webp" alt="" class="object-contain w-3/5" />
+                  <img
+                    src="@assets/img/producto.webp"
+                    alt="Imagen de producto"
+                    class="object-contain w-3/5"
+                    loading="lazy"
+                  />
                   <p class="font-bold">$2,500.00</p>
                 </article>
                 <article class="flex flex-col gap-2 justify-center items-center">
-                  <img src="@assets/img/producto.webp" alt="" class="object-contain w-3/5" />
+                  <img
+                    src="@assets/img/producto.webp"
+                    alt="Imagen de producto"
+                    class="object-contain w-3/5"
+                    loading="lazy"
+                  />
                   <p class="font-bold">$2,500.00</p>
                 </article>
               </div>
@@ -200,15 +245,30 @@ onMounted(async () => {
               <p class="text-gray-400 mb-3">"Ediciones únicas."</p>
               <div class="flex gap-3">
                 <article class="flex flex-col gap-2 justify-center items-center">
-                  <img src="@assets/img/producto.webp" alt="" class="object-contain w-3/5" />
+                  <img
+                    src="@assets/img/producto.webp"
+                    alt="Imagen de producto"
+                    class="object-contain w-3/5"
+                    loading="lazy"
+                  />
                   <p class="font-bold">$2,500.00</p>
                 </article>
                 <article class="flex flex-col gap-2 justify-center items-center">
-                  <img src="@assets/img/producto.webp" alt="" class="object-contain w-3/5" />
+                  <img
+                    src="@assets/img/producto.webp"
+                    alt="Imagen de producto"
+                    class="object-contain w-3/5"
+                    loading="lazy"
+                  />
                   <p class="font-bold">$2,500.00</p>
                 </article>
                 <article class="flex flex-col gap-2 justify-center items-center">
-                  <img src="@assets/img/producto.webp" alt="" class="object-contain w-3/5" />
+                  <img
+                    src="@assets/img/producto.webp"
+                    alt="Imagen de producto"
+                    class="object-contain w-3/5"
+                    loading="lazy"
+                  />
                   <p class="font-bold">$2,500.00</p>
                 </article>
               </div>

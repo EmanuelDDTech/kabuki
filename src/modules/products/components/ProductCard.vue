@@ -6,11 +6,12 @@
     <div
       class="aspect-[4/3] overflow-x-hidden rounded-2xl relative flex items-center justify-center"
     >
-      <img v-if="product.url" class="h-4/5" :src="product.url" />
+      <img v-if="product.url" class="h-4/5" :src="product.url" loading="lazy" />
       <img
         v-if="product.product_galleries"
         class="h-4/5"
         :src="product.product_galleries[0]?.url"
+        loading="lazy"
       />
       <p
         v-if="cartAvailable"
