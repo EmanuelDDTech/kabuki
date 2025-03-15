@@ -9,8 +9,12 @@ import { useCampaignStore } from '@/modules/campaign/stores/campaign';
 import { onBeforeMount, onMounted } from 'vue';
 import { converToDDMMYYYY, displayDate } from '@/helpers/date';
 import { date } from '@vueform/vueform';
+import StarIcon from '@/modules/common/icons/StarIcon.vue';
+import { useFeaturedProductStore } from '../stores/featuredProduct';
+import ProductCard from '@/modules/products/components/ProductCard.vue';
 
 const campaign = useCampaignStore();
+const featuredProductStore = useFeaturedProductStore();
 
 const routes = [
   {
@@ -83,6 +87,10 @@ const campaignTypes = {
 onBeforeMount(async () => {
   await campaign.getCampaignsAll();
 });
+
+onMounted(async () => {
+  await featuredProductStore.getFeaturedProducts();
+});
 </script>
 
 <template>
@@ -104,11 +112,24 @@ onBeforeMount(async () => {
         />
       </div>
     </section>
-    <!-- <section class="px-3">
+
+    <section class="px-3">
       <div class="max-w-screen-xl mx-auto py-14">
-        <SwiperSlider :title="'Ofertas'" :icon="DiscountIcon" />
+        <div class="flex gap-3 order-2 sm:order-1 mb-8">
+          <StarIcon class="w-9 h-9 text-white bg-black p-2 rounded-full" />
+          <h2 class="text-4xl font-bold">Producto destacado</h2>
+        </div>
+
+        <div class="grid gap-5 grid-cols-[repeat(auto-fill,minmax(224px,288px))] justify-center">
+          <ProductCard
+            v-for="featuredProduct in featuredProductStore.featuredProducts"
+            :key="featuredProduct.product.id"
+            :product="featuredProduct.product"
+          />
+        </div>
       </div>
-    </section> -->
+    </section>
+
     <section class="px-3">
       <div class="max-w-screen-xl mx-auto py-8">
         <header class="flex gap-3 mb-6">

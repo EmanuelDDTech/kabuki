@@ -1,6 +1,6 @@
 <template>
   <article
-    class="relative max-w-72 min-w-56 bg-white shadow-md rounded-3xl p-2 cursor-pointer border border-gray-100"
+    class="flex flex-col relative max-w-72 min-w-56 bg-white shadow-md rounded-3xl p-2 cursor-pointer border border-gray-100"
     @click="router.push({ name: 'product', params: { id: product ? product.id : 12345 } })"
   >
     <div
@@ -38,7 +38,7 @@
         </svg>
       </p>
     </div>
-    <div class="mt-4 pl-2 mb-2 justify-between">
+    <div class="flex-1 flex flex-col mt-4 pl-2 mb-2 justify-between">
       <p class="font-normal text-black mb-5">
         {{ product ? product.name : 'League Battle Deck -Charizard ex- PREVENTA' }}
       </p>
@@ -56,12 +56,12 @@
         <p v-if="product.discount" class="text-base text-gray-500 line-through font-normal mt-0">
           {{ formatCurrency(product.price) }}
         </p>
-        <div
+        <!-- <div
           v-if="cartAvailable"
           class="group cursor-pointer bg-gray-100 p-2 rounded-full absolute right-2 bottom-0"
         >
           <WishlistIcon class="h-6 aspect-square text-gray-500 group-hover:opacity-70" />
-        </div>
+        </div> -->
       </div>
     </div>
   </article>
