@@ -27,6 +27,7 @@
     "quill": "^2.0.3",
     "sweetalert2": "^11.14.1",
     "swiper": "^11.1.12",
+    "tailwind-scrollbar": "^3.0.0",
     "uid": "^2.0.2",
     "vue": "^3.4.29",
     "vue-router": "^4.3.3",

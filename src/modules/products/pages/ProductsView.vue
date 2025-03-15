@@ -41,68 +41,70 @@ const setPriceRange = async (e: any) => {
   <div
     class="max-w-screen-xl mx-auto py-8 px-6 flex flex-col lg:flex-row gap-6 min-h-screen relative"
   >
-    <section class="sticky top-0 z-10">
+    <section class="sticky top-6 z-10">
       <div class="flex-1 h-full hidden lg:inline-block">
-        <div
-          class="h-fit min-w-56 shadow-lg px-3 py-4 rounded-xl border border-gray-100 sticky top-0"
-        >
-          <h3 class="font-bold text-xl border-b border-b-gray-200 mb-3">Filtros</h3>
+        <div class="h-fit min-w-60 shadow-lg py-4 rounded-xl border border-gray-100 sticky top-6">
+          <h3 class="font-bold text-xl border-b border-b-gray-200 mb-3 px-3">Filtros</h3>
 
-          <div class="flex justify-between items-center py-1 px-2 mb-3 hover:bg-gray-100 rounded">
-            <label for="existenceOnly" class="cursor-pointer leading-none"
-              >Solo con existencia</label
-            >
-            <input
-              id="existenceOnly"
-              type="checkbox"
-              v-model="filters.existenceOnly"
-              class="cursor-pointer"
-            />
-          </div>
-
-          <div>
-            <label for="price" class="font-bold">Precio</label>
-            <Vueform>
-              <SliderElement
-                @change="setPriceRange"
-                ref="priceRange"
-                name="price"
-                :format="{
-                  prefix: '$',
-                  thousand: ' ',
-                }"
-                :step="100"
-                :min="0"
-                :max="parseInt(filters.getMaxPrice())"
-                :default="[filters.minPrice, filters.maxPrice]"
-                class="mt-8"
-              />
-            </Vueform>
-          </div>
-
-          <div v-for="filterGroup in filters.filters" :key="filterGroup.id" class="mt-4">
-            <h4 class="font-bold mb-1">{{ filterGroup.filter_group.name }}</h4>
-
-            <div
-              v-for="filterValue in filterGroup.filter_group.filter_values"
-              :key="filterValue.id"
-              :ref_for="filterValue.name"
-              class="flex text-sm justify-between items-center hover:bg-gray-100 py-1 px-2 rounded"
-            >
-              <label :for="filterValue.name" class="cursor-pointer leading-none">{{
-                filterValue.name
-              }}</label>
+          <div
+            class="max-h-[600px] overflow-y-scroll overflow-x-hidden px-3 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent"
+          >
+            <div class="flex justify-between items-center py-1 px-2 mb-3 hover:bg-gray-100 rounded">
+              <label for="existenceOnly" class="cursor-pointer leading-none"
+                >Solo con existencia</label
+              >
               <input
-                @change="filters.updateFilters(filterGroup.filter_group.slug, filterValue.slug)"
-                :checked="
-                  filters.activeFilters[filterGroup.filter_group.slug]?.includes(filterValue.slug)
-                    ? true
-                    : false
-                "
+                id="existenceOnly"
                 type="checkbox"
-                :id="filterValue.name"
+                v-model="filters.existenceOnly"
                 class="cursor-pointer"
               />
+            </div>
+
+            <div>
+              <label for="price" class="font-bold">Precio</label>
+              <Vueform class="pl-3 pr-6">
+                <SliderElement
+                  @change="setPriceRange"
+                  ref="priceRange"
+                  name="price"
+                  :format="{
+                    prefix: '$',
+                    thousand: ' ',
+                  }"
+                  :step="100"
+                  :min="0"
+                  :max="parseInt(filters.getMaxPrice())"
+                  :default="[filters.minPrice, filters.maxPrice]"
+                  class="mt-8"
+                />
+              </Vueform>
+            </div>
+
+            <div v-for="filterGroup in filters.filters" :key="filterGroup.id" class="mt-4">
+              <h4 class="font-bold mb-1">{{ filterGroup.filter_group.name }}</h4>
+
+              <div
+                v-for="filterValue in filterGroup.filter_group.filter_values"
+                :key="filterValue.id"
+                :ref_for="filterValue.name"
+                class="flex text-sm justify-between items-center hover:bg-gray-100 py-1 px-2 rounded"
+              >
+                <label :for="filterValue.name" class="cursor-pointer leading-none">{{
+                  filterValue.name
+                }}</label>
+                <input
+                  @change="filters.updateFilters(filterGroup.filter_group.slug, filterValue.slug)"
+                  :checked="
+                    filters.activeFilters[filterGroup.filter_group.slug]?.includes(filterValue.slug)
+                      ? true
+                      : false
+                  "
+                  type="checkbox"
+                  :id="filterValue.name"
+                  class="cursor-pointer"
+                />
+              </div>
             </div>
           </div>
         </div>
