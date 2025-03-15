@@ -7,6 +7,9 @@ export default {
   async getAll() {
     return await api.get('/campanas');
   },
+  async getAllAdmin() {
+    return await api.get('/campanas-admin');
+  },
   async getById(id: number) {
     return await api.get(`/campanas/${id}`);
   },
