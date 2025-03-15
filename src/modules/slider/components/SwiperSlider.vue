@@ -89,7 +89,7 @@ interface Props {
   title: string;
   campaignProducts?: Product[];
   countdown?: boolean;
-  finishDate?: Date;
+  finishDate?: String;
   icon?: Object;
 }
 

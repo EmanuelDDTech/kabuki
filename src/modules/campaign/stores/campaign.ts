@@ -49,6 +49,11 @@ export const useCampaignStore = defineStore('campaign', () => {
     campaigns.value = data;
   };
 
+  const getCampaignsAllAdmin = async () => {
+    const { data } = await CampaignAPI.getAllAdmin();
+    campaigns.value = data;
+  };
+
   const addProduct = async (product: Product) => {
     if (campaign.value !== null && campaign.value.id) {
       if (productExist(product)) return;
@@ -200,6 +205,7 @@ export const useCampaignStore = defineStore('campaign', () => {
 
     // Methods
     getCampaignsAll,
+    getCampaignsAllAdmin,
     addProduct,
     editProductPrice,
     createCampaign,

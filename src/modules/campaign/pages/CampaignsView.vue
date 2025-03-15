@@ -103,7 +103,7 @@ const campaign = useCampaignStore();
 const toast: any = inject('toast');
 
 onMounted(() => {
-  campaign.getCampaignsAll();
+  campaign.getCampaignsAllAdmin();
 });
 
 const deleteConfirmation = (id: number) => {

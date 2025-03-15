@@ -45,12 +45,12 @@ const stopTimer = ref<boolean>(false);
 
 const props = defineProps<{
   duration: number;
-  finishDate?: Date;
+  finishDate?: String;
 }>();
 
 let intervalId: number;
 
-let storedDuration = props.finishDate - new Date();
+let storedDuration = new Date(props.finishDate) - new Date();
 
 onMounted(() => {
   startTimer();

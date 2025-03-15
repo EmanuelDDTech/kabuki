@@ -4,4 +4,5 @@ export interface Product {
   stock: number;
   price: number;
   discountPrice: number;
+  active: boolean;
 }

@@ -93,7 +93,7 @@ onMounted(async () => {
             <div class="flex justify-between py-3 border-t border-slate-200">
               <span class="text-base">Total</span>
               <span class="text-lg text-slate-900 font-semibold">{{
-                formatCurrency(saleStore.purchaseInfo?.amount_shipping)
+                formatCurrency(saleStore.purchaseInfo?.amount_total)
               }}</span>
             </div>
           </div>

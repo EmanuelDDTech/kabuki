@@ -25,6 +25,15 @@ export const useProductsStore = defineStore('products', () => {
     products.value = [];
   };
 
+  const updateProduct = async (id: number, data: object) => {
+    try {
+      await ProductAPI.update(id, data);
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  };
+
   return {
     products,
 
@@ -32,6 +41,7 @@ export const useProductsStore = defineStore('products', () => {
     getProducts,
     getProductsWithFilters,
     clearProducts,
+    updateProduct,
 
     // Getters
     areProducts: computed(() => products.value.length > 0),
