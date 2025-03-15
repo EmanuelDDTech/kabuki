@@ -1,6 +1,6 @@
 <template>
   <article
-    class="flex flex-col relative max-w-72 min-w-56 bg-white shadow-md rounded-3xl p-2 cursor-pointer border border-gray-100"
+    class="flex flex-col relative max-w-72 min-w-56 h-full bg-white shadow-md rounded-3xl p-2 cursor-pointer border border-gray-100"
     @click="router.push({ name: 'product', params: { id: product ? product.id : 12345 } })"
   >
     <div
@@ -39,9 +39,15 @@
       </p>
     </div>
     <div class="flex-1 flex flex-col mt-4 pl-2 mb-2 justify-between">
-      <p class="font-normal text-black mb-5">
+      <p class="font-normal text-black mb-5 flex-1">
         {{ product ? product.name : 'League Battle Deck -Charizard ex- PREVENTA' }}
       </p>
+
+      <div class="mb-2">
+        <span class="text-sm text-slate-700">Disponibles: </span>
+        <span class="font-semibold text-green-600">{{ product.stock }}</span>
+      </div>
+
       <div class="flex flex-col items-start relative">
         <!-- <p class="text-xl text-black font-bold mt-0">
           {{ product.discount ? formatCurrency(product.discount) : formatCurrency(product.price) }}
