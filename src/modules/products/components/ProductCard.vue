@@ -6,8 +6,14 @@
     <div
       class="aspect-[4/3] overflow-x-hidden rounded-2xl relative flex items-center justify-center"
     >
-      <img class="h-4/5" :src="product ? product.url : defaultProduct.url" />
+      <img v-if="product.url" class="h-4/5" :src="product.url" />
+      <img
+        v-if="product.product_galleries"
+        class="h-4/5"
+        :src="product.product_galleries[0]?.url"
+      />
       <p
+        v-if="cartAvailable"
         @click.stop="addItem(product)"
         class="absolute right-2 top-2 rounded-full p-2 cursor-pointer group"
         :class="
@@ -50,7 +56,10 @@
         <p v-if="product.discount" class="text-base text-gray-500 line-through font-normal mt-0">
           {{ formatCurrency(product.price) }}
         </p>
-        <div class="group cursor-pointer bg-gray-100 p-2 rounded-full absolute right-2 bottom-0">
+        <div
+          v-if="cartAvailable"
+          class="group cursor-pointer bg-gray-100 p-2 rounded-full absolute right-2 bottom-0"
+        >
           <WishlistIcon class="h-6 aspect-square text-gray-500 group-hover:opacity-70" />
         </div>
       </div>
@@ -64,16 +73,20 @@ import { useRouter } from 'vue-router';
 import { formatCurrency } from '@/helpers';
 import { useCartStore } from '@/modules/cart/stores/cart';
 import { inject } from 'vue';
+import type { Product } from '@/modules/product/interfaces/product.interface';
 
 const cart = useCartStore();
 
 const toast = inject('toast');
 
 interface Props {
-  product: object;
+  product: Product;
+  cartAvailable?: boolean;
 }
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  cartAvailable: true,
+});
 
 const defaultProduct = {
   url: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/products%2F04da6c7dd79.jpg?alt=media&token=a77642f5-7194-4256-b4cd-bc6dfef5b897',

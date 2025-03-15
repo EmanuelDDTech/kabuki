@@ -147,6 +147,11 @@ const router = createRouter({
           component: () => import('@/modules/product/pages/UpdateProductView.vue'),
         },
         {
+          path: 'productos-destacados',
+          name: 'adminFeaturedProducts',
+          component: () => import('@/modules/featuredProducts/pages/FeaturedProductsView.vue'),
+        },
+        {
           path: 'categorias',
           name: 'adminCategories',
           component: () => import('@/modules/admin/pages/CategoriesView.vue'),
