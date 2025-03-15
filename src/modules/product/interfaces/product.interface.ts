@@ -4,6 +4,7 @@ export interface Product {
   id: number;
   name: string;
   sku?: string;
+  active: boolean;
   description?: string;
   price?: number;
   discount?: number;

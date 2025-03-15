@@ -32,7 +32,7 @@ const deleteConfirmation = (id) => {
 const deleteProduct = async (id: any) => {
   try {
     await deleteByProductId(id);
-    const { data } = await ProductAPI.delete(id);
+    await ProductAPI.delete(id);
     toast.open({
       message: 'Producto eliminado correctamente',
       type: 'success',
@@ -49,6 +49,22 @@ const deleteProduct = async (id: any) => {
 onMounted(async () => {
   await productStore.getProducts();
 });
+
+const updateProductActive = async (id: number, active: boolean) => {
+  try {
+    await productStore.updateProduct(id, { active });
+
+    toast.open({
+      message: active ? 'Producto activado correctamente' : 'Producto desactivado correctamente',
+      type: 'success',
+    });
+  } catch (error) {
+    toast.open({
+      message: error.response.data.msg,
+      type: 'error',
+    });
+  }
+};
 </script>
 
 <template>
@@ -77,11 +93,14 @@ onMounted(async () => {
                 <th class="p-2">
                   <div class="text-left font-semibold">Disponibles</div>
                 </th>
-                <th class="p-2">
+                <!-- <th class="p-2">
                   <div class="text-left font-semibold">Costo</div>
-                </th>
+                </th> -->
                 <th class="p-2">
                   <div class="text-left font-semibold">Precio</div>
+                </th>
+                <th class="p-2">
+                  <div class="text-left font-semibold">Activo</div>
                 </th>
                 <th class="p-2">
                   <div class="text-center font-semibold">Action</div>
@@ -104,19 +123,39 @@ onMounted(async () => {
                 <td class="p-2">
                   <div class="text-base text-left">{{ product.stock }}</div>
                 </td>
-                <td class="p-2">
+                <!-- <td class="p-2">
                   <div class="text-base text-left font-medium text-red-500">
                     {{ formatCurrency(0) }}
                   </div>
-                </td>
+                </td> -->
                 <td class="p-2">
                   <div class="text-base text-left font-medium text-green-500">
                     {{ formatCurrency(product.price) }}
                   </div>
                 </td>
                 <td class="p-2">
+                  <div class="text-center">
+                    <div
+                      class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in"
+                    >
+                      <input
+                        type="checkbox"
+                        :name="`toggle-${product.id}`"
+                        :id="`toggle-${product.id}`"
+                        class="toggle-checkbox absolute block !w-6 !h-6 !rounded-full bg-white border-4 !appearance-none cursor-pointer transition"
+                        v-model="product.active"
+                        @change="updateProductActive(product.id, product.active)"
+                      />
+                      <label
+                        :for="`toggle-${product.id}`"
+                        class="toggle-label block overflow-hidden !h-6 !rounded-full bg-gray-300 cursor-pointer"
+                      ></label>
+                    </div>
+                  </div>
+                </td>
+                <td class="p-2">
                   <div class="flex justify-center">
-                    <button @click="deleteConfirmation(product.id)">
+                    <!-- <button @click="deleteConfirmation(product.id)">
                       <svg
                         class="h-8 w-8 rounded-full p-1 hover:bg-gray-100 hover:text-red-600"
                         fill="none"
@@ -131,7 +170,7 @@ onMounted(async () => {
                           d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
                         ></path>
                       </svg>
-                    </button>
+                    </button> -->
 
                     <RouterLink :to="{ name: 'adminUpdateProducts', params: { id: product.id } }">
                       <EditIcon
@@ -148,3 +187,21 @@ onMounted(async () => {
     </section>
   </main>
 </template>
+
+<style scoped>
+/* CHECKBOX TOGGLE SWITCH */
+/* @apply rules for documentation, these do not work as inline style */
+.toggle-checkbox {
+  appearance: none !important;
+}
+
+.toggle-checkbox:checked {
+  @apply: right-0 border-green-400;
+  right: 0;
+  border-color: #68d391;
+}
+.toggle-checkbox:checked + .toggle-label {
+  @apply: bg-green-400;
+  background-color: #68d391;
+}
+</style>
