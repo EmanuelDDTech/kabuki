@@ -12,7 +12,7 @@
     >
       <div>
         <img
-          :src="getImageUrl(route.img)"
+          :src="route.img"
           :alt="route.text"
           class="group-hover:animate-customBounce transition-transform ease-out flex-grow-0 flex-shrink-0 basis-auto"
           draggable="false"
@@ -37,70 +37,4 @@ interface Props {
 }
 
 defineProps<Props>();
-
-const getImageUrl = (imageName: string) => {
-  return new URL(`/src/assets/img/${imageName}`, import.meta.url).href;
-};
-
-// onMounted(() => {
-//   imageRow.value = document.querySelector('#image-row');
-
-//   if (!imageRow.value) return;
-
-//   document.addEventListener('DOMContentLoaded', function () {
-//     let isDown = false;
-//     let startX: number;
-//     let scrollLeft: number;
-
-//     if (!imageRow.value) return;
-
-//     imageRow.value.addEventListener('mousedown', (e) => {
-//       isDown = true;
-//       if (!imageRow.value) return;
-//       imageRow.value.classList.add('active');
-//       startX = e.pageX - imageRow.value.offsetLeft;
-//       scrollLeft = imageRow.value.scrollLeft;
-//     });
-
-//     imageRow.value.addEventListener('mouseleave', () => {
-//       isDown = false;
-//       if (!imageRow.value) return;
-//       imageRow.value.classList.remove('active');
-//     });
-
-//     imageRow.value.addEventListener('mouseup', () => {
-//       isDown = false;
-//       if (!imageRow.value) return;
-//       imageRow.value.classList.remove('active');
-//     });
-
-//     imageRow.value.addEventListener('mousemove', (e) => {
-//       if (!isDown) return;
-//       e.preventDefault();
-//       if (!imageRow.value) return;
-//       const x = e.pageX - imageRow.value.offsetLeft;
-//       const walk = (x - startX) * 3; // Multiplica el valor para hacer el desplazamiento más rápido
-//       imageRow.value.scrollLeft = scrollLeft - walk;
-//     });
-
-//     imageRow.value.addEventListener('touchstart', (e) => {
-//       isDown = true;
-//       if (!imageRow.value) return;
-//       startX = e.touches[0].pageX - imageRow.value.offsetLeft;
-//       scrollLeft = imageRow.value.scrollLeft;
-//     });
-
-//     imageRow.value.addEventListener('touchend', () => {
-//       isDown = false;
-//     });
-
-//     imageRow.value.addEventListener('touchmove', (e) => {
-//       if (!isDown) return;
-//       if (!imageRow.value) return;
-//       const x = e.touches[0].pageX - imageRow.value.offsetLeft;
-//       const walk = (x - startX) * 3; // Multiplica el valor para hacer el desplazamiento más rápido
-//       imageRow.value.scrollLeft = scrollLeft - walk;
-//     });
-//   });
-// });
 </script>
