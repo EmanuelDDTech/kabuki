@@ -125,7 +125,7 @@ onMounted(async () => {
           v-if="featuredProductStore.isLoading"
           class="grid gap-5 grid-cols-[repeat(auto-fill,minmax(224px,288px))] justify-center"
         >
-          <ProductSkeleton v-for="i in 8" :key="i" />
+          <ProductSkeleton v-for="i in 12" :key="i" />
         </div>
 
         <div
