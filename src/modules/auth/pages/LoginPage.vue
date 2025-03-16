@@ -71,8 +71,6 @@ const handleLoginSuccess = async (response: CredentialResponse) => {
       type: 'error',
     });
   }
-  console.log('Access Token', credential);
-  console.log('User: ', decodeCredential(credential));
 };
 
 // handle an error event
