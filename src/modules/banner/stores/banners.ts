@@ -7,10 +7,13 @@ const { deleteImage } = useImage();
 
 export const useBannersStore = defineStore('banners', () => {
   const banners = ref([]);
+  const isLoading = ref(true);
 
   const getBanners = async () => {
+    isLoading.value = true;
     const { data } = await BannerAPI.getAll();
     banners.value = data;
+    isLoading.value = false;
   };
 
   const deleteBanner = async (id: number, image: string) => {
@@ -29,6 +32,7 @@ export const useBannersStore = defineStore('banners', () => {
 
   return {
     banners,
+    isLoading,
 
     // Methods
     getBanners,

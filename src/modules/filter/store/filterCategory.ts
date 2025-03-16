@@ -14,16 +14,13 @@ export const useFilterCategoryStore = defineStore('filterCategory', () => {
   const route = useRoute();
   const router = useRouter();
 
-  const products = useProductsStore();
   const showFilters = ref(false);
   const minPrice = ref(0);
   const maxPrice = ref(MAX_PRICE);
 
-  // onMounted(async () => {
-  //   console.log('Desde onMounted');
-  //   activeFilters.value = { ...route.query };
-  //   await getProducts();
-  // });
+  const isLoading = ref(true);
+
+  const products = useProductsStore();
 
   const getFilters = async () => {
     const { existence, minPrice: min, maxPrice: max, ...query } = route.query;
@@ -35,8 +32,10 @@ export const useFilterCategoryStore = defineStore('filterCategory', () => {
   };
 
   const findFilters = async (categId: number) => {
+    isLoading.value = true;
     const { data } = await FilterCategoryAPI.findAll(categId);
     filters.value = data;
+    isLoading.value = false;
   };
 
   const updateFilters = async (filterGroupSlug, filterValueSlug) => {
@@ -130,6 +129,7 @@ export const useFilterCategoryStore = defineStore('filterCategory', () => {
     minPrice,
     maxPrice,
     activePriceFilter: computed(() => minPrice.value !== 0 || maxPrice.value !== MAX_PRICE),
+    isLoading,
 
     // Methods
     getProducts,
