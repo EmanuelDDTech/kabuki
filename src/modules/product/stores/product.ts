@@ -6,8 +6,6 @@ import FilterValueProductAPI from '@/modules/admin/api/FilterValueProductAPI';
 import ProductGalleryAPI from '../api/ProductGalleryAPI';
 import type { Product, ProductGallery } from '../interfaces/product.interface';
 
-const filterCategory = useFilterCategoryStore();
-
 const initialProductValues = {
   id: 0,
   name: '',
@@ -37,6 +35,8 @@ export const useProductStore = defineStore('product', () => {
 
   const searchQuery = ref('');
   const searchedProducts = ref<Product[] | []>([]);
+
+  const filterCategory = useFilterCategoryStore();
 
   let timeout: any = null;
 
