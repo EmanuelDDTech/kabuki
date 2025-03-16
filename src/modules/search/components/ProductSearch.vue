@@ -1,15 +1,12 @@
 <script lang="ts" setup>
 import { formatCurrency } from '@/helpers';
 import type { Product } from '@/modules/product/interfaces/product.interface';
-import { useRouter } from 'vue-router';
 
 interface Props {
   product: Product;
 }
 
 defineProps<Props>();
-
-const router = useRouter();
 </script>
 
 <template>
