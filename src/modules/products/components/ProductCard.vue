@@ -1,16 +1,17 @@
 <template>
   <article
-    class="flex flex-col relative max-w-72 min-w-56 h-full bg-white shadow-md rounded-3xl p-2 cursor-pointer border border-gray-100"
+    class="flex flex-col relative max-w-72 min-w-56 h-full bg-white shadow-md rounded-2xl p-2 cursor-pointer border border-gray-100"
     @click="router.push({ name: 'product', params: { id: product ? product.id : 12345 } })"
   >
     <div
       class="aspect-[4/3] overflow-x-hidden rounded-2xl relative flex items-center justify-center"
     >
-      <img v-if="product.url" class="h-4/5" :src="product.url" />
+      <img v-if="product.url" class="h-4/5" :src="product.url" loading="lazy" />
       <img
         v-if="product.product_galleries"
         class="h-4/5"
         :src="product.product_galleries[0]?.url"
+        loading="lazy"
       />
       <p
         v-if="cartAvailable"

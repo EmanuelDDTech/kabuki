@@ -18,6 +18,7 @@
             ? campaignProduct.product.product_galleries[0].url
             : defaultProduct.url
         "
+        loading="lazy"
       />
       <p
         @click.stop="addItem(campaignProduct.product)"

@@ -12,6 +12,7 @@ import { date } from '@vueform/vueform';
 import StarIcon from '@/modules/common/icons/StarIcon.vue';
 import { useFeaturedProductStore } from '../stores/featuredProduct';
 import ProductCard from '@/modules/products/components/ProductCard.vue';
+import ProductSkeleton from '@/modules/products/components/ProductSkeleton.vue';
 
 const campaign = useCampaignStore();
 const featuredProductStore = useFeaturedProductStore();
@@ -20,61 +21,61 @@ const routes = [
   {
     name: 'products',
     text: 'Surgin Sparks',
-    img: 'surgin_sparks.jpg',
+    img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Fsurgin_sparks.jpg?alt=media&token=493f6d94-0954-4ee4-ae87-cc205a6f62c4',
     query: { expansion: 'surgin-sparks' },
   },
   {
     name: 'products',
     text: 'Stellar Crown',
-    img: 'stellar_crown.jpg',
+    img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Fstellar_crown.jpg?alt=media&token=717231e9-8f30-4a7c-9ed3-c91619ee6250',
     query: { expansion: 'stellar-crown' },
   },
   {
     name: 'products',
     text: 'Shrouded Fable',
-    img: 'shrouded_fable.jpg',
+    img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Fshrouded_fable.jpg?alt=media&token=bf12f3a8-fea7-4aa5-8bc4-d3f2c3bf4b48',
     query: { expansion: 'shrouded-fable' },
   },
   {
     name: 'products',
     text: 'Twilight Masquerade',
-    img: 'twilight_masquerade.jpg',
+    img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Ftwilight_masquerade.jpg?alt=media&token=3e955813-7ec5-419f-b9dc-1fc512b91412',
     query: { expansion: 'twilight-masquerade' },
   },
   {
     name: 'products',
     text: 'Temporal Forces',
-    img: 'temporal_forces.jpg',
+    img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Ftemporal_forces.jpg?alt=media&token=ef8174cc-5daf-4b7f-bbb5-4ff262533c6e',
     query: { expansion: 'temporal-forces' },
   },
   {
     name: 'products',
     text: 'Paldean Fates',
-    img: 'paldean_fate.jpg',
+    img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Fpaldean_fate.jpg?alt=media&token=7b3074dd-eae3-487d-9f7b-5f56d143648e',
     query: { expansion: 'paldean-fates' },
   },
   {
     name: 'products',
     text: 'Paradox Rift',
-    img: 'paradox_rift.jpg',
+    img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Fparadox_rift.jpg?alt=media&token=ffd005f5-6ab2-4caf-bbaf-98412c89d2ad',
     query: { expansion: 'paradox-rift' },
   },
   {
     name: 'products',
     text: 'Obsidian Flames',
-    img: 'obsidian_flames.jpg',
+    img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Fobsidian_flames.jpg?alt=media&token=90fb2197-f4a0-4ab3-be43-020b1ecd8eb1',
     query: { expansion: 'obsidian-flames' },
   },
   {
     name: 'products',
     text: 'Paldea Evolved',
-    img: 'paldea_evolve.jpg',
+    img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Fpaldea_evolve.jpg?alt=media&token=1285e165-33a1-4ab9-baba-1fcdf8cfadc1',
     query: { expansion: 'paldea-evolved' },
   },
   {
     name: 'products',
     text: 'Scarlet & Violet',
-    img: 'scarlet_violet.jpg',
+    img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Fscarlet_violet.jpg?alt=media&token=22b8caf3-485d-404f-a9f1-4157e587ee17',
     query: { expansion: 'scarlet-&-violet' },
   },
 ];
@@ -120,7 +121,17 @@ onMounted(async () => {
           <h2 class="text-4xl font-bold">Producto destacado</h2>
         </div>
 
-        <div class="grid gap-5 grid-cols-[repeat(auto-fill,minmax(224px,288px))] justify-center">
+        <div
+          v-if="featuredProductStore.isLoading"
+          class="grid gap-5 grid-cols-[repeat(auto-fill,minmax(224px,288px))] justify-center"
+        >
+          <ProductSkeleton v-for="i in 8" :key="i" />
+        </div>
+
+        <div
+          v-else
+          class="grid gap-5 grid-cols-[repeat(auto-fill,minmax(224px,288px))] justify-center"
+        >
           <ProductCard
             v-for="featuredProduct in featuredProductStore.featuredProducts"
             :key="featuredProduct.product.id"
@@ -146,15 +157,30 @@ onMounted(async () => {
               <p class="text-gray-400 mb-3">"Más cartas, más poder."</p>
               <div class="flex gap-3">
                 <article class="flex flex-col gap-2 justify-center items-center">
-                  <img src="@assets/img/producto.webp" alt="" class="object-contain w-3/5" />
+                  <img
+                    src="@assets/img/producto.webp"
+                    alt="Imagen de producto"
+                    class="object-contain w-3/5"
+                    loading="lazy"
+                  />
                   <p class="font-bold">$2,500.00</p>
                 </article>
                 <article class="flex flex-col gap-2 justify-center items-center">
-                  <img src="@assets/img/producto.webp" alt="" class="object-contain w-3/5" />
+                  <img
+                    src="@assets/img/producto.webp"
+                    alt="Imagen de producto"
+                    class="object-contain w-3/5"
+                    loading="lazy"
+                  />
                   <p class="font-bold">$2,500.00</p>
                 </article>
                 <article class="flex flex-col gap-2 justify-center items-center">
-                  <img src="@assets/img/producto.webp" alt="" class="object-contain w-3/5" />
+                  <img
+                    src="@assets/img/producto.webp"
+                    alt="Imagen de producto"
+                    class="object-contain w-3/5"
+                    loading="lazy"
+                  />
                   <p class="font-bold">$2,500.00</p>
                 </article>
               </div>
@@ -164,15 +190,30 @@ onMounted(async () => {
               <p class="text-gray-400 mb-3">"Todo lo que necesitas."</p>
               <div class="flex gap-3">
                 <article class="flex flex-col gap-2 justify-center items-center">
-                  <img src="@assets/img/producto.webp" alt="" class="object-contain w-3/5" />
+                  <img
+                    src="@assets/img/producto.webp"
+                    alt="Imagen de producto"
+                    class="object-contain w-3/5"
+                    loading="lazy"
+                  />
                   <p class="font-bold">$2,500.00</p>
                 </article>
                 <article class="flex flex-col gap-2 justify-center items-center">
-                  <img src="@assets/img/producto.webp" alt="" class="object-contain w-3/5" />
+                  <img
+                    src="@assets/img/producto.webp"
+                    alt="Imagen de producto"
+                    class="object-contain w-3/5"
+                    loading="lazy"
+                  />
                   <p class="font-bold">$2,500.00</p>
                 </article>
                 <article class="flex flex-col gap-2 justify-center items-center">
-                  <img src="@assets/img/producto.webp" alt="" class="object-contain w-3/5" />
+                  <img
+                    src="@assets/img/producto.webp"
+                    alt="Imagen de producto"
+                    class="object-contain w-3/5"
+                    loading="lazy"
+                  />
                   <p class="font-bold">$2,500.00</p>
                 </article>
               </div>
@@ -182,15 +223,30 @@ onMounted(async () => {
               <p class="text-gray-400 mb-3">"Exclusividad garantizada."</p>
               <div class="flex gap-3">
                 <article class="flex flex-col gap-2 justify-center items-center">
-                  <img src="@assets/img/producto.webp" alt="" class="object-contain w-3/5" />
+                  <img
+                    src="@assets/img/producto.webp"
+                    alt="Imagen de producto"
+                    class="object-contain w-3/5"
+                    loading="lazy"
+                  />
                   <p class="font-bold">$2,500.00</p>
                 </article>
                 <article class="flex flex-col gap-2 justify-center items-center">
-                  <img src="@assets/img/producto.webp" alt="" class="object-contain w-3/5" />
+                  <img
+                    src="@assets/img/producto.webp"
+                    alt="Imagen de producto"
+                    class="object-contain w-3/5"
+                    loading="lazy"
+                  />
                   <p class="font-bold">$2,500.00</p>
                 </article>
                 <article class="flex flex-col gap-2 justify-center items-center">
-                  <img src="@assets/img/producto.webp" alt="" class="object-contain w-3/5" />
+                  <img
+                    src="@assets/img/producto.webp"
+                    alt="Imagen de producto"
+                    class="object-contain w-3/5"
+                    loading="lazy"
+                  />
                   <p class="font-bold">$2,500.00</p>
                 </article>
               </div>
@@ -200,15 +256,30 @@ onMounted(async () => {
               <p class="text-gray-400 mb-3">"Ediciones únicas."</p>
               <div class="flex gap-3">
                 <article class="flex flex-col gap-2 justify-center items-center">
-                  <img src="@assets/img/producto.webp" alt="" class="object-contain w-3/5" />
+                  <img
+                    src="@assets/img/producto.webp"
+                    alt="Imagen de producto"
+                    class="object-contain w-3/5"
+                    loading="lazy"
+                  />
                   <p class="font-bold">$2,500.00</p>
                 </article>
                 <article class="flex flex-col gap-2 justify-center items-center">
-                  <img src="@assets/img/producto.webp" alt="" class="object-contain w-3/5" />
+                  <img
+                    src="@assets/img/producto.webp"
+                    alt="Imagen de producto"
+                    class="object-contain w-3/5"
+                    loading="lazy"
+                  />
                   <p class="font-bold">$2,500.00</p>
                 </article>
                 <article class="flex flex-col gap-2 justify-center items-center">
-                  <img src="@assets/img/producto.webp" alt="" class="object-contain w-3/5" />
+                  <img
+                    src="@assets/img/producto.webp"
+                    alt="Imagen de producto"
+                    class="object-contain w-3/5"
+                    loading="lazy"
+                  />
                   <p class="font-bold">$2,500.00</p>
                 </article>
               </div>

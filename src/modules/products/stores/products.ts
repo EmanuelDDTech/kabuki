@@ -6,19 +6,24 @@ import productsAPI from '../api/productsAPI';
 
 export const useProductsStore = defineStore('products', () => {
   const products = ref<Product[]>([]);
+  const isLoading = ref(true);
 
   // onMounted(async () => {
   //   await getProducts();
   // });
 
   const getProducts = async () => {
+    isLoading.value = true;
     const { data } = await ProductAPI.getAll();
     products.value = data;
+    isLoading.value = false;
   };
 
   const getProductsWithFilters = async (query: string) => {
+    isLoading.value = true;
     const { data } = await productsAPI.findProducts(query);
     products.value = data;
+    isLoading.value = false;
   };
 
   const clearProducts = () => {
@@ -36,6 +41,7 @@ export const useProductsStore = defineStore('products', () => {
 
   return {
     products,
+    isLoading,
 
     // Methods
     getProducts,

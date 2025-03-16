@@ -1,14 +1,27 @@
+<script lang="ts" setup>
+import { useProductStore } from '@/modules/product/stores/product';
+import ProductSearch from './ProductSearch.vue';
+
+const product = useProductStore();
+
+defineEmits(['addProduct']);
+
+const selectProduct = (id: number) => {
+  product.findProduct(id);
+  product.clearSearchQuery();
+};
+</script>
+
 <template>
   <div
     class="flex items-center max-w-lg bg-white text-gray-400 rounded-lg flex-1 border-2 border-gray-300"
-    x-data="{ search: '' }"
   >
     <div class="border-r-2 border-gray-300">
       <!-- :class="(search.length > 0) ? 'bg-purple-500' : 'bg-gray-500 cursor-not-allowed'"
       :disabled="search.length == 0" -->
       <button
         type="submit"
-        class="flex items-center justify-center w-9 aspect-square rounded-r-lg p-1 hover:text-blue-500 transition-colors"
+        class="flex items-center justify-center w-9 aspect-square rounded-r-lg p-1"
       >
         <svg
           fill="none"
@@ -30,8 +43,28 @@
         type="search"
         class="w-full px-4 py-1 text-gray-800 rounded-full focus:outline-none"
         placeholder="Buscar"
-        x-model="search"
+        v-model="product.searchQuery"
       />
+    </div>
+
+    <div
+      v-if="product.searchedProducts.length > 0"
+      class="w-screen max-w-7xl px-3 absolute bottom-0 left-1/2 translate-y-full -translate-x-1/2"
+    >
+      <div class="p-3 bg-white border border-gray-300 rounded-lg shadow-lg z-10">
+        <div
+          class="w-full max-h-[728px] overflow-y-scroll scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent"
+        >
+          <ul class="grid grid-cols-[repeat(auto-fill,minmax(224px,288px))] gap-4 justify-center">
+            <ProductSearch
+              v-for="productData in product.searchedProducts"
+              :key="productData.id"
+              :product="productData"
+              @select-product="selectProduct"
+            ></ProductSearch>
+          </ul>
+        </div>
+      </div>
     </div>
   </div>
 </template>
