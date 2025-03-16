@@ -1,5 +1,7 @@
 <template>
+  <BannerSkeleton v-if="banners.isLoading" />
   <swiper
+    v-else
     :spaceBetween="0"
     :autoplay="{
       delay: 8000,
@@ -27,6 +29,7 @@ import 'swiper/css/pagination';
 import { Autoplay, Mousewheel, Navigation, Pagination } from 'swiper/modules';
 import { useBannersStore } from '@/modules/banner/stores/banners';
 import { onMounted } from 'vue';
+import BannerSkeleton from '@/modules/banner/components/BannerSkeleton.vue';
 
 const banners = useBannersStore();
 const modules = [Navigation, Pagination, Mousewheel, Autoplay];

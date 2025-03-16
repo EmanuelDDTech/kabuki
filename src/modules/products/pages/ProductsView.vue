@@ -5,6 +5,8 @@ import { useFilterCategoryStore } from '@/modules/filter/store/filterCategory';
 import { useProductsStore } from '../stores/products';
 import FilterIcon from '@/modules/common/icons/FilterIcon.vue';
 import XMarkIcon from '@/modules/layouts/components/XMarkIcon.vue';
+import FiltersSkeleton from '@/modules/filter/components/FiltersSkeleton.vue';
+import ProductSkeleton from '../components/ProductSkeleton.vue';
 
 const filters = useFilterCategoryStore();
 const products = useProductsStore();
@@ -79,6 +81,10 @@ const setPriceRange = async (e: any) => {
                   class="mt-8"
                 />
               </Vueform>
+            </div>
+
+            <div v-if="filters.isLoading">
+              <FiltersSkeleton v-for="i in 2" :key="i" />
             </div>
 
             <div v-for="filterGroup in filters.filters" :key="filterGroup.id" class="mt-4">
@@ -226,7 +232,13 @@ const setPriceRange = async (e: any) => {
     </section>
     <section class="flex-1 mb-10">
       <h1 class="text-2xl font-bold border-b border-b-gray-200 mb-6">Busqueda</h1>
-      <div class="grid grid-cols-[repeat(auto-fill,minmax(244px,1fr))] gap-4">
+      <div
+        v-if="products.isLoading"
+        class="grid grid-cols-[repeat(auto-fill,minmax(244px,1fr))] gap-4"
+      >
+        <ProductSkeleton v-for="i in 6" :key="i" />
+      </div>
+      <div v-else class="grid grid-cols-[repeat(auto-fill,minmax(244px,1fr))] gap-4">
         <ProductCard
           v-for="product in products.products"
           :key="product.product_id"

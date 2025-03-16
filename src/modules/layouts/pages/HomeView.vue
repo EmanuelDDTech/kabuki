@@ -12,6 +12,7 @@ import { date } from '@vueform/vueform';
 import StarIcon from '@/modules/common/icons/StarIcon.vue';
 import { useFeaturedProductStore } from '../stores/featuredProduct';
 import ProductCard from '@/modules/products/components/ProductCard.vue';
+import ProductSkeleton from '@/modules/products/components/ProductSkeleton.vue';
 
 const campaign = useCampaignStore();
 const featuredProductStore = useFeaturedProductStore();
@@ -120,7 +121,17 @@ onMounted(async () => {
           <h2 class="text-4xl font-bold">Producto destacado</h2>
         </div>
 
-        <div class="grid gap-5 grid-cols-[repeat(auto-fill,minmax(224px,288px))] justify-center">
+        <div
+          v-if="featuredProductStore.isLoading"
+          class="grid gap-5 grid-cols-[repeat(auto-fill,minmax(224px,288px))] justify-center"
+        >
+          <ProductSkeleton v-for="i in 8" :key="i" />
+        </div>
+
+        <div
+          v-else
+          class="grid gap-5 grid-cols-[repeat(auto-fill,minmax(224px,288px))] justify-center"
+        >
           <ProductCard
             v-for="featuredProduct in featuredProductStore.featuredProducts"
             :key="featuredProduct.product.id"
