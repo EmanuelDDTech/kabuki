@@ -27,9 +27,8 @@
           </router-link>
         </li>
         <li>
-          <a
-            href="#"
-            target="_blank"
+          <router-link
+            :to="{ name: 'myPurchases' }"
             class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg hover:bg-gray-100"
           >
             <svg
@@ -47,9 +46,9 @@
               class="inline-flex items-center justify-center px-2 ml-3 text-sm font-medium text-gray-800 bg-gray-200 rounded-full"
               >Pro</span
             > -->
-          </a>
+          </router-link>
         </li>
-        <li>
+        <!-- <li>
           <a
             href="#"
             target="_blank"
@@ -69,12 +68,8 @@
               ></path>
             </svg>
             <span class="flex-1 ml-3 whitespace-nowrap">Me gusta</span>
-            <!-- <span
-              class="inline-flex items-center justify-center w-3 h-3 p-3 ml-3 text-sm font-medium text-blue-600 bg-blue-200 rounded-full"
-              >3</span
-            > -->
           </a>
-        </li>
+        </li> -->
         <li>
           <router-link
             :to="{ name: 'products' }"
@@ -138,7 +133,7 @@
         </li>
         <li v-if="user.isSet">
           <router-link
-            :to="{ name: 'login' }"
+            :to="{ name: 'myPurchases' }"
             class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg hover:bg-gray-100"
           >
             <svg
