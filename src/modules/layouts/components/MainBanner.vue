@@ -43,6 +43,7 @@ onMounted(async () => {
 .swiper {
   /* height: 500px; */
   max-height: 500px;
+  aspect-ratio: 8/3;
 }
 
 .swiper-slide {
