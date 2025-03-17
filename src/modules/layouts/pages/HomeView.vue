@@ -21,61 +21,61 @@ const routes = [
   {
     name: 'products',
     text: 'Surgin Sparks',
-    img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Fsurgin_sparks.jpg?alt=media&token=493f6d94-0954-4ee4-ae87-cc205a6f62c4',
+    img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Fsurgin_sparks.webp?alt=media&token=07ee7fe9-2e9d-4d20-9440-6b14d88e3ddc',
     query: { expansion: 'surgin-sparks' },
   },
   {
     name: 'products',
     text: 'Stellar Crown',
-    img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Fstellar_crown.jpg?alt=media&token=717231e9-8f30-4a7c-9ed3-c91619ee6250',
+    img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Fstellar_crown.webp?alt=media&token=9292a456-67b8-4391-ae85-d3278ccb7531',
     query: { expansion: 'stellar-crown' },
   },
   {
     name: 'products',
     text: 'Shrouded Fable',
-    img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Fshrouded_fable.jpg?alt=media&token=bf12f3a8-fea7-4aa5-8bc4-d3f2c3bf4b48',
+    img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Fshrouded_fable.webp?alt=media&token=04344873-eb4c-49aa-b040-ef31807628aa',
     query: { expansion: 'shrouded-fable' },
   },
   {
     name: 'products',
     text: 'Twilight Masquerade',
-    img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Ftwilight_masquerade.jpg?alt=media&token=3e955813-7ec5-419f-b9dc-1fc512b91412',
+    img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Ftwilight_masquerade.webp?alt=media&token=6ea2c443-b0ee-46f6-90ca-9edfd16058ec',
     query: { expansion: 'twilight-masquerade' },
   },
   {
     name: 'products',
     text: 'Temporal Forces',
-    img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Ftemporal_forces.jpg?alt=media&token=ef8174cc-5daf-4b7f-bbb5-4ff262533c6e',
+    img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Ftemporal_forces.webp?alt=media&token=15830a31-4e19-40fa-8362-15dea4d2043f',
     query: { expansion: 'temporal-forces' },
   },
   {
     name: 'products',
     text: 'Paldean Fates',
-    img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Fpaldean_fate.jpg?alt=media&token=7b3074dd-eae3-487d-9f7b-5f56d143648e',
+    img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Fpaldean_fate.webp?alt=media&token=06d8bea9-baab-45e6-80e5-27a07204490d',
     query: { expansion: 'paldean-fates' },
   },
   {
     name: 'products',
     text: 'Paradox Rift',
-    img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Fparadox_rift.jpg?alt=media&token=ffd005f5-6ab2-4caf-bbaf-98412c89d2ad',
+    img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Fparadox_rift.webp?alt=media&token=e9b51d4f-e5f5-4a12-963c-db201b4b9625',
     query: { expansion: 'paradox-rift' },
   },
   {
     name: 'products',
     text: 'Obsidian Flames',
-    img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Fobsidian_flames.jpg?alt=media&token=90fb2197-f4a0-4ab3-be43-020b1ecd8eb1',
+    img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Fobsidian_flames.webp?alt=media&token=54f22ac9-ecde-47c5-9f85-11c218b96d66',
     query: { expansion: 'obsidian-flames' },
   },
   {
     name: 'products',
     text: 'Paldea Evolved',
-    img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Fpaldea_evolve.jpg?alt=media&token=1285e165-33a1-4ab9-baba-1fcdf8cfadc1',
+    img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Fpaldea_evolve.webp?alt=media&token=9586367d-8f22-4978-9ceb-f43d7d93a0f7',
     query: { expansion: 'paldea-evolved' },
   },
   {
     name: 'products',
     text: 'Scarlet & Violet',
-    img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Fscarlet_violet.jpg?alt=media&token=22b8caf3-485d-404f-a9f1-4157e587ee17',
+    img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Fscarlet_violet.webp?alt=media&token=9bb480ec-ca84-45bd-8177-2112dd543bad',
     query: { expansion: 'scarlet-&-violet' },
   },
 ];
@@ -153,135 +153,257 @@ onMounted(async () => {
           ></aside>
           <ul class="flex-1 grid grid-cols-1 md:grid-cols-2 gap-6">
             <li class="shadow-lg p-6 rounded-lg border border-gray-100 aspect-video">
-              <h3 class="text-xl font-bold">Booster Box</h3>
+              <router-link :to="{ name: 'products', query: { 'tipo-de-producto': 'booster-box' } }"
+                ><h3 class="text-xl font-bold">Booster Box</h3></router-link
+              >
               <p class="text-gray-400 mb-3">"Más cartas, más poder."</p>
               <div class="flex gap-3">
-                <article class="flex flex-col gap-2 justify-center items-center">
-                  <img
-                    src="@assets/img/producto.webp"
-                    alt="Imagen de producto"
-                    class="object-contain w-3/5"
-                    loading="lazy"
-                  />
-                  <p class="font-bold">$2,500.00</p>
-                </article>
-                <article class="flex flex-col gap-2 justify-center items-center">
-                  <img
-                    src="@assets/img/producto.webp"
-                    alt="Imagen de producto"
-                    class="object-contain w-3/5"
-                    loading="lazy"
-                  />
-                  <p class="font-bold">$2,500.00</p>
-                </article>
-                <article class="flex flex-col gap-2 justify-center items-center">
-                  <img
-                    src="@assets/img/producto.webp"
-                    alt="Imagen de producto"
-                    class="object-contain w-3/5"
-                    loading="lazy"
-                  />
-                  <p class="font-bold">$2,500.00</p>
-                </article>
+                <router-link
+                  :to="{
+                    name: 'products',
+                    query: { 'tipo-de-producto': 'booster-box', expansion: 'surgin-sparks' },
+                  }"
+                >
+                  <article
+                    class="flex flex-col gap-2 justify-center items-center cursor-pointer group hover:bg-gray-200 transition-colors p-3 rounded"
+                  >
+                    <img
+                      src="https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/products%2Fea757bf4ce3.jpg?alt=media&token=123bcd35-0982-4a37-b50c-0256a2ae1f2f"
+                      alt="Imagen de producto"
+                      class="object-contain w-3/4 group-hover:scale-105 transition-transform"
+                      loading="lazy"
+                    />
+                    <p class="text-center">Surging Sparks</p>
+                  </article>
+                </router-link>
+                <router-link
+                  :to="{
+                    name: 'products',
+                    query: { 'tipo-de-producto': 'booster-box', expansion: 'twilight-masquerade' },
+                  }"
+                >
+                  <article
+                    class="flex flex-col gap-2 justify-center items-center cursor-pointer group hover:bg-gray-200 transition-colors p-3 rounded"
+                  >
+                    <img
+                      src="https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/products%2F757bf4ce31b.jpg?alt=media&token=e388e1b3-cfb7-48d8-9db5-a133ebabeae6"
+                      alt="Imagen de producto"
+                      class="object-contain w-3/4 group-hover:scale-105 transition-transform"
+                      loading="lazy"
+                    />
+                    <p class="text-center">Twilight Masquerade</p>
+                  </article>
+                </router-link>
+                <router-link
+                  :to="{
+                    name: 'products',
+                    query: { 'tipo-de-producto': 'booster-box', expansion: 'paradox-rift' },
+                  }"
+                >
+                  <article
+                    class="flex flex-col gap-2 justify-center items-center cursor-pointer group hover:bg-gray-200 transition-colors p-3 rounded"
+                  >
+                    <img
+                      src="https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/products%2Ff4ce31bd9c7.jpg?alt=media&token=2266bb67-877d-49d8-bc3a-7f90225b7864"
+                      alt="Imagen de producto"
+                      class="object-contain w-3/4 group-hover:scale-105 transition-transform"
+                      loading="lazy"
+                    />
+                    <p class="text-center">Paradox Rift</p>
+                  </article>
+                </router-link>
               </div>
             </li>
             <li class="shadow-lg p-6 rounded-lg border border-gray-100 aspect-video">
-              <h3 class="text-xl font-bold">Elite Trainer Box</h3>
+              <router-link
+                :to="{ name: 'products', query: { 'tipo-de-producto': 'elite-trainer-box' } }"
+                ><h3 class="text-xl font-bold">Elite Trainer Box</h3></router-link
+              >
               <p class="text-gray-400 mb-3">"Todo lo que necesitas."</p>
               <div class="flex gap-3">
-                <article class="flex flex-col gap-2 justify-center items-center">
-                  <img
-                    src="@assets/img/producto.webp"
-                    alt="Imagen de producto"
-                    class="object-contain w-3/5"
-                    loading="lazy"
-                  />
-                  <p class="font-bold">$2,500.00</p>
-                </article>
-                <article class="flex flex-col gap-2 justify-center items-center">
-                  <img
-                    src="@assets/img/producto.webp"
-                    alt="Imagen de producto"
-                    class="object-contain w-3/5"
-                    loading="lazy"
-                  />
-                  <p class="font-bold">$2,500.00</p>
-                </article>
-                <article class="flex flex-col gap-2 justify-center items-center">
-                  <img
-                    src="@assets/img/producto.webp"
-                    alt="Imagen de producto"
-                    class="object-contain w-3/5"
-                    loading="lazy"
-                  />
-                  <p class="font-bold">$2,500.00</p>
-                </article>
+                <router-link
+                  :to="{
+                    name: 'products',
+                    query: {
+                      'tipo-de-producto': 'elite-trainer-box',
+                      expansion: 'prismatic-evolution',
+                    },
+                  }"
+                >
+                  <article
+                    class="flex flex-col gap-2 justify-center items-center cursor-pointer group hover:bg-gray-200 transition-colors p-3 rounded"
+                  >
+                    <img
+                      src="https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/products%2F646c23fdf4f.jpg?alt=media&token=b47da676-d6d8-4181-8f7b-69ba80ac1d3f"
+                      alt="Imagen de producto"
+                      class="object-contain w-3/4 group-hover:scale-105 transition-transform"
+                      loading="lazy"
+                    />
+                    <p class="text-center">Prismatic Evolutions</p>
+                  </article>
+                </router-link>
+                <router-link
+                  :to="{
+                    name: 'products',
+                    query: {
+                      'tipo-de-producto': 'elite-trainer-box',
+                      expansion: 'twilight-masquerade',
+                    },
+                  }"
+                >
+                  <article
+                    class="flex flex-col gap-2 justify-center items-center cursor-pointer group hover:bg-gray-200 transition-colors p-3 rounded"
+                  >
+                    <img
+                      src="https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/products%2Fb9e0631da62.jpg?alt=media&token=d8b90f91-502c-490c-91d0-97be3ba2baa2"
+                      alt="Imagen de producto"
+                      class="object-contain w-3/4 group-hover:scale-105 transition-transform"
+                      loading="lazy"
+                    />
+                    <p class="text-center">Twilight Masquerade</p>
+                  </article>
+                </router-link>
+                <router-link
+                  :to="{
+                    name: 'products',
+                    query: { 'tipo-de-producto': 'elite-trainer-box', expansion: 'surgin-sparks' },
+                  }"
+                >
+                  <article
+                    class="flex flex-col gap-2 justify-center items-center cursor-pointer group hover:bg-gray-200 transition-colors p-3 rounded"
+                  >
+                    <img
+                      src="https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/products%2Ffdf4ffb9e06.jpg?alt=media&token=ce69a2a1-9f2d-4a40-a027-e4f3f378d6d2"
+                      alt="Imagen de producto"
+                      class="object-contain w-3/4 group-hover:scale-105 transition-transform"
+                      loading="lazy"
+                    />
+                    <p class="text-center">Surging Sparks</p>
+                  </article>
+                </router-link>
               </div>
             </li>
             <li class="shadow-lg p-6 rounded-lg border border-gray-100 aspect-video">
-              <h3 class="text-xl font-bold">Premium Collection</h3>
+              <router-link
+                :to="{ name: 'products', query: { 'tipo-de-producto': 'premium-collection' } }"
+                ><h3 class="text-xl font-bold">Premium Collection</h3></router-link
+              >
               <p class="text-gray-400 mb-3">"Exclusividad garantizada."</p>
               <div class="flex gap-3">
-                <article class="flex flex-col gap-2 justify-center items-center">
-                  <img
-                    src="@assets/img/producto.webp"
-                    alt="Imagen de producto"
-                    class="object-contain w-3/5"
-                    loading="lazy"
-                  />
-                  <p class="font-bold">$2,500.00</p>
-                </article>
-                <article class="flex flex-col gap-2 justify-center items-center">
-                  <img
-                    src="@assets/img/producto.webp"
-                    alt="Imagen de producto"
-                    class="object-contain w-3/5"
-                    loading="lazy"
-                  />
-                  <p class="font-bold">$2,500.00</p>
-                </article>
-                <article class="flex flex-col gap-2 justify-center items-center">
-                  <img
-                    src="@assets/img/producto.webp"
-                    alt="Imagen de producto"
-                    class="object-contain w-3/5"
-                    loading="lazy"
-                  />
-                  <p class="font-bold">$2,500.00</p>
-                </article>
+                <router-link
+                  :to="{
+                    name: 'products',
+                    query: {
+                      'tipo-de-producto': 'premium-collection',
+                      expansion: '151',
+                    },
+                  }"
+                >
+                  <article
+                    class="flex flex-col gap-2 justify-center items-center cursor-pointer group hover:bg-gray-200 transition-colors p-3 rounded"
+                  >
+                    <img
+                      src="https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/products%2F3519f1a27bc.jpg?alt=media&token=0b53965c-bb56-40cc-8c1d-170b98ee8ecd"
+                      alt="Imagen de producto"
+                      class="object-contain w-3/4 group-hover:scale-105 transition-transform"
+                      loading="lazy"
+                    />
+                    <p class="text-center">151</p>
+                  </article>
+                </router-link>
+                <router-link
+                  :to="{
+                    name: 'products',
+                    query: {
+                      'tipo-de-producto': 'premium-collection',
+                      expansion: 'twilight-masquerade',
+                    },
+                  }"
+                >
+                  <article
+                    class="flex flex-col gap-2 justify-center items-center cursor-pointer group hover:bg-gray-200 transition-colors p-3 rounded"
+                  >
+                    <img
+                      src="https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/products%2F1ad33519f1a.jpg?alt=media&token=70c00a70-facc-4d2b-be1d-5f0f210f8229"
+                      alt="Imagen de producto"
+                      class="object-contain w-3/4 group-hover:scale-105 transition-transform"
+                      loading="lazy"
+                    />
+                    <p class="text-center">Twilight Masquerade</p>
+                  </article>
+                </router-link>
               </div>
             </li>
             <li class="shadow-lg p-6 rounded-lg border border-gray-100 aspect-video">
-              <h3 class="text-xl font-bold">Special Collection</h3>
+              <router-link
+                :to="{ name: 'products', query: { 'tipo-de-producto': 'producto-cerrado' } }"
+                ><h3 class="text-xl font-bold">Booster Bundle</h3></router-link
+              >
               <p class="text-gray-400 mb-3">"Ediciones únicas."</p>
               <div class="flex gap-3">
-                <article class="flex flex-col gap-2 justify-center items-center">
-                  <img
-                    src="@assets/img/producto.webp"
-                    alt="Imagen de producto"
-                    class="object-contain w-3/5"
-                    loading="lazy"
-                  />
-                  <p class="font-bold">$2,500.00</p>
-                </article>
-                <article class="flex flex-col gap-2 justify-center items-center">
-                  <img
-                    src="@assets/img/producto.webp"
-                    alt="Imagen de producto"
-                    class="object-contain w-3/5"
-                    loading="lazy"
-                  />
-                  <p class="font-bold">$2,500.00</p>
-                </article>
-                <article class="flex flex-col gap-2 justify-center items-center">
-                  <img
-                    src="@assets/img/producto.webp"
-                    alt="Imagen de producto"
-                    class="object-contain w-3/5"
-                    loading="lazy"
-                  />
-                  <p class="font-bold">$2,500.00</p>
-                </article>
+                <router-link
+                  :to="{
+                    name: 'products',
+                    query: {
+                      'tipo-de-producto': 'producto-cerrado',
+                      expansion: 'prismatic-evolutions',
+                    },
+                  }"
+                >
+                  <article
+                    class="flex flex-col gap-2 justify-center items-center cursor-pointer group hover:bg-gray-200 transition-colors p-3 rounded"
+                  >
+                    <img
+                      src="https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/products%2F0b0f9033605.jpg?alt=media&token=614cdc69-3461-4060-ac8a-793adf23753b"
+                      alt="Imagen de producto"
+                      class="object-contain w-3/4 group-hover:scale-105 transition-transform"
+                      loading="lazy"
+                    />
+                    <p class="text-center">Prismatic Evolutions</p>
+                  </article>
+                </router-link>
+                <router-link
+                  :to="{
+                    name: 'products',
+                    query: {
+                      'tipo-de-producto': 'producto-cerrado',
+                      expansion: 'shrouded-fable',
+                    },
+                  }"
+                >
+                  <article
+                    class="flex flex-col gap-2 justify-center items-center cursor-pointer group hover:bg-gray-200 transition-colors p-3 rounded"
+                  >
+                    <img
+                      src="https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/products%2F0f903360534.jpg?alt=media&token=d74cff2a-cb04-4a97-b6b1-eec6eaa066ae"
+                      alt="Imagen de producto"
+                      class="object-contain w-3/4 group-hover:scale-105 transition-transform"
+                      loading="lazy"
+                    />
+                    <p class="text-center">Shrouded Fable</p>
+                  </article>
+                </router-link>
+                <router-link
+                  :to="{
+                    name: 'products',
+                    query: {
+                      'tipo-de-producto': 'producto-cerrado',
+                      expansion: 'surgin-sparks',
+                    },
+                  }"
+                >
+                  <article
+                    class="flex flex-col gap-2 justify-center items-center cursor-pointer group hover:bg-gray-200 transition-colors p-3 rounded"
+                  >
+                    <img
+                      src="https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/products%2F3360534c646.jpg?alt=media&token=de52f95b-ff72-47b0-bf8b-ed77bcfdb34e"
+                      alt="Imagen de producto"
+                      class="object-contain w-3/4 group-hover:scale-105 transition-transform"
+                      loading="lazy"
+                    />
+                    <p class="text-center">Surging Sparks</p>
+                  </article>
+                </router-link>
               </div>
             </li>
           </ul>
