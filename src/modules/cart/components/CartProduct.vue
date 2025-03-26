@@ -50,9 +50,9 @@ interface Props {
 const props = defineProps<Props>();
 
 const res = async (productId, quantity) => {
-  if (quantity <= 0) {
+  if (quantity <= 1) {
     toast.open({
-      message: 'La cantidad ya está en 0',
+      message: 'La cantidad mínima es 1.',
       type: 'error',
     });
     return;

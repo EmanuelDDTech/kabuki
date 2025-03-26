@@ -194,57 +194,6 @@
       </div>
 
       <SideBard />
-
-      <!-- <div>
-        <aside class="h-full mt-6 lg:mt-0">
-          <div
-            v-if="cart.isEmpty"
-            class="w-full max-w-96 lg:w-72 shadow-md border border-gray-100 p-4 rounded-lg sticky top-3 mx-auto"
-          >
-            <h3 class="text-lg flex justify-between text-slate-700">
-              Aún no has agregado ningún producto al carrito
-            </h3>
-
-            <router-link
-              :to="{ name: 'products' }"
-              @click="checkout()"
-              class="block text-center text-white w-full rounded-full bg-blue-600 hover:bg-blue-500 py-1 mt-3 text-sm transition-colors"
-            >
-              Ver productos
-            </router-link>
-          </div>
-          <div
-            v-if="!cart.isEmpty"
-            class="w-full max-w-96 lg:w-72 shadow-md border border-gray-100 p-4 rounded-lg sticky top-3 mx-auto"
-          >
-            <h3 class="text-lg flex justify-between">
-              Subtotal: <span class="font-bold">{{ formatCurrency(cart.total) }}</span>
-            </h3>
-
-            <h3
-              v-if="delivery.isCarrierSelected"
-              class="text-lg flex justify-between mt-2 pb-3 border-b-2 border-gray-100"
-            >
-              Envío: <span class="font-bold">{{ formatCurrency(delivery.amountShipping) }}</span>
-            </h3>
-
-            <h3 class="text-lg flex justify-between mt-3">
-              Total:
-              <span class="font-bold">{{
-                formatCurrency(cart.total + delivery.amountShipping)
-              }}</span>
-            </h3>
-
-            <button
-              v-show="!cart.payNow"
-              @click="checkout()"
-              class="block text-center w-full rounded-full bg-yellow-300 hover:bg-yellow-400 py-1 mt-3 text-sm transition-colors"
-            >
-              Proceder al pago
-            </button>
-          </div>
-        </aside>
-      </div> -->
     </div>
   </main>
 </template>
@@ -256,7 +205,6 @@ import CartProduct from '../components/CartProduct.vue';
 import { useCartStore } from '../stores/cart';
 import { formatCurrency } from '@/helpers';
 import { FormKit, reset } from '@formkit/vue';
-// import { AddressValidationClient } from '@googlemaps/addressvalidation';
 import { useAddressStore } from '../stores/address';
 import LeftArrow from '@/modules/icons/ArrowLeft.vue';
 import AddressCard from '../components/AddressCard.vue';
@@ -266,10 +214,10 @@ import type { Delivery } from '../interfaces/delivery.interface';
 import SideBard from '../components/SideBard.vue';
 import { useUserStore } from '@/modules/auth/stores/user';
 
-const cart = useCartStore();
+const userStore = useUserStore();
 const address = useAddressStore();
 const delivery = useDeliveryStore();
-const userStore = useUserStore();
+const cart = useCartStore();
 
 const router = useRouter();
 
@@ -277,8 +225,6 @@ const toast = inject('toast');
 
 onMounted(() => {
   address.getAddresses();
-
-  // addPaypalScript();
 });
 
 const saveAddress = async () => {
@@ -377,120 +323,6 @@ const checkout = () => {
   cart.checkout();
   router.push({ name: 'pay' });
 };
-
-// const addPaypalScript = () => {
-//   const scriptSdkPaypal = document.createElement('script');
-//   scriptSdkPaypal.src = `https://www.paypal.com/sdk/js?client-id=${import.meta.env.VITE_PAYPAL_CLIENT_ID}&currency=MXN&components=buttons&disable-funding=venmo,paylater,card`;
-//   scriptSdkPaypal.onload = () => {
-//     createPaypalButtons();
-//   };
-//   // scriptSdkPaypal.data-sdk-integration-source = "developer-studio";
-
-//   document.head.append(scriptSdkPaypal);
-// };
-
-// const createPaypalButtons = () => {
-//   window.paypal
-//     .Buttons({
-//       style: {
-//         shape: 'pill',
-//         layout: 'vertical',
-//         color: 'blue',
-//         label: 'paypal',
-//       },
-//       message: {
-//         amount: 100,
-//       },
-
-//       async createOrder() {
-//         try {
-//           const response = await fetch(`${import.meta.env.VITE_API_URL}/paypal/orders`, {
-//             method: 'POST',
-//             headers: {
-//               'Content-Type': 'application/json',
-//             },
-//             // use the "body" param to optionally pass additional order information
-//             // like product ids and quantities
-//             body: JSON.stringify({
-//               cart: cart.paypalCart,
-//               itemsTotal: cart.total,
-//               shippingAmount: delivery.amountShipping,
-//               shippingAddress: address.getSelectedAddress,
-//             }),
-//           });
-
-//           const orderData = await response.json();
-
-//           if (orderData.id) {
-//             return orderData.id;
-//           }
-//           const errorDetail = orderData?.details?.[0];
-//           const errorMessage = errorDetail
-//             ? `${errorDetail.issue} ${errorDetail.description} (${orderData.debug_id})`
-//             : JSON.stringify(orderData);
-
-//           throw new Error(errorMessage);
-//         } catch (error) {
-//           console.error(error);
-//           // resultMessage(`Could not initiate PayPal Checkout...<br><br>${error}`);
-//         }
-//       },
-
-//       async onApprove(data, actions) {
-//         try {
-//           const response = await fetch(
-//             `${import.meta.env.VITE_API_URL}/paypal/orders/${data.orderID}/capture`,
-//             {
-//               method: 'POST',
-//               headers: {
-//                 'Content-Type': 'application/json',
-//               },
-//             },
-//           );
-//           const orderData = await response.json();
-//           // Three cases to handle:
-//           //   (1) Recoverable INSTRUMENT_DECLINED -> call actions.restart()
-//           //   (2) Other non-recoverable errors -> Show a failure message
-//           //   (3) Successful transaction -> Show confirmation or thank you message
-//           const errorDetail = orderData?.details?.[0];
-//           if (errorDetail?.issue === 'INSTRUMENT_DECLINED') {
-//             // (1) Recoverable INSTRUMENT_DECLINED -> call actions.restart()
-//             // recoverable state, per
-//             // https://developer.paypal.com/docs/checkout/standard/customize/handle-funding-failures/
-//             return actions.restart();
-//           } else if (errorDetail) {
-//             // (2) Other non-recoverable errors -> Show a failure message
-//             throw new Error(`${errorDetail.description} (${orderData.debug_id})`);
-//           } else if (!orderData.purchase_units) {
-//             throw new Error(JSON.stringify(orderData));
-//           } else {
-//             // (3) Successful transaction -> Show confirmation or thank you message
-//             // Or go to another URL:  actions.redirect('thank_you.html');
-//             const transaction =
-//               orderData?.purchase_units?.[0]?.payments?.captures?.[0] ||
-//               orderData?.purchase_units?.[0]?.payments?.authorizations?.[0];
-
-//             const saleOrder = await cart.createSaleOrder(transaction.id);
-//             await cart.deleteCart();
-//             address.clearSelectedAddress();
-//             delivery.clearSelectedAddress();
-
-//             router.push({ name: 'thanks', params: { saleOrderId: saleOrder.order.id } });
-
-//             //   resultMessage(
-//             //     `Transaction ${transaction.status}: ${transaction.id}<br>
-//             // <br>See console for all available details`,
-//             //   );
-//             // console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
-//           }
-//         } catch (error) {
-//           console.error(error);
-//           // resultMessage(`Sorry, your transaction could not be processed...<br><br>${error}`);
-//         }
-//       },
-//     })
-//     .render('#paypal-button-container');
-// };
 </script>
 
 <style scoped></style>

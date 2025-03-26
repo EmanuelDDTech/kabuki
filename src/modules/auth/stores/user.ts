@@ -8,10 +8,6 @@ export const useUserStore = defineStore('user', () => {
   const router = useRouter();
   const user = ref<User | null>();
 
-  onMounted(async () => {
-    await setUser();
-  });
-
   const setUser = async () => {
     try {
       const { data } = await AuthAPI.auth();

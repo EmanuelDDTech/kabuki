@@ -81,16 +81,23 @@
 <script lang="ts" setup>
 import { useUserStore } from '@/modules/auth/stores/user';
 import FloatingOptions from './FloatingOptions.vue';
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { useFilterCategoryStore } from '@/modules/filter/store/filterCategory';
+import { useCartStore } from '@/modules/cart/stores/cart';
 
 const user = useUserStore();
+const cartStore = useCartStore();
 const filters = useFilterCategoryStore();
 const isProductOptionsVisible = ref(false);
 const isProfileOptionsVisible = ref(false);
 
 const route = useRoute();
+
+onMounted(async () => {
+  await user.setUser();
+  await cartStore.getCart();
+});
 
 const showProductOptions = () => {
   isProfileOptionsVisible.value = false;

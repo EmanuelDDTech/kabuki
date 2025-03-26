@@ -1,12 +1,12 @@
 import { defineStore } from 'pinia';
-import { computed, onMounted, ref, watch, watchEffect } from 'vue';
+import { computed, inject, onMounted, ref, watch, watchEffect } from 'vue';
 import CartAPI from '../api/CartAPI';
 import SaleAPI from '../api/SaleAPI';
 import { useAddressStore } from './address';
 import { useDeliveryStore } from './delivery';
-
-const address = useAddressStore();
-const delivery = useDeliveryStore();
+import { useUserStore } from '@/modules/auth/stores/user';
+import ProductAPI from '@/modules/product/api/ProductAPI';
+import type { Product } from '@/modules/product/interfaces/product.interface';
 
 export const useCartStore = defineStore('cart', () => {
   // const coupon = useCouponStore();
@@ -21,6 +21,12 @@ export const useCartStore = defineStore('cart', () => {
   const payNow = ref(false);
   const paypalCart = ref([]);
 
+  const userStore = useUserStore();
+  const address = useAddressStore();
+  const delivery = useDeliveryStore();
+
+  const toast: any = inject('toast');
+
   watchEffect(() => {
     subtotal.value = items.value.reduce(
       (total, item) => total + item.product.price * item.quantity,
@@ -30,7 +36,8 @@ export const useCartStore = defineStore('cart', () => {
     total.value = Number(subtotal.value.toFixed(2));
   });
 
-  watchEffect(() => {
+  watchEffect(async () => {
+    if (!userStore.isSet) return;
     paypalCart.value = items.value.map((item) => {
       return {
         name: item.product.name,
@@ -43,34 +50,71 @@ export const useCartStore = defineStore('cart', () => {
     });
   });
 
-  onMounted(() => {
-    getCart();
-  });
-
   async function getCart() {
-    const { data } = await CartAPI.get();
-    items.value = data;
+    if (userStore.isSet) {
+      const { data } = await CartAPI.get();
+      items.value = data;
+    } else {
+      const localCart = JSON.parse(localStorage.getItem('_shorikame_cart')) || [];
+
+      Promise.all(
+        localCart.map(async (localProduct: object) => {
+          const { data } = await ProductAPI.findById(localProduct.id);
+          const quantity = localProduct.quantity;
+
+          return { product: data, quantity };
+        }),
+      ).then((results) => {
+        results.forEach(({ product, quantity }) => {
+          items.value.push({ id: 0, quantity, product });
+        });
+      });
+    }
   }
 
   async function addItem(item) {
-    if (isItemInCart(item.id)) {
-      try {
-        await CartAPI.delete({ productId: item.id });
-        items.value = items.value.filter((itemCart) => itemCart.product.id !== item.id);
-      } catch (error) {
-        console.log(error);
+    if (userStore.isSet) {
+      if (isItemInCart(item.id)) {
+        try {
+          await CartAPI.delete({ productId: item.id });
+          items.value = items.value.filter((itemCart) => itemCart.product.id !== item.id);
+        } catch (error) {
+          console.log(error);
+        }
+      } else {
+        try {
+          await CartAPI.add({ productId: item.id });
+          await getCart();
+        } catch (error) {
+          console.log(error);
+        }
       }
     } else {
-      try {
-        await CartAPI.add({ productId: item.id });
-        await getCart();
-      } catch (error) {
-        console.log(error);
+      if (isItemInCart(item.id)) {
+        let localCart = JSON.parse(localStorage.getItem('_shorikame_cart')) || [];
+        localCart = localCart.filter((localProduct) => localProduct.id !== item.id);
+
+        localStorage.setItem('_shorikame_cart', JSON.stringify(localCart));
+
+        items.value = items.value.filter((itemData) => itemData.product.id !== item.id);
+      } else {
+        try {
+          const localCart = JSON.parse(localStorage.getItem('_shorikame_cart')) || [];
+
+          localCart.push({ id: item.id, quantity: 1 });
+          localStorage.setItem('_shorikame_cart', JSON.stringify(localCart));
+
+          const { data } = await ProductAPI.findById(item.id);
+
+          items.value.push({ id: 0, quantity: 1, product: data });
+        } catch (error) {
+          console.log(error);
+        }
       }
     }
   }
 
-  async function reduceQuantity(productId, quantity) {
+  async function reduceQuantity(productId: number, quantity: number) {
     const newQuantity = quantity - 1;
     items.value = items.value.map((item) => {
       if (item.product.id === productId) {
@@ -80,9 +124,13 @@ export const useCartStore = defineStore('cart', () => {
       return item;
     });
 
-    await CartAPI.update({ productId, quantity: newQuantity });
+    if (userStore.isSet) {
+      await CartAPI.update({ productId, quantity: newQuantity });
+    } else {
+      updateLocal(productId, newQuantity);
+    }
   }
-  async function increaseQuantity(productId, quantity) {
+  async function increaseQuantity(productId: number, quantity: number) {
     try {
       const newQuantity = quantity + 1;
       items.value = items.value.map((item) => {
@@ -93,7 +141,11 @@ export const useCartStore = defineStore('cart', () => {
         return item;
       });
 
-      await CartAPI.update({ productId, quantity: newQuantity });
+      if (userStore.isSet) {
+        await CartAPI.update({ productId, quantity: newQuantity });
+      } else {
+        updateLocal(productId, newQuantity);
+      }
     } catch (error) {
       items.value = items.value.map((item) => {
         if (item.product.id === productId) {
@@ -107,8 +159,32 @@ export const useCartStore = defineStore('cart', () => {
     }
   }
 
+  function updateLocal(productId: number, quantity: number) {
+    let localCart = JSON.parse(localStorage.getItem('_shorikame_cart')) || [];
+
+    localCart = localCart.map((localProduct: { id: number; quantity: number }) => {
+      if (localProduct.id === productId) {
+        localProduct.quantity = quantity;
+        return localProduct;
+      }
+
+      return localProduct;
+    });
+
+    localStorage.setItem('_shorikame_cart', JSON.stringify(localCart));
+  }
+
   async function removeItem(productId: number) {
-    await CartAPI.delete({ productId });
+    if (userStore.isSet) await CartAPI.delete({ productId });
+    else {
+      let localCart = JSON.parse(localStorage.getItem('_shorikame_cart')) || [];
+      localCart = localCart.filter(
+        (locaProduct: { id: number; quantity: number }) => locaProduct.id !== productId,
+      );
+
+      localStorage.setItem('_shorikame_cart', JSON.stringify(localCart));
+    }
+
     items.value = items.value.filter((item) => item.product.id !== productId);
   }
 
@@ -129,8 +205,6 @@ export const useCartStore = defineStore('cart', () => {
 
     return true;
   }
-  // const isProductAvailable = (item) =>
-  //   item.quantity >= item.availability || item.quantity >= MAX_PRODUCTS;
 
   const isEmpty = computed(() => items.value.length === 0);
   const checkProductAvailability = computed(() => {
@@ -178,6 +252,33 @@ export const useCartStore = defineStore('cart', () => {
     items.value = [];
   };
 
+  const moveLocalCart = async () => {
+    const localCart = JSON.parse(localStorage.getItem('_shorikame_cart')) || [];
+
+    Promise.allSettled(
+      localCart.map(async (localProduct: { id: number; quantity: number }) => {
+        return await CartAPI.add({ productId: localProduct.id });
+      }),
+    ).then((results) => {
+      let error = false;
+      localStorage.setItem('_shorikame_cart', JSON.stringify([]));
+
+      console.log(results);
+      results.forEach((result) => {
+        if (result.status === 'rejected') error = true;
+      });
+
+      if (error) {
+        toast.open({
+          message: 'Algunos productos ya estaban en el carrito.',
+          type: 'error',
+        });
+      }
+    });
+
+    await getCart();
+  };
+
   const cartWeight = computed(() =>
     items.value.reduce((totalWeight, item) => totalWeight + item.product.weight * item.quantity, 0),
   );
@@ -206,6 +307,7 @@ export const useCartStore = defineStore('cart', () => {
     isItemInCart,
     createSaleOrder,
     deleteCart,
+    moveLocalCart,
 
     // Getters
     cartWeight,

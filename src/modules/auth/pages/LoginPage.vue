@@ -48,9 +48,12 @@ import { inject, onMounted } from 'vue';
 import { GoogleSignInButton, decodeCredential, type CredentialResponse } from 'vue3-google-signin';
 import AuthAPI from '../api/AuthAPI';
 import { useUserStore } from '../stores/user';
+import { useCartStore } from '@/modules/cart/stores/cart';
 
 const toast: any = inject('toast');
 const router = useRouter();
+const user = useUserStore();
+const cartStore = useCartStore();
 
 const handleLoginSuccess = async (response: CredentialResponse) => {
   const { credential } = response;
@@ -62,8 +65,8 @@ const handleLoginSuccess = async (response: CredentialResponse) => {
 
     localStorage.setItem('AUTH_TOKEN', token);
     const lastPath = localStorage.getItem('lastPath') ?? '/';
-    const user = useUserStore();
     await user.setUser();
+    await cartStore.moveLocalCart();
     router.push(lastPath);
   } catch (error) {
     toast.open({
@@ -75,7 +78,10 @@ const handleLoginSuccess = async (response: CredentialResponse) => {
 
 // handle an error event
 const handleLoginError = () => {
-  console.error('Login failed');
+  toast.open({
+    message: 'Error al iniciar la sesión',
+    type: 'error',
+  });
 };
 
 const handleSubmit = async (formData: any) => {
@@ -85,8 +91,8 @@ const handleSubmit = async (formData: any) => {
     } = await AuthAPI.login(formData);
     localStorage.setItem('AUTH_TOKEN', token);
     const lastPath = localStorage.getItem('lastPath') ?? '/';
-    const user = useUserStore();
     await user.setUser();
+    await cartStore.moveLocalCart();
     router.push(lastPath);
   } catch (error: any) {
     toast.open({
