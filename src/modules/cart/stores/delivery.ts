@@ -11,6 +11,7 @@ export const useDeliveryStore = defineStore('delivery', () => {
   const panel_cp = ref(true);
 
   const findDeliveriesAvailable = async (zipCode: number, cartWeight: number) => {
+    if (cartWeight <= 0) return;
     try {
       const { data } = await DeliveryAPI.findAvailable(cartWeight, zipCode);
 
