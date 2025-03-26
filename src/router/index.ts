@@ -74,6 +74,16 @@ const router = createRouter({
               name: 'termsAndQuestions',
               component: () => import('@/modules/policies/pages/TermsAndQuestionsView.vue'),
             },
+            {
+              path: 'privacidad',
+              name: 'privacy',
+              component: () => import('@/modules/policies/pages/PrivacyView.vue'),
+            },
+            {
+              path: 'preguntas-frecuentes',
+              name: 'frequentQuestions',
+              component: () => import('@/modules/policies/pages/FrequentQuestionsView.vue'),
+            },
           ],
         },
       ],

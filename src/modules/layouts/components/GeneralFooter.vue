@@ -10,11 +10,18 @@
       <ul class="flex flex-wrap items-center mt-3 sm:mt-0 text-gray-400">
         <li>
           <router-link
+            :to="{ name: 'frequentQuestions' }"
+            class="mr-4 text-sm hover:text-blue-500 md:mr-6"
+            >Preguntas frecuentes</router-link
+          >
+        </li>
+        <!-- <li>
+          <router-link
             :to="{ name: 'returnPolicy' }"
             class="mr-4 text-sm hover:text-blue-500 md:mr-6"
             >Política de Devolución</router-link
           >
-        </li>
+        </li> -->
         <li>
           <router-link
             :to="{ name: 'termsAndQuestions' }"
@@ -26,7 +33,9 @@
           <a href="#" class="mr-4 text-sm hover:text-blue-500 md:mr-6">Contacto</a>
         </li> -->
         <li>
-          <a href="#" class="text-sm hover:text-blue-500">Aviso de privacidad</a>
+          <router-link :to="{ name: 'privacy' }" class="text-sm hover:text-blue-500"
+            >Aviso de privacidad</router-link
+          >
         </li>
       </ul>
     </div>
