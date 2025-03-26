@@ -53,7 +53,6 @@ const checkout = () => {
 
         <router-link
           :to="{ name: 'products' }"
-          @click="checkout()"
           class="block text-center text-white w-full rounded-full bg-blue-600 hover:bg-blue-500 py-1 mt-3 text-sm transition-colors"
         >
           Ver productos
