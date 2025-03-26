@@ -19,11 +19,14 @@
         <SearchBar />
         <nav class="gap-6 text-base text-gray-400 hidden lg:flex">
           <RouterLink :to="{ name: 'home' }"
-            ><NotificationIcon class="w-7 aspect-square hover:text-blue-500 transition-colors" />
+            ><NotificationIcon
+              class="w-7 aspect-square text-slate-700 hover:text-green-500 transition-colors"
+            />
           </RouterLink>
 
           <RouterLink :to="{ name: 'cart' }"
-            ><CartIcon class="w-7 aspect-square hover:text-blue-500 transition-colors"
+            ><CartIcon
+              class="w-7 aspect-square text-slate-700 hover:text-green-500 transition-colors"
           /></RouterLink>
         </nav>
         <HamburguerBarsIcon
