@@ -117,7 +117,7 @@ onMounted(async () => {
     <section class="px-3">
       <div class="max-w-screen-xl mx-auto py-14">
         <div class="flex gap-3 order-2 sm:order-1 mb-8">
-          <StarIcon class="w-9 h-9 text-white bg-black p-2 rounded-full" />
+          <StarIcon class="w-9 h-9 text-white bg-green-500 p-2 rounded-full" />
           <h2 class="text-4xl font-bold">Producto destacado</h2>
         </div>
 
@@ -144,7 +144,7 @@ onMounted(async () => {
     <section class="px-3">
       <div class="max-w-screen-xl mx-auto py-8">
         <header class="flex gap-3 mb-6">
-          <ClosedBoxIcon class="w-9 aspect-square text-white bg-black p-2 rounded-full" />
+          <ClosedBoxIcon class="w-9 aspect-square text-white bg-green-500 p-2 rounded-full" />
           <h2 class="text-4xl font-bold">Producto cerrado</h2>
         </header>
         <div class="block lg:flex gap-6">
