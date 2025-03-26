@@ -22,9 +22,9 @@
             >Términos y Condiciones</router-link
           >
         </li>
-        <li>
+        <!-- <li>
           <a href="#" class="mr-4 text-sm hover:text-blue-500 md:mr-6">Contacto</a>
-        </li>
+        </li> -->
         <li>
           <a href="#" class="text-sm hover:text-blue-500">Aviso de privacidad</a>
         </li>
