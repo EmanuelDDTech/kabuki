@@ -2,13 +2,28 @@
   <main class="min-h-screen px-3 mb-8">
     <div class="max-w-screen-xl mx-auto block lg:flex gap-10 mt-8">
       <div class="flex-1">
-        <section class="flex-1 shadow-md border border-gray-100 p-4 rounded-lg">
+        <section v-if="cart.isEmpty" class="flex-1 shadow-md border border-gray-100 p-4 rounded-lg">
+          <h2 class="text-2xl font-bold border-b-2 border-gray-200 pb-3">Carrito</h2>
+          <p class="text-slate-700 mt-6">
+            No hay productos en el carrito.
+            <router-link class="text-blue-600" :to="{ name: 'products' }"
+              >Ver productos</router-link
+            >
+          </p>
+        </section>
+        <section
+          v-if="!cart.isEmpty"
+          class="flex-1 shadow-md border border-gray-100 p-4 rounded-lg"
+        >
           <h2 class="text-2xl font-bold border-b-2 border-gray-200 pb-3">Carrito</h2>
 
           <CartProduct v-for="item in cart.items" :key="item.product.id" :item="item" />
         </section>
 
-        <section class="mt-6 shadow-md border border-gray-100 p-4 rounded-lg">
+        <section
+          v-if="!cart.isEmpty && userStore.isSet"
+          class="mt-6 shadow-md border border-gray-100 p-4 rounded-lg"
+        >
           <h2 class="text-2xl font-bold border-b-2 border-gray-200 pb-3 mb-6">
             Dirección de entrega
           </h2>
@@ -151,7 +166,10 @@
           </div>
         </section>
 
-        <section class="mt-6 shadow-md border border-gray-100 p-4 rounded-lg">
+        <section
+          v-if="!cart.isEmpty && userStore.isSet"
+          class="mt-6 shadow-md border border-gray-100 p-4 rounded-lg"
+        >
           <h2 class="text-2xl font-bold border-b-2 border-gray-200 pb-3 mb-6">Método de envío</h2>
 
           <ul class="flex justify-around items-center gap-6">
@@ -175,9 +193,28 @@
         </section>
       </div>
 
-      <div>
+      <SideBard />
+
+      <!-- <div>
         <aside class="h-full mt-6 lg:mt-0">
           <div
+            v-if="cart.isEmpty"
+            class="w-full max-w-96 lg:w-72 shadow-md border border-gray-100 p-4 rounded-lg sticky top-3 mx-auto"
+          >
+            <h3 class="text-lg flex justify-between text-slate-700">
+              Aún no has agregado ningún producto al carrito
+            </h3>
+
+            <router-link
+              :to="{ name: 'products' }"
+              @click="checkout()"
+              class="block text-center text-white w-full rounded-full bg-blue-600 hover:bg-blue-500 py-1 mt-3 text-sm transition-colors"
+            >
+              Ver productos
+            </router-link>
+          </div>
+          <div
+            v-if="!cart.isEmpty"
             class="w-full max-w-96 lg:w-72 shadow-md border border-gray-100 p-4 rounded-lg sticky top-3 mx-auto"
           >
             <h3 class="text-lg flex justify-between">
@@ -205,13 +242,9 @@
             >
               Proceder al pago
             </button>
-
-            <div v-show="cart.payNow" class="mt-3">
-              <div id="paypal-button-container"></div>
-            </div>
           </div>
         </aside>
-      </div>
+      </div> -->
     </div>
   </main>
 </template>
@@ -230,10 +263,13 @@ import AddressCard from '../components/AddressCard.vue';
 import Swal from 'sweetalert2';
 import { useDeliveryStore } from '../stores/delivery';
 import type { Delivery } from '../interfaces/delivery.interface';
+import SideBard from '../components/SideBard.vue';
+import { useUserStore } from '@/modules/auth/stores/user';
 
 const cart = useCartStore();
 const address = useAddressStore();
 const delivery = useDeliveryStore();
+const userStore = useUserStore();
 
 const router = useRouter();
 
@@ -242,7 +278,7 @@ const toast = inject('toast');
 onMounted(() => {
   address.getAddresses();
 
-  addPaypalScript();
+  // addPaypalScript();
 });
 
 const saveAddress = async () => {
@@ -339,121 +375,122 @@ const checkout = () => {
   }
 
   cart.checkout();
+  router.push({ name: 'pay' });
 };
 
-const addPaypalScript = () => {
-  const scriptSdkPaypal = document.createElement('script');
-  scriptSdkPaypal.src = `https://www.paypal.com/sdk/js?client-id=${import.meta.env.VITE_PAYPAL_CLIENT_ID}&currency=MXN&components=buttons&disable-funding=venmo,paylater,card`;
-  scriptSdkPaypal.onload = () => {
-    createPaypalButtons();
-  };
-  // scriptSdkPaypal.data-sdk-integration-source = "developer-studio";
+// const addPaypalScript = () => {
+//   const scriptSdkPaypal = document.createElement('script');
+//   scriptSdkPaypal.src = `https://www.paypal.com/sdk/js?client-id=${import.meta.env.VITE_PAYPAL_CLIENT_ID}&currency=MXN&components=buttons&disable-funding=venmo,paylater,card`;
+//   scriptSdkPaypal.onload = () => {
+//     createPaypalButtons();
+//   };
+//   // scriptSdkPaypal.data-sdk-integration-source = "developer-studio";
 
-  document.head.append(scriptSdkPaypal);
-};
+//   document.head.append(scriptSdkPaypal);
+// };
 
-const createPaypalButtons = () => {
-  window.paypal
-    .Buttons({
-      style: {
-        shape: 'pill',
-        layout: 'vertical',
-        color: 'blue',
-        label: 'paypal',
-      },
-      message: {
-        amount: 100,
-      },
+// const createPaypalButtons = () => {
+//   window.paypal
+//     .Buttons({
+//       style: {
+//         shape: 'pill',
+//         layout: 'vertical',
+//         color: 'blue',
+//         label: 'paypal',
+//       },
+//       message: {
+//         amount: 100,
+//       },
 
-      async createOrder() {
-        try {
-          const response = await fetch(`${import.meta.env.VITE_API_URL}/paypal/orders`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            // use the "body" param to optionally pass additional order information
-            // like product ids and quantities
-            body: JSON.stringify({
-              cart: cart.paypalCart,
-              itemsTotal: cart.total,
-              shippingAmount: delivery.amountShipping,
-              shippingAddress: address.getSelectedAddress,
-            }),
-          });
+//       async createOrder() {
+//         try {
+//           const response = await fetch(`${import.meta.env.VITE_API_URL}/paypal/orders`, {
+//             method: 'POST',
+//             headers: {
+//               'Content-Type': 'application/json',
+//             },
+//             // use the "body" param to optionally pass additional order information
+//             // like product ids and quantities
+//             body: JSON.stringify({
+//               cart: cart.paypalCart,
+//               itemsTotal: cart.total,
+//               shippingAmount: delivery.amountShipping,
+//               shippingAddress: address.getSelectedAddress,
+//             }),
+//           });
 
-          const orderData = await response.json();
+//           const orderData = await response.json();
 
-          if (orderData.id) {
-            return orderData.id;
-          }
-          const errorDetail = orderData?.details?.[0];
-          const errorMessage = errorDetail
-            ? `${errorDetail.issue} ${errorDetail.description} (${orderData.debug_id})`
-            : JSON.stringify(orderData);
+//           if (orderData.id) {
+//             return orderData.id;
+//           }
+//           const errorDetail = orderData?.details?.[0];
+//           const errorMessage = errorDetail
+//             ? `${errorDetail.issue} ${errorDetail.description} (${orderData.debug_id})`
+//             : JSON.stringify(orderData);
 
-          throw new Error(errorMessage);
-        } catch (error) {
-          console.error(error);
-          // resultMessage(`Could not initiate PayPal Checkout...<br><br>${error}`);
-        }
-      },
+//           throw new Error(errorMessage);
+//         } catch (error) {
+//           console.error(error);
+//           // resultMessage(`Could not initiate PayPal Checkout...<br><br>${error}`);
+//         }
+//       },
 
-      async onApprove(data, actions) {
-        try {
-          const response = await fetch(
-            `${import.meta.env.VITE_API_URL}/paypal/orders/${data.orderID}/capture`,
-            {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-            },
-          );
-          const orderData = await response.json();
-          // Three cases to handle:
-          //   (1) Recoverable INSTRUMENT_DECLINED -> call actions.restart()
-          //   (2) Other non-recoverable errors -> Show a failure message
-          //   (3) Successful transaction -> Show confirmation or thank you message
-          const errorDetail = orderData?.details?.[0];
-          if (errorDetail?.issue === 'INSTRUMENT_DECLINED') {
-            // (1) Recoverable INSTRUMENT_DECLINED -> call actions.restart()
-            // recoverable state, per
-            // https://developer.paypal.com/docs/checkout/standard/customize/handle-funding-failures/
-            return actions.restart();
-          } else if (errorDetail) {
-            // (2) Other non-recoverable errors -> Show a failure message
-            throw new Error(`${errorDetail.description} (${orderData.debug_id})`);
-          } else if (!orderData.purchase_units) {
-            throw new Error(JSON.stringify(orderData));
-          } else {
-            // (3) Successful transaction -> Show confirmation or thank you message
-            // Or go to another URL:  actions.redirect('thank_you.html');
-            const transaction =
-              orderData?.purchase_units?.[0]?.payments?.captures?.[0] ||
-              orderData?.purchase_units?.[0]?.payments?.authorizations?.[0];
+//       async onApprove(data, actions) {
+//         try {
+//           const response = await fetch(
+//             `${import.meta.env.VITE_API_URL}/paypal/orders/${data.orderID}/capture`,
+//             {
+//               method: 'POST',
+//               headers: {
+//                 'Content-Type': 'application/json',
+//               },
+//             },
+//           );
+//           const orderData = await response.json();
+//           // Three cases to handle:
+//           //   (1) Recoverable INSTRUMENT_DECLINED -> call actions.restart()
+//           //   (2) Other non-recoverable errors -> Show a failure message
+//           //   (3) Successful transaction -> Show confirmation or thank you message
+//           const errorDetail = orderData?.details?.[0];
+//           if (errorDetail?.issue === 'INSTRUMENT_DECLINED') {
+//             // (1) Recoverable INSTRUMENT_DECLINED -> call actions.restart()
+//             // recoverable state, per
+//             // https://developer.paypal.com/docs/checkout/standard/customize/handle-funding-failures/
+//             return actions.restart();
+//           } else if (errorDetail) {
+//             // (2) Other non-recoverable errors -> Show a failure message
+//             throw new Error(`${errorDetail.description} (${orderData.debug_id})`);
+//           } else if (!orderData.purchase_units) {
+//             throw new Error(JSON.stringify(orderData));
+//           } else {
+//             // (3) Successful transaction -> Show confirmation or thank you message
+//             // Or go to another URL:  actions.redirect('thank_you.html');
+//             const transaction =
+//               orderData?.purchase_units?.[0]?.payments?.captures?.[0] ||
+//               orderData?.purchase_units?.[0]?.payments?.authorizations?.[0];
 
-            const saleOrder = await cart.createSaleOrder(transaction.id);
-            await cart.deleteCart();
-            address.clearSelectedAddress();
-            delivery.clearSelectedAddress();
+//             const saleOrder = await cart.createSaleOrder(transaction.id);
+//             await cart.deleteCart();
+//             address.clearSelectedAddress();
+//             delivery.clearSelectedAddress();
 
-            router.push({ name: 'thanks', params: { saleOrderId: saleOrder.order.id } });
+//             router.push({ name: 'thanks', params: { saleOrderId: saleOrder.order.id } });
 
-            //   resultMessage(
-            //     `Transaction ${transaction.status}: ${transaction.id}<br>
-            // <br>See console for all available details`,
-            //   );
-            // console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
-          }
-        } catch (error) {
-          console.error(error);
-          // resultMessage(`Sorry, your transaction could not be processed...<br><br>${error}`);
-        }
-      },
-    })
-    .render('#paypal-button-container');
-};
+//             //   resultMessage(
+//             //     `Transaction ${transaction.status}: ${transaction.id}<br>
+//             // <br>See console for all available details`,
+//             //   );
+//             // console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
+//           }
+//         } catch (error) {
+//           console.error(error);
+//           // resultMessage(`Sorry, your transaction could not be processed...<br><br>${error}`);
+//         }
+//       },
+//     })
+//     .render('#paypal-button-container');
+// };
 </script>
 
 <style scoped></style>
