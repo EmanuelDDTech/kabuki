@@ -1,13 +1,16 @@
 <script lang="ts" setup>
 import { useProductStore } from '@/modules/product/stores/product';
 import ProductSearch from './ProductSearch.vue';
+import { useRouter } from 'vue-router';
 
 const product = useProductStore();
+const router = useRouter();
 
 defineEmits(['addProduct']);
 
 const selectProduct = (id: number) => {
   product.findProduct(id);
+  router.push({ name: 'product', params: { id: id } });
   product.clearSearchQuery();
 };
 </script>
