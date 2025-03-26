@@ -5,6 +5,7 @@ import { useFilterCategoryStore } from '@/modules/filter/store/filterCategory';
 import FilterValueProductAPI from '@/modules/admin/api/FilterValueProductAPI';
 import ProductGalleryAPI from '../api/ProductGalleryAPI';
 import type { Product, ProductGallery } from '../interfaces/product.interface';
+import { useRoute } from 'vue-router';
 
 const initialProductValues = {
   id: 0,
@@ -37,6 +38,8 @@ export const useProductStore = defineStore('product', () => {
   const searchedProducts = ref<Product[] | []>([]);
 
   const filterCategory = useFilterCategoryStore();
+
+  const route = useRoute();
 
   let timeout: any = null;
 
@@ -126,7 +129,8 @@ export const useProductStore = defineStore('product', () => {
       return;
     }
     try {
-      const { data } = await ProductAPI.search(searchQuery.value);
+      const admin = route.path.includes('admin');
+      const { data } = await ProductAPI.search(searchQuery.value, admin);
       searchedProducts.value = data;
     } catch (error) {
       console.log(error);
