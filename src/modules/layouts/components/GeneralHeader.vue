@@ -24,10 +24,16 @@
             />
           </RouterLink>
 
-          <RouterLink :to="{ name: 'cart' }"
+          <RouterLink :to="{ name: 'cart' }" class="relative"
             ><CartIcon
               class="w-7 aspect-square text-slate-700 hover:text-green-500 transition-colors"
-          /></RouterLink>
+            />
+            <div
+              class="absolute w-4 h-4 bg-green-500 rounded-full -top-1 -right-1 flex justify-center items-center"
+            >
+              <p class="text-black text-xs">{{ cartStore.cartLength }}</p>
+            </div>
+          </RouterLink>
         </nav>
         <HamburguerBarsIcon
           @click="showMenu"
@@ -51,10 +57,10 @@ import { RouterLink } from 'vue-router';
 import { onMounted, ref } from 'vue';
 import HamburguerBarsIcon from './HamburguerBarsIcon.vue';
 import MobileMenu from './MobileMenu.vue';
+import { useCartStore } from '@/modules/cart/stores/cart';
 
+const cartStore = useCartStore();
 const showMobileMenu = ref(false);
-
-const routes = [{ name: 'products', text: 'Productos' }];
 
 onMounted(() => {
   document.body.style.overflowX = 'hidden';

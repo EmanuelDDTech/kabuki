@@ -311,5 +311,6 @@ export const useCartStore = defineStore('cart', () => {
 
     // Getters
     cartWeight,
+    cartLength: computed(() => items.value.length),
   };
 });
