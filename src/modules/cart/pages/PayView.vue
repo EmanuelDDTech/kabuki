@@ -138,6 +138,15 @@ const createPaypalButtons = () => {
     })
     .render('#paypal-button-container');
 };
+
+const createTransferOrder = async () => {
+  const saleOrder = await cart.createSaleOrder(null);
+  await cart.deleteCart();
+  address.clearSelectedAddress();
+  delivery.clearSelectedAddress();
+
+  router.push({ name: 'thanks', params: { saleOrderId: saleOrder.order.id } });
+};
 </script>
 
 <template>
@@ -146,9 +155,34 @@ const createPaypalButtons = () => {
       <div class="flex-1">
         <section class="flex-1 shadow-md border border-gray-100 p-4 rounded-lg">
           <h2 class="text-2xl font-bold border-b-2 border-gray-200 pb-3">Métodos de pago</h2>
-          <div v-show="cart.payNow" class="mt-3">
-            <h3 class="text-xl font-bold mb-3">Paypal</h3>
-            <div id="paypal-button-container"></div>
+          <div v-show="cart.payNow" class="mt-10 flex flex-col">
+            <h3 class="text-2xl font-bold mb-3">Paypal</h3>
+            <div class="w-[750px] mx-auto">
+              <div id="paypal-button-container"></div>
+            </div>
+          </div>
+
+          <div v-show="cart.payNow" class="mt-10 flex flex-col">
+            <h3 class="text-2xl font-bold mb-3">Depósito o Transferencia</h3>
+            <div>
+              <p>Clave: <span class="font-semibold">012 320 02838694095 8</span></p>
+              <p>Si eres BBVA: <span class="font-semibold">283 869 4095 </span></p>
+              <p>Beneficiario: <span class="font-semibold">Francisco Javier Ramos S</span></p>
+            </div>
+            <div class="bg-red-100 p-3 rounded mt-3">
+              <p>
+                <Span class="text-red-900 text-lg">¡Importante!</Span> Al seleccionar transferencia
+                tendrás 24 horas para realizar el depósito o transferencia. Si no se realiza el pago
+                dentro de ese tiempo el pedido será cancelado.
+              </p>
+            </div>
+
+            <button
+              @click="createTransferOrder"
+              class="mt-6 text-xl text-white font-semibold py-2 px-4 rounded-full bg-orange-600 hover:bg-orange-500 cursor-pointer w-[750px] mx-auto"
+            >
+              Seleccionar Transferencia
+            </button>
           </div>
         </section>
       </div>

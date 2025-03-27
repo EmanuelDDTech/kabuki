@@ -211,7 +211,7 @@ export const useCartStore = defineStore('cart', () => {
     return (item) => (item.availability < MAX_PRODUCTS ? item.availability : MAX_PRODUCTS);
   });
 
-  async function createSaleOrder(transaction: string) {
+  async function createSaleOrder(transaction: string | null = null) {
     const saleData = {
       state: 'sale',
       require_payment: false,
