@@ -29,6 +29,7 @@
               class="w-7 aspect-square text-slate-700 hover:text-green-500 transition-colors"
             />
             <div
+              v-if="!cartStore.isEmpty"
               class="absolute w-4 h-4 bg-green-500 rounded-full -top-1 -right-1 flex justify-center items-center"
             >
               <p class="text-black text-xs">{{ cartStore.cartLength }}</p>
