@@ -7,6 +7,7 @@ import FilterIcon from '@/modules/common/icons/FilterIcon.vue';
 import XMarkIcon from '@/modules/layouts/components/XMarkIcon.vue';
 import FiltersSkeleton from '@/modules/filter/components/FiltersSkeleton.vue';
 import ProductSkeleton from '../components/ProductSkeleton.vue';
+import ChevronDownIcon from '@/modules/common/icons/ChevronDownIcon.vue';
 
 const filters = useFilterCategoryStore();
 const products = useProductsStore();
@@ -88,29 +89,36 @@ const setPriceRange = async (e: any) => {
             </div>
 
             <div v-for="filterGroup in filters.filters" :key="filterGroup.id" class="mt-4">
-              <h4 class="font-bold mb-1">{{ filterGroup.filter_group.name }}</h4>
+              <details class="group">
+                <summary class="flex justify-between items-center cursor-pointer">
+                  <h4 class="font-bold mb-1 cursor-pointer">{{ filterGroup.filter_group.name }}</h4>
+                  <ChevronDownIcon class="w-6 h-6 group-open:rotate-180 transition-transform" />
+                </summary>
 
-              <div
-                v-for="filterValue in filterGroup.filter_group.filter_values"
-                :key="filterValue.id"
-                :ref_for="filterValue.name"
-                class="flex text-sm justify-between items-center hover:bg-gray-100 py-1 px-2 rounded"
-              >
-                <label :for="filterValue.name" class="cursor-pointer leading-none">{{
-                  filterValue.name
-                }}</label>
-                <input
-                  @change="filters.updateFilters(filterGroup.filter_group.slug, filterValue.slug)"
-                  :checked="
-                    filters.activeFilters[filterGroup.filter_group.slug]?.includes(filterValue.slug)
-                      ? true
-                      : false
-                  "
-                  type="checkbox"
-                  :id="filterValue.name"
-                  class="cursor-pointer"
-                />
-              </div>
+                <div
+                  v-for="filterValue in filterGroup.filter_group.filter_values"
+                  :key="filterValue.id"
+                  :ref_for="filterValue.name"
+                  class="flex text-sm justify-between items-center hover:bg-gray-100 py-1 px-2 rounded"
+                >
+                  <label :for="filterValue.name" class="cursor-pointer leading-none">{{
+                    filterValue.name
+                  }}</label>
+                  <input
+                    @change="filters.updateFilters(filterGroup.filter_group.slug, filterValue.slug)"
+                    :checked="
+                      filters.activeFilters[filterGroup.filter_group.slug]?.includes(
+                        filterValue.slug,
+                      )
+                        ? true
+                        : false
+                    "
+                    type="checkbox"
+                    :id="filterValue.name"
+                    class="cursor-pointer"
+                  />
+                </div>
+              </details>
             </div>
           </div>
         </div>
@@ -176,7 +184,7 @@ const setPriceRange = async (e: any) => {
               <div class="mt-3 flex flex-col gap-3">
                 <!-- <div v-for="filterGroup in filters.filters" :key="filterGroup.id">
                 <h4 class="font-bold mb-2">{{ filterGroup.filter_group.name }}</h4>
-    
+
                 <div class="flex flex-wrap gap-2 w-full max-w-96">
                   <div
                     v-for="filterValue in filterGroup.filter_group.filter_values"
@@ -252,3 +260,12 @@ const setPriceRange = async (e: any) => {
     </section>
   </div>
 </template>
+
+<style scoped>
+details > summary {
+  list-style: none;
+}
+details > summary::-webkit-details-marker {
+  display: none;
+}
+</style>
