@@ -346,7 +346,7 @@ onMounted(async () => {
                     name: 'products',
                     query: {
                       'tipo-de-producto': 'producto-cerrado',
-                      expansion: 'prismatic-evolutions',
+                      expansion: 'prismatic-evolution',
                     },
                   }"
                 >
