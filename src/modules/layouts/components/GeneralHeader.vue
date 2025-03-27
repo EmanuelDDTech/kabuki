@@ -1,7 +1,7 @@
 <template>
   <header
     id="header"
-    class="max-w-7xl min-h-16 mx-auto border-gray-200 sticky top-2 z-20 rounded-full"
+    class="max-w-7xl min-h-16 mx-auto border-gray-200 sticky top-2 z-999 rounded-full"
   >
     <div class="mx-auto z-10 bg-white rounded-full relative">
       <div class="flex justify-between items-center px-6 py-3">
