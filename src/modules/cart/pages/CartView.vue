@@ -172,11 +172,11 @@
         >
           <h2 class="text-2xl font-bold border-b-2 border-gray-200 pb-3 mb-6">Método de envío</h2>
 
-          <ul class="flex justify-around items-center gap-6">
+          <ul class="flex justify-around gap-6">
             <li
               v-for="deliveryData in delivery.deliveriesAvailable"
               :key="deliveryData.id"
-              class="flex flex-col items-center cursor-pointer p-2 rounded-md border hover:border-blue-600 transition-colors hover:shadow hover:shadow-blue-600"
+              class="flex flex-col flex-1 min-h-full max-w-56 items-center cursor-pointer p-2 rounded-md border hover:border-blue-600 transition-colors hover:shadow hover:shadow-blue-600"
               @click="selectCarrier(deliveryData)"
               :class="
                 deliveryData.id === delivery.carrierSelected?.id
@@ -184,9 +184,22 @@
                   : 'border-transparent'
               "
             >
-              <img :src="deliveryData.image" :alt="`Logo ${deliveryData.name}`" class="w-40" />
+              <div class="flex-1 flex items-center">
+                <img :src="deliveryData.image" :alt="`Logo ${deliveryData.name}`" class="w-40" />
+              </div>
+
+              <h3 v-if="deliveryData.free_over" class="mt-2 text-center">
+                {{ deliveryData.name }}
+              </h3>
+
               <h3 class="font-bold text-lg">
-                {{ formatCurrency(deliveryData.delivery_price_rules[0].list_base_price) }}
+                {{
+                  formatCurrency(
+                    deliveryData.free_over
+                      ? 0
+                      : deliveryData.delivery_price_rules[0].list_base_price,
+                  )
+                }}
               </h3>
             </li>
           </ul>
@@ -297,7 +310,9 @@ const deleteAddress = async (id: number) => {
 };
 
 const selectCarrier = async (deliveryData: Delivery) => {
-  delivery.setAmountShipping(deliveryData.delivery_price_rules[0].list_base_price);
+  delivery.setAmountShipping(
+    deliveryData.free_over ? 0 : deliveryData.delivery_price_rules[0].list_base_price,
+  );
   delivery.setCarrierSelected(deliveryData);
 };
 
