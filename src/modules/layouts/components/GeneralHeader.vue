@@ -5,7 +5,7 @@
   >
     <div class="mx-auto z-10 bg-white rounded-full relative">
       <div class="flex justify-between items-center px-6 py-3">
-        <RouterLink
+        <!-- <RouterLink
           :to="{ name: 'home' }"
           class="text-xl font-bold items-center lg:ml-2.5 hidden lg:flex"
         >
@@ -15,7 +15,7 @@
             alt="Windster Logo"
           />
           <span class="self-center whitespace-nowrap">ShoriKameCards</span>
-        </RouterLink>
+        </RouterLink> -->
         <SearchBar />
         <nav class="gap-6 text-base text-gray-400 hidden lg:flex">
           <RouterLink :to="{ name: 'home' }"

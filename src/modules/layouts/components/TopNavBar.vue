@@ -1,8 +1,12 @@
 <template>
   <div class="border-b-2 border-gray-200 px-3" @mouseleave="hideOptions">
-    <div class="flex justify-center lg:justify-end items-center max-w-7xl mx-auto py-2">
-      <RouterLink :to="{ name: 'home' }" class="text-2xl font-bold lg:hidden flex">
-        <img src="@/assets/img/shorikame-logo-edited.webp" class="h-12 mr-2" alt="Windster Logo" />
+    <div class="flex justify-center lg:justify-between items-center max-w-7xl mx-auto py-2">
+      <RouterLink :to="{ name: 'home' }" class="text-2xl font-bold flex gap-2">
+        <img
+          src="https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Fkame_01.png?alt=media&token=9c1e6563-2477-4960-8ac0-efffbd5e0634"
+          class="h-20 mr-2"
+          alt="Windster Logo"
+        />
         <span class="self-center whitespace-nowrap">ShoriKameCards</span>
       </RouterLink>
       <!-- <SearchBar /> -->
