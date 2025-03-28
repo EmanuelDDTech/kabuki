@@ -11,14 +11,16 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="container mx-auto p-6">
-    <h1 class="text-2xl font-bold mb-6">Mis Compras</h1>
+  <div class="w-full">
+    <div class="container mx-auto p-6">
+      <h1 class="text-2xl font-bold mb-6">Mis Compras</h1>
 
-    <div v-if="sale.isLoading" class="text-center">Cargando pedidos...</div>
-    <div v-else>
-      <div v-if="sale.isEmpty" class="text-gray-500">No tienes pedidos realizados.</div>
-      <div v-else class="grid gap-4">
-        <PurchaseCard v-for="order in sale.getMyPurchases()" :key="order.id" :sale="order" />
+      <div v-if="sale.isLoading" class="text-center">Cargando pedidos...</div>
+      <div v-else>
+        <div v-if="sale.isEmpty" class="text-gray-500">No tienes pedidos realizados.</div>
+        <div v-else class="grid gap-4">
+          <PurchaseCard v-for="order in sale.getMyPurchases()" :key="order.id" :sale="order" />
+        </div>
       </div>
     </div>
   </div>
