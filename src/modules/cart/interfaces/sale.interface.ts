@@ -27,7 +27,8 @@ export interface SaleCart {
 }
 
 export enum State {
-  PENDING = 'pending',
-  COMPLETED = 'completed',
-  CANCELED = 'canceled',
+  PENDING = 'pendiente',
+  COMPLETED = 'completado',
+  CANCELED = 'cancelado',
+  PAYPENDING = 'pago pendiente',
 }

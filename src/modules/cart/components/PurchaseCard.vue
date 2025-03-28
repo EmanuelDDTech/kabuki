@@ -30,11 +30,12 @@ defineProps<Props>();
           </h3>
 
           <div
-            class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 capitalize"
+            class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 capitalize"
             :class="{
               'bg-green-500 border-green-500': sale.state === State.COMPLETED,
-              'bg-yellow-500 border-yellow-500': sale.state === State.PENDING,
+              'bg-orange-500 border-orange-500': sale.state === State.PENDING,
               'bg-red-500 border-red-500': sale.state === State.CANCELED,
+              'bg-blue-600 border-blue-600 text-white': sale.state === State.PAYPENDING,
             }"
           >
             {{ sale.state }}

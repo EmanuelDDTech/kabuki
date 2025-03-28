@@ -213,7 +213,7 @@ export const useCartStore = defineStore('cart', () => {
 
   async function createSaleOrder(transaction: string | null = null) {
     const saleData = {
-      state: 'sale',
+      state: transaction ? 'pendiente' : 'pago pendiente',
       require_payment: false,
       amount_total: total.value + delivery.amountShipping,
       is_payed: true,
