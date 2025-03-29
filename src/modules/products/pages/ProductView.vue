@@ -36,8 +36,8 @@ useSeoMeta({
   description: () => (product.name ? `Compra ${product.name} al mejor precio.` : 'Cargando...'),
   ogDescription: () => (product.name ? `Compra ${product.name} al mejor precio.` : 'Cargando...'),
   ogImage: () => product.gallery[0]?.url,
-  ogImageHeight: 1000,
-  ogImageWidth: 1000,
+  ogImageHeight: '1000',
+  ogImageWidth: '1000',
   ogImageType: 'image/png',
   ogUrl: `https://shorikamecards.com${route.fullPath}`,
 });

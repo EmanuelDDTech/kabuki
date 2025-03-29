@@ -9,6 +9,7 @@ import FiltersSkeleton from '@/modules/filter/components/FiltersSkeleton.vue';
 import ProductSkeleton from '../components/ProductSkeleton.vue';
 import ChevronDownIcon from '@/modules/common/icons/ChevronDownIcon.vue';
 import { useRoute } from 'vue-router';
+import { useSeoMeta } from '@unhead/vue';
 
 const filters = useFilterCategoryStore();
 const products = useProductsStore();
@@ -22,6 +23,37 @@ onBeforeMount(async () => {
   await filters.getFilters();
   priceRange.value.update([filters.minPrice, filters.maxPrice]);
   await filters.getProducts();
+});
+
+const formatExpansion = (expansion: string) => {
+  return expansion
+    .split('-')
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+};
+
+useSeoMeta({
+  title: () =>
+    route.query.expansion
+      ? `Productos Pokémon TCG | ShoriKameCards | Expansión: ${Array.isArray(route.query.expansion) ? route.query.expansion.map(formatExpansion).join(', ') : route.query.expansion}`
+      : 'Productos Pokémon TCG | ShoriKameCards',
+  ogTitle: () =>
+    route.query.expansion
+      ? `Productos Pokémon TCG | ShoriKameCards | Expansión: ${Array.isArray(route.query.expansion) ? route.query.expansion.map(formatExpansion).join(', ') : route.query.expansion}`
+      : 'Productos Pokémon TCG | ShoriKameCards',
+  description: () =>
+    route.query.expansion
+      ? `Explora todos nuestros productos Pokémon TCG | Expansión: ${Array.isArray(route.query.expansion) ? route.query.expansion.map(formatExpansion).join(', ') : route.query.expansion}`
+      : 'Explora todos nuestros productos Pokémon TCG',
+  ogDescription: () =>
+    route.query.expansion
+      ? `Explora todos nuestros productos Pokémon TCG | Expansión: ${Array.isArray(route.query.expansion) ? route.query.expansion.map(formatExpansion).join(', ') : route.query.expansion}`
+      : 'Explora todos nuestros productos Pokémon TCG',
+  // ogImage: () => product.gallery[0]?.url,
+  // ogImageHeight: '1000',
+  // ogImageWidth: '1000',
+  // ogImageType: 'image/png',
+  ogUrl: `https://shorikamecards.com${route.fullPath}`,
 });
 
 watch(
