@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onBeforeMount, onMounted, onUnmounted, ref } from 'vue';
+import { onBeforeMount, onMounted, onUnmounted, ref, watch } from 'vue';
 import ProductCard from '../components/ProductCard.vue';
 import { useFilterCategoryStore } from '@/modules/filter/store/filterCategory';
 import { useProductsStore } from '../stores/products';
@@ -8,26 +8,39 @@ import XMarkIcon from '@/modules/layouts/components/XMarkIcon.vue';
 import FiltersSkeleton from '@/modules/filter/components/FiltersSkeleton.vue';
 import ProductSkeleton from '../components/ProductSkeleton.vue';
 import ChevronDownIcon from '@/modules/common/icons/ChevronDownIcon.vue';
+import { useRoute } from 'vue-router';
 
 const filters = useFilterCategoryStore();
 const products = useProductsStore();
 
 const priceRange = ref();
 
+const route = useRoute();
+
 onBeforeMount(async () => {
   await filters.findFilters(1);
-});
-
-onMounted(async () => {
-  await filters.findFilters(1);
   await filters.getFilters();
-
-  if (filters.activePriceFilter) {
-    priceRange.value.update([filters.minPrice, filters.maxPrice]);
-  } else if (!filters.existenceOnly) {
-    await filters.getProducts();
-  }
+  priceRange.value.update([filters.minPrice, filters.maxPrice]);
+  await filters.getProducts();
 });
+
+watch(
+  () => route.fullPath,
+  async (newPath, oldPath) => {
+    await filters.getProducts();
+  },
+);
+
+// onMounted(async () => {
+// await filters.findFilters(1);
+// await filters.getFilters();
+// console.log(filters.activePriceFilter);
+// if (filters.activePriceFilter) {
+//   priceRange.value.update([filters.minPrice, filters.maxPrice]);
+// } else if (!filters.existenceOnly) {
+//   await filters.getProducts();
+// }
+// });
 
 onUnmounted(async () => {
   filters.clearActiveFilters();
@@ -36,7 +49,6 @@ onUnmounted(async () => {
 
 const setPriceRange = async (e: any) => {
   await filters.setPriceRange(e);
-  await filters.getProducts();
 };
 </script>
 
@@ -80,7 +92,7 @@ const setPriceRange = async (e: any) => {
                     }"
                     :step="100"
                     :min="0"
-                    :max="parseInt(filters.getMaxPrice())"
+                    :max="filters.getMaxPrice()"
                     :default="[filters.minPrice, filters.maxPrice]"
                     class="mt-8"
                   />
@@ -183,8 +195,7 @@ const setPriceRange = async (e: any) => {
                       }"
                       :step="100"
                       :min="0"
-                      :max="parseInt(filters.getMaxPrice())"
-                      :default="[filters.minPrice, filters.maxPrice]"
+                      :max="filters.getMaxPrice()"
                       class="mt-8 w-52"
                     />
                   </Vueform>
@@ -263,7 +274,7 @@ const setPriceRange = async (e: any) => {
             class="mx-auto"
           />
         </div>
-        <p v-if="!products.areProducts" class="text-center mt-4">
+        <p v-if="!products.areProducts && !products.isLoading" class="text-center mt-4">
           No hay resultados. Intenta con otros filtros.
         </p>
       </section>

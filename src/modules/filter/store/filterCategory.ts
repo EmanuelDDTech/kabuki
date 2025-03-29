@@ -5,7 +5,7 @@ import { useRoute, useRouter } from 'vue-router';
 import { useProductsStore } from '@/modules/products/stores/products';
 
 export const useFilterCategoryStore = defineStore('filterCategory', () => {
-  const MAX_PRICE = 15000;
+  const MAX_PRICE = 20000;
 
   const filters = ref([]);
   const activeFilters = ref({});
@@ -18,9 +18,11 @@ export const useFilterCategoryStore = defineStore('filterCategory', () => {
   const minPrice = ref(0);
   const maxPrice = ref(MAX_PRICE);
 
-  const isLoading = ref(true);
+  const isLoading = ref(false);
 
   const products = useProductsStore();
+
+  let timer: ReturnType<typeof setTimeout>;
 
   const getFilters = async () => {
     const { existence, minPrice: min, maxPrice: max, ...query } = route.query;
@@ -56,7 +58,6 @@ export const useFilterCategoryStore = defineStore('filterCategory', () => {
     }
 
     await updateURL();
-    await getProducts();
   };
 
   const updateURL = async () => {
@@ -81,12 +82,13 @@ export const useFilterCategoryStore = defineStore('filterCategory', () => {
     await router.push({
       query: queryParams,
     });
-
-    // await getProducts();
   };
 
   const getProducts = async () => {
-    await products.getProductsWithFilters(createStringQuery());
+    clearTimeout(timer);
+    timer = setTimeout(async () => {
+      await products.getProductsWithFilters(createStringQuery());
+    }, 50);
   };
 
   const createStringQuery = () => {
