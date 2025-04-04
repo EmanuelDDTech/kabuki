@@ -10,6 +10,7 @@ import ServicesIcon from '@/modules/admin/components/icons/ServicesIcon.vue';
 import CategoryIcon from '@/modules/common/icons/CategoryIcon.vue';
 import BannerIcon from '@/modules/common/icons/BannerIcon.vue';
 import TagIcon from '@/modules/common/icons/TagIcon.vue';
+import DiscountIcon from '@/modules/common/icons/DiscountIcon.vue';
 
 const sidebarRoutes = [
   { name: 'adminDashboard', text: 'Dashboard', icon: DashboardIcon },
@@ -22,6 +23,7 @@ const sidebarRoutes = [
   { name: 'adminBanners', text: 'Banners', icon: BannerIcon },
   // { name: 'adminServices', text: 'Servicios', icon: ServicesIcon },
   { name: 'adminCampaigns', text: 'Campañas', icon: TagIcon },
+  { name: 'adminDiscountCodes', text: 'Códigos Descuento', icon: DiscountIcon },
   { name: 'adminUsers', text: 'Users', icon: UsersIcon },
 ];
 </script>
