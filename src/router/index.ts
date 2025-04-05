@@ -211,6 +211,16 @@ const router = createRouter({
           component: () => import('@/modules/discountCode/pages/DiscountCodesView.vue'),
         },
         {
+          path: 'codigos-descuento/crear',
+          name: 'adminCreateDiscountCode',
+          component: () => import('@/modules/discountCode/pages/CreateDiscountCode.vue'),
+        },
+        {
+          path: 'codigos-descuento/actualizar/:id',
+          name: 'adminUpdateDiscountCode',
+          component: () => import('@/modules/discountCode/pages/UpdateDiscountCode.vue'),
+        },
+        {
           path: 'usuarios',
           name: 'adminUsers',
           component: () => import('@/modules/admin/pages/UsersView.vue'),
