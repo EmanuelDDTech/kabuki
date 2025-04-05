@@ -5,10 +5,12 @@ import { useCartStore } from '../stores/cart';
 import { useDeliveryStore } from '../stores/delivery';
 import SideBard from '../components/SideBard.vue';
 import { useRouter } from 'vue-router';
+import { useDiscountCodeStore } from '@/modules/discountCode/stores/discountCode';
 
 const cart = useCartStore();
 const address = useAddressStore();
 const delivery = useDeliveryStore();
+const discountCodeStore = useDiscountCodeStore();
 
 const router = useRouter();
 
@@ -25,6 +27,7 @@ onUnmounted(() => {
 });
 
 const addPaypalScript = () => {
+  if (discountCodeStore.isDiscountCodeSelected) return;
   const scriptSdkPaypal = document.createElement('script');
   scriptSdkPaypal.src = `https://www.paypal.com/sdk/js?client-id=${import.meta.env.VITE_PAYPAL_CLIENT_ID}&currency=MXN&components=buttons&disable-funding=venmo,paylater`;
   scriptSdkPaypal.onload = () => {
@@ -156,7 +159,10 @@ const createTransferOrder = async () => {
       <div class="flex-1">
         <section class="flex-1 shadow-md border border-gray-100 p-4 rounded-lg">
           <h2 class="text-2xl font-bold border-b-2 border-gray-200 pb-3">Métodos de pago</h2>
-          <div v-show="cart.payNow" class="mt-10 flex flex-col">
+          <div
+            v-show="cart.payNow && !discountCodeStore.isDiscountCodeSelected"
+            class="mt-10 flex flex-col"
+          >
             <h3 class="text-2xl font-bold mb-3">Paypal</h3>
             <div class="w-[750px] mx-auto">
               <div id="paypal-button-container"></div>
