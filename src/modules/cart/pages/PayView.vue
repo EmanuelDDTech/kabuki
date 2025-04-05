@@ -60,9 +60,10 @@ const createPaypalButtons = () => {
             // like product ids and quantities
             body: JSON.stringify({
               cart: cart.paypalCart,
-              itemsTotal: cart.total,
+              itemsTotal: cart.subtotal,
               shippingAmount: delivery.amountShipping,
               shippingAddress: address.getSelectedAddress,
+              discount: cart.discountAmount,
             }),
           });
 
