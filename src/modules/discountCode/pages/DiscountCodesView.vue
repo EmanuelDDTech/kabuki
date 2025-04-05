@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import Swal from 'sweetalert2';
-import { onMounted } from 'vue';
+import { inject, onMounted } from 'vue';
 import { useDiscountCodeStore } from '../stores/discountCode';
 import { DiscountType } from '../interfaces/discountCode.interface';
 import { formatCurrency } from '@/helpers';
@@ -9,13 +9,15 @@ import EditIcon from '@/modules/common/icons/EditIcon.vue';
 
 const discountCodeStore = useDiscountCodeStore();
 
+const toast: any = inject('toast');
+
 onMounted(() => {
   discountCodeStore.getDiscountCodesAll();
 });
 
 const deleteConfirmation = (id: number) => {
   Swal.fire({
-    title: 'Seguro quieres eliminar esta campaña?',
+    title: 'Seguro quieres eliminar este código?',
     text: 'No podrá ser revertido!',
     icon: 'warning',
     showCancelButton: true,
@@ -24,20 +26,20 @@ const deleteConfirmation = (id: number) => {
     confirmButtonText: 'Si, Eliminar!',
     cancelButtonText: 'Cancelar',
   }).then(async (result) => {
-    // if (result.isConfirmed) {
-    //   try {
-    //     await campaign.deleteCampaign(id);
-    //     toast.open({
-    //       message: 'Campaña eliminada correctamente',
-    //       type: 'success',
-    //     });
-    //   } catch (error) {
-    //     toast.open({
-    //       message: error.response.data.msg,
-    //       type: 'error',
-    //     });
-    //   }
-    // }
+    if (result.isConfirmed) {
+      try {
+        await discountCodeStore.deleteDiscountCode(id);
+        toast.open({
+          message: 'Código eliminado correctamente',
+          type: 'success',
+        });
+      } catch (error) {
+        toast.open({
+          message: error.response.data.msg,
+          type: 'error',
+        });
+      }
+    }
   });
 };
 </script>
@@ -49,7 +51,7 @@ const deleteConfirmation = (id: number) => {
     <section class="flex h-full flex-col justify-center">
       <div class="mx-auto w-full rounded-sm flex flex-col">
         <RouterLink
-          :to="{ name: 'adminCreateCampaign' }"
+          :to="{ name: 'adminCreateDiscountCode' }"
           class="mb-6 w-36 self-end text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm text-center p-2"
         >
           Crear Campaña
@@ -155,7 +157,10 @@ const deleteConfirmation = (id: number) => {
                     </button>
 
                     <RouterLink
-                      :to="{ name: 'adminUpdateCampaign', params: { id: discountCode.id ?? 0 } }"
+                      :to="{
+                        name: 'adminUpdateDiscountCode',
+                        params: { id: discountCode.id ?? 0 },
+                      }"
                     >
                       <EditIcon
                         class="h-8 w-8 p-1 rounded-full hover:bg-gray-100 hover:text-blue-600"
