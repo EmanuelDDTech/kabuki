@@ -7,23 +7,28 @@ import { useDeliveryStore } from './delivery';
 import { useUserStore } from '@/modules/auth/stores/user';
 import ProductAPI from '@/modules/product/api/ProductAPI';
 import type { Product } from '@/modules/product/interfaces/product.interface';
+import { useDiscountCodeStore } from '@/modules/discountCode/stores/discountCode';
+import { DiscountType } from '@/modules/discountCode/interfaces/discountCode.interface';
+import { sub } from 'date-fns';
 
 export const useCartStore = defineStore('cart', () => {
-  // const coupon = useCouponStore();
   const items = ref([]);
-  const subtotal = ref(0);
+  const subtotal = ref<number>(0);
   // const taxes = ref(0);
   const total = ref(0);
 
   const MAX_PRODUCTS = 10;
-  const TAX_RATE = 0.1;
+  // const TAX_RATE = 0.1;
 
   const payNow = ref(false);
   const paypalCart = ref([]);
 
+  const discountAmount = ref<number>(0);
+
   const userStore = useUserStore();
   const address = useAddressStore();
   const delivery = useDeliveryStore();
+  const discountCodeStore = useDiscountCodeStore();
 
   const toast: any = inject('toast');
 
@@ -33,7 +38,24 @@ export const useCartStore = defineStore('cart', () => {
       0,
     );
     // taxes.value = Number((subtotal.value * TAX_RATE).toFixed(2));
-    total.value = Number(subtotal.value.toFixed(2));
+
+    if (discountCodeStore.isDiscountCodeSelected) {
+      if (discountCodeStore.selectedDiscountCode?.discount_type === DiscountType.FIXED) {
+        discountAmount.value = discountCodeStore.selectedDiscountCode.discount_value;
+      } else if (
+        discountCodeStore.selectedDiscountCode?.discount_type === DiscountType.PERCENTAGE
+      ) {
+        const totalDiscount =
+          (subtotal.value * discountCodeStore.selectedDiscountCode.discount_value) / 100;
+
+        discountAmount.value =
+          totalDiscount < discountCodeStore.selectedDiscountCode.max_discount
+            ? totalDiscount
+            : discountCodeStore.selectedDiscountCode.max_discount;
+      }
+    }
+
+    total.value = subtotal.value + delivery.amountShipping - discountAmount.value;
   });
 
   watchEffect(async () => {
@@ -215,7 +237,8 @@ export const useCartStore = defineStore('cart', () => {
     const saleData = {
       state: transaction ? 'pendiente' : 'pago pendiente',
       require_payment: false,
-      amount_total: total.value + delivery.amountShipping,
+      amount_total: total.value,
+      amount_subtotal: subtotal.value,
       is_payed: true,
       invoice_required: false,
       products: getSaleProductsData(),
@@ -223,9 +246,15 @@ export const useCartStore = defineStore('cart', () => {
       transaction_id: transaction,
       amount_shipping: delivery.amountShipping,
       delivery_carrier_id: delivery.carrierSelected?.id,
+      discount_amount: discountAmount.value,
+      discount_code_id: discountCodeStore.isDiscountCodeSelected
+        ? discountCodeStore.selectedDiscountCode?.id
+        : null,
     };
 
     const { data } = await SaleAPI.create(saleData);
+    await discountCodeStore.updateTimesUsed();
+    clearDiscount();
     payNow.value = false;
     return data;
   }
@@ -279,6 +308,11 @@ export const useCartStore = defineStore('cart', () => {
     await getCart();
   };
 
+  const clearDiscount = () => {
+    discountAmount.value = 0;
+    discountCodeStore.clearSelectedDiscountCode();
+  };
+
   const cartWeight = computed(() =>
     items.value.reduce((totalWeight, item) => totalWeight + item.product.weight * item.quantity, 0),
   );
@@ -296,6 +330,7 @@ export const useCartStore = defineStore('cart', () => {
     checkProductAvailability,
     payNow,
     paypalCart,
+    discountAmount,
 
     // Methods
     getCart,
@@ -308,6 +343,7 @@ export const useCartStore = defineStore('cart', () => {
     createSaleOrder,
     deleteCart,
     moveLocalCart,
+    clearDiscount,
 
     // Getters
     cartWeight,
