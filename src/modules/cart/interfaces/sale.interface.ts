@@ -1,28 +1,32 @@
 import type { Product } from '@/modules/product/interfaces/product.interface';
 
 export interface Sale {
-  id: Number;
-  name?: String;
+  id: number;
+  name?: string;
   state: State;
-  require_payment: Boolean;
-  amount_total: Number;
-  is_payed: Boolean;
-  invoice_required: Boolean;
+  require_payment: boolean;
+  amount_total: number;
+  amount_subtotal: number;
+  is_payed: boolean;
+  invoice_required: boolean;
   createdAt?: Date;
   updatedAt?: Date;
-  user_id: Number;
+  user_id: number;
   sale_carts: SaleCart[];
+  discount_amount: number;
+  discount_code_id: number;
+  amount_shipping: number;
 }
 
 export interface SaleCart {
-  id?: Number;
-  quantity: Number;
-  price_unit: Number;
-  subtotal: Number;
+  id?: number;
+  quantity: number;
+  price_unit: number;
+  subtotal: number;
   createdAt?: Date;
   updatedAt?: Date;
-  productId?: Number;
-  saleOrderId?: Number;
+  productId?: number;
+  saleOrderId?: number;
   product: Product;
 }
 
