@@ -6,7 +6,7 @@ import DeliveryAPI from '../api/DeliveryAPI';
 export const useDeliveryStore = defineStore('delivery', () => {
   const carriers = ref<Delivery[] | []>([]);
   const deliveriesAvailable = ref<Delivery[] | []>([]);
-  const amountShipping = ref(0);
+  const amountShipping = ref<number>(0);
   const carrierSelected = ref<Delivery | null>(null);
   const panel_cp = ref(true);
 
