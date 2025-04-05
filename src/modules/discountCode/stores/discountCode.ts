@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { DiscountType, type DiscountCode } from '../interfaces/discountCode.interface';
 import DiscountCodeAPI from '../api/DiscountCodeAPI';
 import { convertToISO, convertToYYYYMMDD } from '@/helpers/date';
@@ -22,6 +22,8 @@ export const useDiscountCodeStore = defineStore('discountCode', () => {
   const discountCode = ref<DiscountCode>(initialValues);
 
   const expires_at_ISO = ref('');
+
+  const selectedDiscountCode = ref<DiscountCode | null>(null);
 
   const getDiscountCodesAll = async () => {
     try {
@@ -102,10 +104,34 @@ export const useDiscountCodeStore = defineStore('discountCode', () => {
     }
   };
 
+  const getDiscountCodeByCode = async (code: string) => {
+    try {
+      const { data } = await DiscountCodeAPI.getByCode(code);
+      selectedDiscountCode.value = data;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  };
+
+  const clearSelectedDiscountCode = () => {
+    selectedDiscountCode.value = null;
+  };
+
+  const updateTimesUsed = async () => {
+    try {
+      await DiscountCodeAPI.updateTimesUsed(selectedDiscountCode.value?.code ?? '');
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  };
+
   return {
     discountCodes,
     discountCode,
     expires_at_ISO,
+    selectedDiscountCode,
 
     // Methods
     getDiscountCodesAll,
@@ -114,5 +140,11 @@ export const useDiscountCodeStore = defineStore('discountCode', () => {
     deleteDiscountCode,
     getDiscountCodeById,
     UpdateDiscountCode,
+    getDiscountCodeByCode,
+    clearSelectedDiscountCode,
+    updateTimesUsed,
+
+    // Getters
+    isDiscountCodeSelected: computed(() => selectedDiscountCode.value !== null),
   };
 });
