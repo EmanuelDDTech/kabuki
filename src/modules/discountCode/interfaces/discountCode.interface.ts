@@ -7,7 +7,7 @@ export interface DiscountCode {
   max_discount: number;
   usage_limit: number;
   times_used: number;
-  expires_at: Date;
+  expires_at: string;
 }
 
 export enum DiscountType {
