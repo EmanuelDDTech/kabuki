@@ -78,16 +78,21 @@ onMounted(async () => {
             <div class="flex justify-between mb-3">
               <span>Subtotal</span
               ><span class="text-base text-slate-900 font-semibold">{{
-                formatCurrency(
-                  saleStore.purchaseInfo?.amount_total - saleStore.purchaseInfo?.amount_shipping,
-                )
+                formatCurrency(saleStore.purchaseInfo?.amount_subtotal ?? 0)
               }}</span>
             </div>
             <div class="flex justify-between mb-3">
               <span>Envío</span>
               <span class="text-base text-slate-900 font-semibold">{{
-                formatCurrency(saleStore.purchaseInfo?.amount_shipping)
+                formatCurrency(saleStore.purchaseInfo?.amount_shipping ?? 0)
               }}</span>
+            </div>
+
+            <div v-if="saleStore.purchaseInfo?.discount_code_id" class="flex justify-between mb-3">
+              <span>Descuento</span>
+              <span class="text-base text-slate-900 font-semibold"
+                >- {{ formatCurrency(saleStore.purchaseInfo?.discount_amount ?? 0) }}</span
+              >
             </div>
 
             <div class="flex justify-between py-3 border-t border-slate-200">
