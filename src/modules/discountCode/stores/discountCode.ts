@@ -1,9 +1,11 @@
 import { defineStore } from 'pinia';
-import { computed, ref } from 'vue';
+import { computed, inject, ref } from 'vue';
 import { DiscountType, type DiscountCode } from '../interfaces/discountCode.interface';
 import DiscountCodeAPI from '../api/DiscountCodeAPI';
 import { convertToISO, convertToYYYYMMDD } from '@/helpers/date';
 import CampaignAPI from '@/modules/campaign/api/CampaignAPI';
+import { useCartStore } from '@/modules/cart/stores/cart';
+import { formatCurrency } from '@/helpers';
 
 const initialValues = {
   id: 0,
@@ -24,6 +26,10 @@ export const useDiscountCodeStore = defineStore('discountCode', () => {
   const expires_at_ISO = ref('');
 
   const selectedDiscountCode = ref<DiscountCode | null>(null);
+
+  const cartStore = useCartStore();
+
+  const toast: any = inject('toast');
 
   const getDiscountCodesAll = async () => {
     try {
@@ -107,6 +113,17 @@ export const useDiscountCodeStore = defineStore('discountCode', () => {
   const getDiscountCodeByCode = async (code: string) => {
     try {
       const { data } = await DiscountCodeAPI.getByCode(code);
+
+      if (data.min_purchase > cartStore.subtotal) {
+        throw {
+          response: {
+            data: {
+              msg: `La compra mínima para el código es ${formatCurrency(data.min_purchase)}`,
+            },
+          },
+        };
+      }
+
       selectedDiscountCode.value = data;
     } catch (error) {
       console.error(error);

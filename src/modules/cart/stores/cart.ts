@@ -53,6 +53,14 @@ export const useCartStore = defineStore('cart', () => {
             ? totalDiscount
             : discountCodeStore.selectedDiscountCode.max_discount;
       }
+
+      if ((discountCodeStore.selectedDiscountCode?.min_purchase ?? 0) > subtotal.value) {
+        toast.open({
+          message: 'Compra menor al mínimo aplicable para el código',
+          type: 'error',
+        });
+        clearDiscount();
+      }
     }
 
     total.value = subtotal.value + delivery.amountShipping - discountAmount.value;
