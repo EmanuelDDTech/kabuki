@@ -164,7 +164,7 @@ const createTransferOrder = async () => {
             class="mt-10 flex flex-col"
           >
             <h3 class="text-2xl font-bold mb-3">Paypal</h3>
-            <div class="w-[750px] mx-auto">
+            <div class="w-full max-w-[750px] mx-auto">
               <div id="paypal-button-container"></div>
             </div>
           </div>
@@ -186,7 +186,7 @@ const createTransferOrder = async () => {
 
             <button
               @click="createTransferOrder"
-              class="mt-6 text-xl text-white font-semibold py-2 px-4 rounded-full bg-orange-600 hover:bg-orange-500 cursor-pointer w-[750px] mx-auto"
+              class="mt-6 text-xl text-white font-semibold py-2 px-4 rounded-full bg-orange-600 hover:bg-orange-500 cursor-pointer w-full max-w-[750px] mx-auto"
             >
               Seleccionar Transferencia
             </button>
