@@ -34,7 +34,7 @@
         </li> -->
         <li>
           <router-link :to="{ name: 'privacy' }" class="text-sm hover:text-blue-500"
-            >Aviso de privacidad</router-link
+            >Política de privacidad</router-link
           >
         </li>
       </ul>
