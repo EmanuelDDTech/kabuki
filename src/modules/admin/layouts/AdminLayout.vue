@@ -28,3 +28,9 @@ import { RouterView } from 'vue-router';
    <script src="https://demo.themesberg.com/windster/app.bundle.js"></script> -->
   </div>
 </template>
+
+<style>
+#static-footer {
+  display: none;
+}
+</style>
