@@ -37,10 +37,10 @@
         </span>
         <ul class="flex flex-wrap items-center mt-3 sm:mt-0 text-gray-400">
           <li>
-            <router-link
-              :to="{ name: 'frequentQuestions' }"
+            <a
+              href="/politicas/preguntas-frecuentes"
               class="mr-4 text-sm hover:text-blue-500 md:mr-6"
-              >Preguntas frecuentes</router-link
+              >Preguntas frecuentes</a
             >
           </li>
           <!-- <li>
@@ -51,18 +51,16 @@
             >
           </li> -->
           <li>
-            <router-link
-              :to="{ name: 'termsAndQuestions' }"
-              class="mr-4 text-sm hover:text-blue-500 md:mr-6"
-              >Términos y Condiciones</router-link
+            <a href="/politicas/condiciones" class="mr-4 text-sm hover:text-blue-500 md:mr-6"
+              >Términos y Condiciones</a
             >
           </li>
           <!-- <li>
             <a href="#" class="mr-4 text-sm hover:text-blue-500 md:mr-6">Contacto</a>
           </li> -->
           <li>
-            <router-link :to="{ name: 'privacy' }" class="text-sm hover:text-blue-500"
-              >Política de privacidad</router-link
+            <a href="/politicas/privacidad" class="text-sm hover:text-blue-500"
+              >Política de privacidad</a
             >
           </li>
         </ul>
