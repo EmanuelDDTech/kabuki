@@ -172,11 +172,11 @@
         >
           <h2 class="text-2xl font-bold border-b-2 border-gray-200 pb-3 mb-6">Método de envío</h2>
 
-          <ul class="flex justify-around gap-6">
+          <ul class="flex flex-wrap justify-around gap-6">
             <li
               v-for="deliveryData in delivery.deliveriesAvailable"
               :key="deliveryData.id"
-              class="flex flex-col flex-1 min-h-full max-w-56 items-center cursor-pointer p-2 rounded-md border hover:border-blue-600 transition-colors hover:shadow hover:shadow-blue-600"
+              class="flex flex-col flex-1 min-h-full max-w-56 min-w-[130px] items-center cursor-pointer p-2 rounded-md border hover:border-blue-600 transition-colors hover:shadow hover:shadow-blue-600"
               @click="selectCarrier(deliveryData)"
               :class="
                 deliveryData.id === delivery.carrierSelected?.id
