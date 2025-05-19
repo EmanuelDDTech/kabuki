@@ -91,7 +91,7 @@ import type { Product } from '@/modules/product/interfaces/product.interface';
 
 const cart = useCartStore();
 
-const toast = inject('toast');
+const toast: any = inject('toast');
 
 interface Props {
   product: Product;
@@ -111,6 +111,14 @@ const defaultProduct = {
 const router = useRouter();
 
 const addItem = async (item) => {
+  if (item.stock <= 0) {
+    toast.open({
+      message: 'No hay stock disponible',
+      type: 'error',
+    });
+    return;
+  }
+
   try {
     await cart.addItem(item);
     toast.open({
