@@ -261,7 +261,7 @@ export const useCartStore = defineStore('cart', () => {
     };
 
     const { data } = await SaleAPI.create(saleData);
-    await discountCodeStore.updateTimesUsed();
+    if (discountCodeStore.isDiscountCodeSelected) await discountCodeStore.updateTimesUsed();
     clearDiscount();
     payNow.value = false;
     return data;
