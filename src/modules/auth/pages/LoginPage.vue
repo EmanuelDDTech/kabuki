@@ -1,6 +1,23 @@
 <template>
   <h1 class="text-2xl font-semibold mb-4">Iniciar Sesión</h1>
 
+  <div class="text-center mt-4">
+    <GoogleSignInButton
+      @success="handleLoginSuccess"
+      @error="handleLoginError"
+      type="icon"
+      shape="square"
+      text="signin"
+      width="400"
+    ></GoogleSignInButton>
+
+    <div class="flex items-center justify-center gap-2 my-6">
+      <hr class="border-gray-300 flex-1" />
+      <span class="absolute bg-white px-2 text-gray-500">o</span>
+      <hr class="border-gray-300 flex-1" />
+    </div>
+  </div>
+
   <FormKit
     id="loginForm"
     type="form"
@@ -38,7 +55,6 @@
     <RouterLink :to="{ name: 'register' }" class="hover:underline">Sign up Here</RouterLink>
   </div>
 
-  <GoogleSignInButton @success="handleLoginSuccess" @error="handleLoginError"></GoogleSignInButton>
   <!-- <div class="g-signin2" :data-onsuccess="onSignIn"></div> -->
 </template>
 
