@@ -103,7 +103,7 @@
                   name="state"
                   v-model="address.newAddress.state"
                   label="Estado"
-                  :options="['Jalisco', 'CDMX', 'Nuevo León']"
+                  :options="['Jalisco', 'CDMX', 'Nuevo León', 'Veracruz']"
                   validation="required"
                   placeholder="Selecciona un estado"
                 />
