@@ -37,6 +37,12 @@
                 @click="updateProducts"
                 >Carta suelta</router-link
               >
+              <router-link
+                :to="{ name: 'products', query: { 'tipo-de-producto': 'decks-competitivos' } }"
+                class="whitespace-nowrap px-4 py-2 hover:bg-gray-100 transition-colors rounded"
+                @click="updateProducts"
+                >Decks competitivos</router-link
+              >
             </template>
           </FloatingOptions>
         </div>

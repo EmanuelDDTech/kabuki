@@ -1,7 +1,7 @@
 <template>
   <div class="relative flex flex-col items-center justify-center overflow-hidden">
     <div class="max-w-xl px-5 text-center">
-      <h2 class="mb-2 text-[42px] font-bold text-zinc-800">Verifiando el token</h2>
+      <h2 class="mb-2 text-[42px] font-bold text-zinc-800">Verificando el token</h2>
       <p class="mb-2 text-lg text-zinc-500">{{ verificationMessage }}</p>
       <!-- <a
         href="/login"
