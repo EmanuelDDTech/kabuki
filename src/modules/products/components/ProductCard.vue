@@ -51,7 +51,7 @@
         {{ product ? product.name : 'League Battle Deck -Charizard ex- PREVENTA' }}
       </p>
 
-      <div class="mb-2">
+      <div class="mb-2" v-if="product.stock_visible">
         <span class="text-sm text-slate-700">Disponibles: </span>
         <span class="font-semibold text-green-600">{{ product.stock }}</span>
       </div>
@@ -110,8 +110,8 @@ const defaultProduct = {
 
 const router = useRouter();
 
-const addItem = async (item) => {
-  if (item.stock <= 0) {
+const addItem = async (item: Product) => {
+  if (item.stock! <= 0) {
     toast.open({
       message: 'No hay stock disponible',
       type: 'error',
