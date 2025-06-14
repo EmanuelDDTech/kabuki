@@ -7,6 +7,9 @@ export default {
   async getAll() {
     return await api.get('/ordenes');
   },
+  async getAllAdmin() {
+    return await api.get('/ordenes/admin');
+  },
   async getById(id: number) {
     return await api.get(`/ordenes/${id}`);
   },
