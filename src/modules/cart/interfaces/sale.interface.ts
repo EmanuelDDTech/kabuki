@@ -1,4 +1,6 @@
+import type { User } from '@/modules/auth/interfaces';
 import type { Product } from '@/modules/product/interfaces/product.interface';
+import type { Delivery } from './delivery.interface';
 
 export interface Sale {
   id: number;
@@ -13,10 +15,13 @@ export interface Sale {
   createdAt?: Date;
   updatedAt?: Date;
   user_id: number;
+  user?: User;
   sale_carts: SaleCart[];
   discount_amount: number;
   discount_code_id: number;
   amount_shipping: number;
+  delivery_carrier_id: number;
+  delivery_carrier?: Delivery;
 }
 
 export interface SaleCart {
