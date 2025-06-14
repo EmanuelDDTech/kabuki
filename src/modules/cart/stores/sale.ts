@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
 import SaleAPI from '../api/SaleAPI';
-import type { Sale } from '../interfaces/sale.interface';
+import { State, type Sale } from '../interfaces/sale.interface';
 
 export const useSaleStore = defineStore('sale', () => {
   const myPurchases = ref<Sale[]>([]);
@@ -13,6 +13,18 @@ export const useSaleStore = defineStore('sale', () => {
     loading.value = true;
     try {
       const { data } = await SaleAPI.getAll();
+      myPurchases.value = data;
+    } catch (error) {
+      console.log(error);
+    } finally {
+      loading.value = false;
+    }
+  };
+
+  const getPurchasesAdmin = async () => {
+    loading.value = true;
+    try {
+      const { data } = await SaleAPI.getAllAdmin();
       myPurchases.value = data;
     } catch (error) {
       console.log(error);
@@ -45,13 +57,29 @@ export const useSaleStore = defineStore('sale', () => {
     purchaseInfo.value = data;
   };
 
+  const updateState = async (state: State) => {
+    const newData = { ...purchaseInfo.value };
+    newData.state = state;
+
+    try {
+      await SaleAPI.update(newData.id!, newData);
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+
+    purchaseInfo.value = newData as Sale;
+  };
+
   return {
     myPurchases,
     purchaseInfo,
 
     // Methods
     getPurchases,
+    getPurchasesAdmin,
     getPurchaseById,
+    updateState,
 
     // Getters
     getMyPurchases,
