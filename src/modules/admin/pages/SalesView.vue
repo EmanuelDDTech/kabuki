@@ -6,7 +6,7 @@ import PurchaseCard from '@/modules/cart/components/PurchaseCard.vue';
 const saleStore = useSaleStore();
 
 onMounted(async () => {
-  await saleStore.getPurchases();
+  await saleStore.getPurchasesAdmin();
 });
 </script>
 
@@ -23,6 +23,7 @@ onMounted(async () => {
           :key="order.id"
           :sale="order"
           :admin="true"
+          :allInfo="true"
         />
       </div>
     </div>
