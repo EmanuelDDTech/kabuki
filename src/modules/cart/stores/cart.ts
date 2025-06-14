@@ -241,10 +241,11 @@ export const useCartStore = defineStore('cart', () => {
     return (item) => (item.availability < MAX_PRODUCTS ? item.availability : MAX_PRODUCTS);
   });
 
-  async function createSaleOrder(transaction: string | null = null) {
+  async function createSaleOrder(transaction: string | null = null, paymentMethod: string | null) {
     const saleData = {
       state: transaction ? 'pendiente' : 'pago pendiente',
       require_payment: false,
+      payment_method: paymentMethod,
       amount_total: total.value,
       amount_subtotal: subtotal.value,
       is_payed: true,
