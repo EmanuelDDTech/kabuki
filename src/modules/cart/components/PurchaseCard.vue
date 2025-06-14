@@ -9,6 +9,7 @@ const saleStore = useSaleStore();
 interface Props {
   sale: Sale;
   admin?: Boolean;
+  allInfo?: Boolean;
 }
 
 defineProps<Props>();
@@ -33,7 +34,7 @@ defineProps<Props>();
             class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 capitalize"
             :class="{
               'bg-green-500 border-green-500': sale.state === State.COMPLETED,
-              'bg-orange-500 border-orange-500': sale.state === State.PENDING,
+              'bg-orange-500 border-orange-500 ': sale.state === State.PENDING,
               'bg-red-500 border-red-500': sale.state === State.CANCELED,
               'bg-blue-600 border-blue-600 text-white': sale.state === State.PAYPENDING,
             }"
@@ -45,10 +46,15 @@ defineProps<Props>();
           Pedido <span class="font-bold"># {{ sale.id }}</span> • realizado el
           <span class="font-bold">{{ converToDDMMYYYY(sale.createdAt) }}</span>
         </p>
+        <p v-if="allInfo" class="text-sm text-muted-foreground">
+          Cliente: <span class="font-bold">{{ sale.user?.name }}</span>
+        </p>
 
-        <div class="pt-0">
-          <div class="flex justify-between items-center">
-            <div class="font-medium">{{ formatCurrency(sale.amount_total) }}</div>
+        <div>
+          <div class="flex justify-between items-center mt-4">
+            <div class="font-bold text-lg">
+              {{ formatCurrency(sale.amount_total) }}
+            </div>
             <router-link
               :to="{ name: admin ? 'adminSaleInfo' : 'purchaseInfo', params: { saleId: sale.id } }"
               class="text-blue-500"
