@@ -22,7 +22,12 @@ export default {
       },
     },
   },
-  plugins: [require('@vueform/vueform/tailwind'), require('tailwind-scrollbar')],
+  plugins: [
+    // eslint-disable-next-line no-undef
+    require('@vueform/vueform/tailwind'),
+    // eslint-disable-next-line no-undef
+    require('tailwind-scrollbar'),
+  ],
   // plugins: [
   //   // eslint-disable-next-line no-undef
   //   require('daisyui'),
