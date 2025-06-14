@@ -5,6 +5,7 @@ export interface Sale {
   name?: string;
   state: State;
   require_payment: boolean;
+  payment_method: string;
   amount_total: number;
   amount_subtotal: number;
   is_payed: boolean;
