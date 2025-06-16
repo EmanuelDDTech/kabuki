@@ -1,11 +1,13 @@
 <script lang="ts" setup>
-import { inject, onMounted, ref } from 'vue';
+import { inject, onMounted, ref, useTemplateRef } from 'vue';
+import { onClickOutside } from '@vueuse/core';
 import { useSaleStore } from '@cart/stores/sale';
 import { useRoute } from 'vue-router';
 import { formatCurrency } from '@/helpers';
 import LeftArrow from '@/modules/icons/ArrowLeft.vue';
 import CustomModal from '@/modules/common/components/CustomModal.vue';
 import { State } from '@/modules/cart/interfaces/sale.interface';
+import FloatingOptions from '@/modules/layouts/components/FloatingOptions.vue';
 
 const saleStore = useSaleStore();
 const route = useRoute();
@@ -14,6 +16,10 @@ const customModalOpen = ref(false);
 const toast: any = inject('toast');
 
 const states = Object.values(State);
+
+const floatingOptions = useTemplateRef<HTMLElement>('floating-options');
+
+onClickOutside(floatingOptions, (event) => (customModalOpen.value = false));
 
 onMounted(async () => {
   const { saleId } = route.params;
@@ -43,7 +49,7 @@ const updateState = async (state: State) => {
 </script>
 
 <template>
-  <custom-modal :open="customModalOpen" @close="customModalOpen = false">
+  <!-- <custom-modal :open="customModalOpen" @close="customModalOpen = false">
     <template #body>
       <ul class="space-y-1">
         <li
@@ -62,7 +68,7 @@ const updateState = async (state: State) => {
         </li>
       </ul>
     </template>
-  </custom-modal>
+  </custom-modal> -->
   <div class="mt-6 mx-4 p-4 sm:p-6 xl:p-8 bg-white shadow rounded-lg">
     <RouterLink
       :to="{ name: 'sales' }"
@@ -78,18 +84,40 @@ const updateState = async (state: State) => {
         <p class="text-lg text-slate-700">Gracias!</p>
         <div class="flex justify-between flex-wrap mb-2">
           <h1 class="text-3xl font-bold my-2">Detalles del pedido 🚀</h1>
-          <div
-            @click="customModalOpen = true"
-            class="h-fit inline-flex items-center rounded-full border px-2.5 py-2 text-xs transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 capitalize cursor-pointer"
-            :class="{
-              'bg-green-500 border-green-500': saleStore.purchaseInfo?.state === State.COMPLETED,
-              'bg-orange-500 border-orange-500': saleStore.purchaseInfo?.state === State.PENDING,
-              'bg-red-500 border-red-500': saleStore.purchaseInfo?.state === State.CANCELED,
-              'bg-blue-600 border-blue-600 text-white':
-                saleStore.purchaseInfo?.state === State.PAYPENDING,
-            }"
-          >
-            {{ saleStore.purchaseInfo?.state }}
+          <div class="relative">
+            <div
+              @click="customModalOpen = true"
+              class="h-fit inline-flex items-center rounded-full border px-2.5 py-2 text-xs transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 capitalize cursor-pointer"
+              :class="{
+                'bg-green-500 border-green-500': saleStore.purchaseInfo?.state === State.COMPLETED,
+                'bg-orange-500 border-orange-500': saleStore.purchaseInfo?.state === State.PENDING,
+                'bg-red-500 border-red-500': saleStore.purchaseInfo?.state === State.CANCELED,
+                'bg-blue-600 border-blue-600 text-white':
+                  saleStore.purchaseInfo?.state === State.PAYPENDING,
+              }"
+            >
+              {{ saleStore.purchaseInfo?.state }}
+            </div>
+            <floating-options ref="floating-options" class="-mt-5" v-if="customModalOpen">
+              <template #options>
+                <ul class="space-y-1">
+                  <li
+                    v-for="(state, index) in states"
+                    :key="index"
+                    class="h-fit w-28 items-center rounded-full border px-2.5 py-2 text-xs text-center transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 capitalize cursor-pointer"
+                    :class="{
+                      'bg-green-500 border-green-500': state === State.COMPLETED,
+                      'bg-orange-500 border-orange-500': state === State.PENDING,
+                      'bg-red-500 border-red-500': state === State.CANCELED,
+                      'bg-blue-600 border-blue-600 text-white': state === State.PAYPENDING,
+                    }"
+                    @click="updateState(state)"
+                  >
+                    <p class="block">{{ state.charAt(0).toUpperCase() + state.slice(1) }}</p>
+                  </li>
+                </ul>
+              </template>
+            </floating-options>
           </div>
         </div>
         <p class="text-lg text-slate-700 mb-5">
