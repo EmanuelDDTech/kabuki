@@ -37,8 +37,8 @@ export interface SaleCart {
 }
 
 export enum State {
+  PAYPENDING = 'pago pendiente',
   PENDING = 'pendiente',
   COMPLETED = 'completado',
   CANCELED = 'cancelado',
-  PAYPENDING = 'pago pendiente',
 }
