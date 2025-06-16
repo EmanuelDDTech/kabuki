@@ -21,10 +21,14 @@ onMounted(async () => {
 });
 
 const updateState = async (state: State) => {
+  if (state === saleStore.purchaseInfo?.state) {
+    customModalOpen.value = false;
+    return;
+  }
   try {
     await saleStore.updateState(state);
     toast.open({
-      message: 'Producto creado correctamente',
+      message: 'Estado actualizado correctamente',
       type: 'success',
     });
   } catch (error: any) {
