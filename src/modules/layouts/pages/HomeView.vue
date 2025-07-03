@@ -20,6 +20,30 @@ const featuredProductStore = useFeaturedProductStore();
 const routes = [
   {
     name: 'products',
+    text: 'Black & White',
+    img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Fblack-%26-white.jpg?alt=media&token=e7b915df-bb61-454a-878f-f2902761eafd',
+    query: { expansion: 'black-&-white' },
+  },
+  {
+    name: 'products',
+    text: 'Destined Rivals',
+    img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Fdestined-rivals.jpg?alt=media&token=766a6e58-db08-4477-930c-f9771b719993',
+    query: { expansion: 'destined-rivals' },
+  },
+  {
+    name: 'products',
+    text: 'Journey Together',
+    img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Fjourney-together.jpg?alt=media&token=c13050fa-c86f-4f69-b434-c7a5bc5b5cfe',
+    query: { expansion: 'journey-together' },
+  },
+  {
+    name: 'products',
+    text: 'Prismatic Evolutions',
+    img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Fprismatic.jpg?alt=media&token=0f6dfa57-e11c-44be-9788-14024d1047ac',
+    query: { expansion: 'prismatic-evolutions' },
+  },
+  {
+    name: 'products',
     text: 'Surgin Sparks',
     img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Fsurgin_sparks.webp?alt=media&token=07ee7fe9-2e9d-4d20-9440-6b14d88e3ddc',
     query: { expansion: 'surgin-sparks' },
@@ -54,30 +78,30 @@ const routes = [
     img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Fpaldean_fate.webp?alt=media&token=06d8bea9-baab-45e6-80e5-27a07204490d',
     query: { expansion: 'paldean-fates' },
   },
-  {
-    name: 'products',
-    text: 'Paradox Rift',
-    img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Fparadox_rift.webp?alt=media&token=e9b51d4f-e5f5-4a12-963c-db201b4b9625',
-    query: { expansion: 'paradox-rift' },
-  },
-  {
-    name: 'products',
-    text: 'Obsidian Flames',
-    img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Fobsidian_flames.webp?alt=media&token=54f22ac9-ecde-47c5-9f85-11c218b96d66',
-    query: { expansion: 'obsidian-flames' },
-  },
-  {
-    name: 'products',
-    text: 'Paldea Evolved',
-    img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Fpaldea_evolve.webp?alt=media&token=9586367d-8f22-4978-9ceb-f43d7d93a0f7',
-    query: { expansion: 'paldea-evolved' },
-  },
-  {
-    name: 'products',
-    text: 'Scarlet & Violet',
-    img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Fscarlet_violet.webp?alt=media&token=9bb480ec-ca84-45bd-8177-2112dd543bad',
-    query: { expansion: 'scarlet-&-violet' },
-  },
+  // {
+  //   name: 'products',
+  //   text: 'Paradox Rift',
+  //   img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Fparadox_rift.webp?alt=media&token=e9b51d4f-e5f5-4a12-963c-db201b4b9625',
+  //   query: { expansion: 'paradox-rift' },
+  // },
+  // {
+  //   name: 'products',
+  //   text: 'Obsidian Flames',
+  //   img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Fobsidian_flames.webp?alt=media&token=54f22ac9-ecde-47c5-9f85-11c218b96d66',
+  //   query: { expansion: 'obsidian-flames' },
+  // },
+  // {
+  //   name: 'products',
+  //   text: 'Paldea Evolved',
+  //   img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Fpaldea_evolve.webp?alt=media&token=9586367d-8f22-4978-9ceb-f43d7d93a0f7',
+  //   query: { expansion: 'paldea-evolved' },
+  // },
+  // {
+  //   name: 'products',
+  //   text: 'Scarlet & Violet',
+  //   img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Fscarlet_violet.webp?alt=media&token=9bb480ec-ca84-45bd-8177-2112dd543bad',
+  //   query: { expansion: 'scarlet-&-violet' },
+  // },
 ];
 
 const campaignTypes = {
