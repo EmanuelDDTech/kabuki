@@ -17,10 +17,11 @@
           :value="item.quantity"
           @res="res(item.product.id, item.quantity, item.product.stock)"
           @sum="sum(item.product.id, item.quantity, item.product.stock)"
+          :editable="editable"
         />
       </div>
 
-      <div class="flex text-sm gap-6 mt-2 text-gray-500">
+      <div class="flex text-sm gap-6 mt-2 text-gray-500" v-if="editable">
         <p class="cursor-pointer hover:text-red-600" @click="removeItem(item.product.id)">
           Eliminar
         </p>
@@ -44,10 +45,13 @@ const cart = useCartStore();
 const toast = inject('toast');
 
 interface Props {
-  item?: Object;
+  item: Object;
+  editable?: boolean;
 }
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  editable: true,
+});
 
 const res = async (productId, quantity) => {
   if (quantity <= 1) {
