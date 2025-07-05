@@ -62,9 +62,16 @@ function toggleValue(userId: number) {
                   <div class="text-base text-left">{{ user.email }}</div>
                 </td>
                 <td class="p-2">
-                  <div class="text-base text-left font-medium text-gray-800">
-                    {{ user.verified ? 'Simón' : 'Nel' }}
-                  </div>
+                  <p class="text-gray-900">
+                    <span
+                      class="inline-block px-2 py-1 rounded-full"
+                      :class="
+                        user.verified ? 'bg-green-200 text-green-800' : 'bg-red-200 text-red-800'
+                      "
+                    >
+                      {{ user.verified ? 'Sí' : 'No' }}
+                    </span>
+                  </p>
                 </td>
                 <td class="p-2">
                   <SwitchButton
