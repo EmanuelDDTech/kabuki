@@ -56,7 +56,7 @@ const selectProduct = (id: number) => {
     >
       <div class="p-3 bg-white border border-gray-300 rounded-lg shadow-lg z-10">
         <div
-          class="w-full max-h-[728px] overflow-y-scroll scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent"
+          class="w-full max-h-[600px] overflow-y-scroll scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent"
         >
           <ul class="grid grid-cols-[repeat(auto-fill,minmax(224px,288px))] gap-4 justify-center">
             <ProductSearch
