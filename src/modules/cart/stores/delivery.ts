@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import type { Delivery } from '../interfaces/delivery.interface';
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 import DeliveryAPI from '../api/DeliveryAPI';
 
 export const useDeliveryStore = defineStore('delivery', () => {
@@ -33,6 +33,15 @@ export const useDeliveryStore = defineStore('delivery', () => {
     amountShipping.value = 0;
     carrierSelected.value = null;
   };
+
+  watch(deliveriesAvailable, (newDeliveries, oldDeliveries) => {
+    if (carrierSelected.value) {
+      const newValue = newDeliveries.find((delivery) => delivery.id === carrierSelected.value?.id)!;
+
+      setCarrierSelected(newValue);
+      setAmountShipping(newValue.free_over ? 0 : newValue.delivery_price_rules[0].list_base_price);
+    }
+  });
 
   return {
     carriers,

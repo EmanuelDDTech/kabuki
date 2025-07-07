@@ -72,18 +72,30 @@
         v-model="product.weight"
       />
 
-      <FormKit
-        type="number"
-        label="Cantidad"
-        name="stock"
-        placeholder="Cantidad de producto"
-        validation="required"
-        :validation-messages="{
-          required: 'La cantidad es obligatoria',
-        }"
-        step="1"
-        v-model="product.stock"
-      />
+      <div class="flex gap-6 items-start">
+        <FormKit
+          type="number"
+          label="Cantidad"
+          name="stock"
+          placeholder="Cantidad de producto"
+          validation="required"
+          :validation-messages="{
+            required: 'La cantidad es obligatoria',
+          }"
+          step="1"
+          v-model="product.stock"
+        />
+
+        <FormKit
+          type="checkbox"
+          label="Stock Visible"
+          name="stockVisible"
+          v-model="product.stock_visible"
+          wrapper-class="flex flex-col-reverse items-center justify-centery gap-3 "
+          label-class="!mt-0"
+          input-class="!w-4 !h-4 cursor-pointer"
+        />
+      </div>
 
       <FormKit
         type="file"
@@ -260,6 +272,7 @@ const handleSubmit = async () => {
         weight: product.weight,
         discount: product.discount,
         stock: product.stock,
+        stock_visible: product.stock_visible,
         product_category_id: product.product_category_id,
       };
       const data = await product.create(productData);
@@ -288,6 +301,7 @@ const handleSubmit = async () => {
         weight: product.weight,
         discount: product.discount,
         stock: product.stock,
+        stock_visible: product.stock_visible,
         product_category_id: product.product_category_id,
       };
 
@@ -303,7 +317,7 @@ const handleSubmit = async () => {
         router.push({ name: 'adminProducts' });
       }, 1000);
     }
-  } catch (error) {
+  } catch (error: any) {
     toast.open({
       message: error.response.data.msg,
       type: 'error',

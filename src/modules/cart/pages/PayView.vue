@@ -121,7 +121,7 @@ const createPaypalButtons = () => {
               orderData?.purchase_units?.[0]?.payments?.captures?.[0] ||
               orderData?.purchase_units?.[0]?.payments?.authorizations?.[0];
 
-            const saleOrder = await cart.createSaleOrder(transaction.id);
+            const saleOrder = await cart.createSaleOrder(transaction.id, 'paypal');
             await cart.deleteCart();
             address.clearSelectedAddress();
             delivery.clearSelectedAddress();
@@ -144,7 +144,7 @@ const createPaypalButtons = () => {
 };
 
 const createTransferOrder = async () => {
-  const saleOrder = await cart.createSaleOrder(null);
+  const saleOrder = await cart.createSaleOrder(null, 'transferencia');
   await cart.deleteCart();
   address.clearSelectedAddress();
   delivery.clearSelectedAddress();

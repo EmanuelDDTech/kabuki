@@ -26,10 +26,25 @@ onMounted(async () => {
       ></div>
 
       <div class="py-7">
-        <div class="text-lg text-slate-900">
+        <div class="text-slate-900">
           <span class="mr-2">Número de pedido:</span
-          ><span class="text-green-600">{{ saleStore.purchaseInfo?.id }}</span>
+          ><span class="text-green-600 font-bold">{{ saleStore.purchaseInfo?.id }}</span>
         </div>
+        <p class="text-slate-900">
+          Método de pago:
+          <span
+            class="font-bold"
+            :class="{
+              'text-blue-600': saleStore.purchaseInfo?.payment_method === 'paypal',
+              'text-orange-600': saleStore.purchaseInfo?.payment_method === 'transferencia',
+            }"
+            >{{ saleStore.purchaseInfo?.payment_method }}</span
+          >
+        </p>
+        <p class="text-slate-900">
+          Método de envío:
+          <span class="font-bold">{{ saleStore.purchaseInfo?.delivery_carrier?.name }}</span>
+        </p>
       </div>
 
       <ul class="border border-slate-200 rounded-md divide-y">

@@ -28,6 +28,7 @@ export const useProductStore = defineStore('product', () => {
   const weight = ref(0);
   const discount = ref(null);
   const stock = ref(0);
+  const stock_visible = ref(true);
   const product_category_id = ref(0);
 
   const gallery = ref<ProductGallery[]>([]);
@@ -52,6 +53,7 @@ export const useProductStore = defineStore('product', () => {
     weight.value = 0;
     discount.value = null;
     stock.value = 0;
+    stock_visible.value = true;
     product_category_id.value = 0;
     gallery.value = [];
 
@@ -111,6 +113,7 @@ export const useProductStore = defineStore('product', () => {
           ? productData.campaign_products[0].campaign_price
           : null;
       stock.value = productData.stock;
+      stock_visible.value = productData.stock_visible;
       product_category_id.value = productData.product_category_id;
 
       const { data: galleryData } = await ProductGalleryAPI.findByProductId(id.value);
@@ -170,6 +173,7 @@ export const useProductStore = defineStore('product', () => {
     weight,
     discount,
     stock,
+    stock_visible,
     product_category_id,
     filters,
     gallery,

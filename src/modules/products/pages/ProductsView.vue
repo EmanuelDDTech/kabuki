@@ -34,21 +34,29 @@ const formatExpansion = (expansion: string) => {
 
 useSeoMeta({
   title: () =>
-    route.query.expansion
-      ? `Productos Pokémon TCG | ShoriKameCards | Expansión: ${Array.isArray(route.query.expansion) ? route.query.expansion.map(formatExpansion).join(', ') : route.query.expansion}`
-      : 'Productos Pokémon TCG | ShoriKameCards',
+    `Productos Pokémon TCG | ShoriKameCards ${
+      route.query.expansion && route.query.expansion.length !== 0
+        ? `| Expansión: ${Array.isArray(route.query.expansion) ? route.query.expansion.map(formatExpansion).join(', ') : route.query.expansion}`
+        : ''
+    } ${route.query['tipo-de-producto'] && route.query['tipo-de-producto'].length !== 0 ? `| ${Array.isArray(route.query['tipo-de-producto']) ? route.query['tipo-de-producto'].map(formatExpansion).join(', ') : route.query['tipo-de-producto']}` : ''}`,
   ogTitle: () =>
-    route.query.expansion
-      ? `Productos Pokémon TCG | ShoriKameCards | Expansión: ${Array.isArray(route.query.expansion) ? route.query.expansion.map(formatExpansion).join(', ') : route.query.expansion}`
-      : 'Productos Pokémon TCG | ShoriKameCards',
+    `Productos Pokémon TCG | ShoriKameCards ${
+      route.query.expansion && route.query.expansion.length !== 0
+        ? `| Expansión: ${Array.isArray(route.query.expansion) ? route.query.expansion.map(formatExpansion).join(', ') : route.query.expansion}`
+        : ''
+    } ${route.query['tipo-de-producto'] && route.query['tipo-de-producto'].length !== 0 ? `| ${Array.isArray(route.query['tipo-de-producto']) ? route.query['tipo-de-producto'].map(formatExpansion).join(', ') : route.query['tipo-de-producto']}` : ''}`,
   description: () =>
-    route.query.expansion
-      ? `Explora todos nuestros productos Pokémon TCG | Expansión: ${Array.isArray(route.query.expansion) ? route.query.expansion.map(formatExpansion).join(', ') : route.query.expansion}`
-      : 'Explora todos nuestros productos Pokémon TCG',
+    `Explora todos nuestros productos Pokémon TCG ${
+      route.query.expansion && route.query.expansion.length !== 0
+        ? `| Expansión: ${Array.isArray(route.query.expansion) ? route.query.expansion.map(formatExpansion).join(', ') : route.query.expansion}`
+        : ''
+    } ${route.query['tipo-de-producto'] && route.query['tipo-de-producto'].length !== 0 ? `| ${Array.isArray(route.query['tipo-de-producto']) ? route.query['tipo-de-producto'].map(formatExpansion).join(', ') : route.query['tipo-de-producto']}` : ''}`,
   ogDescription: () =>
-    route.query.expansion
-      ? `Explora todos nuestros productos Pokémon TCG | Expansión: ${Array.isArray(route.query.expansion) ? route.query.expansion.map(formatExpansion).join(', ') : route.query.expansion}`
-      : 'Explora todos nuestros productos Pokémon TCG',
+    `Explora todos nuestros productos Pokémon TCG ${
+      route.query.expansion && route.query.expansion.length !== 0
+        ? `| Expansión: ${Array.isArray(route.query.expansion) ? route.query.expansion.map(formatExpansion).join(', ') : route.query.expansion}`
+        : ''
+    } ${route.query['tipo-de-producto'] && route.query['tipo-de-producto'].length !== 0 ? `| ${Array.isArray(route.query['tipo-de-producto']) ? route.query['tipo-de-producto'].map(formatExpansion).join(', ') : route.query['tipo-de-producto']}` : ''}`,
   // ogImage: () => product.gallery[0]?.url,
   // ogImageHeight: '1000',
   // ogImageWidth: '1000',
