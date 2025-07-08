@@ -8,7 +8,7 @@ import XMarkIcon from '@/modules/layouts/components/XMarkIcon.vue';
 import FiltersSkeleton from '@/modules/filter/components/FiltersSkeleton.vue';
 import ProductSkeleton from '../components/ProductSkeleton.vue';
 import ChevronDownIcon from '@/modules/common/icons/ChevronDownIcon.vue';
-import { useRoute } from 'vue-router';
+import { useRoute, type LocationQueryValue } from 'vue-router';
 import { useSeoMeta } from '@unhead/vue';
 
 const filters = useFilterCategoryStore();
@@ -25,8 +25,9 @@ onBeforeMount(async () => {
   await filters.getProducts();
 });
 
-const formatExpansion = (expansion: string) => {
+const formatExpansion = (expansion: LocationQueryValue) => {
   return expansion
+    ?.toString()
     .split('-')
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(' ');
@@ -36,27 +37,27 @@ useSeoMeta({
   title: () =>
     `Productos Pokémon TCG | ShoriKameCards ${
       route.query.expansion && route.query.expansion.length !== 0
-        ? `| Expansión: ${Array.isArray(route.query.expansion) ? route.query.expansion.map(formatExpansion).join(', ') : route.query.expansion}`
+        ? `| Expansión: ${Array.isArray(route.query.expansion) ? route.query.expansion.map(formatExpansion).join(', ') : formatExpansion(route.query.expansion)}`
         : ''
-    } ${route.query['tipo-de-producto'] && route.query['tipo-de-producto'].length !== 0 ? `| ${Array.isArray(route.query['tipo-de-producto']) ? route.query['tipo-de-producto'].map(formatExpansion).join(', ') : route.query['tipo-de-producto']}` : ''}`,
+    } ${route.query['tipo-de-producto'] && route.query['tipo-de-producto'].length !== 0 ? `| ${Array.isArray(route.query['tipo-de-producto']) ? route.query['tipo-de-producto'].map(formatExpansion).join(', ') : formatExpansion(route.query['tipo-de-producto'])}` : ''}`,
   ogTitle: () =>
     `Productos Pokémon TCG | ShoriKameCards ${
       route.query.expansion && route.query.expansion.length !== 0
-        ? `| Expansión: ${Array.isArray(route.query.expansion) ? route.query.expansion.map(formatExpansion).join(', ') : route.query.expansion}`
+        ? `| Expansión: ${Array.isArray(route.query.expansion) ? route.query.expansion.map(formatExpansion).join(', ') : formatExpansion(route.query.expansion)}`
         : ''
-    } ${route.query['tipo-de-producto'] && route.query['tipo-de-producto'].length !== 0 ? `| ${Array.isArray(route.query['tipo-de-producto']) ? route.query['tipo-de-producto'].map(formatExpansion).join(', ') : route.query['tipo-de-producto']}` : ''}`,
+    } ${route.query['tipo-de-producto'] && route.query['tipo-de-producto'].length !== 0 ? `| ${Array.isArray(route.query['tipo-de-producto']) ? route.query['tipo-de-producto'].map(formatExpansion).join(', ') : formatExpansion(route.query['tipo-de-producto'])}` : ''}`,
   description: () =>
     `Explora todos nuestros productos Pokémon TCG ${
       route.query.expansion && route.query.expansion.length !== 0
-        ? `| Expansión: ${Array.isArray(route.query.expansion) ? route.query.expansion.map(formatExpansion).join(', ') : route.query.expansion}`
+        ? `| Expansión: ${Array.isArray(route.query.expansion) ? route.query.expansion.map(formatExpansion).join(', ') : formatExpansion(route.query.expansion)}`
         : ''
-    } ${route.query['tipo-de-producto'] && route.query['tipo-de-producto'].length !== 0 ? `| ${Array.isArray(route.query['tipo-de-producto']) ? route.query['tipo-de-producto'].map(formatExpansion).join(', ') : route.query['tipo-de-producto']}` : ''}`,
+    } ${route.query['tipo-de-producto'] && route.query['tipo-de-producto'].length !== 0 ? `| ${Array.isArray(route.query['tipo-de-producto']) ? route.query['tipo-de-producto'].map(formatExpansion).join(', ') : formatExpansion(route.query['tipo-de-producto'])}` : ''}`,
   ogDescription: () =>
     `Explora todos nuestros productos Pokémon TCG ${
       route.query.expansion && route.query.expansion.length !== 0
-        ? `| Expansión: ${Array.isArray(route.query.expansion) ? route.query.expansion.map(formatExpansion).join(', ') : route.query.expansion}`
+        ? `| Expansión: ${Array.isArray(route.query.expansion) ? route.query.expansion.map(formatExpansion).join(', ') : formatExpansion(route.query.expansion)}`
         : ''
-    } ${route.query['tipo-de-producto'] && route.query['tipo-de-producto'].length !== 0 ? `| ${Array.isArray(route.query['tipo-de-producto']) ? route.query['tipo-de-producto'].map(formatExpansion).join(', ') : route.query['tipo-de-producto']}` : ''}`,
+    } ${route.query['tipo-de-producto'] && route.query['tipo-de-producto'].length !== 0 ? `| ${Array.isArray(route.query['tipo-de-producto']) ? route.query['tipo-de-producto'].map(formatExpansion).join(', ') : formatExpansion(route.query['tipo-de-producto'])}` : ''}`,
   // ogImage: () => product.gallery[0]?.url,
   // ogImageHeight: '1000',
   // ogImageWidth: '1000',
@@ -244,7 +245,7 @@ const setPriceRange = async (e: any) => {
                 <div class="mt-3 flex flex-col gap-3">
                   <!-- <div v-for="filterGroup in filters.filters" :key="filterGroup.id">
                   <h4 class="font-bold mb-2">{{ filterGroup.filter_group.name }}</h4>
-  
+
                   <div class="flex flex-wrap gap-2 w-full max-w-96">
                     <div
                       v-for="filterValue in filterGroup.filter_group.filter_values"
