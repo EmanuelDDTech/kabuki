@@ -6,11 +6,21 @@ import userAPI from '../api/userAPI';
 export const useUsersStore = defineStore('users', () => {
   const users = ref<User[]>([]);
   const user = ref<User>();
+  const latestUsers = ref<User[]>([]);
 
   const getUsers = async () => {
     try {
       const { data } = await userAPI.getAll();
       users.value = data;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getLatestUsers = async (query: Record<string, string>) => {
+    try {
+      const { data } = await userAPI.getAll(query);
+      latestUsers.value = data;
     } catch (error) {
       console.log(error);
     }
@@ -31,9 +41,11 @@ export const useUsersStore = defineStore('users', () => {
     // Methods
     getUsers,
     getUserById,
+    getLatestUsers,
 
     // Getters
     userList: computed(() => [...users.value]),
+    latestUsersList: computed(() => [...latestUsers.value]),
     noUsers: computed(() => users.value.length === 0),
 
     userData: computed(() => user.value),
