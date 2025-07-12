@@ -40,7 +40,7 @@ const routes = [
     name: 'products',
     text: 'Prismatic Evolutions',
     img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Fprismatic.jpg?alt=media&token=0f6dfa57-e11c-44be-9788-14024d1047ac',
-    query: { expansion: 'prismatic-evolutions' },
+    query: { expansion: 'prismatic-evolution' },
   },
   {
     name: 'products',

@@ -63,7 +63,10 @@
           {{ formatCurrency(product.price) }}
         </p> -->
 
-        <p class="text-xl text-black font-bold mt-0">
+        <p
+          class="text-xl text-black font-bold mt-0"
+          :class="{ 'text-red-600': campaignProduct?.campaign_price }"
+        >
           {{
             formatCurrency(
               campaignProduct.campaign_price

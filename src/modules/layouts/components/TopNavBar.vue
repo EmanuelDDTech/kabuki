@@ -78,7 +78,7 @@
           </div>
           <button
             @click="user.logout"
-            class="flex items-center pl-4 hover:text-blue-500 transition-colors"
+            class="flex items-center pl-4 hover:text-red-600 transition-colors"
           >
             Cerrar sesión
           </button>
