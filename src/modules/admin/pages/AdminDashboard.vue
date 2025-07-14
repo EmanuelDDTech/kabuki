@@ -1,6 +1,11 @@
 <script setup lang="ts">
+import BarTable from '@/modules/dashboard/components/BarTable.vue';
 import LatestCustomers from '../components/LatestCustomers.vue';
 import LatestTransactions from '../components/LatestTransactions.vue';
+import { formatCurrency } from '@/helpers';
+import { useSaleStore } from '@/modules/cart/stores/sale';
+
+const sales = useSaleStore();
 </script>
 
 <template>
@@ -10,10 +15,12 @@ import LatestTransactions from '../components/LatestTransactions.vue';
         <div class="bg-white shadow rounded-lg p-4 sm:p-6 xl:p-8 2xl:col-span-2">
           <div class="flex items-center justify-between mb-4">
             <div class="flex-shrink-0">
-              <span class="text-2xl sm:text-3xl leading-none font-bold text-gray-900">$45,385</span>
-              <h3 class="text-base font-normal text-gray-500">Sales this week</h3>
+              <span class="text-2xl sm:text-3xl leading-none font-bold text-gray-900">{{
+                formatCurrency(sales.purchaseSummaryTotal)
+              }}</span>
+              <!-- <h3 class="text-base font-normal text-gray-500">Ventas Esta Semana</h3> -->
             </div>
-            <div class="flex items-center justify-end flex-1 text-green-500 text-base font-bold">
+            <!-- <div class="flex items-center justify-end flex-1 text-green-500 text-base font-bold">
               12.5%
               <svg
                 class="w-5 h-5"
@@ -27,9 +34,10 @@ import LatestTransactions from '../components/LatestTransactions.vue';
                   clip-rule="evenodd"
                 ></path>
               </svg>
-            </div>
+            </div> -->
           </div>
-          <div id="main-chart"></div>
+          <!-- <div id="main-chart"></div> -->
+          <BarTable />
         </div>
         <LatestTransactions />
       </div>
