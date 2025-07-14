@@ -1,11 +1,13 @@
 import type { User } from '@/modules/auth/interfaces';
 import type { Product } from '@/modules/product/interfaces/product.interface';
 import type { Delivery } from './delivery.interface';
+import type { Address } from './address.interface';
 
 export interface Sale {
   id: number;
   name?: string;
   state: State;
+  address?: Address;
   require_payment: boolean;
   payment_method: string;
   amount_total: number;
@@ -41,4 +43,11 @@ export enum State {
   PENDING = 'pendiente',
   COMPLETED = 'completado',
   CANCELED = 'cancelado',
+}
+
+export enum Period {
+  DIA = 'Día',
+  SEMANA = 'Semana',
+  MES = 'Mes',
+  AÑO = 'Año',
 }
