@@ -16,4 +16,16 @@ export default {
   async update(id: number, data: Object) {
     return await api.put(`/ordenes/${id}`, data);
   },
+  async getByYear() {
+    return await api.get('/ordenes/admin/byYear');
+  },
+  async getByMonth() {
+    return await api.get('/ordenes/admin/byMonth');
+  },
+  async getByWeek() {
+    return await api.get('/ordenes/admin/byWeek');
+  },
+  async getByDay() {
+    return await api.get('/ordenes/admin/byDay');
+  },
 };
