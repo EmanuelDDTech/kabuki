@@ -7,7 +7,6 @@ const users = useUsersStore();
 
 onMounted(async () => {
   await users.getLatestUsers({ limit: '5' });
-  console.log(users.latestUsersList);
 });
 </script>
 <template>
