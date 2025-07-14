@@ -1,12 +1,17 @@
 import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
 import SaleAPI from '../api/SaleAPI';
-import { State, type Sale } from '../interfaces/sale.interface';
+import { Period, State, type Sale } from '../interfaces/sale.interface';
 
 export const useSaleStore = defineStore('sale', () => {
   const myPurchases = ref<Sale[]>([]);
   const purchaseInfo = ref<Sale | null>(null);
   const latestPurchases = ref<Sale[]>([]);
+  const purchaseSummary = ref({
+    data: [],
+    labels: [],
+    values: [],
+  });
 
   const loading = ref(false);
 
@@ -51,6 +56,52 @@ export const useSaleStore = defineStore('sale', () => {
     return myPurchases.value;
   };
 
+  const getPurchasesSummary = async (period: Period) => {
+    try {
+      const labels: any = [];
+      const values: any = [];
+      const summaryData: any = [];
+      if (period === Period.AÑO) {
+        const { data } = await SaleAPI.getByYear();
+
+        data.forEach((summary: any) => {
+          labels.push(summary.year);
+          values.push(summary.total);
+          summaryData.push(summary);
+        });
+      } else if (period === Period.MES) {
+        const { data } = await SaleAPI.getByMonth();
+
+        data.forEach((summary: any) => {
+          labels.push(summary.month);
+          values.push(summary.total);
+          summaryData.push(summary);
+        });
+      } else if (period === Period.SEMANA) {
+        const { data } = await SaleAPI.getByWeek();
+
+        data.forEach((summary: any) => {
+          labels.push(summary.week);
+          values.push(summary.total);
+          summaryData.push(summary);
+        });
+      } else if (period === Period.DIA) {
+        const { data } = await SaleAPI.getByDay();
+
+        data.forEach((summary: any) => {
+          labels.push(summary.day);
+          values.push(summary.total);
+          summaryData.push(summary);
+        });
+      }
+
+      purchaseSummary.value = { data: summaryData, labels, values };
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  };
+
   const namesCombined = (sale: Sale) =>
     computed(() => {
       let names = '';
@@ -92,6 +143,7 @@ export const useSaleStore = defineStore('sale', () => {
     // Methods
     getPurchases,
     getPurchasesAdmin,
+    getPurchasesSummary,
     getPurchaseById,
     updateState,
     getLatestPurchases,
@@ -103,8 +155,16 @@ export const useSaleStore = defineStore('sale', () => {
     namesCombined,
     getPurchaseInfo,
     address: computed(() => {
-      return `${purchaseInfo.value.address.street}, ${purchaseInfo.value.address.colony}, ${purchaseInfo.value.address.city}, ${purchaseInfo.value.address.state}, ${purchaseInfo.value.address.country}`;
+      return `${purchaseInfo.value?.address?.street}, ${purchaseInfo.value?.address?.colony}, ${purchaseInfo.value?.address?.city}, ${purchaseInfo.value?.address?.state}, ${purchaseInfo.value?.address?.country}`;
     }),
     latestPurchasesList: computed(() => [...latestPurchases.value]),
+    purchaseSummary: computed(() => purchaseSummary.value),
+    purchaseSummaryLabels: computed(() => [...purchaseSummary.value.labels]),
+    purchaseSummaryValues: computed(() => [...purchaseSummary.value.values]),
+    purchaseSummaryTotal: computed(() =>
+      purchaseSummary.value.values.reduce((acc, summary) => {
+        return acc + summary;
+      }, 0),
+    ),
   };
 });
