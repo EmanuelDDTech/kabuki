@@ -2,31 +2,14 @@
 import { ref, onMounted, watch, onBeforeUnmount } from 'vue';
 import * as echarts from 'echarts';
 import type { ECharts } from 'echarts';
-import { useSaleStore } from '@/modules/cart/stores/sale';
-import { Period } from '@/modules/cart/interfaces/sale.interface';
 
-// type FilterOption = 'Día' | 'Semana' | 'Mes' | 'Año';
-type RawDataKey = 'day' | 'week' | 'month' | 'year';
+interface Props {
+  labels: string[];
+  values: number[];
+  title: string;
+}
 
-const sales = useSaleStore();
-
-const filterKeyMap: Record<Period, RawDataKey> = {
-  Día: 'day',
-  Semana: 'week',
-  Mes: 'month',
-  Año: 'year',
-};
-
-// Datos de ejemplo
-const rawData = {
-  day: [120, 200, 150, 80, 70, 110, 130],
-  week: [820, 932, 901, 934, 1290, 1330, 1320],
-  month: [3200, 4500, 5100, 4900, 6200, 7000],
-  year: [50000, 60000, 75000, 68000, 72000],
-};
-
-const filterOptions = Period;
-const selectedFilter = ref<Period>(Period.MES);
+const props = defineProps<Props>();
 
 const chartRef = ref(null);
 let chartInstance: ECharts | null = null;
@@ -38,23 +21,21 @@ const initChart = () => {
 };
 
 const updateChart = () => {
-  const dataKey = filterKeyMap[selectedFilter.value];
-
   const option = {
     title: {
-      text: `Ventas (${selectedFilter.value})`,
+      text: props.title,
     },
     tooltip: {},
     xAxis: {
       type: 'category',
-      data: sales.purchaseSummaryLabels,
+      data: props.labels,
     },
     yAxis: {
       type: 'value',
     },
     series: [
       {
-        data: sales.purchaseSummaryValues,
+        data: props.values,
         type: 'bar',
       },
     ],
@@ -63,7 +44,6 @@ const updateChart = () => {
 };
 
 onMounted(async () => {
-  await sales.getPurchasesSummary(selectedFilter.value);
   initChart();
 
   const observer = new ResizeObserver(() => {
@@ -86,27 +66,12 @@ onMounted(async () => {
   });
 });
 
-watch(selectedFilter, async () => {
-  await sales.getPurchasesSummary(selectedFilter.value);
+watch(props, async () => {
   updateChart();
 });
 </script>
 <template>
   <div>
-    <div class="mb-4 flex gap-2">
-      <button
-        v-for="option in filterOptions"
-        :key="option"
-        @click="selectedFilter = option"
-        :class="[
-          'px-4 py-2 rounded',
-          selectedFilter === option ? 'bg-blue-600 text-white' : 'bg-gray-200',
-        ]"
-      >
-        {{ option }}
-      </button>
-    </div>
-
     <div ref="chartRef" class="w-full h-96"></div>
   </div>
 </template>
