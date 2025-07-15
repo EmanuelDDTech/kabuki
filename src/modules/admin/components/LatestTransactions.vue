@@ -1,14 +1,13 @@
 <script setup lang="ts">
 import { formatCurrency } from '@/helpers';
 import { converToDDMMYYYY } from '@/helpers/date';
-import { useSaleStore } from '@/modules/cart/stores/sale';
-import { onMounted } from 'vue';
+import type { Sale } from '@/modules/cart/interfaces/sale.interface';
 
-const sales = useSaleStore();
+interface Props {
+  sales: Sale[];
+}
 
-onMounted(async () => {
-  sales.getLatestPurchases({ limit: '7' });
-});
+defineProps<Props>();
 </script>
 <template>
   <div class="bg-white shadow rounded-lg p-4 sm:p-6 xl:p-8">
@@ -55,7 +54,7 @@ onMounted(async () => {
                 </tr>
               </thead>
               <tbody class="bg-white">
-                <tr v-for="sale in sales.latestPurchasesList" :key="sale.id">
+                <tr v-for="sale in sales" :key="sale.id">
                   <td class="p-4 whitespace-nowrap text-sm font-normal text-gray-900">
                     Pago de <span class="font-semibold">{{ sale.user?.name }}</span>
                   </td>
