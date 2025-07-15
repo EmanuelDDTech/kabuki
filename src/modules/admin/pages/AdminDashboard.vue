@@ -4,8 +4,20 @@ import LatestCustomers from '../components/LatestCustomers.vue';
 import LatestTransactions from '../components/LatestTransactions.vue';
 import { formatCurrency } from '@/helpers';
 import { useSaleStore } from '@/modules/cart/stores/sale';
+import { useSaleSummaryStore } from '@/modules/sale/stores/saleSummary';
+import OptionsButtons from '@/modules/common/components/OptionsButtons.vue';
+import { onMounted } from 'vue';
 
 const sales = useSaleStore();
+const salesSummary = useSaleSummaryStore();
+
+onMounted(async () => {
+  try {
+    await salesSummary.getSalesSummary(salesSummary.selectedOption);
+  } catch (error) {
+    console.log(error);
+  }
+});
 </script>
 
 <template>
@@ -16,7 +28,7 @@ const sales = useSaleStore();
           <div class="flex items-center justify-between mb-4">
             <div class="flex-shrink-0">
               <span class="text-2xl sm:text-3xl leading-none font-bold text-gray-900">{{
-                formatCurrency(sales.purchaseSummaryTotal)
+                formatCurrency(salesSummary.saleSummaryTotal)
               }}</span>
               <!-- <h3 class="text-base font-normal text-gray-500">Ventas Esta Semana</h3> -->
             </div>
@@ -37,7 +49,16 @@ const sales = useSaleStore();
             </div> -->
           </div>
           <!-- <div id="main-chart"></div> -->
-          <BarTable />
+          <OptionsButtons
+            :options="salesSummary.periodOptions"
+            :selected-option="salesSummary.selectedOption"
+            @select-option="salesSummary.selectPeriod"
+          />
+          <BarTable
+            :title="`Ventas (${salesSummary.selectedOption})`"
+            :labels="salesSummary.saleSummaryLabels"
+            :values="salesSummary.saleSummaryValues"
+          />
         </div>
         <LatestTransactions />
       </div>
