@@ -1,13 +1,12 @@
 <script setup lang="ts">
+import type { User } from '@/modules/auth/interfaces';
 import InfoIcon from '@/modules/common/icons/InfoIcon.vue';
-import { useUsersStore } from '@/modules/user/stores/users';
-import { onMounted } from 'vue';
 
-const users = useUsersStore();
+interface Props {
+  users: User[];
+}
 
-onMounted(async () => {
-  await users.getLatestUsers({ limit: '5' });
-});
+defineProps<Props>();
 </script>
 <template>
   <div class="grid grid-cols-1 2xl:grid-cols-2 xl:gap-4 my-4">
@@ -23,7 +22,7 @@ onMounted(async () => {
       </div>
       <div class="flow-root">
         <ul role="list" class="divide-y divide-gray-200">
-          <li class="py-3 sm:py-4" v-for="user in users.latestUsersList" :key="user.id">
+          <li class="py-3 sm:py-4" v-for="user in users" :key="user.id">
             <div class="flex items-center space-x-4">
               <div class="flex-shrink-0">
                 <img
