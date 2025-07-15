@@ -7,13 +7,19 @@ import { useSaleStore } from '@/modules/cart/stores/sale';
 import { useSaleSummaryStore } from '@/modules/sale/stores/saleSummary';
 import OptionsButtons from '@/modules/common/components/OptionsButtons.vue';
 import { onMounted } from 'vue';
+import { useUsersStore } from '@/modules/user/stores/users';
 
 const sales = useSaleStore();
+const users = useUsersStore();
 const salesSummary = useSaleSummaryStore();
 
 onMounted(async () => {
   try {
-    await salesSummary.getSalesSummary(salesSummary.selectedOption);
+    await Promise.allSettled([
+      sales.getLatestPurchases({ limit: '7' }),
+      users.getLatestUsers({ limit: '5' }),
+      salesSummary.getSalesSummary(salesSummary.selectedOption),
+    ]);
   } catch (error) {
     console.log(error);
   }
@@ -60,7 +66,7 @@ onMounted(async () => {
             :values="salesSummary.saleSummaryValues"
           />
         </div>
-        <LatestTransactions />
+        <LatestTransactions :sales="sales.latestPurchasesList" />
       </div>
       <div class="mt-4 w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
         <div class="bg-white shadow rounded-lg p-4 sm:p-6 xl:p-8">
@@ -140,7 +146,7 @@ onMounted(async () => {
         </div>
       </div>
 
-      <LatestCustomers />
+      <LatestCustomers :users="users.latestUsersList" />
     </div>
   </main>
 </template>
