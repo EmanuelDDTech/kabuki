@@ -1,5 +1,4 @@
 import type { NavigationGuardNext, RouteLocationNormalized } from 'vue-router';
-import AuthAPI from '../api/AuthAPI';
 import { useUserStore } from '../stores/user';
 
 const isAdminGuard = async (
