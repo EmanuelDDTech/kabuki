@@ -39,7 +39,7 @@
 }
 .card3 {
   animation-delay: 2s;
-  z-index: 1;
+  z-index: 3;
 }
 
 @keyframes shuffle {
