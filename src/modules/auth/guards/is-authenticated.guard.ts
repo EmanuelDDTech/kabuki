@@ -8,7 +8,6 @@ const isAuthenticatedGuard = async (
   next: NavigationGuardNext,
 ) => {
   const userStore = useUserStore();
-
   await userStore.checkAuthStatus();
 
   if (userStore.isUnauthenticated) next({ name: 'home' });
