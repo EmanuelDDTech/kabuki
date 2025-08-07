@@ -2,8 +2,21 @@
 import { RouterView } from 'vue-router';
 import CardsLoader from './modules/common/components/CardsLoader.vue';
 import { useUserStore } from './modules/auth/stores/user';
+import { AuthStatus } from './modules/auth/interfaces';
 
 const userStore = useUserStore();
+
+userStore.$subscribe(
+  async (_, state) => {
+    if (state.authStatus === AuthStatus.Checking) {
+      await userStore.checkAuthStatus();
+      return;
+    }
+  },
+  {
+    immediate: true,
+  },
+);
 </script>
 
 <template data-theme="light">
