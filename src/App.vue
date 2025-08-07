@@ -9,7 +9,10 @@ const userStore = useUserStore();
 userStore.$subscribe(
   async (_, state) => {
     if (state.authStatus === AuthStatus.Checking) {
-      await userStore.checkAuthStatus();
+      setTimeout(async () => {
+        await userStore.checkAuthStatus();
+      }, 2000);
+
       return;
     }
   },
