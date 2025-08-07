@@ -3,7 +3,7 @@
     <TopNavBar />
     <GeneralHeader />
     <RouterView class="border-t border-gray-200" />
-    <!-- <GeneralFooter class="px-3" /> -->
+    <GeneralFooter class="px-3" />
   </div>
 </template>
 
