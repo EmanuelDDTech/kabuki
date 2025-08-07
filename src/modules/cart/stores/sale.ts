@@ -6,6 +6,7 @@ import { State, type Sale } from '../interfaces/sale.interface';
 export const useSaleStore = defineStore('sale', () => {
   const myPurchases = ref<Sale[]>([]);
   const purchaseInfo = ref<Sale | null>(null);
+  const latestPurchases = ref<Sale[]>([]);
 
   const loading = ref(false);
 
@@ -21,11 +22,24 @@ export const useSaleStore = defineStore('sale', () => {
     }
   };
 
-  const getPurchasesAdmin = async () => {
+  const getPurchasesAdmin = async (query?: Record<string, string>) => {
     loading.value = true;
     try {
-      const { data } = await SaleAPI.getAllAdmin();
+      const { data } = await SaleAPI.getAllAdmin(query);
       myPurchases.value = data;
+    } catch (error) {
+      console.log(error);
+    } finally {
+      loading.value = false;
+    }
+  };
+
+  const getLatestPurchases = async (query?: Record<string, string>) => {
+    loading.value = true;
+
+    try {
+      const { data } = await SaleAPI.getAllAdmin(query);
+      latestPurchases.value = data;
     } catch (error) {
       console.log(error);
     } finally {
@@ -80,6 +94,7 @@ export const useSaleStore = defineStore('sale', () => {
     getPurchasesAdmin,
     getPurchaseById,
     updateState,
+    getLatestPurchases,
 
     // Getters
     getMyPurchases,
@@ -88,7 +103,8 @@ export const useSaleStore = defineStore('sale', () => {
     namesCombined,
     getPurchaseInfo,
     address: computed(() => {
-      return `${purchaseInfo.value.address.street}, ${purchaseInfo.value.address.colony}, ${purchaseInfo.value.address.city}, ${purchaseInfo.value.address.state}, ${purchaseInfo.value.address.country}`;
+      return `${purchaseInfo.value?.address?.street}, ${purchaseInfo.value?.address?.colony}, ${purchaseInfo.value?.address?.city}, ${purchaseInfo.value?.address?.state}, ${purchaseInfo.value?.address?.country}`;
     }),
+    latestPurchasesList: computed(() => [...latestPurchases.value]),
   };
 });
