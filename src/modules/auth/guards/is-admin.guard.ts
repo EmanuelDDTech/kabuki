@@ -1,17 +1,18 @@
 import type { NavigationGuardNext, RouteLocationNormalized } from 'vue-router';
 import AuthAPI from '../api/AuthAPI';
+import { useUserStore } from '../stores/user';
 
 const isAdminGuard = async (
   to: RouteLocationNormalized,
   from: RouteLocationNormalized,
   next: NavigationGuardNext,
 ) => {
-  try {
-    await AuthAPI.isAdmin();
-    return next();
-  } catch (error) {
-    return next({ name: 'home' });
-  }
+  const userStore = useUserStore();
+
+  await userStore.checkAuthStatus();
+
+  if (userStore.isAdmin) next();
+  else next({ name: 'home' });
 };
 
 export default isAdminGuard;
