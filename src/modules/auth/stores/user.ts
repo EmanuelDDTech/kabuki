@@ -20,6 +20,7 @@ export const useUserStore = defineStore('user', () => {
 
   function logout() {
     localStorage.removeItem('AUTH_TOKEN');
+    authStatus.value = AuthStatus.Unauthenticated;
     user.value = null;
     router.push({ name: 'login' });
   }
@@ -47,6 +48,7 @@ export const useUserStore = defineStore('user', () => {
 
   return {
     user,
+    authStatus,
 
     // Getters
     getUserName,
@@ -54,6 +56,7 @@ export const useUserStore = defineStore('user', () => {
     isAdmin: computed(() => user.value?.isAdmin),
     isChecking: computed(() => authStatus.value === AuthStatus.Checking),
     isAuthenticated: computed(() => authStatus.value === AuthStatus.Authenticated),
+    isUnauthenticated: computed(() => authStatus.value === AuthStatus.Unauthenticated),
 
     // Actions
     setUser,
