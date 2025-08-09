@@ -1,8 +1,9 @@
 import { defineStore } from 'pinia';
-import { computed, onMounted, ref } from 'vue';
-import type { Product } from '../interfaces';
+import { computed, ref } from 'vue';
+import type { ProductResponse } from '../interfaces';
 import ProductAPI from '@/modules/product/api/ProductAPI';
 import productsAPI from '../api/productsAPI';
+import type { Product } from '@/modules/product/interfaces/product.interface';
 
 export const useProductsStore = defineStore('products', () => {
   const products = ref<Product[]>([]);
@@ -19,11 +20,12 @@ export const useProductsStore = defineStore('products', () => {
     isLoading.value = false;
   };
 
-  const getProductsWithFilters = async (query: string) => {
+  const getProductsWithFilters = async (query: string): Promise<ProductResponse> => {
     isLoading.value = true;
     const { data } = await productsAPI.findProducts(query);
-    products.value = data;
+    products.value = data.data;
     isLoading.value = false;
+    return data;
   };
 
   const clearProducts = () => {
