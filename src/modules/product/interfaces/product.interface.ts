@@ -14,6 +14,7 @@ export interface Product {
   createdAt?: Date;
   updatedAt?: Date;
   weight?: number;
+  url?: string;
   product_galleries: ProductGallery[];
 }
 
