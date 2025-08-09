@@ -1,15 +1,23 @@
 <script setup lang="ts">
-import { onBeforeMount, onMounted, onUnmounted, ref, watch } from 'vue';
-import ProductCard from '../components/ProductCard.vue';
-import { useFilterCategoryStore } from '@/modules/filter/store/filterCategory';
-import { useProductsStore } from '../stores/products';
-import FilterIcon from '@/modules/common/icons/FilterIcon.vue';
-import XMarkIcon from '@/modules/layouts/components/XMarkIcon.vue';
-import FiltersSkeleton from '@/modules/filter/components/FiltersSkeleton.vue';
-import ProductSkeleton from '../components/ProductSkeleton.vue';
-import ChevronDownIcon from '@/modules/common/icons/ChevronDownIcon.vue';
+import { computed, onBeforeMount, onBeforeUnmount, onMounted, onUnmounted, ref, watch } from 'vue';
 import { useRoute, type LocationQueryValue } from 'vue-router';
+import { useInfiniteQuery } from '@tanstack/vue-query';
+
 import { useSeoMeta } from '@unhead/vue';
+
+import { useProductsStore } from '../stores/products';
+import { useFilterCategoryStore } from '@/modules/filter/store/filterCategory';
+
+import ProductCard from '../components/ProductCard.vue';
+import FiltersSkeleton from '@/modules/filter/components/FiltersSkeleton.vue';
+
+import XMarkIcon from '@/modules/layouts/components/XMarkIcon.vue';
+import FilterIcon from '@/modules/common/icons/FilterIcon.vue';
+import ChevronDownIcon from '@/modules/common/icons/ChevronDownIcon.vue';
+
+import type { ProductResponse } from '../interfaces';
+import LoaderBouncingSquare from '@/modules/common/components/LoaderBouncingSquare.vue';
+import LoaderWithText from '@/modules/common/components/LoaderWithText.vue';
 
 const filters = useFilterCategoryStore();
 const products = useProductsStore();
@@ -22,7 +30,6 @@ onBeforeMount(async () => {
   await filters.findFilters(1);
   await filters.getFilters();
   priceRange.value.update([filters.minPrice, filters.maxPrice]);
-  await filters.getProducts();
 });
 
 const formatExpansion = (expansion: LocationQueryValue) => {
@@ -65,24 +72,6 @@ useSeoMeta({
   ogUrl: `https://shorikamecards.com${route.fullPath}`,
 });
 
-watch(
-  () => route.fullPath,
-  async (newPath, oldPath) => {
-    await filters.getProducts();
-  },
-);
-
-// onMounted(async () => {
-// await filters.findFilters(1);
-// await filters.getFilters();
-// console.log(filters.activePriceFilter);
-// if (filters.activePriceFilter) {
-//   priceRange.value.update([filters.minPrice, filters.maxPrice]);
-// } else if (!filters.existenceOnly) {
-//   await filters.getProducts();
-// }
-// });
-
 onUnmounted(async () => {
   filters.clearActiveFilters();
   products.clearProducts();
@@ -91,6 +80,47 @@ onUnmounted(async () => {
 const setPriceRange = async (e: any) => {
   await filters.setPriceRange(e);
 };
+
+const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status } =
+  useInfiniteQuery<ProductResponse>({
+    queryKey: computed(() => ['products', route.fullPath]),
+    initialPageParam: 1,
+    queryFn: ({ pageParam }) => {
+      return products.getProductsWithFilters(
+        `${filters.createStringQuery}${pageParam ? `&page=${pageParam}` : ''}&limit=12`,
+      );
+    },
+    getNextPageParam: (lastPage) => {
+      return lastPage.nextPage ? lastPage.nextPage : undefined;
+    },
+    staleTime: 1000 * 60 * 5, // 5 minutes
+  });
+
+const loadMoreProductsRef = ref<HTMLElement | null>(null);
+let observer: IntersectionObserver | null = null;
+
+onMounted(() => {
+  observer = new IntersectionObserver(
+    (entries) => {
+      if (entries[0].isIntersecting && hasNextPage.value && !isFetchingNextPage.value) {
+        fetchNextPage();
+      }
+    },
+    {
+      rootMargin: '100px',
+    },
+  );
+
+  if (loadMoreProductsRef.value) {
+    observer.observe(loadMoreProductsRef.value);
+  }
+});
+
+onBeforeUnmount(() => {
+  if (observer && loadMoreProductsRef.value) {
+    observer.unobserve(loadMoreProductsRef.value);
+  }
+});
 </script>
 
 <template>
@@ -156,7 +186,6 @@ const setPriceRange = async (e: any) => {
                   <div
                     v-for="filterValue in filterGroup.filter_group.filter_values"
                     :key="filterValue.id"
-                    :ref_for="filterValue.name"
                     class="flex text-sm justify-between items-center hover:bg-gray-100 py-1 px-2 rounded"
                   >
                     <label :for="filterValue.name" class="cursor-pointer leading-none">{{
@@ -243,34 +272,12 @@ const setPriceRange = async (e: any) => {
                 </div>
 
                 <div class="mt-3 flex flex-col gap-3">
-                  <!-- <div v-for="filterGroup in filters.filters" :key="filterGroup.id">
-                  <h4 class="font-bold mb-2">{{ filterGroup.filter_group.name }}</h4>
-
-                  <div class="flex flex-wrap gap-2 w-full max-w-96">
-                    <div
-                      v-for="filterValue in filterGroup.filter_group.filter_values"
-                      :key="filterValue.id"
-                      :ref_for="filterValue.name"
-                      class="inline-block w-fit justify-between py-1 px-2 rounded-full border cursor-pointer transition-colors text-sm"
-                      :class="
-                        filters.activeFilters[filterGroup.filter_group.slug]?.includes(filterValue.slug)
-                          ? 'bg-green-500 border-green-500'
-                          : 'bg-none border-gray-300'
-                      "
-                      @click="filters.updateFilters(filterGroup.filter_group.slug, filterValue.slug)"
-                    >
-                      {{ filterValue.name }}
-                    </div>
-                  </div>
-                </div> -->
-
                   <div v-for="filterGroup in filters.filters" :key="filterGroup.id" class="w-60">
                     <h4 class="font-bold mb-1">{{ filterGroup.filter_group.name }}</h4>
 
                     <div
                       v-for="filterValue in filterGroup.filter_group.filter_values"
                       :key="filterValue.id"
-                      :ref_for="filterValue.name"
                       class="flex justify-between hover:bg-gray-100 py-1 px-2 rounded"
                     >
                       <label :for="filterValue.name" class="cursor-pointer">{{
@@ -301,20 +308,24 @@ const setPriceRange = async (e: any) => {
       </section>
       <section class="flex-1 mb-10">
         <h1 class="text-2xl font-bold border-b border-b-gray-200 mb-6">Busqueda</h1>
-        <div
-          v-if="products.isLoading"
-          class="grid grid-cols-[repeat(auto-fill,minmax(244px,1fr))] gap-4"
-        >
-          <ProductSkeleton v-for="i in 6" :key="i" />
-        </div>
-        <div v-else class="grid grid-cols-[repeat(auto-fill,minmax(244px,1fr))] gap-4">
+
+        <LoaderWithText v-if="status === 'pending'" text="Cargando " />
+        <div v-if="status === 'error'" class="text-center">Error al cargar</div>
+
+        <div class="grid grid-cols-[repeat(auto-fill,minmax(244px,1fr))] gap-4">
           <ProductCard
-            v-for="product in products.products"
-            :key="product.product_id"
+            v-for="product in data?.pages.flatMap((page) => page.data)"
+            :key="product.id"
             :product="product"
             class="mx-auto"
           />
         </div>
+
+        <div ref="loadMoreProductsRef" style="height: 1px"></div>
+
+        <LoaderWithText v-if="isFetchingNextPage" text="Cargando más" />
+        <div v-else-if="!hasNextPage" class="mt-6 text-center">No hay más productos</div>
+
         <p v-if="!products.areProducts && !products.isLoading" class="text-center mt-4">
           No hay resultados. Intenta con otros filtros.
         </p>
