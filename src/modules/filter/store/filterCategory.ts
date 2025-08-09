@@ -3,12 +3,14 @@ import { computed, ref, watch } from 'vue';
 import FilterCategoryAPI from '../api/FilterCategoryAPI';
 import { useRoute, useRouter } from 'vue-router';
 import { useProductsStore } from '@/modules/products/stores/products';
+import type { FilterCategory } from '../interfaces';
+import type { R } from 'node_modules/vuefire/dist/shared/vuefire.cc4a8ea4.mjs';
 
 export const useFilterCategoryStore = defineStore('filterCategory', () => {
   const MAX_PRICE = 20000;
 
-  const filters = ref([]);
-  const activeFilters = ref({});
+  const filters = ref<FilterCategory[]>([]);
+  const activeFilters = ref<Record<string, string[]>>({});
   const existenceOnly = ref(false);
 
   const route = useRoute();
@@ -87,13 +89,13 @@ export const useFilterCategoryStore = defineStore('filterCategory', () => {
   const getProducts = async () => {
     clearTimeout(timer);
     timer = setTimeout(async () => {
-      await products.getProductsWithFilters(createStringQuery());
+      await products.getProductsWithFilters(createStringQuery.value);
     }, 50);
   };
 
-  const createStringQuery = () => {
+  const createStringQuery = computed(() => {
     return window.location.href.split('?')[1];
-  };
+  });
 
   const clearActiveFilters = () => {
     activeFilters.value = {};
@@ -145,5 +147,6 @@ export const useFilterCategoryStore = defineStore('filterCategory', () => {
 
     // Getters
     getMaxPrice,
+    createStringQuery,
   };
 });
