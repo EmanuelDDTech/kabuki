@@ -4,6 +4,9 @@ import { createApp } from 'vue';
 import { createPinia } from 'pinia';
 import GoogleSignInPlugin from 'vue3-google-signin';
 
+// Tanstack query
+import { VueQueryPlugin } from '@tanstack/vue-query';
+
 // Firebase
 import { VueFire, VueFireAuth } from 'vuefire';
 import { firebaseApp } from './config/firebase';
@@ -46,6 +49,7 @@ app.use(GoogleSignInPlugin, {
 app.use(createPinia());
 app.use(plugin, defaultConfig(config));
 app.use(router);
+app.use(VueQueryPlugin);
 app.use(Vueform, vueformConfig);
 
 app.mount('#app');
