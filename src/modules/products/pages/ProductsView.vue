@@ -325,10 +325,6 @@ onBeforeUnmount(() => {
 
         <LoaderWithText v-if="isFetchingNextPage" text="Cargando más" />
         <div v-else-if="!hasNextPage" class="mt-6 text-center">No hay más productos</div>
-
-        <p v-if="!products.areProducts && !products.isLoading" class="text-center mt-4">
-          No hay resultados. Intenta con otros filtros.
-        </p>
       </section>
     </div>
   </div>
