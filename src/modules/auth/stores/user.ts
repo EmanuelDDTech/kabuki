@@ -22,7 +22,8 @@ export const useUserStore = defineStore('user', () => {
     localStorage.removeItem('AUTH_TOKEN');
     authStatus.value = AuthStatus.Unauthenticated;
     user.value = null;
-    router.push({ name: 'login' });
+
+    return false;
   }
 
   const checkAuthStatus = async (): Promise<boolean> => {
@@ -36,6 +37,7 @@ export const useUserStore = defineStore('user', () => {
 
       authStatus.value = AuthStatus.Authenticated;
       user.value = data;
+      return true;
     } catch (error) {
       console.log(error);
       logout();
