@@ -5,33 +5,16 @@ import HomeGoIcon from '../icons/HomeGoIcon.vue';
 interface ButtonLinkProps {
   to: string;
   text: string;
-  type?: ButtonLinkType;
-  status?: ButtonLinkStatus;
-  size?: ButtonLinkSize;
+  type?: 'primary' | 'secondary' | 'tertiary';
+  status?: 'enabled' | 'disabled';
+  size?: 'small' | 'medium' | 'large';
   icon?: Component;
 }
 
-enum ButtonLinkType {
-  primary = 'primary',
-  secondary = 'secondary',
-  tertiary = 'tertiary',
-}
-
-enum ButtonLinkSize {
-  small = 'small',
-  medium = 'medium',
-  large = 'large',
-}
-
-enum ButtonLinkStatus {
-  enabled = 'enabled',
-  disabled = 'disabled',
-}
-
 withDefaults(defineProps<ButtonLinkProps>(), {
-  type: ButtonLinkType.primary,
-  status: ButtonLinkStatus.enabled,
-  size: ButtonLinkSize.medium,
+  type: 'primary',
+  status: 'enabled',
+  size: 'medium',
 });
 </script>
 
@@ -40,15 +23,15 @@ withDefaults(defineProps<ButtonLinkProps>(), {
     :to="{ name: to }"
     class="gap-2 hidden sm:inline-flex ml-5 font-medium rounded-lg text-center items-center mr-3 transition-colors"
     :class="[
-      type === ButtonLinkType.primary ? 'bg-green-600 hover:bg-green-700 text-white' : '',
-      type === ButtonLinkType.secondary
+      type === 'primary' ? 'bg-green-600 hover:bg-green-700 text-white' : '',
+      type === 'secondary'
         ? 'border border-green-600 hover:border-green-700 hover:bg-green-50 text-green-600'
         : '',
-      type === ButtonLinkType.tertiary ? 'text-green-600 underline hover:text-green-700' : '',
-      status === ButtonLinkStatus.disabled ? 'opacity-50 cursor-not-allowed' : '',
-      size === ButtonLinkSize.small ? 'text-xs px-3 py-1.5' : '',
-      size === ButtonLinkSize.medium ? 'text-sm px-4 py-2' : '',
-      size === ButtonLinkSize.large ? 'text-lg px-6 py-3' : '',
+      type === 'tertiary' ? 'text-green-600 underline hover:text-green-700' : '',
+      status === 'disabled' ? 'opacity-50 cursor-not-allowed' : '',
+      size === 'small' ? 'text-xs px-3 py-1.5' : '',
+      size === 'medium' ? 'text-sm px-4 py-2' : '',
+      size === 'large' ? 'text-lg px-6 py-3' : '',
     ]"
   >
     <!-- <HomeGoIcon class="w-6" /> -->
