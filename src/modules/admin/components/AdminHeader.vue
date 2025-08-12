@@ -44,13 +44,7 @@
             />
             <span class="self-center whitespace-nowrap">ShoriKameCards</span>
           </RouterLink>
-          <RouterLink
-            :to="{ name: 'home' }"
-            class="gap-2 hidden sm:inline-flex ml-5 text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:ring-green-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center items-center mr-3"
-          >
-            <HomeGoIcon class="w-6" />
-            Ir a la página
-          </RouterLink>
+          <ButtonLink :to="'home'" :text="'Ir a la página'" :icon="HomeGoIcon" />
           <!-- <form action="#" method="GET" class="hidden lg:block lg:pl-32">
             <label for="topbar-search" class="sr-only">Search</label>
             <div class="mt-1 relative lg:w-64">
@@ -137,6 +131,7 @@
 
 <script setup>
 import { useUserStore } from '@/modules/auth/stores/user';
+import ButtonLink from '@/modules/common/components/ButtonLink.vue';
 import HomeGoIcon from '@/modules/common/icons/HomeGoIcon.vue';
 import LogoutIcon from '@/modules/common/icons/LogoutIcon.vue';
 import { useRouter } from 'vue-router';
