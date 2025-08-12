@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import type { Component } from 'vue';
-import HomeGoIcon from '../icons/HomeGoIcon.vue';
 
 interface ButtonLinkProps {
   to: string;
@@ -34,7 +33,6 @@ withDefaults(defineProps<ButtonLinkProps>(), {
       size === 'large' ? 'text-lg px-6 py-3' : '',
     ]"
   >
-    <!-- <HomeGoIcon class="w-6" /> -->
     <component v-if="icon" :is="icon" class="w-6" />
     {{ text }}
   </RouterLink>
