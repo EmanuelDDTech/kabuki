@@ -87,7 +87,7 @@
             </p>
           </RouterLink>
           <button
-            @click="user.logout"
+            @click="logout"
             class="flex gap-2 items-center pl-4 hover:text-blue-500 transition-colors"
           >
             Cerrar sesión
@@ -139,6 +139,13 @@
 import { useUserStore } from '@/modules/auth/stores/user';
 import HomeGoIcon from '@/modules/common/icons/HomeGoIcon.vue';
 import LogoutIcon from '@/modules/common/icons/LogoutIcon.vue';
+import { useRouter } from 'vue-router';
 
 const user = useUserStore();
+const router = useRouter();
+
+const logout = () => {
+  user.logout();
+  router.push({ name: 'home' });
+};
 </script>
