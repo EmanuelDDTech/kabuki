@@ -20,7 +20,11 @@ defineEmits(['toggle']);
         type="checkbox"
         :name="`toggle-${id}`"
         :id="`toggle-${id}`"
-        class="toggle-checkbox absolute block !w-6 !h-6 !rounded-full bg-white border-4 !appearance-none cursor-pointer transition"
+        class="toggle-checkbox absolute block !w-6 !h-6 !rounded-full bg-white border-4 !appearance-none transition"
+        :class="{
+          'opacity-50 cursor-not-allowed': disabled,
+          'opacity-100 cursor-pointer': !disabled,
+        }"
         :checked="value"
         :disabled="disabled"
         @change="$emit('toggle')"
