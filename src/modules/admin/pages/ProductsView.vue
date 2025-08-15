@@ -20,39 +20,39 @@ const toast: any = inject('toast');
 
 const { deleteByProductId } = useImage();
 
-const deleteConfirmation = (id) => {
-  Swal.fire({
-    title: 'Seguro quieres eliminar este producto?',
-    text: 'No podrá ser revertido!',
-    icon: 'warning',
-    showCancelButton: true,
-    confirmButtonColor: '#3085d6',
-    cancelButtonColor: '#d33',
-    confirmButtonText: 'Si, Eliminar!',
-    cancelButtonText: 'Cancelar',
-  }).then((result) => {
-    if (result.isConfirmed) {
-      deleteProduct(id);
-    }
-  });
-};
+// const deleteConfirmation = (id) => {
+//   Swal.fire({
+//     title: 'Seguro quieres eliminar este producto?',
+//     text: 'No podrá ser revertido!',
+//     icon: 'warning',
+//     showCancelButton: true,
+//     confirmButtonColor: '#3085d6',
+//     cancelButtonColor: '#d33',
+//     confirmButtonText: 'Si, Eliminar!',
+//     cancelButtonText: 'Cancelar',
+//   }).then((result) => {
+//     if (result.isConfirmed) {
+//       deleteProduct(id);
+//     }
+//   });
+// };
 
-const deleteProduct = async (id: any) => {
-  try {
-    await deleteByProductId(id);
-    await ProductAPI.delete(id);
-    toast.open({
-      message: 'Producto eliminado correctamente',
-      type: 'success',
-    });
-    productStore.getProducts();
-  } catch (error) {
-    toast.open({
-      message: error.response.data.msg,
-      type: 'error',
-    });
-  }
-};
+// const deleteProduct = async (id: any) => {
+//   try {
+//     await deleteByProductId(id);
+//     await ProductAPI.delete(id);
+//     toast.open({
+//       message: 'Producto eliminado correctamente',
+//       type: 'success',
+//     });
+//     productStore.getProducts();
+//   } catch (error) {
+//     toast.open({
+//       message: error.response.data.msg,
+//       type: 'error',
+//     });
+//   }
+// };
 
 onMounted(async () => {
   // await productStore.getProducts();
