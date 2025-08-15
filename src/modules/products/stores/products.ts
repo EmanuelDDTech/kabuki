@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
 import type { ProductResponse } from '../interfaces';
 import ProductAPI from '@/modules/product/api/ProductAPI';
-import ProductsAPI from '../api/ProductsAPI';
+import ProductsAPI from '../api/productsAPI';
 import type { Product } from '@/modules/product/interfaces/product.interface';
 
 export const useProductsStore = defineStore('products', () => {
