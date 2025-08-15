@@ -16,7 +16,6 @@ import FilterIcon from '@/modules/common/icons/FilterIcon.vue';
 import ChevronDownIcon from '@/modules/common/icons/ChevronDownIcon.vue';
 
 import type { ProductResponse } from '../interfaces';
-import LoaderBouncingSquare from '@/modules/common/components/LoaderBouncingSquare.vue';
 import LoaderWithText from '@/modules/common/components/LoaderWithText.vue';
 
 const filters = useFilterCategoryStore();
@@ -87,7 +86,7 @@ const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status } =
     initialPageParam: 1,
     queryFn: ({ pageParam }) => {
       return products.getProductsWithFilters(
-        `${filters.createStringQuery}${pageParam ? `&page=${pageParam}` : ''}&limit=12`,
+        `${filters.createStringQuery}${pageParam ? `&page=${pageParam}` : ''}&limit=12&active=true`,
       );
     },
     getNextPageParam: (lastPage) => {

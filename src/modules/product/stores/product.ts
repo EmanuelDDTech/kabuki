@@ -30,6 +30,7 @@ export const useProductStore = defineStore('product', () => {
   const stock = ref(0);
   const stock_visible = ref(true);
   const product_category_id = ref(0);
+  const active = ref(true);
 
   const gallery = ref<ProductGallery[]>([]);
   const filters = ref([]);
@@ -55,6 +56,7 @@ export const useProductStore = defineStore('product', () => {
     stock.value = 0;
     stock_visible.value = true;
     product_category_id.value = 0;
+    active.value = false;
     gallery.value = [];
 
     filters.value = [];
@@ -115,6 +117,7 @@ export const useProductStore = defineStore('product', () => {
       stock.value = productData.stock;
       stock_visible.value = productData.stock_visible;
       product_category_id.value = productData.product_category_id;
+      active.value = productData.active;
 
       const { data: galleryData } = await ProductGalleryAPI.findByProductId(id.value);
       gallery.value = galleryData;
@@ -179,6 +182,7 @@ export const useProductStore = defineStore('product', () => {
     gallery,
     searchQuery,
     searchedProducts,
+    active,
 
     // Getters
     // productList: computed(() => [...products.value]),

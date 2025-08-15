@@ -1,13 +1,21 @@
 <script lang="ts" setup>
-import { inject, onMounted } from 'vue';
+import { inject, onBeforeUnmount, onMounted, ref } from 'vue';
 import { useProductsStore } from '@/modules/products/stores/products';
 import { formatCurrency } from '@/helpers';
 import EditIcon from '@/modules/admin/components/icons/EditIcon.vue';
 import Swal from 'sweetalert2';
 import ProductAPI from '@/modules/product/api/ProductAPI';
 import useImage from '@/modules/products/composables/useImage';
+import { useInfiniteQuery } from '@tanstack/vue-query';
+import type { ProductResponse } from '@/modules/products/interfaces';
+import { useRoute } from 'vue-router';
+import LoaderWithText from '@/modules/common/components/LoaderWithText.vue';
+import SwitchButton from '@/modules/common/components/SwitchButton.vue';
 
 const productStore = useProductsStore();
+
+const route = useRoute();
+
 const toast: any = inject('toast');
 
 const { deleteByProductId } = useImage();
@@ -47,24 +55,63 @@ const deleteProduct = async (id: any) => {
 };
 
 onMounted(async () => {
-  await productStore.getProducts();
+  // await productStore.getProducts();
 });
 
-const updateProductActive = async (id: number, active: boolean) => {
-  try {
-    await productStore.updateProduct(id, { active });
+// const updateProductActive = async (id: number, active: boolean) => {
+//   try {
+//     await productStore.updateProduct(id, { active });
 
-    toast.open({
-      message: active ? 'Producto activado correctamente' : 'Producto desactivado correctamente',
-      type: 'success',
-    });
-  } catch (error) {
-    toast.open({
-      message: error.response.data.msg,
-      type: 'error',
-    });
+//     toast.open({
+//       message: active ? 'Producto activado correctamente' : 'Producto desactivado correctamente',
+//       type: 'success',
+//     });
+//   } catch (error) {
+//     toast.open({
+//       message: error.response.data.msg,
+//       type: 'error',
+//     });
+//   }
+// };
+
+const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status } =
+  useInfiniteQuery<ProductResponse>({
+    queryKey: ['adminProducts', route.fullPath],
+    initialPageParam: 1,
+    queryFn: ({ pageParam }) => {
+      return productStore.getProducts(`${pageParam ? `page=${pageParam}` : ''}&limit=12`);
+    },
+    getNextPageParam: (lastPage) => {
+      return lastPage.nextPage ? lastPage.nextPage : undefined;
+    },
+    // staleTime: 1000 * 60 * 5,
+  });
+
+const loadMoreProductsRef = ref<HTMLElement | null>(null);
+let observer: IntersectionObserver | null = null;
+
+onMounted(() => {
+  observer = new IntersectionObserver(
+    (entries) => {
+      if (entries[0].isIntersecting && hasNextPage.value && !isFetchingNextPage.value) {
+        fetchNextPage();
+      }
+    },
+    {
+      rootMargin: '100px',
+    },
+  );
+
+  if (loadMoreProductsRef.value) {
+    observer.observe(loadMoreProductsRef.value);
   }
-};
+});
+
+onBeforeUnmount(() => {
+  if (observer && loadMoreProductsRef.value) {
+    observer.unobserve(loadMoreProductsRef.value);
+  }
+});
 </script>
 
 <template>
@@ -81,6 +128,9 @@ const updateProductActive = async (id: number, active: boolean) => {
         </RouterLink>
 
         <div class="overflow-x-auto">
+          <LoaderWithText v-if="status === 'pending'" text="Cargando " />
+          <div v-if="status === 'error'" class="text-center">Error al cargar</div>
+
           <table class="w-full table-auto">
             <thead class="shadow bg-gray-50 text-xs font-semibold uppercase text-gray-400">
               <tr>
@@ -110,12 +160,14 @@ const updateProductActive = async (id: number, active: boolean) => {
 
             <tbody
               class="divide-y divide-gray-100 text-sm shadow"
-              v-for="product in productStore.products"
+              v-for="product in data?.pages.flatMap((page) => page.data)"
               :key="product.id"
             >
               <tr>
                 <td class="p-2">
-                  <img class="w-32" :src="product.product_galleries[0].url" alt="product image" />
+                  <div class="w-32 h-32">
+                    <img class="w-32" :src="product.url" alt="product image" />
+                  </div>
                 </td>
                 <td class="p-2">
                   <div class="text-base font-medium text-gray-800">{{ product.name }}</div>
@@ -134,7 +186,8 @@ const updateProductActive = async (id: number, active: boolean) => {
                   </div>
                 </td>
                 <td class="p-2">
-                  <div class="text-center">
+                  <SwitchButton :id="product.id" :value="product.active" :disabled="true" />
+                  <!-- <div class="text-center">
                     <div
                       class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in"
                     >
@@ -151,7 +204,7 @@ const updateProductActive = async (id: number, active: boolean) => {
                         class="toggle-label block overflow-hidden !h-6 !rounded-full bg-gray-300 cursor-pointer"
                       ></label>
                     </div>
-                  </div>
+                  </div> -->
                 </td>
                 <td class="p-2">
                   <div class="flex justify-center">
@@ -182,6 +235,12 @@ const updateProductActive = async (id: number, active: boolean) => {
               </tr>
             </tbody>
           </table>
+
+          <div ref="loadMoreProductsRef" style="height: 1px"></div>
+
+          <LoaderWithText v-if="isFetchingNextPage" text="Cargando más" />
+
+          <div v-else-if="!hasNextPage" class="mt-6 text-center">No hay más productos</div>
         </div>
       </div>
     </section>

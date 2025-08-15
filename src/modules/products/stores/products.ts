@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
 import type { ProductResponse } from '../interfaces';
 import ProductAPI from '@/modules/product/api/ProductAPI';
-import productsAPI from '../api/productsAPI';
+import productsAPI from '../api/ProductsAPI';
 import type { Product } from '@/modules/product/interfaces/product.interface';
 
 export const useProductsStore = defineStore('products', () => {
@@ -13,11 +13,12 @@ export const useProductsStore = defineStore('products', () => {
   //   await getProducts();
   // });
 
-  const getProducts = async () => {
+  const getProducts = async (query: string) => {
     isLoading.value = true;
-    const { data } = await ProductAPI.getAll();
-    products.value = data;
+    const { data } = await productsAPI.findProductsAdmin(query);
+    products.value = data.data;
     isLoading.value = false;
+    return data;
   };
 
   const getProductsWithFilters = async (query: string): Promise<ProductResponse> => {
@@ -34,6 +35,7 @@ export const useProductsStore = defineStore('products', () => {
 
   const updateProduct = async (id: number, data: object) => {
     try {
+      console.log(data);
       await ProductAPI.update(id, data);
     } catch (error) {
       console.log(error);

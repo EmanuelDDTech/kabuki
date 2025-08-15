@@ -9,9 +9,17 @@
         <p>Volver</p>
       </div>
     </RouterLink>
-    <h2 class="text-2xl font-semibold mb-6">
-      {{ product.id === 0 ? 'Crear Producto' : 'Actualizar Producto' }}
-    </h2>
+    <div class="flex justify-between items-center">
+      <h2 class="text-2xl font-semibold mb-6">
+        {{ product.id === 0 ? 'Crear Producto' : 'Actualizar Producto' }}
+      </h2>
+      <SwitchButton
+        :id="product.id"
+        :value="product.active"
+        :disabled="false"
+        @toggle="product.active = !product.active"
+      />
+    </div>
 
     <FormKit
       id="createProductForm"
@@ -212,6 +220,7 @@ import useImage from '@/modules/products/composables/useImage';
 import LeftArrow from '@/modules/icons/ArrowLeft.vue';
 import ImageIcon from '@/modules/common/icons/ImageIcon.vue';
 import DeleteIcon from '@/modules/common/icons/DeleteIcon.vue';
+import SwitchButton from '@/modules/common/components/SwitchButton.vue';
 
 interface Props {
   id?: number;
@@ -260,7 +269,7 @@ onUnmounted(() => {
 });
 
 const handleSubmit = async () => {
-  product.description = myEditor.value.getHTML();
+  product.description = myEditor.value?.getHTML();
 
   try {
     if (product.id === 0) {
@@ -274,6 +283,7 @@ const handleSubmit = async () => {
         stock: product.stock,
         stock_visible: product.stock_visible,
         product_category_id: product.product_category_id,
+        active: product.active,
       };
       const data = await product.create(productData);
       await ProductGalleryAPI.create({
@@ -303,7 +313,10 @@ const handleSubmit = async () => {
         stock: product.stock,
         stock_visible: product.stock_visible,
         product_category_id: product.product_category_id,
+        active: product.active,
       };
+
+      console.log(productData);
 
       const data = await product.update(productData);
       await product.saveFilters();
