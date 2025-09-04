@@ -138,7 +138,7 @@ onMounted(async () => {
       </div>
     </section>
 
-    <section class="px-3">
+    <section class="px-3 bg-gray-100">
       <div class="max-w-screen-xl mx-auto py-14">
         <div class="flex gap-3 order-2 sm:order-1 mb-8">
           <StarIcon class="w-9 h-9 text-white bg-green-500 p-2 rounded-full" />
@@ -165,7 +165,7 @@ onMounted(async () => {
       </div>
     </section>
 
-    <section class="px-3">
+    <section class="px-3 bg-gray-100">
       <div class="max-w-screen-xl mx-auto py-8">
         <header class="flex gap-3 mb-6">
           <ClosedBoxIcon class="w-9 aspect-square text-white bg-green-500 p-2 rounded-full" />
