@@ -173,10 +173,10 @@ onMounted(async () => {
         </header>
         <div class="block lg:flex gap-6">
           <aside
-            class="aspect-video lg:aspect-9/16 lg:min-h-full min-w-80 w-auto border border-gray-100 bg-gray-50 rounded-lg shadow-md"
+            class="aspect-video lg:aspect-9/16 lg:min-h-full min-w-80 w-auto border border-gray-200 bg-gray-50 rounded-lg shadow-md"
           ></aside>
           <ul class="flex-1 grid grid-cols-1 md:grid-cols-2 gap-6">
-            <li class="bg-white shadow-md p-6 rounded-lg border border-gray-100 aspect-video">
+            <li class="bg-white shadow-md p-6 rounded-lg border border-gray-200 aspect-video">
               <router-link :to="{ name: 'products', query: { 'tipo-de-producto': 'booster-box' } }"
                 ><h3 class="text-xl font-bold">Booster Box</h3></router-link
               >
@@ -238,7 +238,7 @@ onMounted(async () => {
                 </router-link>
               </div>
             </li>
-            <li class="bg-white shadow-md p-6 rounded-lg border border-gray-100 aspect-video">
+            <li class="bg-white shadow-md p-6 rounded-lg border border-gray-200 aspect-video">
               <router-link
                 :to="{ name: 'products', query: { 'tipo-de-producto': 'elite-trainer-box' } }"
                 ><h3 class="text-xl font-bold">Elite Trainer Box</h3></router-link
@@ -307,7 +307,7 @@ onMounted(async () => {
                 </router-link>
               </div>
             </li>
-            <li class="bg-white shadow-md p-6 rounded-lg border border-gray-100 aspect-video">
+            <li class="bg-white shadow-md p-6 rounded-lg border border-gray-200 aspect-video">
               <router-link
                 :to="{ name: 'products', query: { 'tipo-de-producto': 'premium-collection' } }"
                 ><h3 class="text-xl font-bold">Premium Collection</h3></router-link
@@ -358,7 +358,7 @@ onMounted(async () => {
                 </router-link>
               </div>
             </li>
-            <li class="bg-white shadow-md p-6 rounded-lg border border-gray-100 aspect-video">
+            <li class="bg-white shadow-md p-6 rounded-lg border border-gray-200 aspect-video">
               <router-link
                 :to="{ name: 'products', query: { 'tipo-de-producto': 'producto-cerrado' } }"
                 ><h3 class="text-xl font-bold">Booster Bundle</h3></router-link
