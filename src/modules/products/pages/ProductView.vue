@@ -122,7 +122,7 @@ const addItem = async (item) => {
           /></swiper-slide>
         </swiper>
       </div>
-      <div class="w-full">
+      <div class="w-full lg:w-2/4">
         <h1 class="text-3xl font-semibold mb-3">{{ product.name }}</h1>
         <!-- <ul class="flex gap-7 items-center">
           <li>
