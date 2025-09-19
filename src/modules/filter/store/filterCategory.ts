@@ -20,6 +20,8 @@ export const useFilterCategoryStore = defineStore('filterCategory', () => {
   const minPrice = ref(0);
   const maxPrice = ref(MAX_PRICE);
 
+  const order = ref({ orderBy: 'created_at', orderDirection: 'desc' });
+
   const isLoading = ref(false);
 
   const products = useProductsStore();
@@ -27,12 +29,21 @@ export const useFilterCategoryStore = defineStore('filterCategory', () => {
   let timer: ReturnType<typeof setTimeout>;
 
   const getFilters = async () => {
-    const { existence, minPrice: min, maxPrice: max, ...query } = route.query;
+    const {
+      existence,
+      minPrice: min,
+      maxPrice: max,
+      orderBy,
+      orderDirection,
+      ...query
+    } = route.query;
     activeFilters.value = query;
 
     if (existence === 'true') existenceOnly.value = true;
     if (min) minPrice.value = parseInt(min);
     if (max) maxPrice.value = parseInt(max);
+    if (orderBy) order.value.orderBy = orderBy;
+    if (orderDirection) order.value.orderDirection = orderDirection;
   };
 
   const findFilters = async (categId: number) => {
@@ -71,6 +82,11 @@ export const useFilterCategoryStore = defineStore('filterCategory', () => {
       queryParams.existence = 'true';
     } else {
       delete queryParams.existence;
+    }
+
+    if (order.value) {
+      queryParams.orderBy = order.value.orderBy;
+      queryParams.orderDirection = order.value.orderDirection;
     }
 
     if (minPrice.value !== 0 || maxPrice.value !== MAX_PRICE) {
@@ -121,6 +137,11 @@ export const useFilterCategoryStore = defineStore('filterCategory', () => {
     await getProducts();
   });
 
+  watch(order, async () => {
+    await updateURL();
+    await getProducts();
+  });
+
   const getMaxPrice = () => {
     return MAX_PRICE;
   };
@@ -134,6 +155,7 @@ export const useFilterCategoryStore = defineStore('filterCategory', () => {
     maxPrice,
     activePriceFilter: computed(() => minPrice.value !== 0 || maxPrice.value !== MAX_PRICE),
     isLoading,
+    order,
 
     // Methods
     getProducts,

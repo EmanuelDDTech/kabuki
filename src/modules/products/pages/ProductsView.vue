@@ -17,6 +17,7 @@ import ChevronDownIcon from '@/modules/common/icons/ChevronDownIcon.vue';
 
 import type { ProductResponse } from '../interfaces';
 import LoaderWithText from '@/modules/common/components/LoaderWithText.vue';
+import OrderSelect from '@/modules/filter/components/orderSelect.vue';
 
 const filters = useFilterCategoryStore();
 const products = useProductsStore();
@@ -135,8 +136,12 @@ onBeforeUnmount(() => {
             <div
               class="max-h-[600px] overflow-y-scroll overflow-x-hidden px-3 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent"
             >
+              <div class="mb-4 mt-3">
+                <OrderSelect :order="filters.order" @update:order="filters.order = $event" />
+              </div>
+
               <div
-                class="flex justify-between items-center py-1 px-2 mb-3 hover:bg-gray-100 rounded"
+                class="flex justify-between items-center py-1 px-2 mb-4 hover:bg-gray-100 rounded"
               >
                 <label for="existenceOnly" class="cursor-pointer leading-none"
                   >Solo con existencia</label
@@ -236,6 +241,10 @@ onBeforeUnmount(() => {
                   @click="filters.hideFilterOptions()"
                   class="h-6 w-6 text-gray-400 top-2 right-4"
                 />
+              </div>
+
+              <div class="px-4 mb-4 mt-3">
+                <OrderSelect :order="filters.order" @update:order="filters.order = $event" />
               </div>
 
               <div class="px-4">
