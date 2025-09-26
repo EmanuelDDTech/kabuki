@@ -267,7 +267,9 @@ const router = useRouter();
 const toast: any = inject('toast');
 
 onMounted(() => {
-  address.getAddresses();
+  if (userStore.isSet) {
+    address.getAddresses();
+  }
 });
 
 const saveAddress = async () => {
