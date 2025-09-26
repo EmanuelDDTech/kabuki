@@ -328,9 +328,13 @@ export const useCartStore = defineStore('cart', () => {
     items.value.reduce((totalWeight, item) => totalWeight + item.product.weight * item.quantity, 0),
   );
 
-  watch(items, async (newValue, oldValue) => {
-    await delivery.findDeliveriesAvailable(44298, cartWeight.value);
-  });
+  watch(
+    items,
+    async (newValue, oldValue) => {
+      await delivery.findDeliveriesAvailable(44298, cartWeight.value);
+    },
+    { immediate: true, deep: true },
+  );
 
   return {
     subtotal,

@@ -199,10 +199,7 @@
           </div>
         </section>
 
-        <section
-          v-if="!cart.isEmpty && userStore.isSet"
-          class="mt-6 shadow-md border border-gray-100 p-4 rounded-lg"
-        >
+        <section v-if="!cart.isEmpty" class="mt-6 shadow-md border border-gray-100 p-4 rounded-lg">
           <h2 class="text-2xl font-bold border-b-2 border-gray-200 pb-3 mb-6">Método de envío</h2>
 
           <ul class="flex flex-wrap justify-around gap-6">
