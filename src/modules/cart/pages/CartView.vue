@@ -267,7 +267,7 @@ const cart = useCartStore();
 
 const router = useRouter();
 
-const toast = inject('toast');
+const toast: any = inject('toast');
 
 onMounted(() => {
   address.getAddresses();
@@ -293,7 +293,7 @@ const saveAddress = async () => {
     setTimeout(() => {
       address.createNew = false;
     }, 1000);
-  } catch (error) {
+  } catch (error: any) {
     toast.open({
       message: error.response.data.msg,
       type: 'error',
