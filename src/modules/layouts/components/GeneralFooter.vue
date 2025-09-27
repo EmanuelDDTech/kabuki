@@ -1,12 +1,15 @@
 <template>
   <footer class="border-t-2 border-gray-200 px-3">
     <div
-      class="bg-white flex flex-col md:flex-row gap-3 items-center justify-center md:justify-between py-6 max-w-screen-xl mx-auto"
+      class="bg-white flex flex-col lg:flex-row gap-3 items-center justify-center md:justify-between py-6 max-w-screen-xl mx-auto"
     >
       <span class="text-sm text-gray-400 sm:text-center"
         >© {{ new Date().getFullYear() }}
         <a href="" class="hover:text-blue-500" target="_blank">Shori Kame Cards</a>
       </span>
+
+      <SocialsLinks />
+
       <ul class="flex flex-wrap items-center mt-3 sm:mt-0 text-gray-400">
         <li>
           <router-link
@@ -42,6 +45,8 @@
   </footer>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import SocialsLinks from './SocialsLinks.vue';
+</script>
 
 <style scoped></style>
