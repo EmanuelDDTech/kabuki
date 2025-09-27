@@ -20,7 +20,7 @@ withDefaults(defineProps<ButtonLinkProps>(), {
 <template>
   <RouterLink
     :to="{ name: to }"
-    class="gap-2 hidden sm:inline-flex ml-5 font-medium rounded-lg text-center items-center mr-3 transition-colors"
+    class="gap-2 inline-flex ml-5 font-medium rounded-lg text-center items-center mr-3 transition-colors"
     :class="[
       type === 'primary' ? 'bg-green-600 hover:bg-green-700 text-white' : '',
       type === 'secondary'

@@ -1,5 +1,5 @@
 <template>
-  <aside class="w-64 h-screen" aria-label="Sidebar">
+  <aside class="w-56 h-screen" aria-label="Sidebar">
     <div
       class="px-4 py-4 h-full overflow-y-auto rounded-lg bg-white shadow-lg border border-gray-100"
     >
@@ -83,28 +83,25 @@
         </li>
 
         <div class="flex-1 flex-col flex justify-end mt-4">
-          <div v-if="!user.isSet">
-            <router-link
-              :to="{ name: 'login' }"
-              class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg hover:bg-gray-100"
-            >
-              <LoginIcon
-                class="flex-shrink-0 w-6 h-6 transition duration-75 group-hover:text-gray-900"
-              />
-              <span class="flex-1 ml-3 whitespace-nowrap">Ingresar</span>
-            </router-link>
-          </div>
-          <div v-if="!user.isSet">
-            <router-link
-              :to="{ name: 'register' }"
-              class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg hover:bg-gray-100"
-            >
-              <RegisterIco
-                class="flex-shrink-0 w-6 h-6 transition duration-75 group-hover:text-gray-900"
-              />
-              <span class="flex-1 ml-3 whitespace-nowrap">Registrarse</span>
-            </router-link>
-          </div>
+          <ButtonLink
+            v-if="!user.isSet"
+            to="login"
+            text="Iniciar sesión"
+            type="primary"
+            size="small"
+            :icon="LoginIcon"
+            class="my-2"
+          />
+
+          <ButtonLink
+            v-if="!user.isSet"
+            to="register"
+            text="Registrarse"
+            type="secondary"
+            size="small"
+            :icon="SignupIcon"
+            class="mb-4"
+          />
 
           <div v-if="user.isSet">
             <button
@@ -135,6 +132,8 @@ import ProductIcon from '@/modules/admin/components/icons/ProductIcon.vue';
 import ProfileIcon from '@/modules/common/icons/ProfileIcon.vue';
 import LogoutIcon from '@/modules/common/icons/LogoutIcon.vue';
 import LoginIcon from '@/modules/common/icons/LoginIcon.vue';
+import SignupIcon from '@/modules/common/icons/SignupIcon.vue';
+import ButtonLink from '@/modules/common/components/ButtonLink.vue';
 
 defineEmits(['hideMenu']);
 
