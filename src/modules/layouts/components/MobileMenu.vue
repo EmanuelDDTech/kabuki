@@ -103,7 +103,7 @@
             class="mb-4"
           />
 
-          <div v-if="user.isSet">
+          <div v-if="user.isSet" class="mb-4">
             <button
               @click="user.logout"
               class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg hover:bg-gray-100"
