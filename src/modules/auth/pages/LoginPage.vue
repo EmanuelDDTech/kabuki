@@ -3,12 +3,16 @@
 
   <div class="text-center mt-4">
     <GoogleSignInButton
+      class="w-full justify-center"
       @success="handleLoginSuccess"
       @error="handleLoginError"
-      type="icon"
-      shape="square"
-      text="signin"
-      width="400"
+      type="standard"
+      theme="outline"
+      size="large"
+      shape="rectangular"
+      text="signin_with"
+      logo-alignment="left"
+      width="300"
     ></GoogleSignInButton>
 
     <div class="flex items-center justify-center gap-2 my-6">
