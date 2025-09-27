@@ -3,7 +3,7 @@
     id="header"
     class="max-w-7xl min-h-16 mx-auto border-gray-200 sticky top-2 z-999 rounded-full"
   >
-    <div class="mx-auto z-10 bg-white rounded-full relative">
+    <div class="mx-auto z-10 bg-white rounded-full">
       <div class="flex justify-between items-center px-6 py-3">
         <!-- <RouterLink
           :to="{ name: 'home' }"
@@ -40,14 +40,15 @@
           @click="showMenu"
           class="w-7 ml-6 aspect-square text-gray-400 block lg:hidden"
         />
-        <MobileMenu
-          class="absolute top-0 right-0 transition-all block lg:hidden z-10"
-          :class="showMobileMenu ? 'translate-x-0' : 'translate-x-full'"
-          @hide-menu="hideMenu"
-        />
       </div>
     </div>
   </header>
+
+  <MobileMenu
+    class="fixed top-0 right-0 transition-all block lg:hidden z-1000"
+    :class="showMobileMenu ? 'translate-x-0' : 'translate-x-full'"
+    @hide-menu="hideMenu"
+  />
 </template>
 
 <script setup lang="ts">
@@ -81,7 +82,7 @@ onMounted(() => {
         // Scroll hacia abajo
         header?.classList.add('-top-24');
         header?.classList.remove('top-2');
-        showMobileMenu.value = false;
+        // showMobileMenu.value = false;
       } else {
         // Scroll hacia arriba
         header?.classList.remove('-top-24');
@@ -95,7 +96,7 @@ onMounted(() => {
       header?.classList.remove('transition-all');
       header?.classList.remove('duration-500');
 
-      showMobileMenu.value = false;
+      // showMobileMenu.value = false;
     }
     lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; // Para Mobile o cuando el scroll es negativo
   });
@@ -109,11 +110,3 @@ const hideMenu = () => {
   showMobileMenu.value = false;
 };
 </script>
-
-<style>
-@media (width < 1024px) {
-  html {
-    overflow-x: hidden;
-  }
-}
-</style>

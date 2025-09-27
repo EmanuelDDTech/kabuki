@@ -1,7 +1,9 @@
 <template>
-  <aside class="w-64" aria-label="Sidebar">
-    <div class="px-3 py-4 overflow-y-auto rounded-lg bg-white shadow-lg border border-gray-100">
-      <ul class="space-y-2">
+  <aside class="w-64 h-screen" aria-label="Sidebar">
+    <div
+      class="px-4 py-4 h-full overflow-y-auto rounded-lg bg-white shadow-lg border border-gray-100"
+    >
+      <ul class="h-full gap-2 flex flex-col justify-start">
         <li class="flex items-center justify-end">
           <XMarkIcon
             @click="$emit('hideMenu')"
@@ -14,15 +16,7 @@
             class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg hover:bg-gray-100"
             :class="router.name === 'cart' ? 'bg-gray-100' : ''"
           >
-            <svg
-              class="w-6 h-6 text-gray-400 transition duration-75 group-hover:text-gray-900"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z"></path>
-              <path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"></path>
-            </svg>
+            <CartIcon class="w-6 h-6 transition duration-75 group-hover:text-gray-900" />
             <span class="ml-3">Carrito</span>
           </router-link>
         </li>
@@ -31,16 +25,9 @@
             :to="{ name: 'myPurchases' }"
             class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg hover:bg-gray-100"
           >
-            <svg
-              class="flex-shrink-0 w-6 h-6 text-gray-400 transition duration-75 group-hover:text-gray-900"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
-              ></path>
-            </svg>
+            <PurchasesIcon
+              class="flex-shrink-0 w-6 h-6 transition duration-75 group-hover:text-gray-900"
+            />
             <span class="flex-1 ml-3 whitespace-nowrap">Mis compras</span>
             <!-- <span
               class="inline-flex items-center justify-center px-2 ml-3 text-sm font-medium text-gray-800 bg-gray-200 rounded-full"
@@ -76,101 +63,62 @@
             class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg hover:bg-gray-100"
             :class="router.name === 'products' ? 'bg-gray-100' : ''"
           >
-            <svg
-              class="flex-shrink-0 w-6 h-6 text-gray-400 transition duration-75 group-hover:text-gray-900"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                fill-rule="evenodd"
-                d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-                clip-rule="evenodd"
-              ></path>
-            </svg>
+            <ProductIcon
+              class="flex-shrink-0 w-6 h-6 transition duration-75 group-hover:text-gray-900"
+            />
             <span class="flex-1 ml-3 whitespace-nowrap">Productos</span>
           </router-link>
         </li>
-        <li v-if="!user.isSet">
-          <router-link
-            :to="{ name: 'login' }"
-            class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg hover:bg-gray-100"
-          >
-            <svg
-              class="flex-shrink-0 w-6 h-6 text-gray-400 transition duration-75 group-hover:text-gray-900"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                fill-rule="evenodd"
-                d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z"
-                clip-rule="evenodd"
-              ></path>
-            </svg>
-            <span class="flex-1 ml-3 whitespace-nowrap">Ingresar</span>
-          </router-link>
-        </li>
-        <li v-if="!user.isSet">
-          <router-link
-            :to="{ name: 'register' }"
-            class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg hover:bg-gray-100"
-          >
-            <svg
-              class="flex-shrink-0 w-6 h-6 text-gray-400 transition duration-75 group-hover:text-gray-900"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                fill-rule="evenodd"
-                d="M5 4a3 3 0 00-3 3v6a3 3 0 003 3h10a3 3 0 003-3V7a3 3 0 00-3-3H5zm-1 9v-1h5v2H5a1 1 0 01-1-1zm7 1h4a1 1 0 001-1v-1h-5v2zm0-4h5V8h-5v2zM9 8H4v2h5V8z"
-                clip-rule="evenodd"
-              ></path>
-            </svg>
-            <span class="flex-1 ml-3 whitespace-nowrap">Registrarse</span>
-          </router-link>
-        </li>
+
         <li v-if="user.isSet">
           <router-link
             :to="{ name: 'myPurchases' }"
             class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg hover:bg-gray-100"
           >
-            <svg
-              class="flex-shrink-0 w-6 h-6 text-gray-400 transition duration-75 group-hover:text-gray-900"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                fill-rule="evenodd"
-                d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z"
-                clip-rule="evenodd"
-              ></path>
-            </svg>
+            <ProfileIcon
+              class="flex-shrink-0 w-6 h-6 transition duration-75 group-hover:text-gray-900"
+            />
             <span class="flex-1 ml-3 whitespace-nowrap">{{ user.getUserName }}</span>
           </router-link>
         </li>
-        <li v-if="user.isSet">
-          <button
-            @click="user.logout"
-            class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg hover:bg-gray-100"
-          >
-            <svg
-              class="flex-shrink-0 w-6 h-6 text-gray-400 transition duration-75 group-hover:text-gray-900"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-              xmlns="http://www.w3.org/2000/svg"
+
+        <div class="flex-1 flex-col flex justify-end mt-4">
+          <div v-if="!user.isSet">
+            <router-link
+              :to="{ name: 'login' }"
+              class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg hover:bg-gray-100"
             >
-              <path
-                fill-rule="evenodd"
-                d="M5 4a3 3 0 00-3 3v6a3 3 0 003 3h10a3 3 0 003-3V7a3 3 0 00-3-3H5zm-1 9v-1h5v2H5a1 1 0 01-1-1zm7 1h4a1 1 0 001-1v-1h-5v2zm0-4h5V8h-5v2zM9 8H4v2h5V8z"
-                clip-rule="evenodd"
-              ></path>
-            </svg>
-            <span class="flex-1 ml-3 whitespace-nowrap">Cerrar sesión</span>
-          </button>
-        </li>
+              <LoginIcon
+                class="flex-shrink-0 w-6 h-6 transition duration-75 group-hover:text-gray-900"
+              />
+              <span class="flex-1 ml-3 whitespace-nowrap">Ingresar</span>
+            </router-link>
+          </div>
+          <div v-if="!user.isSet">
+            <router-link
+              :to="{ name: 'register' }"
+              class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg hover:bg-gray-100"
+            >
+              <RegisterIco
+                class="flex-shrink-0 w-6 h-6 transition duration-75 group-hover:text-gray-900"
+              />
+              <span class="flex-1 ml-3 whitespace-nowrap">Registrarse</span>
+            </router-link>
+          </div>
+
+          <div v-if="user.isSet">
+            <button
+              @click="user.logout"
+              class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg hover:bg-gray-100"
+            >
+              <LogoutIcon
+                class="flex-shrink-0 w-6 h-6 transition duration-75 group-hover:text-gray-900"
+              />
+              <span class="flex-1 ml-3 whitespace-nowrap">Cerrar sesión</span>
+            </button>
+          </div>
+          <SocialsLinks />
+        </div>
       </ul>
     </div>
   </aside>
@@ -180,6 +128,13 @@
 import { useRoute } from 'vue-router';
 import XMarkIcon from './XMarkIcon.vue';
 import { useUserStore } from '@/modules/auth/stores/user';
+import SocialsLinks from './SocialsLinks.vue';
+import CartIcon from '@/modules/cart/components/CartIcon.vue';
+import PurchasesIcon from '@/modules/admin/components/icons/PurchasesIcon.vue';
+import ProductIcon from '@/modules/admin/components/icons/ProductIcon.vue';
+import ProfileIcon from '@/modules/common/icons/ProfileIcon.vue';
+import LogoutIcon from '@/modules/common/icons/LogoutIcon.vue';
+import LoginIcon from '@/modules/common/icons/LoginIcon.vue';
 
 defineEmits(['hideMenu']);
 
