@@ -199,10 +199,7 @@
           </div>
         </section>
 
-        <section
-          v-if="!cart.isEmpty && userStore.isSet"
-          class="mt-6 shadow-md border border-gray-100 p-4 rounded-lg"
-        >
+        <section v-if="!cart.isEmpty" class="mt-6 shadow-md border border-gray-100 p-4 rounded-lg">
           <h2 class="text-2xl font-bold border-b-2 border-gray-200 pb-3 mb-6">Método de envío</h2>
 
           <ul class="flex flex-wrap justify-around gap-6">
@@ -267,10 +264,12 @@ const cart = useCartStore();
 
 const router = useRouter();
 
-const toast = inject('toast');
+const toast: any = inject('toast');
 
 onMounted(() => {
-  address.getAddresses();
+  if (userStore.isSet) {
+    address.getAddresses();
+  }
 });
 
 const saveAddress = async () => {
@@ -293,7 +292,7 @@ const saveAddress = async () => {
     setTimeout(() => {
       address.createNew = false;
     }, 1000);
-  } catch (error) {
+  } catch (error: any) {
     toast.open({
       message: error.response.data.msg,
       type: 'error',

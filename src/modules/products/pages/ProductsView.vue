@@ -17,7 +17,7 @@ import ChevronDownIcon from '@/modules/common/icons/ChevronDownIcon.vue';
 
 import type { ProductResponse } from '../interfaces';
 import LoaderWithText from '@/modules/common/components/LoaderWithText.vue';
-import OrderSelect from '@/modules/filter/components/orderSelect.vue';
+import OrderSelect from '@/modules/filter/components/OrderSelect.vue';
 
 const filters = useFilterCategoryStore();
 const products = useProductsStore();

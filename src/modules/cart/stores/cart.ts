@@ -12,7 +12,7 @@ import { DiscountType } from '@/modules/discountCode/interfaces/discountCode.int
 import { sub } from 'date-fns';
 
 export const useCartStore = defineStore('cart', () => {
-  const items = ref([]);
+  const items = ref<{ id: number; quantity: number; product: Product }[]>([]);
   const subtotal = ref<number>(0);
   // const taxes = ref(0);
   const total = ref(0);
@@ -96,7 +96,9 @@ export const useCartStore = defineStore('cart', () => {
         }),
       ).then((results) => {
         results.forEach(({ product, quantity }) => {
-          items.value.push({ id: 0, quantity, product });
+          if (!items.value.some((item) => item.product.id === product.id)) {
+            items.value.push({ id: 0, quantity, product });
+          }
         });
       });
     }
@@ -121,7 +123,7 @@ export const useCartStore = defineStore('cart', () => {
       }
     } else {
       if (isItemInCart(item.id)) {
-        let localCart = JSON.parse(localStorage.getItem('_shorikame_cart')) || [];
+        let localCart: any[] = JSON.parse(localStorage.getItem('_shorikame_cart')) || [];
         localCart = localCart.filter((localProduct) => localProduct.id !== item.id);
 
         localStorage.setItem('_shorikame_cart', JSON.stringify(localCart));
@@ -326,9 +328,13 @@ export const useCartStore = defineStore('cart', () => {
     items.value.reduce((totalWeight, item) => totalWeight + item.product.weight * item.quantity, 0),
   );
 
-  watch(items, async (newValue, oldValue) => {
-    await delivery.findDeliveriesAvailable(44298, cartWeight.value);
-  });
+  watch(
+    items,
+    async (newValue, oldValue) => {
+      await delivery.findDeliveriesAvailable(44298, cartWeight.value);
+    },
+    { immediate: true, deep: true },
+  );
 
   return {
     subtotal,

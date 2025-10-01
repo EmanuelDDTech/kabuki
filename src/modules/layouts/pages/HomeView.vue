@@ -20,6 +20,12 @@ const featuredProductStore = useFeaturedProductStore();
 const routes = [
   {
     name: 'products',
+    text: 'Mega Evolution',
+    img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Fmega-evolution.webp?alt=media&token=15852ead-ef0c-4314-b2d0-441ed9d0181a',
+    query: { expansion: 'mega-evolution' },
+  },
+  {
+    name: 'products',
     text: 'Black & White',
     img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Fblack-%26-white.jpg?alt=media&token=e7b915df-bb61-454a-878f-f2902761eafd',
     query: { expansion: 'black-&-white' },
@@ -72,12 +78,12 @@ const routes = [
     img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Ftemporal_forces.webp?alt=media&token=15830a31-4e19-40fa-8362-15dea4d2043f',
     query: { expansion: 'temporal-forces' },
   },
-  {
-    name: 'products',
-    text: 'Paldean Fates',
-    img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Fpaldean_fate.webp?alt=media&token=06d8bea9-baab-45e6-80e5-27a07204490d',
-    query: { expansion: 'paldean-fates' },
-  },
+  // {
+  //   name: 'products',
+  //   text: 'Paldean Fates',
+  //   img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Fpaldean_fate.webp?alt=media&token=06d8bea9-baab-45e6-80e5-27a07204490d',
+  //   query: { expansion: 'paldean-fates' },
+  // },
   // {
   //   name: 'products',
   //   text: 'Paradox Rift',

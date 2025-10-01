@@ -10,6 +10,9 @@
         <span class="self-center whitespace-nowrap">ShoriKameCards</span>
       </RouterLink>
       <!-- <SearchBar /> -->
+
+      <SocialsLinks class="hidden lg:flex" />
+
       <nav class="text-base hidden lg:flex">
         <ButtonLink v-if="user.isAdmin" :to="'admin'" :text="'Ir al admin'" :icon="DashboardIcon" />
         <div class="flex gap-3 border-r-2 border-gray-300 text-gray-400 relative">
@@ -98,6 +101,7 @@ import { useFilterCategoryStore } from '@/modules/filter/store/filterCategory';
 import { useCartStore } from '@/modules/cart/stores/cart';
 import ButtonLink from '@/modules/common/components/ButtonLink.vue';
 import DashboardIcon from '@/modules/common/icons/DashboardIcon.vue';
+import SocialsLinks from './SocialsLinks.vue';
 
 const user = useUserStore();
 const cartStore = useCartStore();
