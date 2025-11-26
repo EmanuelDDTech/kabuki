@@ -11,6 +11,7 @@ export const useMercadopagoStore = defineStore('mercadopago', () => {
   const items = computed(() => {
     return cartStore.items.map((item) => {
       return {
+        id: item.product.id.toString(),
         title: item.product.name,
         quantity: item.quantity,
         unit_price: Number(item.product.price),
@@ -32,13 +33,19 @@ export const useMercadopagoStore = defineStore('mercadopago', () => {
 
   const createPreference = async () => {
     try {
-      const result = await createPreferenceAction(
-        items.value,
+      const result = await createPreferenceAction({
+        items: items.value,
         // mercadopagoStore.payer,
-        backUrls,
-      );
+        notification_url: 'https://shorikamecards.com/mercadopago/webhook',
+        back_urls: backUrls,
+      });
 
-      preferenceId.value = result;
+      if (!result.ok) {
+        preferenceId.value = undefined;
+        return;
+      }
+
+      preferenceId.value = result.data;
     } catch (error) {
       console.log(error);
     }
