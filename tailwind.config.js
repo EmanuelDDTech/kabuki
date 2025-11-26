@@ -20,6 +20,20 @@ export default {
       animation: {
         customBounce: 'customBounce 1s infinite',
       },
+      colors: {
+        'shori-green': {
+          50: '#c5ffd0',
+          100: '#28fd77',
+          200: '#21db66',
+          300: '#1bbe57',
+          400: '#16a34a',
+          500: '#128e40',
+          600: '#0c7232',
+          700: '#065322',
+          800: '#033413',
+          900: '#011505',
+        },
+      },
     },
   },
   plugins: [
