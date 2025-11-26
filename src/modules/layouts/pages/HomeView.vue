@@ -20,6 +20,12 @@ const featuredProductStore = useFeaturedProductStore();
 const routes = [
   {
     name: 'products',
+    text: 'Phantasmal Flames',
+    img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Fphantasmal_flames.webp?alt=media&token=ab6257f9-2e15-45bf-8b57-0861a2d9d4f0',
+    query: { expansion: 'phantasmal-flames' },
+  },
+  {
+    name: 'products',
     text: 'Mega Evolution',
     img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Fmega-evolution.webp?alt=media&token=15852ead-ef0c-4314-b2d0-441ed9d0181a',
     query: { expansion: 'mega-evolution' },
