@@ -6,20 +6,25 @@ import { useDeliveryStore } from '../stores/delivery';
 import SideBard from '../components/SideBard.vue';
 import { useRouter } from 'vue-router';
 import { useDiscountCodeStore } from '@/modules/discountCode/stores/discountCode';
+import { useMercadopagoStore } from '../stores/mercadopago';
 
 const cart = useCartStore();
 const address = useAddressStore();
 const delivery = useDeliveryStore();
 const discountCodeStore = useDiscountCodeStore();
+const mercadopagoStore = useMercadopagoStore();
 
 const router = useRouter();
 
-const toast = inject('toast');
+const toast: any = inject('toast');
 
-onMounted(() => {
+declare const MercadoPago: any;
+
+onMounted(async () => {
   if (cart.isEmpty || !delivery.isCarrierSelected || address.selectedAddress === 0)
     router.push({ name: 'cart' });
-  addPaypalScript();
+
+  await Promise.all([addPaypalScript(), addMercadoPagoScript()]);
 });
 
 onUnmounted(() => {
@@ -151,6 +156,46 @@ const createTransferOrder = async () => {
 
   router.push({ name: 'thanks', params: { saleOrderId: saleOrder.order.id } });
 };
+
+const addMercadoPagoScript = async () => {
+  const scriptSdkMercadoPago = document.createElement('script');
+  scriptSdkMercadoPago.src = `https://sdk.mercadopago.com/js/v2`;
+  scriptSdkMercadoPago.onload = async () => {
+    const publicKey = import.meta.env.VITE_MERCADOPAGO_PUBLIC_KEY;
+
+    await mercadopagoStore.createPreference();
+    const preferenceId = mercadopagoStore.preferenceId;
+
+    if (!preferenceId) {
+      toast.open({
+        message: 'No se pudo iniciar el proceso de pago con MercadoPago',
+        type: 'error',
+      });
+      return;
+    }
+
+    const mp = new MercadoPago(publicKey);
+
+    const bricksBuilder = mp.bricks();
+    const renderWalletBrick = async (bricksBuilder: any) => {
+      await bricksBuilder.create('wallet', 'walletBrick_container', {
+        initialization: {
+          preferenceId: preferenceId,
+        },
+        customization: {
+          customStyle: {
+            hideValueProp: true,
+            borderRadius: '999px',
+          },
+        },
+      });
+    };
+
+    renderWalletBrick(bricksBuilder);
+  };
+
+  document.head.append(scriptSdkMercadoPago);
+};
 </script>
 
 <template>
@@ -169,6 +214,16 @@ const createTransferOrder = async () => {
             </div>
           </div>
 
+          <div
+            v-show="cart.payNow && !discountCodeStore.isDiscountCodeSelected"
+            class="mt-10 flex flex-col"
+          >
+            <h3 class="text-2xl font-bold mb-3">Mercado Pago</h3>
+            <div class="w-full max-w-[750px] mx-auto">
+              <div id="walletBrick_container"></div>
+            </div>
+          </div>
+
           <div v-show="cart.payNow" class="mt-10 flex flex-col">
             <h3 class="text-2xl font-bold mb-3">Depósito o Transferencia</h3>
             <div>
@@ -178,7 +233,7 @@ const createTransferOrder = async () => {
             </div>
             <div class="bg-red-100 p-3 rounded mt-3">
               <p>
-                <Span class="text-red-900 text-lg">¡Importante!</Span> Al seleccionar transferencia
+                <span class="text-red-900 text-lg">¡Importante!</span> Al seleccionar transferencia
                 tendrás 24 horas para realizar el depósito o transferencia. Si no se realiza el pago
                 dentro de ese tiempo el pedido será cancelado.
               </p>
