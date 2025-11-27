@@ -26,7 +26,8 @@ onMounted(async () => {
     return;
   }
 
-  await Promise.all([addPaypalScript(), addMercadoPagoScript()]);
+  await Promise.all([addPaypalScript()]);
+  // await Promise.all([addPaypalScript(), addMercadoPagoScript()]);
 });
 
 onUnmounted(() => {
@@ -216,7 +217,7 @@ const addMercadoPagoScript = async () => {
             </div>
           </div>
 
-          <div
+          <!-- <div
             v-show="cart.payNow && !discountCodeStore.isDiscountCodeSelected"
             class="mt-10 flex flex-col"
           >
@@ -224,7 +225,7 @@ const addMercadoPagoScript = async () => {
             <div class="w-full max-w-[750px] mx-auto">
               <div id="walletBrick_container"></div>
             </div>
-          </div>
+          </div> -->
 
           <div v-show="cart.payNow" class="mt-10 flex flex-col">
             <h3 class="text-2xl font-bold mb-3">Depósito o Transferencia</h3>
