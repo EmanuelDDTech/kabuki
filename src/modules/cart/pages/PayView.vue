@@ -21,8 +21,10 @@ const toast: any = inject('toast');
 declare const MercadoPago: any;
 
 onMounted(async () => {
-  if (cart.isEmpty || !delivery.isCarrierSelected || address.selectedAddress === 0)
+  if (cart.isEmpty || !delivery.isCarrierSelected || address.selectedAddress === 0) {
     router.push({ name: 'cart' });
+    return;
+  }
 
   await Promise.all([addPaypalScript(), addMercadoPagoScript()]);
 });

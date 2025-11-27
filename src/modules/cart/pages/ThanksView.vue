@@ -41,7 +41,9 @@
 </template>
 
 <script setup lang="ts">
+import { onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import { useMercadopagoStore } from '../stores/mercadopago';
 
 // interface Props {
 //   orderId?: String;
@@ -52,7 +54,17 @@ import { useRoute, useRouter } from 'vue-router';
 const route = useRoute();
 const router = useRouter();
 
+const mercadopagoStore = useMercadopagoStore();
+
 const orderId = route.params.saleOrderId;
+
+onMounted(async () => {
+  const { mercadopago, payment_id } = route.query;
+
+  if (mercadopago) {
+    const result = await mercadopagoStore.processPayment(payment_id!.toString());
+  }
+});
 
 const continueShopping = () => {
   router.push('/');
