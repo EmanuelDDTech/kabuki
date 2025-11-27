@@ -13,11 +13,15 @@ export const createPreferenceAction = async ({
   notification_url,
   back_urls,
   auto_return = 'approved',
+  shipments,
+  metadata,
 }: {
   items: Item[];
   notification_url: string;
   back_urls: Urls;
   auto_return?: string;
+  shipments: Object;
+  metadata: Object;
 }): Promise<ErrorResponse | CreatePreferenceResponse> => {
   try {
     const { data } = await shoriAPI.post<PreferenceMercadoPago>('/mercadopago/create-preference', {
@@ -25,6 +29,8 @@ export const createPreferenceAction = async ({
       notification_url,
       back_urls,
       auto_return,
+      shipments,
+      metadata,
     });
 
     return {
