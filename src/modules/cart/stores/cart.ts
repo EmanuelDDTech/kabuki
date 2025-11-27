@@ -244,8 +244,19 @@ export const useCartStore = defineStore('cart', () => {
   });
 
   async function createSaleOrder(transaction: string | null = null, paymentMethod: string | null) {
+    const saleData = getSaleData(transaction, paymentMethod);
+
+    const { data } = await SaleAPI.create(saleData);
+    if (discountCodeStore.isDiscountCodeSelected) await discountCodeStore.updateTimesUsed();
+    clearDiscount();
+    payNow.value = false;
+    return data;
+  }
+
+  function getSaleData(transaction: string | null = null, paymentMethod: string | null) {
     const saleData = {
-      state: transaction ? 'pendiente' : 'pago pendiente',
+      user_id: userStore.user?.id,
+      state: transaction || paymentMethod === 'mercadopago' ? 'pendiente' : 'pago pendiente',
       require_payment: false,
       payment_method: paymentMethod,
       amount_total: total.value,
@@ -263,17 +274,13 @@ export const useCartStore = defineStore('cart', () => {
         : null,
     };
 
-    const { data } = await SaleAPI.create(saleData);
-    if (discountCodeStore.isDiscountCodeSelected) await discountCodeStore.updateTimesUsed();
-    clearDiscount();
-    payNow.value = false;
-    return data;
+    return saleData;
   }
 
   function getSaleProductsData() {
     const productsData = items.value.map((item) => {
       const product = {
-        productId: item.product.id,
+        product_id: item.product.id,
         quantity: item.quantity,
         price_unit: item.product.price,
         subtotal: item.quantity * item.product.price,
@@ -359,6 +366,8 @@ export const useCartStore = defineStore('cart', () => {
     deleteCart,
     moveLocalCart,
     clearDiscount,
+    getSaleProductsData,
+    getSaleData,
 
     // Getters
     cartWeight,
