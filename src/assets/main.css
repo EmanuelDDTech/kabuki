@@ -21,6 +21,278 @@ body {
   --vf-bg-passive: oklch(0.872 0.01 258.338);
 }
 
+:root,
+.light,
+.light-theme {
+  /* Backgrounds */
+  --green-1: #f5f9f6;
+  --green-2: #eef5ef;
+  --gray-1: #f7f7f8;
+  --gray-2: #f3f3f6;
+
+  /* Interactive components */
+  --green-3: #e0f1e2;
+  --green-4: #cfebd4;
+  --green-5: #bbe3c2;
+  --gray-3: #eaeaee;
+  --gray-4: #e1e1e6;
+  --gray-5: #d9dae1;
+
+  /* Borders and separators */
+  --green-6: #a3d9ad;
+  --green-7: #81ca91;
+  --green-8: #4bb568;
+  --gray-6: #d1d1d9;
+  --gray-7: #c6c6d0;
+  --gray-8: #b2b2c0;
+
+  /* Solid colors */
+  --green-9: #008235;
+  --green-10: #007427;
+  --gray-9: #85858f;
+  --gray-10: #7a7a85;
+
+  /* Accessible text */
+  --green-11: #007b2e;
+  --green-12: #1a3d23;
+  --gray-11: #5c5c66;
+  --gray-12: #1f1f24;
+
+  --green-a1: #26d05006;
+  --green-a2: #0f98230d;
+  --green-a3: #04a5171b;
+  --green-a4: #01a41e2c;
+  --green-a5: #03a01f41;
+  --green-a6: #019c1e59;
+  --green-a7: #0298237c;
+  --green-a8: #00972ab3;
+  --green-a9: #008235;
+  --green-a10: #007427;
+  --green-a11: #007b2e;
+  --green-a12: #01280be5;
+
+  --gray-a1: #3b3b7b04;
+  --gray-a2: #1b1b7b08;
+  --gray-a3: #0a0a4611;
+  --gray-a4: #0404351a;
+  --gray-a5: #030a3f22;
+  --gray-a6: #0202322a;
+  --gray-a7: #05053436;
+  --gray-a8: #0202334a;
+  --gray-a9: #02021778;
+  --gray-a10: #00001683;
+  --gray-a11: #020212a2;
+  --gray-a12: #010107e0;
+
+  --green-contrast: #fff;
+  --green-surface: #ebf4eccc;
+  --green-indicator: #008235;
+  --green-track: #008235;
+  --gray-contrast: #ffffff;
+  --gray-surface: #ffffffcc;
+  --gray-indicator: #85858f;
+  --gray-track: #85858f;
+
+  --color-background: #fafafa;
+}
+
+@supports (color: color(display-p3 1 1 1)) {
+  @media (color-gamut: p3) {
+    :root,
+    .light,
+    .light-theme {
+      --green-1: oklch(97.8% 0.006 150);
+      --green-2: oklch(96.4% 0.0108 150);
+      --green-3: oklch(94.2% 0.0273 150);
+      --green-4: oklch(91.4% 0.0435 150);
+      --green-5: oklch(88% 0.0615 150);
+      --green-6: oklch(83.5% 0.0823 150);
+      --green-7: oklch(77.5% 0.1089 150);
+      --green-8: oklch(69.2% 0.1483 150);
+      --green-9: oklch(52.7% 0.154 150);
+      --green-10: oklch(47.9% 0.154 150);
+      --green-11: oklch(50.4% 0.154 150);
+      --green-12: oklch(32.6% 0.0612 150);
+      --gray-1: oklch(97.6% 0.0011 286);
+      --gray-2: oklch(96.5% 0.0037 286);
+      --gray-3: oklch(93.7% 0.0056 286);
+      --gray-4: oklch(91.2% 0.0068 286);
+      --gray-5: oklch(88.9% 0.0095 286);
+      --gray-6: oklch(86.4% 0.0107 286);
+      --gray-7: oklch(83% 0.0137 286);
+      --gray-8: oklch(76.9% 0.0189 286);
+      --gray-9: oklch(61.9% 0.0161 286);
+      --gray-10: oklch(58.3% 0.0171 286);
+      --gray-11: oklch(47.7% 0.017 286);
+      --gray-12: oklch(24.2% 0.0094 286);
+
+      --green-a1: color(display-p3 0 0.7373 0 / 0.016);
+      --green-a2: color(display-p3 0 0.5373 0 / 0.044);
+      --green-a3: color(display-p3 0 0.5569 0 / 0.092);
+      --green-a4: color(display-p3 0 0.5686 0.0549 / 0.152);
+      --green-a5: color(display-p3 0 0.5529 0.0392 / 0.22);
+      --green-a6: color(display-p3 0 0.5294 0.0392 / 0.304);
+      --green-a7: color(display-p3 0 0.5098 0.0392 / 0.416);
+      --green-a8: color(display-p3 0 0.502 0.0471 / 0.58);
+      --green-a9: color(display-p3 0 0.3647 0.0314 / 0.776);
+      --green-a10: color(display-p3 0 0.3176 0 / 0.804);
+      --green-a11: color(display-p3 0 0.3373 0.0157 / 0.788);
+      --green-a12: color(display-p3 0 0.1137 0.0078 / 0.86);
+      --gray-a1: color(display-p3 0 0 0.3294 / 0.012);
+      --gray-a2: color(display-p3 0 0 0.4235 / 0.028);
+      --gray-a3: color(display-p3 0 0 0.2471 / 0.064);
+      --gray-a4: color(display-p3 0 0 0.1961 / 0.1);
+      --gray-a5: color(display-p3 0 0.0314 0.2118 / 0.132);
+      --gray-a6: color(display-p3 0 0 0.1686 / 0.164);
+      --gray-a7: color(display-p3 0 0 0.1725 / 0.208);
+      --gray-a8: color(display-p3 0 0 0.1804 / 0.288);
+      --gray-a9: color(display-p3 0 0 0.0784 / 0.468);
+      --gray-a10: color(display-p3 0 0 0.0784 / 0.512);
+      --gray-a11: color(display-p3 0 0 0.0588 / 0.632);
+      --gray-a12: color(display-p3 0 0 0.0235 / 0.876);
+
+      --green-contrast: #fff;
+      --green-surface: color(display-p3 0.9333 0.9569 0.9333 / 0.8);
+      --green-indicator: oklch(52.7% 0.154 150);
+      --green-track: oklch(52.7% 0.154 150);
+      --gray-contrast: #ffffff;
+      --gray-surface: color(display-p3 1 1 1 / 80%);
+      --gray-indicator: oklch(61.9% 0.0161 286);
+      --gray-track: oklch(61.9% 0.0161 286);
+    }
+  }
+}
+
+.dark,
+.dark-theme {
+  --green-1: #050b06;
+  --green-2: #121913;
+  --green-3: #182a1b;
+  --green-4: #193a21;
+  --green-5: #1f4929;
+  --green-6: #265832;
+  --green-7: #2d693b;
+  --green-8: #327c44;
+  --green-9: #16a34a;
+  --green-10: #00963d;
+  --green-11: #5ed47b;
+  --green-12: #b8f3c1;
+  --gray-1: #09090c;
+  --gray-2: #18181b;
+  --gray-3: #222226;
+  --gray-4: #29292f;
+  --gray-5: #303037;
+  --gray-6: #3a3942;
+  --gray-7: #474751;
+  --gray-8: #5f5f6d;
+  --gray-9: #6d6d7c;
+  --gray-10: #7b7a8a;
+  --gray-11: #b3b3c0;
+  --gray-12: #eeeef1;
+
+  --green-a1: #00b30003;
+  --green-a2: #90fa8311;
+  --green-a3: #77fa8023;
+  --green-a4: #59fe7933;
+  --green-a5: #5dfd7e43;
+  --green-a6: #64ff8552;
+  --green-a7: #65fe8564;
+  --green-a8: #60fd8478;
+  --green-a9: #1eff70a0;
+  --green-a10: #00fe6293;
+  --green-a11: #6ffe92d3;
+  --green-a12: #c1ffcaf3;
+  --gray-a1: #09098b02;
+  --gray-a2: #eaeafc11;
+  --gray-a3: #e5e5f91d;
+  --gray-a4: #e0e0fd26;
+  --gray-a5: #e2e2ff2e;
+  --gray-a6: #e1ddfd3a;
+  --gray-a7: #dfdffd4a;
+  --gray-a8: #dedefd67;
+  --gray-a9: #dfdffd77;
+  --gray-a10: #e4e2ff85;
+  --gray-a11: #eeeefebe;
+  --gray-a12: #fcfcfef1;
+
+  --green-contrast: #fff;
+  --green-surface: #1b291b80;
+  --green-indicator: #16a34a;
+  --green-track: #16a34a;
+  --gray-contrast: #ffffff;
+  --gray-surface: rgba(0, 0, 0, 0.05);
+  --gray-indicator: #6d6d7c;
+  --gray-track: #6d6d7c;
+
+  --color-background: #09090b;
+}
+
+@supports (color: color(display-p3 1 1 1)) {
+  @media (color-gamut: p3) {
+    .dark,
+    .dark-theme {
+      --green-1: oklch(14.1% 0.0163 149.2);
+      --green-2: oklch(20.3% 0.0164 149.2);
+      --green-3: oklch(26.3% 0.0349 149.2);
+      --green-4: oklch(31.7% 0.0606 149.2);
+      --green-5: oklch(36.6% 0.0718 149.2);
+      --green-6: oklch(41.6% 0.0835 149.2);
+      --green-7: oklch(46.8% 0.0967 149.2);
+      --green-8: oklch(52.4% 0.1127 149.2);
+      --green-9: oklch(62.7% 0.1699 149.2);
+      --green-10: oklch(58.6% 0.1699 149.2);
+      --green-11: oklch(78% 0.165 149.2);
+      --green-12: oklch(91.1% 0.0904 149.2);
+      --gray-1: oklch(14.1% 0.0059 286);
+      --gray-2: oklch(20.9% 0.0057 286);
+      --gray-3: oklch(25.2% 0.0077 286);
+      --gray-4: oklch(28.3% 0.0106 286);
+      --gray-5: oklch(31.3% 0.0125 286);
+      --gray-6: oklch(35% 0.014 286);
+      --gray-7: oklch(40.1% 0.017 286);
+      --gray-8: oklch(49.2% 0.0222 286);
+      --gray-9: oklch(54% 0.0236 286);
+      --gray-10: oklch(58.6% 0.0232 286);
+      --gray-11: oklch(77% 0.0195 286);
+      --gray-12: oklch(94.9% 0.0036 286);
+
+      --green-a1: color(display-p3 0 0.9098 0 / 0.009);
+      --green-a2: color(display-p3 0.6314 0.9882 0.5216 / 0.066);
+      --green-a3: color(display-p3 0.5882 0.9961 0.5373 / 0.135);
+      --green-a4: color(display-p3 0.5176 0.9961 0.5255 / 0.196);
+      --green-a5: color(display-p3 0.5412 0.9961 0.549 / 0.257);
+      --green-a6: color(display-p3 0.5569 1 0.5725 / 0.318);
+      --green-a7: color(display-p3 0.5608 0.9961 0.5804 / 0.387);
+      --green-a8: color(display-p3 0.5569 1 0.5804 / 0.46);
+      --green-a9: color(display-p3 0.4627 1 0.5098 / 0.618);
+      --green-a10: color(display-p3 0.4314 1 0.4667 / 0.566);
+      --green-a11: color(display-p3 0.5961 0.9961 0.6275 / 0.814);
+      --green-a12: color(display-p3 0.8118 0.9961 0.8157 / 0.944);
+      --gray-a1: color(display-p3 0.0353 0.0353 0.8275 / 0.005);
+      --gray-a2: color(display-p3 0.9294 0.9294 0.9961 / 0.066);
+      --gray-a3: color(display-p3 0.9216 0.9216 1 / 0.111);
+      --gray-a4: color(display-p3 0.9098 0.9098 1 / 0.144);
+      --gray-a5: color(display-p3 0.902 0.902 0.9961 / 0.177);
+      --gray-a6: color(display-p3 0.902 0.8863 0.9961 / 0.222);
+      --gray-a7: color(display-p3 0.898 0.898 1 / 0.283);
+      --gray-a8: color(display-p3 0.8863 0.8863 1 / 0.398);
+      --gray-a9: color(display-p3 0.8902 0.8902 1 / 0.46);
+      --gray-a10: color(display-p3 0.902 0.8941 1 / 0.517);
+      --gray-a11: color(display-p3 0.9412 0.9412 1 / 0.738);
+      --gray-a12: color(display-p3 0.9843 0.9843 1 / 0.943);
+
+      --green-contrast: #fff;
+      --green-surface: color(display-p3 0.1098 0.1569 0.102 / 0.5);
+      --green-indicator: oklch(62.7% 0.1699 149.2);
+      --green-track: oklch(62.7% 0.1699 149.2);
+      --gray-contrast: #ffffff;
+      --gray-surface: color(display-p3 0 0 0 / 5%);
+      --gray-indicator: oklch(54% 0.0236 286);
+      --gray-track: oklch(54% 0.0236 286);
+    }
+  }
+}
+
 input[type='checkbox'] {
   appearance: auto !important; /* Asegura que el checkbox se renderice */
   width: 12px;
