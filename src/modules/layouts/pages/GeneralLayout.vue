@@ -2,7 +2,7 @@
   <div>
     <TopNavBar />
     <GeneralHeader />
-    <RouterView class="border-t border-gray-200" />
+    <RouterView class="border-t border-shori-gray-6" />
     <GeneralFooter class="px-3" />
   </div>
 </template>

@@ -150,10 +150,10 @@ onMounted(async () => {
       </div>
     </section>
 
-    <section class="px-3 bg-gray-100">
+    <section class="px-3">
       <div class="max-w-screen-xl mx-auto py-14">
         <div class="flex gap-3 order-2 sm:order-1 mb-8">
-          <StarIcon class="w-9 h-9 text-white bg-green-500 p-2 rounded-full" />
+          <StarIcon class="w-9 h-9 text-shori-gray-contrast bg-shori-green-9 p-2 rounded-full" />
           <h2 class="text-4xl font-bold">Producto destacado</h2>
         </div>
 
@@ -177,22 +177,26 @@ onMounted(async () => {
       </div>
     </section>
 
-    <section class="px-3 bg-gray-100">
+    <section class="px-3">
       <div class="max-w-screen-xl mx-auto py-8">
         <header class="flex gap-3 mb-6">
-          <ClosedBoxIcon class="w-9 aspect-square text-white bg-green-500 p-2 rounded-full" />
+          <ClosedBoxIcon
+            class="w-9 aspect-square text-shori-gray-contrast bg-shori-green-9 p-2 rounded-full"
+          />
           <h2 class="text-4xl font-bold">Producto cerrado</h2>
         </header>
         <div class="block lg:flex gap-6">
           <aside
-            class="aspect-video lg:aspect-9/16 lg:min-h-full min-w-80 w-auto border border-gray-200 bg-gray-50 rounded-lg shadow-md"
+            class="aspect-video lg:aspect-9/16 lg:min-h-full min-w-80 w-auto border border-shori-gray-6 bg-shori-gray-2 rounded-lg shadow-md"
           ></aside>
           <ul class="flex-1 grid grid-cols-1 md:grid-cols-2 gap-6">
-            <li class="bg-white shadow-md p-6 rounded-lg border border-gray-200 aspect-video">
+            <li
+              class="bg-shori-gray-2 shadow-md p-6 rounded-lg border border-shori-gray-6 aspect-video"
+            >
               <router-link :to="{ name: 'products', query: { 'tipo-de-producto': 'booster-box' } }"
                 ><h3 class="text-xl font-bold">Booster Box</h3></router-link
               >
-              <p class="text-gray-400 mb-3">"Más cartas, más poder."</p>
+              <p class="text-shori-gray-11 mb-3">"Más cartas, más poder."</p>
               <div class="flex gap-3">
                 <router-link
                   :to="{
@@ -201,7 +205,7 @@ onMounted(async () => {
                   }"
                 >
                   <article
-                    class="flex flex-col gap-2 justify-center items-center cursor-pointer group hover:bg-gray-200 transition-colors p-3 rounded"
+                    class="flex flex-col gap-2 justify-center items-center cursor-pointer group hover:bg-shori-gray-3 transition-colors p-3 rounded"
                   >
                     <img
                       src="https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/products%2Fea757bf4ce3.jpg?alt=media&token=123bcd35-0982-4a37-b50c-0256a2ae1f2f"
@@ -219,7 +223,7 @@ onMounted(async () => {
                   }"
                 >
                   <article
-                    class="flex flex-col gap-2 justify-center items-center cursor-pointer group hover:bg-gray-200 transition-colors p-3 rounded"
+                    class="flex flex-col gap-2 justify-center items-center cursor-pointer group hover:bg-shori-gray-3 transition-colors p-3 rounded"
                   >
                     <img
                       src="https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/products%2F757bf4ce31b.jpg?alt=media&token=e388e1b3-cfb7-48d8-9db5-a133ebabeae6"
@@ -237,7 +241,7 @@ onMounted(async () => {
                   }"
                 >
                   <article
-                    class="flex flex-col gap-2 justify-center items-center cursor-pointer group hover:bg-gray-200 transition-colors p-3 rounded"
+                    class="flex flex-col gap-2 justify-center items-center cursor-pointer group hover:bg-shori-gray-3 transition-colors p-3 rounded"
                   >
                     <img
                       src="https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/products%2Ff4ce31bd9c7.jpg?alt=media&token=2266bb67-877d-49d8-bc3a-7f90225b7864"
