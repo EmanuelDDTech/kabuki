@@ -10,16 +10,17 @@
 
 body {
   font-family: 'Roboto Condensed Variable', sans-serif;
+  color: var(--gray-12);
 }
 
-:root,
+/* :root,
 :before,
 :after,
 * {
   --vf-primary: #16a34a;
 
   --vf-bg-passive: oklch(0.872 0.01 258.338);
-}
+} */
 
 :root,
 .light,
