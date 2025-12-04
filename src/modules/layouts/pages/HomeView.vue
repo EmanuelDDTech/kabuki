@@ -21,67 +21,67 @@ const routes = [
   {
     name: 'products',
     text: 'Phantasmal Flames',
-    img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Fphantasmal_flames.webp?alt=media&token=ab6257f9-2e15-45bf-8b57-0861a2d9d4f0',
+    img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Fphantasmal_flames-Photoroom.png?alt=media&token=ab6257f9-2e15-45bf-8b57-0861a2d9d4f0',
     query: { expansion: 'phantasmal-flames' },
   },
   {
     name: 'products',
     text: 'Mega Evolution',
-    img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Fmega-evolution.webp?alt=media&token=15852ead-ef0c-4314-b2d0-441ed9d0181a',
+    img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Fmega-evolution-Photoroom.png?alt=media&token=15852ead-ef0c-4314-b2d0-441ed9d0181a',
     query: { expansion: 'mega-evolution' },
   },
   {
     name: 'products',
     text: 'Black & White',
-    img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Fblack-%26-white.jpg?alt=media&token=e7b915df-bb61-454a-878f-f2902761eafd',
+    img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Fblack-%26-white-Photoroom.png?alt=media&token=e7b915df-bb61-454a-878f-f2902761eafd',
     query: { expansion: 'black-&-white' },
   },
   {
     name: 'products',
     text: 'Destined Rivals',
-    img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Fdestined-rivals.jpg?alt=media&token=766a6e58-db08-4477-930c-f9771b719993',
+    img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Fdestined-rivals-Photoroom.png?alt=media&token=766a6e58-db08-4477-930c-f9771b719993',
     query: { expansion: 'destined-rivals' },
   },
   {
     name: 'products',
     text: 'Journey Together',
-    img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Fjourney-together.jpg?alt=media&token=c13050fa-c86f-4f69-b434-c7a5bc5b5cfe',
+    img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Fjourney-together-Photoroom.png?alt=media&token=c13050fa-c86f-4f69-b434-c7a5bc5b5cfe',
     query: { expansion: 'journey-together' },
   },
   {
     name: 'products',
     text: 'Prismatic Evolutions',
-    img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Fprismatic.jpg?alt=media&token=0f6dfa57-e11c-44be-9788-14024d1047ac',
+    img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Fprismatic-Photoroom.png?alt=media&token=0f6dfa57-e11c-44be-9788-14024d1047ac',
     query: { expansion: 'prismatic-evolution' },
   },
   {
     name: 'products',
     text: 'Surgin Sparks',
-    img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Fsurgin_sparks.webp?alt=media&token=07ee7fe9-2e9d-4d20-9440-6b14d88e3ddc',
+    img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Fsurgin_sparks-Photoroom.png?alt=media&token=07ee7fe9-2e9d-4d20-9440-6b14d88e3ddc',
     query: { expansion: 'surgin-sparks' },
   },
   {
     name: 'products',
     text: 'Stellar Crown',
-    img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Fstellar_crown.webp?alt=media&token=9292a456-67b8-4391-ae85-d3278ccb7531',
+    img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Fstellar_crown-Photoroom.png?alt=media&token=9292a456-67b8-4391-ae85-d3278ccb7531',
     query: { expansion: 'stellar-crown' },
   },
   {
     name: 'products',
     text: 'Shrouded Fable',
-    img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Fshrouded_fable.webp?alt=media&token=04344873-eb4c-49aa-b040-ef31807628aa',
+    img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Fshrouded_fable-Photoroom.png?alt=media&token=04344873-eb4c-49aa-b040-ef31807628aa',
     query: { expansion: 'shrouded-fable' },
   },
   {
     name: 'products',
     text: 'Twilight Masquerade',
-    img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Ftwilight_masquerade.webp?alt=media&token=6ea2c443-b0ee-46f6-90ca-9edfd16058ec',
+    img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Ftwilight_masquerade-Photoroom.png?alt=media&token=6ea2c443-b0ee-46f6-90ca-9edfd16058ec',
     query: { expansion: 'twilight-masquerade' },
   },
   {
     name: 'products',
     text: 'Temporal Forces',
-    img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Ftemporal_forces.webp?alt=media&token=15830a31-4e19-40fa-8362-15dea4d2043f',
+    img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Ftemporal_forces-Photoroom.png?alt=media&token=15830a31-4e19-40fa-8362-15dea4d2043f',
     query: { expansion: 'temporal-forces' },
   },
   // {
@@ -185,7 +185,7 @@ onMounted(async () => {
           />
           <h2 class="text-4xl font-bold">Producto cerrado</h2>
         </header>
-        <div class="block lg:flex gap-6">
+        <div class="block lg:-Photoroom.png6">
           <!-- <aside
             class="aspect-video lg:aspect-9/16 lg:min-h-full min-w-80 w-auto border border-shori-gray-6 bg-shori-gray-2 rounded-lg shadow-md"
           ></aside> -->
