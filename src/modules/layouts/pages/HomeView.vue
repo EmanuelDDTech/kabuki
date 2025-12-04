@@ -186,9 +186,9 @@ onMounted(async () => {
           <h2 class="text-4xl font-bold">Producto cerrado</h2>
         </header>
         <div class="block lg:flex gap-6">
-          <aside
+          <!-- <aside
             class="aspect-video lg:aspect-9/16 lg:min-h-full min-w-80 w-auto border border-shori-gray-6 bg-shori-gray-2 rounded-lg shadow-md"
-          ></aside>
+          ></aside> -->
           <ul class="flex-1 grid grid-cols-1 md:grid-cols-2 gap-6">
             <li
               class="bg-shori-gray-2 shadow-md p-6 rounded-lg border border-shori-gray-6 aspect-video"
@@ -254,12 +254,14 @@ onMounted(async () => {
                 </router-link>
               </div>
             </li>
-            <li class="bg-white shadow-md p-6 rounded-lg border border-gray-200 aspect-video">
+            <li
+              class="bg-shori-gray-2 shadow-md p-6 rounded-lg border border-shori-gray-6 aspect-video"
+            >
               <router-link
                 :to="{ name: 'products', query: { 'tipo-de-producto': 'elite-trainer-box' } }"
                 ><h3 class="text-xl font-bold">Elite Trainer Box</h3></router-link
               >
-              <p class="text-gray-400 mb-3">"Todo lo que necesitas."</p>
+              <p class="text-shori-gray-11 mb-3">"Todo lo que necesitas."</p>
               <div class="flex gap-3">
                 <router-link
                   :to="{
@@ -271,7 +273,7 @@ onMounted(async () => {
                   }"
                 >
                   <article
-                    class="flex flex-col gap-2 justify-center items-center cursor-pointer group hover:bg-gray-200 transition-colors p-3 rounded"
+                    class="flex flex-col gap-2 justify-center items-center cursor-pointer group hover:bg-shori-gray-3 transition-colors p-3 rounded"
                   >
                     <img
                       src="https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/products%2F646c23fdf4f.jpg?alt=media&token=b47da676-d6d8-4181-8f7b-69ba80ac1d3f"
@@ -292,7 +294,7 @@ onMounted(async () => {
                   }"
                 >
                   <article
-                    class="flex flex-col gap-2 justify-center items-center cursor-pointer group hover:bg-gray-200 transition-colors p-3 rounded"
+                    class="flex flex-col gap-2 justify-center items-center cursor-pointer group hover:bg-shori-gray-3 transition-colors p-3 rounded"
                   >
                     <img
                       src="https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/products%2Fb9e0631da62.jpg?alt=media&token=d8b90f91-502c-490c-91d0-97be3ba2baa2"
@@ -310,7 +312,7 @@ onMounted(async () => {
                   }"
                 >
                   <article
-                    class="flex flex-col gap-2 justify-center items-center cursor-pointer group hover:bg-gray-200 transition-colors p-3 rounded"
+                    class="flex flex-col gap-2 justify-center items-center cursor-pointer group hover:bg-shori-gray-3 transition-colors p-3 rounded"
                   >
                     <img
                       src="https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/products%2Ffdf4ffb9e06.jpg?alt=media&token=ce69a2a1-9f2d-4a40-a027-e4f3f378d6d2"
@@ -323,12 +325,14 @@ onMounted(async () => {
                 </router-link>
               </div>
             </li>
-            <li class="bg-white shadow-md p-6 rounded-lg border border-gray-200 aspect-video">
+            <li
+              class="bg-shori-gray-2 shadow-md p-6 rounded-lg border border-shori-gray-6 aspect-video"
+            >
               <router-link
                 :to="{ name: 'products', query: { 'tipo-de-producto': 'premium-collection' } }"
                 ><h3 class="text-xl font-bold">Premium Collection</h3></router-link
               >
-              <p class="text-gray-400 mb-3">"Exclusividad garantizada."</p>
+              <p class="text-shori-gray-11 mb-3">"Exclusividad garantizada."</p>
               <div class="flex gap-3">
                 <router-link
                   :to="{
@@ -340,7 +344,7 @@ onMounted(async () => {
                   }"
                 >
                   <article
-                    class="flex flex-col gap-2 justify-center items-center cursor-pointer group hover:bg-gray-200 transition-colors p-3 rounded"
+                    class="flex flex-col gap-2 justify-center items-center cursor-pointer group hover:bg-shori-gray-3 transition-colors p-3 rounded"
                   >
                     <img
                       src="https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/products%2F3519f1a27bc.jpg?alt=media&token=0b53965c-bb56-40cc-8c1d-170b98ee8ecd"
@@ -361,7 +365,7 @@ onMounted(async () => {
                   }"
                 >
                   <article
-                    class="flex flex-col gap-2 justify-center items-center cursor-pointer group hover:bg-gray-200 transition-colors p-3 rounded"
+                    class="flex flex-col gap-2 justify-center items-center cursor-pointer group hover:bg-shori-gray-3 transition-colors p-3 rounded"
                   >
                     <img
                       src="https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/products%2F1ad33519f1a.jpg?alt=media&token=70c00a70-facc-4d2b-be1d-5f0f210f8229"
@@ -374,12 +378,14 @@ onMounted(async () => {
                 </router-link>
               </div>
             </li>
-            <li class="bg-white shadow-md p-6 rounded-lg border border-gray-200 aspect-video">
+            <li
+              class="bg-shori-gray-2 shadow-md p-6 rounded-lg border border-shori-gray-6 aspect-video"
+            >
               <router-link
                 :to="{ name: 'products', query: { 'tipo-de-producto': 'producto-cerrado' } }"
                 ><h3 class="text-xl font-bold">Booster Bundle</h3></router-link
               >
-              <p class="text-gray-400 mb-3">"Ediciones únicas."</p>
+              <p class="text-shori-gray-11 mb-3">"Ediciones únicas."</p>
               <div class="flex gap-3">
                 <router-link
                   :to="{
@@ -391,7 +397,7 @@ onMounted(async () => {
                   }"
                 >
                   <article
-                    class="flex flex-col gap-2 justify-center items-center cursor-pointer group hover:bg-gray-200 transition-colors p-3 rounded"
+                    class="flex flex-col gap-2 justify-center items-center cursor-pointer group hover:bg-shori-gray-3 transition-colors p-3 rounded"
                   >
                     <img
                       src="https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/products%2F0b0f9033605.jpg?alt=media&token=614cdc69-3461-4060-ac8a-793adf23753b"
@@ -412,7 +418,7 @@ onMounted(async () => {
                   }"
                 >
                   <article
-                    class="flex flex-col gap-2 justify-center items-center cursor-pointer group hover:bg-gray-200 transition-colors p-3 rounded"
+                    class="flex flex-col gap-2 justify-center items-center cursor-pointer group hover:bg-shori-gray-3 transition-colors p-3 rounded"
                   >
                     <img
                       src="https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/products%2F0f903360534.jpg?alt=media&token=d74cff2a-cb04-4a97-b6b1-eec6eaa066ae"
@@ -433,7 +439,7 @@ onMounted(async () => {
                   }"
                 >
                   <article
-                    class="flex flex-col gap-2 justify-center items-center cursor-pointer group hover:bg-gray-200 transition-colors p-3 rounded"
+                    class="flex flex-col gap-2 justify-center items-center cursor-pointer group hover:bg-shori-gray-3 transition-colors p-3 rounded"
                   >
                     <img
                       src="https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/products%2F3360534c646.jpg?alt=media&token=de52f95b-ff72-47b0-bf8b-ed77bcfdb34e"
