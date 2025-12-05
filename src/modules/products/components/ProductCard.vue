@@ -1,10 +1,10 @@
 <template>
   <article
-    class="flex flex-col relative max-w-72 min-w-56 h-full bg-shori-gray-2 shadow-md rounded-2xl p-2 cursor-pointer border border-shori-gray-6"
+    class="flex flex-col relative max-w-72 min-w-56 h-full bg-shori-gray-2 shadow-md rounded-xl cursor-pointer border border-shori-gray-6 overflow-hidden"
     @click="router.push({ name: 'product', params: { id: product ? product.id : 12345 } })"
   >
     <div
-      class="aspect-[4/3] overflow-x-hidden rounded-2xl relative flex items-center justify-center"
+      class="aspect-[4/3] bg-shori-gray-contrast rounded-b-2xl overflow-x-hidden relative flex items-center justify-center"
     >
       <img
         v-if="product.url"
@@ -20,33 +20,8 @@
         loading="lazy"
         :alt="`Imagen ${product.name}`"
       />
-      <p
-        v-if="cartAvailable"
-        @click.stop="addItem(product)"
-        class="absolute right-2 top-2 rounded-full p-2 cursor-pointer group"
-        :class="
-          cart.isItemInCart(product ? product.id : defaultProduct.id)
-            ? 'text-white bg-yellow-400'
-            : 'text-shori-gray-12 bg-shori-gray-4'
-        "
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="h-6 aspect-square group-hover:opacity-70"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="1.5"
-            d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
-          />
-        </svg>
-      </p>
     </div>
-    <div class="flex-1 flex flex-col mt-4 pl-2 mb-2 justify-between">
+    <div class="flex-1 flex flex-col bg-shori-gray-2 rounded-t-2xl p-2 justify-between">
       <p class="font-normal text-shori-gray-12 mb-5 flex-1">
         {{ product ? product.name : 'League Battle Deck -Charizard ex- PREVENTA' }}
       </p>
@@ -57,13 +32,6 @@
       </div>
 
       <div class="flex flex-col items-start relative">
-        <!-- <p class="text-xl text-black font-bold mt-0">
-          {{ product.discount ? formatCurrency(product.discount) : formatCurrency(product.price) }}
-        </p>
-        <p v-if="product.discount" class="text-base text-gray-500 line-through font-normal mt-0">
-          {{ formatCurrency(product.price) }}
-        </p> -->
-
         <p class="text-xl text-shori-gray-12 font-bold mt-0">
           {{ formatCurrency(product.discount ? product.discount : product.price) }}
         </p>
@@ -79,6 +47,15 @@
         >
           <WishlistIcon class="h-6 aspect-square text-gray-500 group-hover:opacity-70" />
         </div> -->
+
+        <button
+          @click.stop="addItem(product)"
+          class="text-shori-gray-contrast bg-shori-green-9 rounded w-full py-1 px-2 mt-3 mb-1 flex justify-center gap-3"
+        >
+          Agregar al carrito
+
+          <CartIcon width="24" height="24" />
+        </button>
       </div>
     </div>
   </article>
@@ -91,6 +68,7 @@ import { formatCurrency } from '@/helpers';
 import { useCartStore } from '@/modules/cart/stores/cart';
 import { inject } from 'vue';
 import type { Product } from '@/modules/product/interfaces/product.interface';
+import CartIcon from '@/modules/cart/components/CartIcon.vue';
 
 const cart = useCartStore();
 
