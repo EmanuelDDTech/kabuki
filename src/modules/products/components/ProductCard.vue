@@ -41,22 +41,13 @@
         >
           {{ formatCurrency(product.price) }}
         </p>
-        <!-- <div
-          v-if="cartAvailable"
-          class="group cursor-pointer bg-gray-100 p-2 rounded-full absolute right-2 bottom-0"
-        >
-          <WishlistIcon class="h-6 aspect-square text-gray-500 group-hover:opacity-70" />
-        </div> -->
-
-        <button
-          v-ripple
+        <GeneralButton
+          class="mt-3"
+          text="Agregar  al carrito"
+          :icon="CartIcon"
+          width="full"
           @click.stop="addItem(product)"
-          class="text-shori-gray-contrast bg-shori-green-9 rounded w-full py-1 px-2 mt-3 mb-1 flex justify-center gap-3 hover:bg-shori-green-10 transition-all duration-300 active:scale-95"
-        >
-          Agregar al carrito
-
-          <CartIcon width="24" height="24" />
-        </button>
+        />
       </div>
     </div>
   </article>
@@ -70,6 +61,7 @@ import { useCartStore } from '@/modules/cart/stores/cart';
 import { inject } from 'vue';
 import type { Product } from '@/modules/product/interfaces/product.interface';
 import CartIcon from '@/modules/cart/components/CartIcon.vue';
+import GeneralButton from '@/modules/common/components/GeneralButton.vue';
 
 const cart = useCartStore();
 
@@ -84,11 +76,11 @@ const props = withDefaults(defineProps<Props>(), {
   cartAvailable: true,
 });
 
-const defaultProduct = {
-  url: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/products%2F04da6c7dd79.jpg?alt=media&token=a77642f5-7194-4256-b4cd-bc6dfef5b897',
-  id: 1,
-  price: 100,
-};
+// const defaultProduct = {
+//   url: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/products%2F04da6c7dd79.jpg?alt=media&token=a77642f5-7194-4256-b4cd-bc6dfef5b897',
+//   id: 1,
+//   price: 100,
+// };
 
 const router = useRouter();
 
