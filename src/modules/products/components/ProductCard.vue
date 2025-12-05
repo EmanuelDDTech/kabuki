@@ -49,8 +49,9 @@
         </div> -->
 
         <button
+          v-ripple
           @click.stop="addItem(product)"
-          class="text-shori-gray-contrast bg-shori-green-9 rounded w-full py-1 px-2 mt-3 mb-1 flex justify-center gap-3"
+          class="text-shori-gray-contrast bg-shori-green-9 rounded w-full py-1 px-2 mt-3 mb-1 flex justify-center gap-3 hover:bg-shori-green-10 transition-all duration-300 active:scale-95"
         >
           Agregar al carrito
 
