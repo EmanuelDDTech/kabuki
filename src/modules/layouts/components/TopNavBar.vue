@@ -14,7 +14,9 @@
       <SocialsLinks class="hidden lg:flex" />
 
       <nav class="text-base hidden lg:flex">
-        <ButtonLink v-if="user.isAdmin" :to="'admin'" :text="'Ir al admin'" :icon="DashboardIcon" />
+        <RouterLink v-if="user.isAdmin" :to="{ name: 'admin' }">
+          <GeneralButton class="mr-3 ml-5" :text="'Ir al admin'" :icon="DashboardIcon" />
+        </RouterLink>
         <div class="flex gap-3 border-r-2 border-shori-gray-7 text-shori-gray-11 relative">
           <!-- <RouterLink
             :to="{ name: 'home' }"
@@ -102,6 +104,7 @@ import { useCartStore } from '@/modules/cart/stores/cart';
 import ButtonLink from '@/modules/common/components/ButtonLink.vue';
 import DashboardIcon from '@/modules/common/icons/DashboardIcon.vue';
 import SocialsLinks from './SocialsLinks.vue';
+import GeneralButton from '@/modules/common/components/GeneralButton.vue';
 
 const user = useUserStore();
 const cartStore = useCartStore();
