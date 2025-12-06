@@ -25,9 +25,9 @@ withDefaults(defineProps<ButtonProps>(), {
     :class="[
       type === 'primary' ? 'bg-shori-green-9 hover:bg-shori-green-10 text-white' : '',
       type === 'secondary'
-        ? 'border border-shori-green-9 hover:border-shori-green-10 hover:bg-green-50 text-shori-green-9'
+        ? 'border border-shori-green-6 hover:border-shori-green-10 hover:bg-green-3 text-shori-green-12'
         : '',
-      type === 'tertiary' ? 'text-shori-green-9 underline hover:text-shori-green-10' : '',
+      type === 'tertiary' ? 'text-shori-green-12 underline hover:text-shori-green-10' : '',
       status === 'disabled' ? 'opacity-50 cursor-not-allowed' : '',
       size === 'small' ? 'text-xs px-3 py-1.5' : '',
       size === 'medium' ? 'text-sm px-4 py-2' : '',
