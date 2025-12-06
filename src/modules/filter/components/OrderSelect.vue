@@ -36,7 +36,7 @@ defineEmits<{
     ]"
     :value="order"
     @input="$emit('update:order', { ...$event! })"
-    label-class="text-base mb-0 font-bold !text-black"
+    label-class="text-base mb-0 font-bold !text-shori-gray-12"
     input-class="text-sm w-full"
   />
 </template>
