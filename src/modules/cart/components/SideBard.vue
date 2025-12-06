@@ -77,7 +77,7 @@ const applyDiscountCode = async () => {
         v-if="cart.isEmpty"
         class="w-full max-w-96 lg:w-72 shadow-md border border-shori-gray-6 p-4 rounded-lg sticky top-3 mx-auto"
       >
-        <h3 class="text-lg flex justify-between text-slate-700">
+        <h3 class="text-lg flex justify-between text-shori-gray-11">
           Aún no has agregado ningún producto al carrito
         </h3>
 

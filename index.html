@@ -27,6 +27,14 @@
   </head>
   <body class="bg-shori-bg">
     <div id="app"></div>
+    <script>
+      const theme = localStorage.getItem('theme');
+      if (theme === 'dark') {
+        document.documentElement.classList.add('dark', 'dark-theme');
+      } else {
+        document.documentElement.classList.add('light', 'light-theme');
+      }
+    </script>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>
