@@ -61,7 +61,7 @@ const applyDiscountCode = async () => {
       message: 'Código de descuento aplicado',
       type: 'success',
     });
-  } catch (error) {
+  } catch (error: any) {
     toast.open({
       message: error.response.data.msg,
       type: 'error',
@@ -75,7 +75,7 @@ const applyDiscountCode = async () => {
     <aside class="h-full mt-6 lg:mt-0">
       <div
         v-if="cart.isEmpty"
-        class="w-full max-w-96 lg:w-72 shadow-md border border-gray-100 p-4 rounded-lg sticky top-3 mx-auto"
+        class="w-full max-w-96 lg:w-72 shadow-md border border-shori-gray-6 p-4 rounded-lg sticky top-3 mx-auto"
       >
         <h3 class="text-lg flex justify-between text-slate-700">
           Aún no has agregado ningún producto al carrito
@@ -90,11 +90,11 @@ const applyDiscountCode = async () => {
       </div>
       <div
         v-if="!cart.isEmpty"
-        class="w-full max-w-96 lg:w-72 shadow-md border border-gray-100 p-4 rounded-lg sticky top-3 mx-auto"
+        class="w-full max-w-96 lg:w-72 shadow-md border border-shori-gray-6 p-4 rounded-lg sticky top-3 mx-auto"
       >
-        <div class="bg-white w-full mb-6">
+        <div class="w-full mb-6">
           <!-- Campo de código de descuento -->
-          <label for="discount-code" class="block text-sm font-medium text-gray-700"
+          <label for="discount-code" class="block text-sm font-medium text-shori-gray-11"
             >Código de descuento</label
           >
 
@@ -103,11 +103,11 @@ const applyDiscountCode = async () => {
               type="text"
               id="discount-code"
               placeholder="Ingresa tu código"
-              class="w-full p-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
+              class="w-full p-2 border border-shori-gray-6 rounded-l-md focus:outline-none focus:ring-2 focus:ring-shori-green-6 focus:border-shori-green-6 bg-shori-gray-2 placeholder-shori-gray-11"
               :disabled="discountCodeStore.isDiscountCodeSelected"
             />
             <button
-              class="px-4 bg-green-500 text-black font-semibold rounded-r-md hover:bg-green-600 transition-colors"
+              class="px-4 bg-shori-green-9 text-black font-semibold rounded-r-md hover:bg-shori-green-10 transition-colors"
               @click="applyDiscountCode"
               :disabled="discountCodeStore.isDiscountCodeSelected"
             >
@@ -122,14 +122,14 @@ const applyDiscountCode = async () => {
 
         <h3
           v-if="delivery.isCarrierSelected"
-          class="text-lg flex justify-between mt-2 pb-3 border-b-2 border-gray-100"
+          class="text-lg flex justify-between mt-2 pb-3 border-b-2 border-shori-gray-6"
         >
           Envío: <span class="font-bold">{{ formatCurrency(delivery.amountShipping) }}</span>
         </h3>
 
         <h3
           v-if="discountCodeStore.isDiscountCodeSelected"
-          class="text-base tracking-tight flex justify-between items-center mt-2 pb-3 border-b-2 border-gray-100"
+          class="text-base tracking-tight flex justify-between items-center mt-2 pb-3 border-b-2 border-shori-gray-6"
         >
           {{ discountCodeStore.selectedDiscountCode?.code }}:
           <span class="font-bold text-lg">- {{ formatCurrency(cart.discountAmount) }}</span>
@@ -143,7 +143,7 @@ const applyDiscountCode = async () => {
         <button
           v-show="!cart.payNow && userStore.isSet"
           @click="checkout()"
-          class="block text-center w-full rounded-full bg-yellow-300 hover:bg-yellow-400 py-1 mt-3 text-sm transition-colors"
+          class="block text-center text-black w-full rounded-full bg-yellow-300 hover:bg-yellow-400 py-1 mt-3 text-sm transition-colors"
         >
           Proceder al pago
         </button>
@@ -151,7 +151,7 @@ const applyDiscountCode = async () => {
         <router-link
           v-show="!cart.payNow && !userStore.isSet"
           :to="{ name: 'login' }"
-          class="block text-center w-full rounded-full bg-yellow-300 hover:bg-yellow-400 py-1 mt-3 text-sm transition-colors"
+          class="block text-center text-black w-full rounded-full bg-yellow-300 hover:bg-yellow-400 py-1 mt-3 text-sm transition-colors"
         >
           Inicia sesión para pagar
         </router-link>
