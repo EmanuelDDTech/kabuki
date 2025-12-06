@@ -16,6 +16,7 @@ import { formatCurrency } from '@/helpers';
 import { useCartStore } from '@/modules/cart/stores/cart';
 import GeneralButton from '@/modules/common/components/GeneralButton.vue';
 import CartIcon from '@/modules/cart/components/CartIcon.vue';
+import type { Product } from '@/modules/product/interfaces/product.interface';
 
 const thumbsSwiper = ref<SwiperClass | null>(null);
 
@@ -30,7 +31,7 @@ const cart = useCartStore();
 
 const route = useRoute();
 
-const toast = inject('toast');
+const toast: any = inject('toast');
 
 useSeoMeta({
   title: () => product.name || 'Cargando... ',
@@ -57,7 +58,7 @@ onUnmounted(() => {
   product.cleanProduct();
 });
 
-const addItem = async (item) => {
+const addItem = async (item: Product) => {
   try {
     await cart.addItem(item);
     toast.open({
