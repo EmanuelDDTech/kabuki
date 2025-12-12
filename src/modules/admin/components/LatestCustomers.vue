@@ -10,18 +10,18 @@ defineProps<Props>();
 </script>
 <template>
   <div class="grid grid-cols-1 2xl:grid-cols-2 xl:gap-4 my-4">
-    <div class="bg-white shadow rounded-lg mb-4 p-4 sm:p-6 h-full">
+    <div class="bg-shori-gray-1 shadow rounded-lg mb-4 p-4 sm:p-6 h-full">
       <div class="flex items-center justify-between mb-4">
-        <h3 class="text-xl font-bold leading-none text-gray-900">Usuarios Registrados</h3>
+        <h3 class="text-xl font-bold leading-none text-shori-gray-12">Usuarios Registrados</h3>
         <router-link
           :to="{ name: 'adminUsers' }"
-          class="text-sm font-medium text-cyan-600 hover:bg-gray-100 rounded-lg inline-flex items-center p-2"
+          class="text-sm font-medium text-cyan-600 hover:bg-shori-gray-3 rounded-lg inline-flex items-center p-2"
         >
           View all
         </router-link>
       </div>
       <div class="flow-root">
-        <ul role="list" class="divide-y divide-gray-200">
+        <ul role="list" class="divide-y divide-shori-gray-6">
           <li class="py-3 sm:py-4" v-for="user in users" :key="user.id">
             <div class="flex items-center space-x-4">
               <div class="flex-shrink-0">
@@ -32,8 +32,8 @@ defineProps<Props>();
                 />
               </div>
               <div class="flex-1 min-w-0">
-                <p class="text-sm font-medium text-gray-900 truncate">{{ user.name }}</p>
-                <p class="text-sm text-gray-500 truncate">
+                <p class="text-sm font-medium text-shori-gray-12 truncate">{{ user.name }}</p>
+                <p class="text-sm text-shori-gray-11 truncate">
                   <a
                     href="/cdn-cgi/l/email-protection"
                     class="__cf_email__"
@@ -43,11 +43,11 @@ defineProps<Props>();
                 </p>
               </div>
               <div
-                class="inline-flex justify-center items-center text-base font-semibold text-gray-900"
+                class="inline-flex justify-center items-center text-base font-semibold text-shori-gray-12"
               >
                 <RouterLink :to="{ name: 'adminUser', params: { userId: user.id } }">
                   <InfoIcon
-                    class="h-8 w-8 p-1 rounded-full hover:bg-gray-100 hover:text-blue-600"
+                    class="h-8 w-8 p-1 rounded-full hover:bg-shori-gray-3 hover:text-blue-600"
                   />
                 </RouterLink>
               </div>
@@ -152,36 +152,36 @@ defineProps<Props>();
         </ul>
       </div>
     </div>
-    <div class="bg-white shadow rounded-lg p-4 sm:p-6 xl:p-8">
-      <h3 class="text-xl leading-none font-bold text-gray-900 mb-10">Acquisition Overview</h3>
+    <div class="bg-shori-gray-1 shadow rounded-lg p-4 sm:p-6 xl:p-8">
+      <h3 class="text-xl leading-none font-bold text-shori-gray-12 mb-10">Acquisition Overview</h3>
       <div class="block w-full overflow-x-auto">
         <table class="items-center w-full bg-transparent border-collapse">
           <thead>
-            <tr>
+            <tr class="bg-shori-gray-2">
               <th
-                class="px-4 bg-gray-50 text-gray-700 align-middle py-3 text-xs font-semibold text-left uppercase border-l-0 border-r-0 whitespace-nowrap"
+                class="px-4 text-shori-gray-11 align-middle py-3 text-xs font-semibold text-left uppercase border-l-0 border-r-0 whitespace-nowrap"
               >
                 Top Channels
               </th>
               <th
-                class="px-4 bg-gray-50 text-gray-700 align-middle py-3 text-xs font-semibold text-left uppercase border-l-0 border-r-0 whitespace-nowrap"
+                class="px-4 text-shori-gray-11 align-middle py-3 text-xs font-semibold text-left uppercase border-l-0 border-r-0 whitespace-nowrap"
               >
                 Users
               </th>
               <th
-                class="px-4 bg-gray-50 text-gray-700 align-middle py-3 text-xs font-semibold text-left uppercase border-l-0 border-r-0 whitespace-nowrap min-w-140-px"
+                class="px-4 text-shori-gray-11 align-middle py-3 text-xs font-semibold text-left uppercase border-l-0 border-r-0 whitespace-nowrap min-w-140-px"
               ></th>
             </tr>
           </thead>
-          <tbody class="divide-y divide-gray-100">
-            <tr class="text-gray-500">
+          <tbody class="divide-y divide-shori-gray-6">
+            <tr class="text-shori-gray-11">
               <th
                 class="border-t-0 px-4 align-middle text-sm font-normal whitespace-nowrap p-4 text-left"
               >
                 Organic Search
               </th>
               <td
-                class="border-t-0 px-4 align-middle text-xs font-medium text-gray-900 whitespace-nowrap p-4"
+                class="border-t-0 px-4 align-middle text-xs font-medium text-shori-gray-12 whitespace-nowrap p-4"
               >
                 5,649
               </td>
@@ -189,21 +189,21 @@ defineProps<Props>();
                 <div class="flex items-center">
                   <span class="mr-2 text-xs font-medium">30%</span>
                   <div class="relative w-full">
-                    <div class="w-full bg-gray-200 rounded-sm h-2">
+                    <div class="w-full bg-shori-gray-3 rounded-sm h-2">
                       <div class="bg-cyan-600 h-2 rounded-sm" style="width: 30%"></div>
                     </div>
                   </div>
                 </div>
               </td>
             </tr>
-            <tr class="text-gray-500">
+            <tr class="text-shori-gray-11">
               <th
                 class="border-t-0 px-4 align-middle text-sm font-normal whitespace-nowrap p-4 text-left"
               >
                 Referral
               </th>
               <td
-                class="border-t-0 px-4 align-middle text-xs font-medium text-gray-900 whitespace-nowrap p-4"
+                class="border-t-0 px-4 align-middle text-xs font-medium text-shori-gray-12 whitespace-nowrap p-4"
               >
                 4,025
               </td>
@@ -211,21 +211,21 @@ defineProps<Props>();
                 <div class="flex items-center">
                   <span class="mr-2 text-xs font-medium">24%</span>
                   <div class="relative w-full">
-                    <div class="w-full bg-gray-200 rounded-sm h-2">
+                    <div class="w-full bg-shori-gray-3 rounded-sm h-2">
                       <div class="bg-orange-300 h-2 rounded-sm" style="width: 24%"></div>
                     </div>
                   </div>
                 </div>
               </td>
             </tr>
-            <tr class="text-gray-500">
+            <tr class="text-shori-gray-11">
               <th
                 class="border-t-0 px-4 align-middle text-sm font-normal whitespace-nowrap p-4 text-left"
               >
                 Direct
               </th>
               <td
-                class="border-t-0 px-4 align-middle text-xs font-medium text-gray-900 whitespace-nowrap p-4"
+                class="border-t-0 px-4 align-middle text-xs font-medium text-shori-gray-12 whitespace-nowrap p-4"
               >
                 3,105
               </td>
@@ -233,21 +233,21 @@ defineProps<Props>();
                 <div class="flex items-center">
                   <span class="mr-2 text-xs font-medium">18%</span>
                   <div class="relative w-full">
-                    <div class="w-full bg-gray-200 rounded-sm h-2">
+                    <div class="w-full bg-shori-gray-3 rounded-sm h-2">
                       <div class="bg-teal-400 h-2 rounded-sm" style="width: 18%"></div>
                     </div>
                   </div>
                 </div>
               </td>
             </tr>
-            <tr class="text-gray-500">
+            <tr class="text-shori-gray-11">
               <th
                 class="border-t-0 px-4 align-middle text-sm font-normal whitespace-nowrap p-4 text-left"
               >
                 Social
               </th>
               <td
-                class="border-t-0 px-4 align-middle text-xs font-medium text-gray-900 whitespace-nowrap p-4"
+                class="border-t-0 px-4 align-middle text-xs font-medium text-shori-gray-12 whitespace-nowrap p-4"
               >
                 1251
               </td>
@@ -255,21 +255,21 @@ defineProps<Props>();
                 <div class="flex items-center">
                   <span class="mr-2 text-xs font-medium">12%</span>
                   <div class="relative w-full">
-                    <div class="w-full bg-gray-200 rounded-sm h-2">
+                    <div class="w-full bg-shori-gray-3 rounded-sm h-2">
                       <div class="bg-pink-600 h-2 rounded-sm" style="width: 12%"></div>
                     </div>
                   </div>
                 </div>
               </td>
             </tr>
-            <tr class="text-gray-500">
+            <tr class="text-shori-gray-11">
               <th
                 class="border-t-0 px-4 align-middle text-sm font-normal whitespace-nowrap p-4 text-left"
               >
                 Other
               </th>
               <td
-                class="border-t-0 px-4 align-middle text-xs font-medium text-gray-900 whitespace-nowrap p-4"
+                class="border-t-0 px-4 align-middle text-xs font-medium text-shori-gray-12 whitespace-nowrap p-4"
               >
                 734
               </td>
@@ -277,21 +277,21 @@ defineProps<Props>();
                 <div class="flex items-center">
                   <span class="mr-2 text-xs font-medium">9%</span>
                   <div class="relative w-full">
-                    <div class="w-full bg-gray-200 rounded-sm h-2">
+                    <div class="w-full bg-shori-gray-3 rounded-sm h-2">
                       <div class="bg-indigo-600 h-2 rounded-sm" style="width: 9%"></div>
                     </div>
                   </div>
                 </div>
               </td>
             </tr>
-            <tr class="text-gray-500">
+            <tr class="text-shori-gray-11">
               <th
                 class="border-t-0 align-middle text-sm font-normal whitespace-nowrap p-4 pb-0 text-left"
               >
                 Email
               </th>
               <td
-                class="border-t-0 align-middle text-xs font-medium text-gray-900 whitespace-nowrap p-4 pb-0"
+                class="border-t-0 align-middle text-xs font-medium text-shori-gray-12 whitespace-nowrap p-4 pb-0"
               >
                 456
               </td>
@@ -299,7 +299,7 @@ defineProps<Props>();
                 <div class="flex items-center">
                   <span class="mr-2 text-xs font-medium">7%</span>
                   <div class="relative w-full">
-                    <div class="w-full bg-gray-200 rounded-sm h-2">
+                    <div class="w-full bg-shori-gray-3 rounded-sm h-2">
                       <div class="bg-purple-500 h-2 rounded-sm" style="width: 7%"></div>
                     </div>
                   </div>
