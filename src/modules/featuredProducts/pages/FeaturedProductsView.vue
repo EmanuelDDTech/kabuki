@@ -39,7 +39,7 @@ const addProduct = async (product: Product) => {
       message: 'Producto destacado añadido correctamente',
       type: 'success',
     });
-  } catch (error) {
+  } catch (error: any) {
     toast.open({
       message: error.response.data.msg,
       type: 'error',
@@ -57,6 +57,8 @@ const deleteFeaturedProductConfirmation = async (id: number) => {
     cancelButtonColor: '#d33',
     confirmButtonText: 'Si, Eliminar!',
     cancelButtonText: 'Cancelar',
+    background: 'var(--gray-2)',
+    color: 'var(--gray-12)',
   }).then((result) => {
     if (result.isConfirmed) {
       deleteFeaturedProduct(id);
@@ -72,7 +74,7 @@ const deleteFeaturedProduct = async (id: number) => {
       message: 'Producto destacado eliminado correctamente',
       type: 'success',
     });
-  } catch (error) {
+  } catch (error: any) {
     toast.open({
       message: error.response.data.msg,
       type: 'error',
@@ -88,7 +90,7 @@ const saveSortedFeaturedProducts = async (e) => {
 </script>
 
 <template>
-  <main class="mt-6 mx-4 p-4 sm:p-6 xl:p-8 bg-white shadow rounded-lg">
+  <main class="mt-6 mx-4 p-4 sm:p-6 xl:p-8 bg-shori-gray-1 shadow rounded-lg">
     <h1 class="text-2xl font-semibold mb-6">Administrar productos destacados</h1>
 
     <AdminSearchBar @add-product="addProduct" />
@@ -97,7 +99,7 @@ const saveSortedFeaturedProducts = async (e) => {
       <article
         v-for="featuredProduct in featuredProductStore.featuredProducts"
         :key="featuredProduct.id"
-        class="relative draggable-item border-solid flex-1 flex aspect-square text-gray-300 justify-center items-center cursor-default"
+        class="relative draggable-item border-solid flex-1 flex aspect-square text-shori-gray-11 justify-center items-center cursor-default"
       >
         <ProductCard :product="featuredProduct.product" :cart-available="false" />
         <DeleteIcon

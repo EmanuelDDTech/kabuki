@@ -1,32 +1,32 @@
 <template>
   <aside class="w-56 h-screen" aria-label="Sidebar">
     <div
-      class="px-4 py-4 h-full overflow-y-auto rounded-lg bg-white shadow-lg border border-gray-100"
+      class="px-4 py-4 h-full overflow-y-auto rounded-lg bg-shori-gray-2 shadow-lg border border-shori-gray-6"
     >
       <ul class="h-full gap-2 flex flex-col justify-start">
         <li class="flex items-center justify-end">
           <XMarkIcon
             @click="$emit('hideMenu')"
-            class="w-7 mr-3 aspect-square text-gray-400 hover:bg-gray-100 rounded-lg"
+            class="w-7 mr-3 aspect-square text-shori-gray-11 hover:bg-shori-gray-3 rounded-lg cursor-pointer"
           />
         </li>
         <li>
           <router-link
             :to="{ name: 'cart' }"
-            class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg hover:bg-gray-100"
-            :class="router.name === 'cart' ? 'bg-gray-100' : ''"
+            class="flex items-center p-2 text-base font-normal text-shori-gray-12 rounded-lg hover:bg-shori-gray-3"
+            :class="router.name === 'cart' ? 'bg-shori-gray-3' : ''"
           >
-            <CartIcon class="w-6 h-6 transition duration-75 group-hover:text-gray-900" />
+            <CartIcon class="w-6 h-6 transition duration-75 group-hover:text-shori-gray-12" />
             <span class="ml-3">Carrito</span>
           </router-link>
         </li>
         <li>
           <router-link
             :to="{ name: 'myPurchases' }"
-            class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg hover:bg-gray-100"
+            class="flex items-center p-2 text-base font-normal text-shori-gray-12 rounded-lg hover:bg-shori-gray-3"
           >
             <PurchasesIcon
-              class="flex-shrink-0 w-6 h-6 transition duration-75 group-hover:text-gray-900"
+              class="flex-shrink-0 w-6 h-6 transition duration-75 group-hover:text-shori-gray-12"
             />
             <span class="flex-1 ml-3 whitespace-nowrap">Mis compras</span>
             <!-- <span
@@ -39,10 +39,10 @@
           <a
             href="#"
             target="_blank"
-            class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg hover:bg-gray-100"
+            class="flex items-center p-2 text-base font-normal text-shori-gray-12 rounded-lg hover:bg-shori-gray-3"
           >
             <svg
-              class="flex-shrink-0 w-6 h-6 text-gray-400 transition duration-75 group-hover:text-gray-900"
+              class="flex-shrink-0 w-6 h-6 text-gray-400 transition duration-75 group-hover:text-shori-gray-12"
               fill="currentColor"
               viewBox="0 0 20 20"
               xmlns="http://www.w3.org/2000/svg"
@@ -60,11 +60,11 @@
         <li>
           <router-link
             :to="{ name: 'products' }"
-            class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg hover:bg-gray-100"
-            :class="router.name === 'products' ? 'bg-gray-100' : ''"
+            class="flex items-center p-2 text-base font-normal text-shori-gray-12 rounded-lg hover:bg-shori-gray-3"
+            :class="router.name === 'products' ? 'bg-shori-gray-3' : ''"
           >
             <ProductIcon
-              class="flex-shrink-0 w-6 h-6 transition duration-75 group-hover:text-gray-900"
+              class="flex-shrink-0 w-6 h-6 transition duration-75 group-hover:text-shori-gray-12"
             />
             <span class="flex-1 ml-3 whitespace-nowrap">Productos</span>
           </router-link>
@@ -73,10 +73,10 @@
         <li v-if="user.isSet">
           <router-link
             :to="{ name: 'myPurchases' }"
-            class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg hover:bg-gray-100"
+            class="flex items-center p-2 text-base font-normal text-shori-gray-12 rounded-lg hover:bg-shori-gray-3"
           >
             <ProfileIcon
-              class="flex-shrink-0 w-6 h-6 transition duration-75 group-hover:text-gray-900"
+              class="flex-shrink-0 w-6 h-6 transition duration-75 group-hover:text-shori-gray-12"
             />
             <span class="flex-1 ml-3 whitespace-nowrap">{{ user.getUserName }}</span>
           </router-link>
@@ -106,12 +106,12 @@
           <div v-if="user.isSet" class="mb-4">
             <button
               @click="user.logout"
-              class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg hover:bg-gray-100"
+              class="flex w-full justify-start items-center p-2 text-base font-normal text-shori-gray-12 rounded-lg hover:bg-shori-gray-3"
             >
               <LogoutIcon
-                class="flex-shrink-0 w-6 h-6 transition duration-75 group-hover:text-gray-900"
+                class="flex-shrink-0 w-6 h-6 transition duration-75 group-hover:text-shori-gray-12"
               />
-              <span class="flex-1 ml-3 whitespace-nowrap">Cerrar sesión</span>
+              <span class="ml-3 whitespace-nowrap">Cerrar sesión</span>
             </button>
           </div>
           <SocialsLinks />

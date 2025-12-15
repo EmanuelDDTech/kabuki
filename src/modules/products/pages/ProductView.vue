@@ -14,6 +14,9 @@ import { useRoute } from 'vue-router';
 import { useProductStore } from '@/modules/product/stores/product';
 import { formatCurrency } from '@/helpers';
 import { useCartStore } from '@/modules/cart/stores/cart';
+import GeneralButton from '@/modules/common/components/GeneralButton.vue';
+import CartIcon from '@/modules/cart/components/CartIcon.vue';
+import type { Product } from '@/modules/product/interfaces/product.interface';
 
 const thumbsSwiper = ref<SwiperClass | null>(null);
 
@@ -28,7 +31,7 @@ const cart = useCartStore();
 
 const route = useRoute();
 
-const toast = inject('toast');
+const toast: any = inject('toast');
 
 useSeoMeta({
   title: () => product.name || 'Cargando... ',
@@ -55,7 +58,7 @@ onUnmounted(() => {
   product.cleanProduct();
 });
 
-const addItem = async (item) => {
+const addItem = async (item: Product) => {
   try {
     await cart.addItem(item);
     toast.open({
@@ -101,7 +104,7 @@ const addItem = async (item) => {
           <swiper-slide
             v-for="image in product.gallery"
             :key="image.id"
-            class="bg-gray-200 rounded-lg p-5 sm:p-10 cursor-grab"
+            class="bg-shori-gray-2 border-2 border-shori-gray-6 rounded-lg p-4 sm:p-10 cursor-grab"
             ><img :src="image.url" class="w-4/5"
           /></swiper-slide>
         </swiper>
@@ -117,7 +120,7 @@ const addItem = async (item) => {
           <swiper-slide
             v-for="image in product.gallery"
             :key="image.id"
-            class="bg-gray-200 rounded-lg cursor-pointer p-1 sm:p-3 border-2 border-gray-200 hover:border-green-600 transition-colors"
+            class="bg-shori-gray-2 rounded-lg cursor-pointer p-1 sm:p-3 border-2 border-shori-gray-6 hover:border-shori-green-6 transition-all"
             ><img :src="image.url" class="w-4/5"
           /></swiper-slide>
         </swiper>
@@ -191,10 +194,10 @@ const addItem = async (item) => {
             {{ formatCurrency(product.discount ? product.discount : product.price) }}
           </p>
           <div v-if="product.discount" class="flex gap-3 items-end">
-            <p class="text-xl text-gray-500 line-through font-normal mt-0">
+            <p class="text-xl text-shori-gray-11 line-through font-normal mt-0">
               {{ formatCurrency(product.price) }}
             </p>
-            <p class="text-xl text-green-600">-{{ product.discountPercentage }}%</p>
+            <p class="text-xl text-shori-green-12">-{{ product.discountPercentage }}%</p>
           </div>
         </div>
 
@@ -221,7 +224,7 @@ const addItem = async (item) => {
           >
             Comprar ahora
           </button> -->
-          <button
+          <!-- <button
             @click="addItem(product)"
             class="w-full py-3 rounded-lg border-2 font-bold hover:text-black transition-colors"
             :class="
@@ -231,13 +234,21 @@ const addItem = async (item) => {
             "
           >
             {{ cart.isItemInCart(product.id) ? 'Eliminar del carrito' : 'Agregar al carrito' }}
-          </button>
+          </button> -->
+
+          <GeneralButton
+            @click="addItem(product)"
+            text="Agregar al carrito"
+            size="large"
+            width="full"
+            :icon="CartIcon"
+          />
         </div>
 
         <div class="flex pl-4 font-normal mt-5 justify-center">
           <RouterLink
             :to="{ name: 'home' }"
-            class="flex items-center gap-2 pr-4 border-r-2 border-gray-300 hover:text-red-500 transition-colors"
+            class="flex items-center gap-2 pr-4 border-r-2 border-shori-gray-6 hover:text-red-500 transition-colors"
           >
             <WishlistIcon class="h-6 aspect-square font-normal" />
             Favoritos</RouterLink
@@ -282,7 +293,7 @@ const addItem = async (item) => {
 }
 
 .mySwiper .swiper-slide.swiper-slide-thumb-active {
-  @apply border-green-600;
+  @apply border-shori-green-6;
 }
 
 #description-container ul {

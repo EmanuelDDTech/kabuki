@@ -21,9 +21,17 @@ const initChart = () => {
 };
 
 const updateChart = () => {
+  const colors = getColors();
+
   const option = {
     title: {
       text: props.title,
+      textStyle: {
+        color: colors.primary,
+      },
+    },
+    textStyle: {
+      color: colors.text,
     },
     tooltip: {},
     xAxis: {
@@ -42,6 +50,14 @@ const updateChart = () => {
   };
   chartInstance?.setOption(option);
 };
+
+function getColors() {
+  const styles = getComputedStyle(document.documentElement);
+  return {
+    text: styles.getPropertyValue('--gray-11').trim(),
+    primary: styles.getPropertyValue('--gray-12').trim(),
+  };
+}
 
 onMounted(async () => {
   initChart();

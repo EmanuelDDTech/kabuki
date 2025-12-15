@@ -25,6 +25,8 @@ const deleteConfirmation = (id: number) => {
     cancelButtonColor: '#d33',
     confirmButtonText: 'Si, Eliminar!',
     cancelButtonText: 'Cancelar',
+    background: 'var(--gray-2)',
+    color: 'var(--gray-12)',
   }).then(async (result) => {
     if (result.isConfirmed) {
       try {
@@ -45,7 +47,7 @@ const deleteConfirmation = (id: number) => {
 </script>
 
 <template>
-  <main class="mt-6 mx-4 p-4 sm:p-6 xl:p-8 bg-white shadow rounded-lg">
+  <main class="mt-6 mx-4 p-4 sm:p-6 xl:p-8 bg-shori-gray-1 shadow rounded-lg">
     <h1 class="text-2xl font-semibold mb-6">Códigos de Descuento</h1>
 
     <section class="flex h-full flex-col justify-center">
@@ -59,7 +61,9 @@ const deleteConfirmation = (id: number) => {
 
         <div class="overflow-x-auto">
           <table class="w-full table-auto">
-            <thead class="shadow bg-gray-50 text-xs font-semibold uppercase text-gray-400">
+            <thead
+              class="shadow bg-shori-gray-2 text-xs font-semibold uppercase text-shori-gray-11"
+            >
               <tr>
                 <th class="p-2">
                   <div class="text-left font-semibold">Código</div>
@@ -92,13 +96,15 @@ const deleteConfirmation = (id: number) => {
             </thead>
 
             <tbody
-              class="divide-y divide-gray-100 text-sm shadow"
+              class="text-sm odd:bg-shori-gray-2 even:bg-shori-gray-1"
               v-for="discountCode in discountCodeStore.discountCodes"
               :key="discountCode.id"
             >
               <tr>
                 <td class="p-2">
-                  <div class="text-base font-medium text-gray-800">{{ discountCode.code }}</div>
+                  <div class="text-base font-medium text-shori-gray-12">
+                    {{ discountCode.code }}
+                  </div>
                 </td>
                 <td class="p-2">
                   <div class="text-base text-left">{{ discountCode.discount_type }}</div>
@@ -133,7 +139,7 @@ const deleteConfirmation = (id: number) => {
                   </div>
                 </td>
                 <td class="p-2">
-                  <div class="text-base text-left font-medium text-gray-800">
+                  <div class="text-base text-left font-medium text-shori-gray-12">
                     {{ converToDDMMYYYY(discountCode.expires_at) }}
                   </div>
                 </td>
@@ -141,7 +147,7 @@ const deleteConfirmation = (id: number) => {
                   <div class="flex justify-center">
                     <button @click="deleteConfirmation(discountCode.id ?? 0)">
                       <svg
-                        class="h-8 w-8 rounded-full p-1 hover:bg-gray-100 hover:text-red-600"
+                        class="h-8 w-8 rounded-full p-1 hover:bg-shori-gray-3 hover:text-red-600"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -163,7 +169,7 @@ const deleteConfirmation = (id: number) => {
                       }"
                     >
                       <EditIcon
-                        class="h-8 w-8 p-1 rounded-full hover:bg-gray-100 hover:text-blue-600"
+                        class="h-8 w-8 p-1 rounded-full hover:bg-shori-gray-3 hover:text-blue-600"
                       />
                     </RouterLink>
                   </div>

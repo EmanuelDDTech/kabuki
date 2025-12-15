@@ -2,7 +2,7 @@
   <div class="max-w-2xl mx-auto min-h-screen">
     <RouterLink
       :to="{ name: 'adminCampaigns' }"
-      class="inline-block mb-4 text-red-700 font-medium rounded-lg text-sm"
+      class="inline-block mb-4 text-red-600 font-medium rounded-lg text-sm"
     >
       <div class="flex gap-2 items-center justify-start">
         <ArrowLeft class="w-6" />
@@ -85,21 +85,21 @@
 
         <div
           v-if="product.searchedProducts.length > 0"
-          class="absolute w-full mt-2 bg-white border border-gray-300 rounded-lg shadow-lg z-10 p-2"
+          class="absolute w-full mt-2 bg-shori-gray-2 border border-shori-gray-6 rounded-lg shadow-lg z-10 p-2"
         >
           <ul class="grid grid-cols-2 md:grid-cols-3 gap-4">
             <li
               v-for="product in product.searchedProducts"
               :key="product.id"
               @click="addProduct(product)"
-              class="cursor-pointer p-2 rounded-lg hover:bg-gray-100 transition flex flex-col items-center"
+              class="cursor-pointer p-2 rounded-lg hover:bg-shori-gray-3 transition flex flex-col items-center"
             >
               <img
                 :src="product.product_galleries[0].url"
                 :alt="product.name"
                 class="w-20 h-20 object-cover rounded-lg"
               />
-              <span class="text-sm text-gray-700 mt-2 text-center">{{ product.name }}</span>
+              <span class="text-sm text-shori-gray-11 mt-2 text-center">{{ product.name }}</span>
             </li>
           </ul>
         </div>

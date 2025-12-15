@@ -1,6 +1,6 @@
 <template>
   <article
-    class="relative max-w-72 min-w-36 bg-white shadow-md rounded-3xl p-2 cursor-pointer border border-gray-100"
+    class="relative max-w-72 min-w-36 bg-shori-gray-2 shadow-md rounded-3xl p-2 cursor-pointer border border-shori-gray-6"
   >
     <div
       class="aspect-[4/3] overflow-x-hidden rounded-2xl relative flex items-center justify-center"
@@ -8,14 +8,14 @@
       <img class="h-4/5" :src="campaignProduct.product.product_galleries[0].url" />
     </div>
     <div class="mt-4 pl-2 mb-2 justify-between">
-      <p class="font-normal text-black mb-5">
+      <p class="font-normal text-shori-gray-12 mb-5">
         {{ campaignProduct.product.name }}
       </p>
       <div class="flex flex-col items-start relative">
-        <p class="text-xl text-black font-bold mt-0">
+        <p class="text-xl text-shori-gray-12 font-bold mt-0">
           {{ formatCurrency(campaignProduct.product.price) }}
         </p>
-        <p v-if="!isEditing" class="text-base text-gray-500 line-through font-normal mt-0">
+        <p v-if="!isEditing" class="text-base text-shori-gray-11 line-through font-normal mt-0">
           {{ formatCurrency(campaignProduct.campaign_price) }}
         </p>
       </div>
@@ -41,7 +41,7 @@
     </FormKit>
 
     <EditIcon
-      class="w-8 aspect-square p-1 rounded-full hover:bg-gray-100 hover:text-blue-600 absolute top-3 right-3"
+      class="w-8 aspect-square p-1 rounded-full hover:bg-shori-gray-3 hover:text-blue-600 absolute top-3 right-3"
       @click="editPrice"
     />
     <DeleteIcon class="absolute right-3 top-12" @click="emit('delete')" />

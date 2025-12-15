@@ -2,7 +2,7 @@
   <div class="max-w-2xl mx-auto">
     <RouterLink
       :to="{ name: 'adminProducts' }"
-      class="inline-block mb-4 text-red-700 font-medium rounded-lg text-sm"
+      class="inline-block mb-4 text-red-600 font-medium rounded-lg text-sm"
     >
       <div class="flex gap-2 items-center justify-start">
         <LeftArrow class="w-6" />
@@ -127,7 +127,7 @@
         <article
           v-for="image in product.gallery"
           :key="image.url"
-          class="relative draggable-item border-solid flex-1 flex aspect-square border border-gray-300 text-gray-300 justify-center items-center"
+          class="relative draggable-item border-solid flex-1 flex aspect-square border border-shori-gray-6 text-shori-gray-11 justify-center items-center"
         >
           <div>
             <img :src="image.url" class="handle w-full aspect-square max-w-32" />
@@ -141,7 +141,7 @@
         <article
           v-for="i in 5 - product.gallery.length"
           :key="i"
-          class="border-dashed flex-1 flex aspect-square border border-gray-300 text-gray-300 justify-center items-center"
+          class="border-dashed flex-1 flex aspect-square border border-shori-gray-6 text-shori-gray-11 justify-center items-center"
         >
           <ImageIcon class="w-12" />
         </article>
@@ -160,7 +160,7 @@
       /> -->
 
       <div class="mb-2">
-        <label class="block text-gray-600 mb-2">Descripción</label>
+        <label class="block text-shori-gray-11 mb-2">Descripción</label>
 
         <QuillEditor theme="snow" ref="myEditor" content-type="html" />
       </div>
@@ -188,7 +188,7 @@
               :class="
                 product.filters.includes(filterValue.id)
                   ? 'border-blue-500 text-white bg-blue-500'
-                  : 'border-gray-400 text-gray-500'
+                  : 'border-shori-gray-6 text-shori-gray-11'
               "
               @click="product.selectFilter(filterValue.id)"
             >

@@ -2,7 +2,7 @@
   <div class="max-w-2xl mx-auto">
     <RouterLink
       :to="{ name: 'adminCategories' }"
-      class="inline-block mb-4 text-red-700 font-medium rounded-lg text-sm"
+      class="inline-block mb-4 text-red-600 font-medium rounded-lg text-sm"
     >
       <div class="flex gap-2 items-center justify-start">
         <LeftArrow class="w-6" />
@@ -47,7 +47,7 @@
         <article
           v-for="group in categoryStore.selectedFilters"
           :key="group.id"
-          class="border border-gray-300 text-left rounded-lg py-2 px-3 cursor-pointer hover:bg-gray-100 relative"
+          class="border border-shori-gray-6 text-left rounded-lg py-2 px-3 cursor-pointer hover:bg-shori-gray-3 relative"
         >
           <h3 class="text-lg font-bold">{{ group.filter_group.name }}</h3>
 

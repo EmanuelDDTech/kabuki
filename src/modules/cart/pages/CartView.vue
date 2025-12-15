@@ -2,9 +2,12 @@
   <main class="min-h-screen px-3 mb-8">
     <div class="max-w-screen-xl mx-auto block lg:flex gap-10 mt-8">
       <div class="flex-1">
-        <section v-if="cart.isEmpty" class="flex-1 shadow-md border border-gray-100 p-4 rounded-lg">
-          <h2 class="text-2xl font-bold border-b-2 border-gray-200 pb-3">Carrito</h2>
-          <p class="text-slate-700 mt-6">
+        <section
+          v-if="cart.isEmpty"
+          class="flex-1 shadow-md border border-shori-gray-6 p-4 rounded-lg"
+        >
+          <h2 class="text-2xl font-bold border-b-2 border-shori-gray-6 pb-3">Carrito</h2>
+          <p class="text-shori-gray-11 mt-6">
             No hay productos en el carrito.
             <router-link class="text-blue-600" :to="{ name: 'products' }"
               >Ver productos</router-link
@@ -13,18 +16,18 @@
         </section>
         <section
           v-if="!cart.isEmpty"
-          class="flex-1 shadow-md border border-gray-100 p-4 rounded-lg"
+          class="flex-1 shadow-md border border-shori-gray-6 p-4 rounded-lg"
         >
-          <h2 class="text-2xl font-bold border-b-2 border-gray-200 pb-3">Carrito</h2>
+          <h2 class="text-2xl font-bold border-b-2 border-shori-gray-6 pb-3">Carrito</h2>
 
           <CartProduct v-for="item in cart.items" :key="item.product.id" :item="item" />
         </section>
 
         <section
           v-if="!cart.isEmpty && userStore.isSet"
-          class="mt-6 shadow-md border border-gray-100 p-4 rounded-lg"
+          class="mt-6 shadow-md border border-shori-gray-6 p-4 rounded-lg"
         >
-          <h2 class="text-2xl font-bold border-b-2 border-gray-200 pb-3 mb-6">
+          <h2 class="text-2xl font-bold border-b-2 border-shori-gray-6 pb-3 mb-6">
             Dirección de entrega
           </h2>
 
@@ -43,7 +46,7 @@
               type="form"
               @submit="saveAddress()"
               :actions="false"
-              class="max-w-lg mx-auto p-4 space-y-4 bg-white rounded shadow"
+              class="max-w-lg mx-auto p-4 space-y-4 bg-shori-gray-2 rounded shadow"
             >
               <!-- País / Región -->
               <FormKit
@@ -199,14 +202,19 @@
           </div>
         </section>
 
-        <section v-if="!cart.isEmpty" class="mt-6 shadow-md border border-gray-100 p-4 rounded-lg">
-          <h2 class="text-2xl font-bold border-b-2 border-gray-200 pb-3 mb-6">Método de envío</h2>
+        <section
+          v-if="!cart.isEmpty"
+          class="mt-6 shadow-md border border-shori-gray-6 p-4 rounded-lg"
+        >
+          <h2 class="text-2xl font-bold border-b-2 border-shori-gray-6 pb-3 mb-6">
+            Método de envío
+          </h2>
 
           <ul class="flex flex-wrap justify-around gap-6">
             <li
               v-for="deliveryData in delivery.deliveriesAvailable"
               :key="deliveryData.id"
-              class="flex flex-col flex-1 min-h-full max-w-56 min-w-[130px] items-center cursor-pointer p-2 rounded-md border hover:border-blue-600 transition-colors hover:shadow hover:shadow-blue-600"
+              class="flex flex-col flex-1 min-h-full max-w-56 min-w-[130px] items-center cursor-pointer p-2 rounded-md border hover:border-shori-gray-6 transition-colors hover:shadow hover:bg-shori-gray-2"
               @click="selectCarrier(deliveryData)"
               :class="
                 deliveryData.id === delivery.carrierSelected?.id
@@ -333,7 +341,7 @@ const deleteAddress = async (id: number) => {
     setTimeout(() => {
       address.createNew = false;
     }, 1000);
-  } catch (error) {
+  } catch (error: any) {
     toast.open({
       message: error.response.data.msg,
       type: 'error',
