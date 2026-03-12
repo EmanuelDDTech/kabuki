@@ -17,16 +17,18 @@ const selectProduct = (id: number) => {
 
 <template>
   <div
-    class="flex items-center max-w-lg bg-white text-gray-400 rounded-lg flex-1 border-2 border-gray-300"
+    class="flex items-center max-w-lg bg-shori-gray-3 text-shori-gray-11 rounded-lg flex-1 border-2 border-shori-gray-6"
   >
-    <div class="border-r-2 border-gray-300">
+    <div class="border-r-2 border-shori-gray-6">
       <!-- :class="(search.length > 0) ? 'bg-purple-500' : 'bg-gray-500 cursor-not-allowed'"
       :disabled="search.length == 0" -->
       <button
         type="submit"
-        class="flex items-center justify-center w-9 aspect-square rounded-r-lg p-1"
+        class="flex items-center justify-center w-8 aspect-square rounded-r-lg p-1"
       >
         <svg
+          width="20px"
+          height="20px"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -44,7 +46,7 @@ const selectProduct = (id: number) => {
     <div class="w-full">
       <input
         type="search"
-        class="w-full px-4 py-1 text-gray-800 rounded-full focus:outline-none"
+        class="w-full px-4 py-1 text-shori-gray-12 rounded-full focus:outline-none bg-transparent"
         placeholder="Buscar"
         v-model="product.searchQuery"
       />
@@ -54,9 +56,9 @@ const selectProduct = (id: number) => {
       v-if="product.searchedProducts.length > 0"
       class="w-screen max-w-7xl px-3 absolute bottom-0 left-1/2 translate-y-full -translate-x-1/2"
     >
-      <div class="p-3 bg-white border border-gray-300 rounded-lg shadow-lg z-10">
+      <div class="p-3 bg-shori-gray-1 border border-shori-gray-6 rounded-lg shadow-lg z-10">
         <div
-          class="w-full max-h-[600px] overflow-y-scroll scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent"
+          class="w-full max-h-[600px] overflow-y-scroll scrollbar-thin scrollbar-thumb-shori-gray-6 scrollbar-track-transparent"
         >
           <ul class="grid grid-cols-[repeat(auto-fill,minmax(224px,288px))] gap-4 justify-center">
             <ProductSearch

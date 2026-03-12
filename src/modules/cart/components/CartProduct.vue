@@ -21,7 +21,7 @@
         />
       </div>
 
-      <div class="flex text-sm gap-6 mt-2 text-gray-500" v-if="editable">
+      <div class="flex text-sm gap-6 mt-2 text-shori-gray-11" v-if="editable">
         <p class="cursor-pointer hover:text-red-600" @click="removeItem(item.product.id)">
           Eliminar
         </p>

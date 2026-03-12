@@ -85,7 +85,7 @@ export const useCartStore = defineStore('cart', () => {
       const { data } = await CartAPI.get();
       items.value = data;
     } else {
-      const localCart = JSON.parse(localStorage.getItem('_shorikame_cart')) || [];
+      const localCart = JSON.parse(localStorage.getItem('_shorikame_cart')!) || [];
 
       Promise.all(
         localCart.map(async (localProduct: object) => {
@@ -104,34 +104,34 @@ export const useCartStore = defineStore('cart', () => {
     }
   }
 
-  async function addItem(item) {
+  async function addItem(item: Product) {
     if (userStore.isSet) {
-      if (isItemInCart(item.id)) {
-        try {
-          await CartAPI.delete({ productId: item.id });
-          items.value = items.value.filter((itemCart) => itemCart.product.id !== item.id);
-        } catch (error) {
-          console.log(error);
-        }
-      } else {
-        try {
-          await CartAPI.add({ productId: item.id });
-          await getCart();
-        } catch (error) {
-          console.log(error);
-        }
+      // if (isItemInCart(item.id)) {
+      //   try {
+      //     await CartAPI.delete({ productId: item.id });
+      //     items.value = items.value.filter((itemCart) => itemCart.product.id !== item.id);
+      //   } catch (error) {
+      //     console.log(error);
+      //   }
+      // } else {
+      try {
+        await CartAPI.add({ productId: item.id });
+        await getCart();
+      } catch (error) {
+        console.log(error);
       }
+      // }
     } else {
       if (isItemInCart(item.id)) {
-        let localCart: any[] = JSON.parse(localStorage.getItem('_shorikame_cart')) || [];
-        localCart = localCart.filter((localProduct) => localProduct.id !== item.id);
-
-        localStorage.setItem('_shorikame_cart', JSON.stringify(localCart));
-
-        items.value = items.value.filter((itemData) => itemData.product.id !== item.id);
+        // const localCart = JSON.parse(localStorage.getItem('_shorikame_cart')!) || [];
+        // const productCart = localCart.find((cart) => )
+        // let localCart: any[] = JSON.parse(localStorage.getItem('_shorikame_cart')) || [];
+        // localCart = localCart.filter((localProduct) => localProduct.id !== item.id);
+        // localStorage.setItem('_shorikame_cart', JSON.stringify(localCart));
+        // items.value = items.value.filter((itemData) => itemData.product.id !== item.id);
       } else {
         try {
-          const localCart = JSON.parse(localStorage.getItem('_shorikame_cart')) || [];
+          const localCart = JSON.parse(localStorage.getItem('_shorikame_cart')!) || [];
 
           localCart.push({ id: item.id, quantity: 1 });
           localStorage.setItem('_shorikame_cart', JSON.stringify(localCart));

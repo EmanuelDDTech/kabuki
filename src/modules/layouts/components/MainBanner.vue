@@ -48,7 +48,7 @@ onMounted(async () => {
 
 .swiper-slide {
   font-size: 18px;
-  background: #fff;
+  background: var(--gray-2);
   height: 100%;
 
   /* Center slide text vertically */

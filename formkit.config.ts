@@ -6,9 +6,9 @@ const config = {
       global: {
         wrapper: 'space-y-2 mb-2',
         message: 'text-red-500 text-sm pb-2 pl-2 mb-1 -mt-1',
-        label: 'block text-gray-600',
+        label: 'block text-shori-gray-11',
         input:
-          'w-full border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:border-blue-500',
+          'w-full border border-shori-gray-6 rounded-md py-2 px-3 focus:outline-none focus:border-blue-500 bg-shori-gray-3',
       },
       submit: {
         input:

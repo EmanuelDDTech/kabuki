@@ -1,6 +1,6 @@
 <template>
   <svg
-    class="h-8 w-8 rounded-full p-1 hover:bg-gray-100 hover:text-red-600"
+    class="h-8 w-8 rounded-full p-1 hover:bg-shori-gray-3 hover:text-red-600"
     fill="none"
     stroke="currentColor"
     viewBox="0 0 24 24"

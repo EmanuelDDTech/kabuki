@@ -27,6 +27,10 @@ import vueformConfig from './../vueform.config';
 // Unhead
 import { createHead } from '@unhead/vue/client';
 
+// Directives
+import ripple from './directives/ripple';
+import '@/assets/ripple.css';
+
 const $toast = useToast({
   duration: 5000,
   position: 'top-right',
@@ -34,6 +38,7 @@ const $toast = useToast({
 
 const app = createApp(App);
 const head = createHead();
+app.directive('ripple', ripple);
 
 app.provide('toast', $toast);
 

@@ -1,5 +1,5 @@
 <template>
-  <div class="h-screen w-screen absolute z-40 flex justify-center items-center bg-white">
+  <div class="h-screen w-screen absolute z-40 flex justify-center items-center bg-shori-gray-1">
     <div class="deck">
       <div class="card card1"></div>
       <div class="card card2"></div>

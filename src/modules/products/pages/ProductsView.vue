@@ -130,18 +130,20 @@ onBeforeUnmount(() => {
     >
       <section class="sticky top-6 z-10">
         <div class="flex-1 h-full hidden lg:inline-block">
-          <div class="h-fit min-w-60 shadow-lg py-4 rounded-xl border border-gray-100 sticky top-6">
-            <h3 class="font-bold text-xl border-b border-b-gray-200 mb-3 px-3">Filtros</h3>
+          <div
+            class="h-fit min-w-60 shadow-lg py-4 rounded-xl border border-shori-gray-6 sticky top-6 bg-shori-gray-2"
+          >
+            <h3 class="font-bold text-xl border-b border-b-shori-gray-6 mb-3 px-3">Filtros</h3>
 
             <div
-              class="max-h-[600px] overflow-y-scroll overflow-x-hidden px-3 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent"
+              class="max-h-[600px] overflow-y-scroll overflow-x-hidden px-3 scrollbar-thin scrollbar-thumb-shori-gray-3 scrollbar-track-transparent"
             >
               <div class="mb-4 mt-3">
                 <OrderSelect :order="filters.order" @update:order="filters.order = $event" />
               </div>
 
               <div
-                class="flex justify-between items-center py-1 px-2 mb-4 hover:bg-gray-100 rounded"
+                class="flex justify-between items-center py-1 px-2 mb-4 hover:bg-shori-gray-3 rounded"
               >
                 <label for="existenceOnly" class="cursor-pointer leading-none"
                   >Solo con existencia</label
@@ -190,7 +192,7 @@ onBeforeUnmount(() => {
                   <div
                     v-for="filterValue in filterGroup.filter_group.filter_values"
                     :key="filterValue.id"
-                    class="flex text-sm justify-between items-center hover:bg-gray-100 py-1 px-2 rounded"
+                    class="flex text-sm justify-between items-center hover:bg-shori-gray-3 py-1 px-2 rounded"
                   >
                     <label :for="filterValue.name" class="cursor-pointer leading-none">{{
                       filterValue.name
@@ -219,18 +221,18 @@ onBeforeUnmount(() => {
 
         <div class="flex lg:hidden min-h-12 items-center">
           <div
-            class="inline-block absolute top-0 shadow border border-gray-100 bg-white overflow-hidden"
+            class="inline-block absolute top-0 shadow border border-shori-gray-6 bg-shori-gray-2 overflow-hidden"
           >
             <div
               class="mb-3 transition-all"
               :class="
                 !filters.showFilters
                   ? 'max-h-[40px]'
-                  : 'max-w-[450px] max-h-[500px] overflow-scroll'
+                  : 'max-w-[450px] max-h-[500px] overflow-y-scroll scrollbar-thumb-shori-gray-6 scrollbar-track-shori-gray-3 scrollbar-thin '
               "
             >
               <div
-                class="flex justify-between w-full mb-3 py-3 px-4 sticky top-0 bg-white z-10 shadow"
+                class="flex justify-between w-full mb-3 py-3 px-4 sticky top-0 bg-shori-gray-2 z-10 shadow"
               >
                 <div class="flex gap-2 items-center" @click="filters.showFilterOptions()">
                   <h3 class="font-bold text-xl">Filtros</h3>
@@ -239,7 +241,7 @@ onBeforeUnmount(() => {
                 <XMarkIcon
                   v-if="filters.showFilters"
                   @click="filters.hideFilterOptions()"
-                  class="h-6 w-6 text-gray-400 top-2 right-4"
+                  class="h-6 w-6 text-shori-gray-11 top-2 right-4"
                 />
               </div>
 
@@ -260,9 +262,9 @@ onBeforeUnmount(() => {
                   />
                 </div>
 
-                <div class="flex flex-col items-center">
-                  <label for="price" class="font-bold self-start">Precio</label>
-                  <Vueform>
+                <div>
+                  <label for="price" class="font-bold">Precio</label>
+                  <Vueform class="pl-3 pr-6">
                     <SliderElement
                       @change="setPriceRange"
                       ref="priceRange"
@@ -274,7 +276,8 @@ onBeforeUnmount(() => {
                       :step="100"
                       :min="0"
                       :max="filters.getMaxPrice()"
-                      class="mt-8 w-52"
+                      :default="[filters.minPrice, filters.maxPrice]"
+                      class="mt-8"
                     />
                   </Vueform>
                 </div>
@@ -286,7 +289,7 @@ onBeforeUnmount(() => {
                     <div
                       v-for="filterValue in filterGroup.filter_group.filter_values"
                       :key="filterValue.id"
-                      class="flex justify-between hover:bg-gray-100 py-1 px-2 rounded"
+                      class="flex items-center justify-between hover:bg-shori-gray-3 py-1 px-2 rounded"
                     >
                       <label :for="filterValue.name" class="cursor-pointer">{{
                         filterValue.name
@@ -315,7 +318,7 @@ onBeforeUnmount(() => {
         </div>
       </section>
       <section class="flex-1 mb-10">
-        <h1 class="text-2xl font-bold border-b border-b-gray-200 mb-6">Busqueda</h1>
+        <h1 class="text-2xl font-bold border-b border-b-shori-gray-6 mb-6">Busqueda</h1>
 
         <LoaderWithText v-if="status === 'pending'" text="Cargando " />
         <div v-if="status === 'error'" class="text-center">Error al cargar</div>

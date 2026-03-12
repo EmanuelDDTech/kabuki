@@ -1,16 +1,16 @@
 <template>
-  <footer class="border-t-2 border-gray-200 px-3">
+  <footer class="border-t-2 border-shori-gray-6 px-3">
     <div
-      class="bg-white flex flex-col lg:flex-row gap-3 items-center justify-center md:justify-between py-6 max-w-screen-xl mx-auto"
+      class="bg-shori-gray-1 flex flex-col lg:flex-row gap-3 items-center justify-center md:justify-between py-6 max-w-screen-xl mx-auto"
     >
-      <span class="text-sm text-gray-400 sm:text-center"
+      <span class="text-sm text-shori-gray-11 sm:text-center"
         >© {{ new Date().getFullYear() }}
         <a href="" class="hover:text-blue-500" target="_blank">Shori Kame Cards</a>
       </span>
 
       <SocialsLinks />
 
-      <ul class="flex flex-wrap items-center mt-3 sm:mt-0 text-gray-400">
+      <ul class="flex flex-wrap items-center mt-3 sm:mt-0 text-shori-gray-11">
         <li>
           <router-link
             :to="{ name: 'frequentQuestions' }"

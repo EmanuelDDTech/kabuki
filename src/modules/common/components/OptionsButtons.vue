@@ -18,7 +18,7 @@ defineEmits(['selectOption']);
       @click="$emit('selectOption', option)"
       :class="[
         'px-4 py-2 rounded',
-        selectedOption === option ? 'bg-blue-600 text-white' : 'bg-gray-200',
+        selectedOption === option ? 'bg-blue-600 text-shori-gray-12' : 'bg-shori-gray-3',
       ]"
     >
       {{ option }}

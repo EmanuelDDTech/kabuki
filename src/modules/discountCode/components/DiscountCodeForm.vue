@@ -64,7 +64,7 @@ const handleSubmit = async ({ expires_at, ...formData }) => {
   <div class="max-w-2xl mx-auto min-h-screen">
     <RouterLink
       :to="{ name: 'adminDiscountCodes' }"
-      class="inline-block mb-4 text-red-700 font-medium rounded-lg text-sm"
+      class="inline-block mb-4 text-red-600 font-medium rounded-lg text-sm"
     >
       <div class="flex gap-2 items-center justify-start">
         <ArrowLeft class="w-6" />

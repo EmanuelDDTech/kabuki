@@ -17,7 +17,7 @@ onMounted(async () => {
 
       <div v-if="sale.isLoading" class="text-center">Cargando pedidos...</div>
       <div v-else>
-        <div v-if="sale.isEmpty" class="text-gray-500">No tienes pedidos realizados.</div>
+        <div v-if="sale.isEmpty" class="text-shori-gray-11">No tienes pedidos realizados.</div>
         <div v-else class="grid gap-4">
           <PurchaseCard v-for="order in sale.getMyPurchases()" :key="order.id" :sale="order" />
         </div>

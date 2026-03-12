@@ -1,9 +1,9 @@
 <template>
   <header
     id="header"
-    class="max-w-7xl min-h-16 mx-auto border-gray-200 sticky top-2 z-999 rounded-full"
+    class="max-w-7xl min-h-16 mx-auto border-shori-gray-6 sticky top-2 z-999 rounded-full"
   >
-    <div class="mx-auto z-10 bg-white rounded-full">
+    <div class="mx-auto z-10 bg-shori-gray-1 rounded-full">
       <div class="flex justify-between items-center px-6 py-3">
         <!-- <RouterLink
           :to="{ name: 'home' }"
@@ -17,28 +17,29 @@
           <span class="self-center whitespace-nowrap">ShoriKameCards</span>
         </RouterLink> -->
         <SearchBar />
-        <nav class="gap-6 text-base text-gray-400 hidden lg:flex">
+        <ThemeToggle />
+        <nav class="gap-6 text-base text-shori-gray-12 hidden lg:flex">
           <RouterLink :to="{ name: 'home' }"
             ><NotificationIcon
-              class="w-7 aspect-square text-slate-700 hover:text-green-500 transition-colors"
+              class="w-7 aspect-square text-shori-gray-11 hover:text-shori-green-9 transition-colors"
             />
           </RouterLink>
 
           <RouterLink :to="{ name: 'cart' }" class="relative"
             ><CartIcon
-              class="w-7 aspect-square text-slate-700 hover:text-green-500 transition-colors"
+              class="w-7 aspect-square text-shori-gray-11 hover:text-shori-green-9 transition-colors"
             />
             <div
               v-if="!cartStore.isEmpty"
-              class="absolute w-4 h-4 bg-green-500 rounded-full -top-1 -right-1 flex justify-center items-center"
+              class="absolute w-4 h-4 bg-shori-green-9 rounded-full -top-1 -right-1 flex justify-center items-center"
             >
-              <p class="text-black text-xs">{{ cartStore.cartLength }}</p>
+              <p class="text-shori-green-contrast text-xs">{{ cartStore.cartLength }}</p>
             </div>
           </RouterLink>
         </nav>
         <HamburguerBarsIcon
           @click="showMenu"
-          class="w-7 ml-6 aspect-square text-gray-400 block lg:hidden"
+          class="w-7 ml-6 aspect-square text-shori-gray-11 block lg:hidden"
         />
       </div>
     </div>
@@ -60,6 +61,7 @@ import { onMounted, ref } from 'vue';
 import HamburguerBarsIcon from './HamburguerBarsIcon.vue';
 import MobileMenu from './MobileMenu.vue';
 import { useCartStore } from '@/modules/cart/stores/cart';
+import ThemeToggle from '@/modules/common/components/ThemeToggle.vue';
 
 const cartStore = useCartStore();
 const showMobileMenu = ref(false);

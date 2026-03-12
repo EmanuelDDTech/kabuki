@@ -15,7 +15,7 @@ const productStore = useProductStore();
 export default function useImage() {
   const storage = useFirebaseStorage();
   const images = ref([]);
-  const toast = inject('toast');
+  const toast: any = inject('toast');
 
   const onFileChange = (e: any) => {
     const files = e.target.files;

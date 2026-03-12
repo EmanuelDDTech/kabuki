@@ -16,7 +16,7 @@ defineProps<Props>();
 </script>
 
 <template>
-  <article class="rounded-lg border bg-card text-card-foreground shadow-sm">
+  <article class="rounded-lg border border-shori-gray-6 shadow-sm">
     <div class="flex flex-col sm:flex-row gap-3 p-6">
       <div class="min-w-20 w-20 flex items-center">
         <img
@@ -33,9 +33,9 @@ defineProps<Props>();
           <div
             class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 capitalize"
             :class="{
-              'bg-green-500 border-green-500': sale.state === State.COMPLETED,
-              'bg-orange-500 border-orange-500 ': sale.state === State.PENDING,
-              'bg-red-500 border-red-500': sale.state === State.CANCELED,
+              'bg-green-500 border-green-500 text-black': sale.state === State.COMPLETED,
+              'bg-orange-500 border-orange-500 text-black ': sale.state === State.PENDING,
+              'bg-red-500 border-red-500 text-black': sale.state === State.CANCELED,
               'bg-blue-600 border-blue-600 text-white': sale.state === State.PAYPENDING,
             }"
           >

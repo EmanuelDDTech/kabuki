@@ -1,5 +1,5 @@
 <template>
-  <nav class="bg-white border-b border-gray-200 fixed z-30 w-full">
+  <nav class="bg-shori-gray-1 border-b border-shori-gray-6 fixed z-30 w-full">
     <div class="px-3 py-3 lg:px-5 lg:pl-3">
       <div class="flex items-center justify-between">
         <div class="flex items-center justify-start">
@@ -44,7 +44,9 @@
             />
             <span class="self-center whitespace-nowrap">ShoriKameCards</span>
           </RouterLink>
-          <ButtonLink :to="'home'" :text="'Ir a la página'" :icon="HomeGoIcon" />
+          <RouterLink :to="{ name: 'home' }" class="ml-5">
+            <GeneralButton :text="'Ir a la página'" :icon="HomeGoIcon" />
+          </RouterLink>
           <!-- <form action="#" method="GET" class="hidden lg:block lg:pl-32">
             <label for="topbar-search" class="sr-only">Search</label>
             <div class="mt-1 relative lg:w-64">
@@ -75,14 +77,14 @@
         <div class="flex items-center">
           <RouterLink
             :to="{ name: 'register' }"
-            class="flex items-center pr-4 border-r-2 border-gray-300 hover:text-blue-500 transition-colors"
+            class="flex items-center pr-4 border-r-2 border-shori-gray-6 hover:text-blue-500 transition-colors"
             ><p>
               Hola: <span class="font-bold"> {{ user.getUserName }} </span>
             </p>
           </RouterLink>
           <button
             @click="logout"
-            class="flex gap-2 items-center pl-4 hover:text-blue-500 transition-colors"
+            class="flex gap-2 items-center pl-4 hover:text-red-500 transition-colors"
           >
             Cerrar sesión
             <LogoutIcon class="w-6" />
@@ -129,9 +131,10 @@
   </nav>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { useUserStore } from '@/modules/auth/stores/user';
 import ButtonLink from '@/modules/common/components/ButtonLink.vue';
+import GeneralButton from '@/modules/common/components/GeneralButton.vue';
 import HomeGoIcon from '@/modules/common/icons/HomeGoIcon.vue';
 import LogoutIcon from '@/modules/common/icons/LogoutIcon.vue';
 import { useRouter } from 'vue-router';

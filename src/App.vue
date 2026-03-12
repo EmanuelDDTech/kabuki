@@ -20,7 +20,7 @@ userStore.$subscribe(
 );
 </script>
 
-<template data-theme="light">
+<template>
   <CardsLoader v-if="userStore.isChecking" />
   <RouterView v-else />
   <VueQueryDevtools />

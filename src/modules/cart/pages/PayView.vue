@@ -95,7 +95,7 @@ const createPaypalButtons = () => {
         }
       },
 
-      async onApprove(data, actions) {
+      async onApprove(data: any, actions: any) {
         try {
           const response = await fetch(
             `${import.meta.env.VITE_API_URL}/paypal/orders/${data.orderID}/capture`,
@@ -205,8 +205,8 @@ const addMercadoPagoScript = async () => {
   <main class="min-h-screen px-3 mb-8">
     <div class="max-w-screen-xl mx-auto block lg:flex gap-10 mt-8">
       <div class="flex-1">
-        <section class="flex-1 shadow-md border border-gray-100 p-4 rounded-lg">
-          <h2 class="text-2xl font-bold border-b-2 border-gray-200 pb-3">Métodos de pago</h2>
+        <section class="flex-1 shadow-md border border-shori-gray-6 p-4 rounded-lg">
+          <h2 class="text-2xl font-bold border-b-2 border-shori-gray-6 pb-3">Métodos de pago</h2>
           <div
             v-show="cart.payNow && !discountCodeStore.isDiscountCodeSelected"
             class="mt-10 flex flex-col"
@@ -234,7 +234,7 @@ const addMercadoPagoScript = async () => {
               <p>Si eres BBVA: <span class="font-semibold">283 869 4095 </span></p>
               <p>Beneficiario: <span class="font-semibold">Francisco Javier Ramos S</span></p>
             </div>
-            <div class="bg-red-100 p-3 rounded mt-3">
+            <div class="bg-red-100 text-black p-3 rounded mt-3">
               <p>
                 <span class="text-red-900 text-lg">¡Importante!</span> Al seleccionar transferencia
                 tendrás 24 horas para realizar el depósito o transferencia. Si no se realiza el pago

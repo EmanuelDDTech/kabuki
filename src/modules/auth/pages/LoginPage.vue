@@ -16,9 +16,9 @@
     ></GoogleSignInButton>
 
     <div class="flex items-center justify-center gap-2 my-6">
-      <hr class="border-gray-300 flex-1" />
-      <span class="absolute bg-white px-2 text-gray-500">o</span>
-      <hr class="border-gray-300 flex-1" />
+      <hr class="border-shori-gray-6 flex-1" />
+      <span class="absolute bg-shori-gray-2 px-2 text-shori-gray-11">o</span>
+      <hr class="border-shori-gray-6 flex-1" />
     </div>
   </div>
 
@@ -88,7 +88,7 @@ const handleLoginSuccess = async (response: CredentialResponse) => {
     await user.setUser();
     await cartStore.moveLocalCart();
     router.push(lastPath);
-  } catch (error) {
+  } catch (error: any) {
     toast.open({
       message: error.response.data.msg,
       type: 'error',
