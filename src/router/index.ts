@@ -27,6 +27,16 @@ const router = createRouter({
           component: () => import('@/modules/series/pages/SeriesView.vue'),
         },
         {
+          path: '/series/:serieId/sets',
+          name: 'setsBySeries',
+          component: () => import('@/modules/series/pages/SetsBySerieView.vue'),
+        },
+        {
+          path: '/expansiones/:setId',
+          name: 'expansion',
+          component: () => import('@/modules/series/pages/ExpansionView.vue'),
+        },
+        {
           path: '/producto/:id',
           name: 'product',
           component: () => import('@products/pages/ProductView.vue'),
