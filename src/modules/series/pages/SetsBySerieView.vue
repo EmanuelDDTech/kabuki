@@ -18,7 +18,7 @@
           Explora las expansiones disponibles en {{ serieStore.serieData?.name }}.
         </p>
 
-        <div class="w-96 mx-auto mt-6">
+        <div class="w-full max-w-96 mx-auto mt-6">
           <img :src="serieStore.serieData?.logo" :alt="`Logo de ${serieStore.serieData?.name}`" />
         </div>
       </header>

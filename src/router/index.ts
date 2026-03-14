@@ -37,6 +37,11 @@ const router = createRouter({
           component: () => import('@/modules/series/pages/ExpansionView.vue'),
         },
         {
+          path: '/cards/:cardId',
+          name: 'cards',
+          component: () => import('@/modules/series/pages/CardView.vue'),
+        },
+        {
           path: '/producto/:id',
           name: 'product',
           component: () => import('@products/pages/ProductView.vue'),
