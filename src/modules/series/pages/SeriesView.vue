@@ -19,7 +19,7 @@
           <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
             <li v-for="item in items" :key="item.id" class="flex justify-center">
               <RouterLink
-                class="w-full max-w-xs bg-shori-gray-3 border border-shori-gray-6 rounded-2xl shadow-sm hover:shadow-md hover:shadow-shori-gray-track shadow-shori-gray-track transition-shadow duration-200 overflow-hidden cursor-pointer"
+                class="w-full max-w-xs bg-shori-gray-3 border border-shori-gray-6 rounded-2xl shadow-sm shadow-shori-gray-track transition-shadow duration-200 overflow-hidden cursor-pointer"
                 :to="`/series/${item.id}`"
               >
                 <div class="relative aspect-[4/3] bg-shori-gray-2">
