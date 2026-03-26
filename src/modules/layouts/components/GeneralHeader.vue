@@ -1,114 +1,49 @@
 <template>
-  <header
-    id="header"
-    class="max-w-7xl min-h-16 mx-auto border-shori-gray-6 sticky top-2 z-999 rounded-full"
-  >
-    <div class="mx-auto z-10 bg-shori-gray-1 rounded-full">
-      <div class="flex justify-between items-center px-6 py-3">
-        <!-- <RouterLink
-          :to="{ name: 'home' }"
-          class="text-xl font-bold items-center lg:ml-2.5 hidden lg:flex"
-        >
-          <img
-            src="@/assets/img/shorikame-logo-edited.webp"
-            class="h-12 mr-2"
-            alt="Windster Logo"
-          />
-          <span class="self-center whitespace-nowrap">ShoriKameCards</span>
-        </RouterLink> -->
-        <SearchBar />
-        <ThemeToggle />
-        <nav class="gap-6 text-base text-shori-gray-12 hidden lg:flex">
-          <RouterLink :to="{ name: 'home' }"
-            ><NotificationIcon
-              class="w-7 aspect-square text-shori-gray-11 hover:text-shori-green-9 transition-colors"
-            />
-          </RouterLink>
+  <div class="flex items-center gap-3">
+    <ThemeToggle />
 
-          <RouterLink :to="{ name: 'cart' }" class="relative"
-            ><CartIcon
-              class="w-7 aspect-square text-shori-gray-11 hover:text-shori-green-9 transition-colors"
-            />
-            <div
-              v-if="!cartStore.isEmpty"
-              class="absolute w-4 h-4 bg-shori-green-9 rounded-full -top-1 -right-1 flex justify-center items-center"
-            >
-              <p class="text-shori-green-contrast text-xs">{{ cartStore.cartLength }}</p>
-            </div>
-          </RouterLink>
-        </nav>
-        <HamburguerBarsIcon
-          @click="showMenu"
-          class="w-7 ml-6 aspect-square text-shori-gray-11 block lg:hidden"
-        />
+    <RouterLink :to="{ name: 'home' }" class="hidden lg:flex" aria-label="Notificaciones">
+      <NotificationIcon
+        class="w-6 aspect-square text-shori-gray-11 hover:text-shori-green-9 transition-colors"
+      />
+    </RouterLink>
+
+    <RouterLink :to="{ name: 'cart' }" class="relative" aria-label="Ir al carrito">
+      <CartIcon
+        class="w-6 aspect-square text-shori-gray-11 hover:text-shori-green-9 transition-colors"
+      />
+      <div
+        v-if="!isCartEmpty"
+        class="absolute w-4 h-4 bg-shori-green-9 rounded-full -top-1 -right-1 flex justify-center items-center"
+      >
+        <p class="text-shori-green-contrast text-xs">{{ cartLength }}</p>
       </div>
-    </div>
-  </header>
+    </RouterLink>
 
-  <MobileMenu
-    class="fixed top-0 right-0 transition-all block lg:hidden z-1000"
-    :class="showMobileMenu ? 'translate-x-0' : 'translate-x-full'"
-    @hide-menu="hideMenu"
-  />
+    <button
+      type="button"
+      class="block lg:hidden"
+      aria-label="Abrir menú"
+      @click="emit('toggle-menu')"
+    >
+      <HamburguerBarsIcon class="w-7 aspect-square text-shori-gray-11" />
+    </button>
+  </div>
 </template>
 
 <script setup lang="ts">
-import SearchBar from '@/modules/search/components/SearchBar.vue';
 import CartIcon from '@cart/components/CartIcon.vue';
 import NotificationIcon from '@/modules/notification/components/NotificationIcon.vue';
 import { RouterLink } from 'vue-router';
-import { onMounted, ref } from 'vue';
 import HamburguerBarsIcon from './HamburguerBarsIcon.vue';
-import MobileMenu from './MobileMenu.vue';
-import { useCartStore } from '@/modules/cart/stores/cart';
 import ThemeToggle from '@/modules/common/components/ThemeToggle.vue';
 
-const cartStore = useCartStore();
-const showMobileMenu = ref(false);
+defineProps<{
+  isCartEmpty: boolean;
+  cartLength: number;
+}>();
 
-onMounted(() => {
-  document.body.style.overflowX = 'hidden';
-  const header: null | HTMLElement = document.querySelector('#header');
-  let lastScrollTop = window.scrollY || document.documentElement.scrollTop;
-
-  window.addEventListener('scroll', () => {
-    let scrollTop = window.scrollY || document.documentElement.scrollTop;
-    if (scrollTop > 200) {
-      header?.classList.add('-top-24');
-
-      header?.classList.add('transition-all');
-      header?.classList.add('duration-500');
-      header?.classList.add('shadow-md');
-
-      if (scrollTop > lastScrollTop) {
-        // Scroll hacia abajo
-        header?.classList.add('-top-24');
-        header?.classList.remove('top-2');
-        // showMobileMenu.value = false;
-      } else {
-        // Scroll hacia arriba
-        header?.classList.remove('-top-24');
-        header?.classList.add('top-2');
-      }
-    } else {
-      header?.classList.remove('-top-24');
-      header?.classList.remove('top-2');
-      header?.classList.remove('shadow-md');
-
-      header?.classList.remove('transition-all');
-      header?.classList.remove('duration-500');
-
-      // showMobileMenu.value = false;
-    }
-    lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; // Para Mobile o cuando el scroll es negativo
-  });
-});
-
-const showMenu = () => {
-  showMobileMenu.value = true;
-};
-
-const hideMenu = () => {
-  showMobileMenu.value = false;
-};
+const emit = defineEmits<{
+  (event: 'toggle-menu'): void;
+}>();
 </script>
