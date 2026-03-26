@@ -451,7 +451,7 @@ onMounted(async () => {
           >
             <article
               :class="[
-                'serie-card border border-shori-gray-6 rounded-2xl overflow-hidden bg-gradient-to-br',
+                'h-full serie-card border border-shori-gray-6 rounded-2xl overflow-hidden bg-gradient-to-br',
                 serie.color,
                 serie.borderColor,
               ]"
