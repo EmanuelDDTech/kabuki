@@ -11,12 +11,64 @@ import { onBeforeMount, onMounted } from 'vue';
 import { converToDDMMYYYY, displayDate } from '@/helpers/date';
 import { date } from '@vueform/vueform';
 import StarIcon from '@/modules/common/icons/StarIcon.vue';
+import TruckIcon from '@/modules/common/icons/TruckIcon.vue';
+import CreditCardIcon from '@/modules/common/icons/CreditCardIcon.vue';
+import CertificateIcon from '@/modules/common/icons/CertificateIcon.vue';
+import CircleCheckIcon from '@/modules/common/icons/CircleCheckIcon.vue';
+import CollectionIcon from '@/modules/common/icons/CollectionIcon.vue';
 import { useFeaturedProductStore } from '../stores/featuredProduct';
 import ProductCard from '@/modules/products/components/ProductCard.vue';
 import ProductSkeleton from '@/modules/products/components/ProductSkeleton.vue';
 
 const campaign = useCampaignStore();
 const featuredProductStore = useFeaturedProductStore();
+
+const trustBadges = [
+  {
+    icon: TruckIcon,
+    title: 'Envío a todo México',
+    description: 'Recibe tus cartas de forma segura en la puerta de tu casa.',
+  },
+  {
+    icon: CertificateIcon,
+    title: 'Producto 100% original',
+    description: 'Cartas y productos sellados directamente de The Pokémon Company.',
+  },
+  {
+    icon: CreditCardIcon,
+    title: 'Pago seguro',
+    description: 'Compra con confianza. Aceptamos múltiples métodos de pago.',
+  },
+  {
+    icon: CircleCheckIcon,
+    title: 'Atención personalizada',
+    description: 'Resolvemos tus dudas por WhatsApp e Instagram.',
+  },
+];
+
+const seriesHighlights = [
+  {
+    name: 'Scarlet & Violet',
+    description: 'La era más reciente del TCG con mecánicas ex y Tera.',
+    img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Fprismatic-Photoroom.png?alt=media&token=0f6dfa57-e11c-44be-9788-14024d1047ac',
+    color: 'from-red-500/10 to-violet-500/10',
+    borderColor: 'hover:border-red-400',
+  },
+  {
+    name: 'Sword & Shield',
+    description: 'VMax, VStars y las cartas más icónicas del formato pasado.',
+    img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Fstellar_crown-Photoroom.png?alt=media&token=9292a456-67b8-4391-ae85-d3278ccb7531',
+    color: 'from-cyan-500/10 to-blue-500/10',
+    borderColor: 'hover:border-cyan-400',
+  },
+  {
+    name: 'Sun & Moon',
+    description: 'GXs, Tag Teams y expansiones legendarias.',
+    img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Fshrouded_fable-Photoroom.png?alt=media&token=04344873-eb4c-49aa-b040-ef31807628aa',
+    color: 'from-orange-500/10 to-yellow-500/10',
+    borderColor: 'hover:border-orange-400',
+  },
+];
 
 const closedProductCategories = [
   {
@@ -350,6 +402,113 @@ onMounted(async () => {
         </ul>
       </div>
     </section>
+
+    <!-- Beneficios / Trust badges -->
+    <section class="px-3 py-16 bg-shori-gray-2 border-y border-shori-gray-5">
+      <div class="max-w-screen-xl mx-auto">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div v-for="badge in trustBadges" :key="badge.title" class="trust-badge group">
+            <div
+              class="w-12 h-12 rounded-xl bg-shori-green-3 flex items-center justify-center mb-4 group-hover:bg-shori-green-9 transition-colors duration-300"
+            >
+              <component
+                :is="badge.icon"
+                class="w-6 h-6 text-shori-green-9 group-hover:text-shori-gray-contrast transition-colors duration-300"
+              />
+            </div>
+            <h3 class="font-bold text-lg text-shori-gray-12 mb-1">{{ badge.title }}</h3>
+            <p class="text-sm text-shori-gray-11 leading-relaxed">{{ badge.description }}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Explora por serie -->
+    <section class="px-3">
+      <div class="max-w-screen-xl mx-auto py-16">
+        <header class="flex items-center justify-between mb-10">
+          <div class="flex items-center gap-3">
+            <CollectionIcon
+              class="w-9 h-9 text-shori-gray-contrast bg-shori-green-9 p-2 rounded-full"
+            />
+            <h2 class="text-4xl font-bold">Explora por serie</h2>
+          </div>
+          <router-link
+            :to="{ name: 'series' }"
+            class="flex items-center gap-1 text-sm font-semibold text-shori-green-9 hover:text-shori-green-11 transition-colors"
+          >
+            Ver todas las series
+            <ArrowRight class="w-4 h-4" />
+          </router-link>
+        </header>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <router-link
+            v-for="serie in seriesHighlights"
+            :key="serie.name"
+            :to="{ name: 'series' }"
+            class="group"
+          >
+            <article
+              :class="[
+                'serie-card border border-shori-gray-6 rounded-2xl overflow-hidden bg-gradient-to-br',
+                serie.color,
+                serie.borderColor,
+              ]"
+            >
+              <div class="p-6 flex flex-col h-full min-h-[220px]">
+                <div class="flex-1">
+                  <h3
+                    class="text-2xl font-bold text-shori-gray-12 mb-2 group-hover:text-shori-green-9 transition-colors"
+                  >
+                    {{ serie.name }}
+                  </h3>
+                  <p class="text-shori-gray-11 text-sm leading-relaxed">{{ serie.description }}</p>
+                </div>
+                <div class="flex justify-end mt-4">
+                  <img
+                    :src="serie.img"
+                    :alt="serie.name"
+                    class="w-28 h-28 object-contain drop-shadow-lg group-hover:scale-110 group-hover:-rotate-3 transition-transform duration-300"
+                    loading="lazy"
+                  />
+                </div>
+              </div>
+            </article>
+          </router-link>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA final -->
+    <section class="px-3 pb-16">
+      <div class="max-w-screen-xl mx-auto rounded-2xl overflow-hidden cta-section">
+        <div class="px-8 py-14 md:px-16 md:py-20 text-center relative">
+          <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">
+            ¿Listo para completar tu colección?
+          </h2>
+          <p class="text-green-100 text-lg mb-8 max-w-2xl mx-auto">
+            Descubre las últimas expansiones, las mejores preventas y los precios más competitivos
+            en cartas Pokémon TCG.
+          </p>
+          <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <router-link
+              :to="{ name: 'products' }"
+              class="inline-flex items-center justify-center gap-2 px-8 py-3 bg-white text-shori-green-9 font-bold rounded-xl hover:bg-green-50 transition-colors shadow-lg"
+            >
+              Ver productos
+              <ArrowRight class="w-4 h-4" />
+            </router-link>
+            <router-link
+              :to="{ name: 'series' }"
+              class="inline-flex items-center justify-center gap-2 px-8 py-3 bg-white/15 text-white font-bold rounded-xl hover:bg-white/25 transition-colors border border-white/30"
+            >
+              Explorar series
+            </router-link>
+          </div>
+        </div>
+      </div>
+    </section>
   </main>
 </template>
 
@@ -387,5 +546,35 @@ onMounted(async () => {
 
 .closed-product-card:hover .closed-product-card__accent {
   opacity: 1;
+}
+
+.trust-badge {
+  text-align: center;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  transition: all 0.3s ease;
+}
+
+.trust-badge:hover {
+  background: var(--gray-1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+}
+
+.serie-card {
+  transition: all 0.3s ease;
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.06),
+    0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.serie-card:hover {
+  box-shadow:
+    0 10px 25px -5px rgba(0, 0, 0, 0.08),
+    0 8px 10px -6px rgba(0, 0, 0, 0.04);
+  transform: translateY(-2px);
+}
+
+.cta-section {
+  background: linear-gradient(135deg, var(--green-9) 0%, var(--green-11) 50%, var(--green-12) 100%);
 }
 </style>
