@@ -2,7 +2,7 @@
   <header
     id="site-header"
     class="sticky z-999 px-3 transition-all duration-500"
-    :class="isHeaderHidden ? '-top-24 shadow-lg' : 'top-2 shadow-sm'"
+    :class="isHeaderHidden ? '-top-24' : 'top-2'"
   >
     <div
       class="max-w-7xl mx-auto rounded-2xl border border-shori-gray-6 backdrop-blur-sm"

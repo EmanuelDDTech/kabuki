@@ -1,7 +1,7 @@
 <template>
   <div>
     <TopNavBar />
-    <RouterView class="border-t border-shori-gray-6" />
+    <RouterView class="mt-10" />
     <GeneralFooter class="px-3" />
   </div>
 </template>

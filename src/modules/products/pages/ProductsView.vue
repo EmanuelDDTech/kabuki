@@ -126,7 +126,7 @@ onBeforeUnmount(() => {
 <template>
   <div class="w-full">
     <div
-      class="max-w-screen-xl mx-auto py-8 px-6 flex flex-col lg:flex-row gap-6 min-h-screen relative"
+      class="max-w-screen-xl mx-auto pb-8 px-6 flex flex-col lg:flex-row gap-6 min-h-screen relative"
     >
       <section class="sticky top-6 z-10">
         <div class="flex-1 h-full hidden lg:inline-block">
