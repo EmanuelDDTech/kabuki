@@ -18,34 +18,27 @@
           Explora las expansiones disponibles en {{ serieStore.serieData?.name }}.
         </p>
 
-        <div class="w-full max-w-96 mx-auto mt-6">
+        <div v-if="!serieStore.isLoading" class="w-full max-w-96 mx-auto mt-6">
           <img :src="serieStore.serieData?.logo" :alt="`Logo de ${serieStore.serieData?.name}`" />
         </div>
       </header>
 
       <div>
-        <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+        <ul
+          v-if="serieStore.serieData?.sets && serieStore.serieData.sets.length > 0"
+          class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"
+        >
           <li v-for="set in serieStore.serieData?.sets" :key="set.id" class="flex justify-center">
-            <RouterLink
-              class="w-full max-w-xs bg-shori-gray-3 border border-shori-gray-6 rounded-2xl shadow-sm shadow-shori-gray-track transition-shadow duration-200 overflow-hidden cursor-pointer"
-              :to="{ name: 'expansion', params: { setId: set.id } }"
-            >
-              <div class="relative aspect-[4/3] bg-shori-gray-2">
-                <img
-                  :src="set.logo"
-                  :alt="`Logo de ${set.name}`"
-                  class="absolute inset-0 w-full h-full object-contain p-6 hover:scale-105 transition-transform duration-300"
-                />
-              </div>
+            <SetCard :set="set" />
+          </li>
+        </ul>
 
-              <div
-                class="px-4 py-3 flex items-center gap-2 hover:gap-4 transition-all duration-200"
-              >
-                <h3 class="text-lg font-semibold text-shori-gray-12 truncate">{{ set.name }}</h3>
-                <ArrowRight class="w-4 h-4" />
-              </div>
-            </RouterLink>
-            <!-- <img :src="`${set.logo}.webp`" :alt="`Imagen de ${set.name}`" /> -->
+        <ul
+          v-if="serieStore.isLoading"
+          class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+        >
+          <li v-for="item in skeletonItems" :key="item" class="flex justify-center">
+            <SetCardSkeleton />
           </li>
         </ul>
       </div>
@@ -54,22 +47,28 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { onMounted, onUnmounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { useSerieStore } from '../stores/serie';
+import SetCard from '../components/SetCard.vue';
+import SetCardSkeleton from '../components/SetCardSkeleton.vue';
 
-import ArrowRight from '@/modules/icons/ArrowRight.vue';
 import LeftArrow from '@/modules/icons/ArrowLeft.vue';
 
 const route = useRoute();
 const serieId = ref<string | null>(null);
 
 const serieStore = useSerieStore();
+const skeletonItems = Array.from({ length: 8 }, (_, index) => index);
 
 onMounted(() => {
   const param = route.params.serieId;
   serieId.value = Array.isArray(param) ? param[0] : param;
 
   serieStore.getSerieById(serieId.value);
+});
+
+onUnmounted(() => {
+  serieStore.clearSerie();
 });
 </script>

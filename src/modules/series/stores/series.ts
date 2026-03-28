@@ -45,6 +45,7 @@ export const useSeriesStore = defineStore('series', () => {
   return {
     // State
     // series,
+    isLoading,
 
     // Methods
     getSeries,
