@@ -34,7 +34,7 @@ export const useCategoryStore = defineStore('category', () => {
     }
 
     selectedFilters.value?.forEach((selectedFilter) => {
-      if (selectedFilter.filter_group === group) {
+      if (selectedFilter.filter_group?.id === group.id) {
         exist = true;
       }
     });
@@ -79,7 +79,7 @@ export const useCategoryStore = defineStore('category', () => {
       }
     } else {
       selectedFilters.value = selectedFilters.value.filter(
-        (selectedFilter) => selectedFilter.filter_group !== group.filter_group,
+        (selectedFilter) => selectedFilter.filter_group?.id !== group.filter_group?.id,
       );
     }
   };

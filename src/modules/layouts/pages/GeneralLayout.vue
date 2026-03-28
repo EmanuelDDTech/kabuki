@@ -1,8 +1,7 @@
 <template>
   <div>
     <TopNavBar />
-    <GeneralHeader />
-    <RouterView class="border-t border-shori-gray-6" />
+    <RouterView class="mt-10" />
     <GeneralFooter class="px-3" />
   </div>
 </template>
@@ -11,7 +10,6 @@
 import { RouterView } from 'vue-router';
 import { useHead } from '@unhead/vue';
 import TopNavBar from '../components/TopNavBar.vue';
-import GeneralHeader from '../components/GeneralHeader.vue';
 import GeneralFooter from '../components/GeneralFooter.vue';
 
 useHead({

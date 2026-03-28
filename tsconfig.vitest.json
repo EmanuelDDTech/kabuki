@@ -8,5 +8,5 @@
     "lib": [],
     "types": ["node", "jsdom"]
   },
-  "include": ["src/**/*", "formkit.config.ts"]
+  "include": ["src/**/*", "test/**/*", "formkit.config.ts", "vitest.config.ts"]
 }
