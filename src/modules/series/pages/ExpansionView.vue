@@ -24,13 +24,16 @@
       </header>
 
       <div>
-        <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+        <ul
+          v-if="setStore.setData?.cards && setStore.setData.cards.length > 0"
+          class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"
+        >
           <li v-for="card in setStore.setData?.cards" :key="card.id" class="flex justify-center">
             <RouterLink
               class="w-full max-w-xs cursor-pointer"
               :to="{ name: 'cards', params: { cardId: card.id } }"
             >
-              <div class="">
+              <div class="min-h-[400px] rounded-t-2xl">
                 <img
                   :src="card.image"
                   :alt="`Logo de ${card.name}`"
@@ -51,22 +54,33 @@
             <!-- <img :src="`${set.logo}.webp`" :alt="`Imagen de ${set.name}`" /> -->
           </li>
         </ul>
+
+        <ul
+          v-if="setStore.isLoading"
+          class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+        >
+          <li v-for="item in skeletonItems" :key="item" class="flex justify-center">
+            <ExpansionCardSkeleton />
+          </li>
+        </ul>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { onUnmounted, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 
 import { useSetStore } from '../stores/set';
+import ExpansionCardSkeleton from '../components/ExpansionCardSkeleton.vue';
 
 import ArrowRight from '@/modules/icons/ArrowRight.vue';
 import LeftArrow from '@/modules/icons/ArrowLeft.vue';
 
 const route = useRoute();
 const setId = ref<string | null>(null);
+const skeletonItems = Array.from({ length: 8 }, (_, index) => index);
 
 const setStore = useSetStore();
 
@@ -83,4 +97,8 @@ watch(
     deep: true,
   },
 );
+
+onUnmounted(() => {
+  setStore.clearSet();
+});
 </script>

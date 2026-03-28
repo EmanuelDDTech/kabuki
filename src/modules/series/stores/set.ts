@@ -22,6 +22,10 @@ export const useSetStore = defineStore('set', () => {
     }
   }
 
+  function clearSet() {
+    set.value = null;
+  }
+
   return {
     // State
     set,
@@ -29,6 +33,7 @@ export const useSetStore = defineStore('set', () => {
 
     // Methods
     getSetById,
+    clearSet,
 
     // Getters
     setData: computed(() => set.value),
