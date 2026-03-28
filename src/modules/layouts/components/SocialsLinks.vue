@@ -10,11 +10,17 @@ const openLink = (url: string) => {
 
 <template>
   <div class="flex justify-center gap-3 px-2 items-center text-shori-gray-12">
-    <YoutubeIcon @click="openLink('https://www.youtube.com/@KabukiCards')" class="w-5 h-5" />
-    <TiktokIcon @click="openLink('https://www.tiktok.com/@kabukicards')" class="w-5 h-5" />
+    <YoutubeIcon
+      @click="openLink('https://www.youtube.com/@KabukiCards')"
+      class="w-5 h-5 cursor-pointer hover:text-shori-gray-9 transition-colors"
+    />
+    <TiktokIcon
+      @click="openLink('https://www.tiktok.com/@kabukicards')"
+      class="w-5 h-5 cursor-pointer hover:text-shori-gray-9 transition-colors"
+    />
     <InstagramIcon
       @click="openLink('https://www.instagram.com/shorikame_cards?igsh=MXFpcmt4cjdpaWJsMw==')"
-      class="w-5 h-5"
+      class="w-5 h-5 cursor-pointer hover:text-shori-gray-9 transition-colors"
     />
   </div>
 </template>
