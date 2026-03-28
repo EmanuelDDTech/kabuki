@@ -53,6 +53,7 @@ const seriesHighlights = [
     img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Fprismatic-Photoroom.png?alt=media&token=0f6dfa57-e11c-44be-9788-14024d1047ac',
     color: 'from-red-500/10 to-violet-500/10',
     borderColor: 'hover:border-red-400',
+    serieId: 'sv',
   },
   {
     name: 'Sword & Shield',
@@ -60,6 +61,7 @@ const seriesHighlights = [
     img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Fstellar_crown-Photoroom.png?alt=media&token=9292a456-67b8-4391-ae85-d3278ccb7531',
     color: 'from-cyan-500/10 to-blue-500/10',
     borderColor: 'hover:border-cyan-400',
+    serieId: 'swsh',
   },
   {
     name: 'Sun & Moon',
@@ -67,6 +69,7 @@ const seriesHighlights = [
     img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Fshrouded_fable-Photoroom.png?alt=media&token=04344873-eb4c-49aa-b040-ef31807628aa',
     color: 'from-orange-500/10 to-yellow-500/10',
     borderColor: 'hover:border-orange-400',
+    serieId: 'sm',
   },
 ];
 
@@ -446,7 +449,7 @@ onMounted(async () => {
           <router-link
             v-for="serie in seriesHighlights"
             :key="serie.name"
-            :to="{ name: 'series' }"
+            :to="{ name: 'setsBySeries', params: { serieId: serie.serieId } }"
             class="group"
           >
             <article
