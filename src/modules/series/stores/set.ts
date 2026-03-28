@@ -25,6 +25,7 @@ export const useSetStore = defineStore('set', () => {
   return {
     // State
     set,
+    isLoading,
 
     // Methods
     getSetById,

@@ -22,6 +22,10 @@ export const useSerieStore = defineStore('serie', () => {
     }
   };
 
+  const clearSerie = () => {
+    serie.value = null;
+  };
+
   return {
     // State
     serie,
@@ -29,6 +33,7 @@ export const useSerieStore = defineStore('serie', () => {
 
     // Methods
     getSerieById,
+    clearSerie,
 
     // Getters
     serieData: computed(() => serie.value),

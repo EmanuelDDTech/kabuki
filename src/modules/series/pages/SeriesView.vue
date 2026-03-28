@@ -1,6 +1,15 @@
 <template>
   <div class="py-8 px-6">
     <div class="max-w-7xl mx-auto">
+      <RouterLink
+        :to="{ name: 'home' }"
+        class="inline-block ml-4 text-shori-gray-12 hover:bg-shori-gray-3 py-1 px-2 font-medium rounded-lg text-sm transition-colors"
+      >
+        <div class="flex gap-2 items-center justify-start">
+          <LeftArrow class="w-6" />
+          <p>Volver al inicio</p>
+        </div>
+      </RouterLink>
       <header class="mb-10 text-center">
         <h1 class="text-3xl sm:text-4xl font-bold tracking-tight text-shori-gray-12">Series</h1>
         <p class="mt-3 text-sm sm:text-base text-shori-gray-9 max-w-2xl mx-auto">
@@ -49,10 +58,12 @@
 import { onMounted, onUnmounted } from 'vue';
 
 import { useSeriesStore } from '../stores/series';
-import SeriesCard from '../components/SeriesCard.vue';
-import SeriesCardSkeleton from '../components/SeriesCardSkeleton.vue';
 import { usePaginationStore } from '@/modules/pagination/store/pagination';
+
+import SeriesCard from '../components/SeriesCard.vue';
 import InfiniteScrollList from '@/modules/pagination/components/InfiniteScrollList.vue';
+import SeriesCardSkeleton from '../components/SeriesCardSkeleton.vue';
+import LeftArrow from '@/modules/icons/ArrowLeft.vue';
 
 const seriesStore = useSeriesStore();
 const paginationStore = usePaginationStore();
