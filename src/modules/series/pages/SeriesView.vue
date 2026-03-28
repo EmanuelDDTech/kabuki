@@ -18,25 +18,15 @@
         <template #items="{ items }">
           <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
             <li v-for="item in items" :key="item.id" class="flex justify-center">
-              <RouterLink
-                :to="{ name: 'setsBySeries', params: { serieId: item.id } }"
-                class="w-full max-w-xs bg-shori-gray-3 border border-shori-gray-6 rounded-2xl shadow-sm shadow-shori-gray-track transition-shadow duration-200 overflow-hidden cursor-pointer"
-              >
-                <div class="relative aspect-[4/3] bg-shori-gray-2">
-                  <img
-                    :src="item.logo"
-                    :alt="`Logo de ${item.name}`"
-                    class="absolute inset-0 w-full h-full object-contain p-6 hover:scale-105 transition-transform duration-300"
-                  />
-                </div>
-
-                <div
-                  class="px-4 py-3 flex items-center gap-2 hover:gap-4 transition-all duration-200"
-                >
-                  <h3 class="text-lg font-semibold text-shori-gray-12 truncate">{{ item.name }}</h3>
-                  <ArrowRight class="w-4 h-4" />
-                </div>
-              </RouterLink>
+              <SeriesCard :serie="item" />
+            </li>
+          </ul>
+          <ul
+            v-if="seriesStore.isLoading"
+            class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"
+          >
+            <li v-for="item in skeletonItems" :key="item" class="flex justify-center">
+              <SeriesCardSkeleton />
             </li>
           </ul>
         </template>
@@ -59,12 +49,14 @@
 import { onMounted, onUnmounted } from 'vue';
 
 import { useSeriesStore } from '../stores/series';
+import SeriesCard from '../components/SeriesCard.vue';
+import SeriesCardSkeleton from '../components/SeriesCardSkeleton.vue';
 import { usePaginationStore } from '@/modules/pagination/store/pagination';
 import InfiniteScrollList from '@/modules/pagination/components/InfiniteScrollList.vue';
-import ArrowRight from '@/modules/icons/ArrowRight.vue';
 
 const seriesStore = useSeriesStore();
 const paginationStore = usePaginationStore();
+const skeletonItems = Array.from({ length: 8 }, (_, index) => index);
 
 onMounted(() => {
   paginationStore.setFetcher(seriesStore.getSeries);
