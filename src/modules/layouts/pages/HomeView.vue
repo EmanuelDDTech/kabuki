@@ -162,6 +162,18 @@ const closedProductCategories = [
 const routes = [
   {
     name: 'products',
+    text: 'Perfect Order',
+    img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Fperfect-order.webp?alt=media&token=daa71c24-abcd-494e-b23f-0b7612753dbc',
+    query: { expansion: 'perfect-order' },
+  },
+  {
+    name: 'products',
+    text: 'Ascended Heroes',
+    img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Fascended-heroes.webp?alt=media&token=8a263b9d-4f9b-45b9-8def-c5b74f868b6f',
+    query: { expansion: 'ascended-heroes' },
+  },
+  {
+    name: 'products',
     text: 'Phantasmal Flames',
     img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Fphantasmal_flames-Photoroom.png?alt=media&token=ab6257f9-2e15-45bf-8b57-0861a2d9d4f0',
     query: { expansion: 'phantasmal-flames' },
