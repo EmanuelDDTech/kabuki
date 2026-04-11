@@ -22,7 +22,7 @@
           </div>
         </RouterLink>
 
-        <div class="hidden lg:flex flex-1 max-w-xl relative">
+        <div class="hidden lg:flex flex-1 max-w-xl relative px-2">
           <SearchBar class="w-full max-w-none" />
         </div>
 
