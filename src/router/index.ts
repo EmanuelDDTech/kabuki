@@ -26,7 +26,7 @@ const router = createRouter({
           },
         },
         {
-          path: '/:category(pokemon|magic|riftbound)/productos',
+          path: '/:category(pokemon|magic|riftbound|otros)/productos',
           name: 'products',
           component: () => import('@products/pages/ProductsView.vue'),
         },
