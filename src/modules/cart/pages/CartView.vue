@@ -9,7 +9,9 @@
           <h2 class="text-2xl font-bold border-b-2 border-shori-gray-6 pb-3">Carrito</h2>
           <p class="text-shori-gray-11 mt-6">
             No hay productos en el carrito.
-            <router-link class="text-blue-600" :to="{ name: 'products' }"
+            <router-link
+              class="text-blue-600"
+              :to="{ name: 'products', params: { category: currentProductsCategory } }"
               >Ver productos</router-link
             >
           </p>
@@ -264,6 +266,7 @@ import { useDeliveryStore } from '../stores/delivery';
 import type { Delivery } from '../interfaces/delivery.interface';
 import SideBard from '../components/SideBard.vue';
 import { useUserStore } from '@/modules/auth/stores/user';
+import { useProductsCategory } from '@/composables/useProductsCategory';
 
 const userStore = useUserStore();
 const address = useAddressStore();
@@ -271,6 +274,7 @@ const delivery = useDeliveryStore();
 const cart = useCartStore();
 
 const router = useRouter();
+const { currentProductsCategory } = useProductsCategory();
 
 const toast: any = inject('toast');
 

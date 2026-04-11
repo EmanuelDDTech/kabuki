@@ -22,6 +22,7 @@ import ProductSkeleton from '@/modules/products/components/ProductSkeleton.vue';
 
 const campaign = useCampaignStore();
 const featuredProductStore = useFeaturedProductStore();
+const defaultProductsCategory = 'pokemon';
 
 const trustBadges = [
   {
@@ -162,78 +163,91 @@ const closedProductCategories = [
 const routes = [
   {
     name: 'products',
+    params: { category: defaultProductsCategory },
     text: 'Perfect Order',
     img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Fperfect-order.webp?alt=media&token=daa71c24-abcd-494e-b23f-0b7612753dbc',
     query: { expansion: 'perfect-order' },
   },
   {
     name: 'products',
+    params: { category: defaultProductsCategory },
     text: 'Ascended Heroes',
     img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Fascended-heroes.webp?alt=media&token=8a263b9d-4f9b-45b9-8def-c5b74f868b6f',
     query: { expansion: 'ascended-heroes' },
   },
   {
     name: 'products',
+    params: { category: defaultProductsCategory },
     text: 'Phantasmal Flames',
     img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Fphantasmal_flames-Photoroom.png?alt=media&token=ab6257f9-2e15-45bf-8b57-0861a2d9d4f0',
     query: { expansion: 'phantasmal-flames' },
   },
   {
     name: 'products',
+    params: { category: defaultProductsCategory },
     text: 'Mega Evolution',
     img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Fmega-evolution-Photoroom.png?alt=media&token=15852ead-ef0c-4314-b2d0-441ed9d0181a',
     query: { expansion: 'mega-evolution' },
   },
   {
     name: 'products',
+    params: { category: defaultProductsCategory },
     text: 'Black & White',
     img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Fblack-%26-white-Photoroom.png?alt=media&token=e7b915df-bb61-454a-878f-f2902761eafd',
     query: { expansion: 'black-&-white' },
   },
   {
     name: 'products',
+    params: { category: defaultProductsCategory },
     text: 'Destined Rivals',
     img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Fdestined-rivals-Photoroom.png?alt=media&token=766a6e58-db08-4477-930c-f9771b719993',
     query: { expansion: 'destined-rivals' },
   },
   {
     name: 'products',
+    params: { category: defaultProductsCategory },
     text: 'Journey Together',
     img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Fjourney-together-Photoroom.png?alt=media&token=c13050fa-c86f-4f69-b434-c7a5bc5b5cfe',
     query: { expansion: 'journey-together' },
   },
   {
     name: 'products',
+    params: { category: defaultProductsCategory },
     text: 'Prismatic Evolutions',
     img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Fprismatic-Photoroom.png?alt=media&token=0f6dfa57-e11c-44be-9788-14024d1047ac',
     query: { expansion: 'prismatic-evolution' },
   },
   {
     name: 'products',
+    params: { category: defaultProductsCategory },
     text: 'Surgin Sparks',
     img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Fsurgin_sparks-Photoroom.png?alt=media&token=07ee7fe9-2e9d-4d20-9440-6b14d88e3ddc',
     query: { expansion: 'surgin-sparks' },
   },
   {
     name: 'products',
+    params: { category: defaultProductsCategory },
     text: 'Stellar Crown',
     img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Fstellar_crown-Photoroom.png?alt=media&token=9292a456-67b8-4391-ae85-d3278ccb7531',
     query: { expansion: 'stellar-crown' },
   },
   {
     name: 'products',
+    params: { category: defaultProductsCategory },
     text: 'Shrouded Fable',
     img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Fshrouded_fable-Photoroom.png?alt=media&token=04344873-eb4c-49aa-b040-ef31807628aa',
     query: { expansion: 'shrouded-fable' },
   },
   {
     name: 'products',
+    params: { category: defaultProductsCategory },
     text: 'Twilight Masquerade',
     img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Ftwilight_masquerade-Photoroom.png?alt=media&token=6ea2c443-b0ee-46f6-90ca-9edfd16058ec',
     query: { expansion: 'twilight-masquerade' },
   },
   {
     name: 'products',
+    params: { category: defaultProductsCategory },
     text: 'Temporal Forces',
     img: 'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Ftemporal_forces-Photoroom.png?alt=media&token=15830a31-4e19-40fa-8362-15dea4d2043f',
     query: { expansion: 'temporal-forces' },
@@ -357,7 +371,11 @@ onMounted(async () => {
               <div class="flex items-start justify-between mb-4">
                 <div>
                   <router-link
-                    :to="{ name: 'products', query: { 'tipo-de-producto': category.queryType } }"
+                    :to="{
+                      name: 'products',
+                      params: { category: defaultProductsCategory },
+                      query: { 'tipo-de-producto': category.queryType },
+                    }"
                     class="inline-block"
                   >
                     <h3
@@ -369,7 +387,11 @@ onMounted(async () => {
                   <p class="text-shori-gray-11 italic mt-1">"{{ category.tagline }}"</p>
                 </div>
                 <router-link
-                  :to="{ name: 'products', query: { 'tipo-de-producto': category.queryType } }"
+                  :to="{
+                    name: 'products',
+                    params: { category: defaultProductsCategory },
+                    query: { 'tipo-de-producto': category.queryType },
+                  }"
                   class="flex items-center gap-1 text-sm font-semibold text-shori-green-9 hover:text-shori-green-11 transition-colors shrink-0 mt-1"
                 >
                   Ver todos
@@ -385,6 +407,7 @@ onMounted(async () => {
                     :key="product.expansion"
                     :to="{
                       name: 'products',
+                      params: { category: defaultProductsCategory },
                       query: {
                         'tipo-de-producto': category.queryType,
                         expansion: product.expansion,
@@ -508,7 +531,7 @@ onMounted(async () => {
           </p>
           <div class="flex flex-col sm:flex-row gap-4 justify-center">
             <router-link
-              :to="{ name: 'products' }"
+              :to="{ name: 'products', params: { category: defaultProductsCategory } }"
               class="inline-flex items-center justify-center gap-2 px-8 py-3 bg-white text-shori-green-9 font-bold rounded-xl hover:bg-green-50 transition-colors shadow-lg"
             >
               Ver productos

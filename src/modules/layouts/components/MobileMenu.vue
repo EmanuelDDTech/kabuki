@@ -59,7 +59,7 @@
         </li> -->
         <li>
           <router-link
-            :to="{ name: 'products' }"
+            :to="{ name: 'products', params: { category: currentProductsCategory } }"
             class="flex items-center p-2 text-base font-normal text-shori-gray-12 rounded-lg hover:bg-shori-gray-3"
             :class="router.name === 'products' ? 'bg-shori-gray-3' : ''"
           >
@@ -134,9 +134,11 @@ import LogoutIcon from '@/modules/common/icons/LogoutIcon.vue';
 import LoginIcon from '@/modules/common/icons/LoginIcon.vue';
 import SignupIcon from '@/modules/common/icons/SignupIcon.vue';
 import ButtonLink from '@/modules/common/components/ButtonLink.vue';
+import { useProductsCategory } from '@/composables/useProductsCategory';
 
 defineEmits(['hideMenu']);
 
 const router = useRoute();
 const user = useUserStore();
+const { currentProductsCategory } = useProductsCategory();
 </script>

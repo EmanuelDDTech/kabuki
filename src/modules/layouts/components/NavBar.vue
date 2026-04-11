@@ -14,7 +14,7 @@
     >
       <RouterLink
         v-for="route in routes"
-        :to="{ name: route.name, query: route.query }"
+        :to="{ name: route.name, params: route.params, query: route.query }"
         :key="route.text"
         class="navbar-item group snap-start"
         draggable="false"
@@ -40,6 +40,7 @@ interface route {
   name: string;
   text: string;
   img: string;
+  params?: Record<string, string>;
   query?: Record<string, string>;
 }
 

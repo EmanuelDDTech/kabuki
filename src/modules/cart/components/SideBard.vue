@@ -2,11 +2,12 @@
 import { formatCurrency } from '@/helpers';
 import { useCartStore } from '../stores/cart';
 import { useDeliveryStore } from '../stores/delivery';
-import { inject, onMounted } from 'vue';
+import { inject } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAddressStore } from '../stores/address';
 import { useUserStore } from '@/modules/auth/stores/user';
 import { useDiscountCodeStore } from '@/modules/discountCode/stores/discountCode';
+import { useProductsCategory } from '@/composables/useProductsCategory';
 
 const cart = useCartStore();
 const address = useAddressStore();
@@ -17,6 +18,7 @@ const discountCodeStore = useDiscountCodeStore();
 const toast: any = inject('toast');
 
 const router = useRouter();
+const { currentProductsCategory } = useProductsCategory();
 
 const checkout = () => {
   if (address.selectedAddress === 0) {
@@ -82,7 +84,7 @@ const applyDiscountCode = async () => {
         </h3>
 
         <router-link
-          :to="{ name: 'products' }"
+          :to="{ name: 'products', params: { category: currentProductsCategory } }"
           class="block text-center text-white w-full rounded-full bg-blue-600 hover:bg-blue-500 py-1 mt-3 text-sm transition-colors"
         >
           Ver productos

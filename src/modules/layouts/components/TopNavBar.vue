@@ -37,19 +37,31 @@
             <FloatingOptions v-if="isProductOptionsVisible">
               <template #options>
                 <router-link
-                  :to="{ name: 'products', query: { 'tipo-de-producto': 'producto-cerrado' } }"
+                  :to="{
+                    name: 'products',
+                    params: { category: currentProductsCategory },
+                    query: { 'tipo-de-producto': 'producto-cerrado' },
+                  }"
                   class="whitespace-nowrap px-4 py-2 hover:bg-shori-gray-3 transition-colors rounded"
                   @click="updateProducts"
                   >Producto cerrado</router-link
                 >
                 <router-link
-                  :to="{ name: 'products', query: { 'tipo-de-producto': 'cartas-sueltas' } }"
+                  :to="{
+                    name: 'products',
+                    params: { category: currentProductsCategory },
+                    query: { 'tipo-de-producto': 'cartas-sueltas' },
+                  }"
                   class="whitespace-nowrap px-4 py-2 hover:bg-shori-gray-3 transition-colors rounded"
                   @click="updateProducts"
                   >Carta suelta</router-link
                 >
                 <router-link
-                  :to="{ name: 'products', query: { 'tipo-de-producto': 'decks-competitivos' } }"
+                  :to="{
+                    name: 'products',
+                    params: { category: currentProductsCategory },
+                    query: { 'tipo-de-producto': 'decks-competitivos' },
+                  }"
                   class="whitespace-nowrap px-4 py-2 hover:bg-shori-gray-3 transition-colors rounded"
                   @click="updateProducts"
                   >Decks competitivos</router-link
@@ -139,6 +151,7 @@ import SocialsLinks from './SocialsLinks.vue';
 import SearchBar from '@/modules/search/components/SearchBar.vue';
 import GeneralHeader from './GeneralHeader.vue';
 import MobileMenu from './MobileMenu.vue';
+import { useProductsCategory } from '@/composables/useProductsCategory';
 
 const user = useUserStore();
 const cartStore = useCartStore();
@@ -150,6 +163,7 @@ const isHeaderHidden = ref(false);
 let lastScrollTop = 0;
 
 const route = useRoute();
+const { currentProductsCategory } = useProductsCategory();
 
 const handleScroll = () => {
   const scrollTop = window.scrollY || document.documentElement.scrollTop;
