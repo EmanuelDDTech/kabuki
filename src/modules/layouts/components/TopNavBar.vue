@@ -36,36 +36,81 @@
             </button>
             <FloatingOptions v-if="isProductOptionsVisible">
               <template #options>
-                <router-link
-                  :to="{
-                    name: 'products',
-                    params: { category: currentProductsCategory },
-                    query: { 'tipo-de-producto': 'producto-cerrado' },
-                  }"
-                  class="whitespace-nowrap px-4 py-2 hover:bg-shori-gray-3 transition-colors rounded"
-                  @click="updateProducts"
-                  >Producto cerrado</router-link
-                >
-                <router-link
-                  :to="{
-                    name: 'products',
-                    params: { category: currentProductsCategory },
-                    query: { 'tipo-de-producto': 'cartas-sueltas' },
-                  }"
-                  class="whitespace-nowrap px-4 py-2 hover:bg-shori-gray-3 transition-colors rounded"
-                  @click="updateProducts"
-                  >Carta suelta</router-link
-                >
-                <router-link
-                  :to="{
-                    name: 'products',
-                    params: { category: currentProductsCategory },
-                    query: { 'tipo-de-producto': 'decks-competitivos' },
-                  }"
-                  class="whitespace-nowrap px-4 py-2 hover:bg-shori-gray-3 transition-colors rounded"
-                  @click="updateProducts"
-                  >Decks competitivos</router-link
-                >
+                <div class="grid grid-cols-2 gap-3 min-w-[46rem] p-1">
+                  <div
+                    v-for="category in productCategories"
+                    :key="category.category"
+                    class="group relative overflow-hidden rounded-xl border border-shori-gray-6 bg-shori-gray-1/80 px-4 py-3 transition-all duration-300 hover:-translate-y-0.5 hover:border-shori-green-8 hover:shadow-lg"
+                    :class="[
+                      category.accentClass,
+                      currentProductsCategory === category.category
+                        ? 'ring-1 ring-shori-green-8 border-shori-green-8'
+                        : '',
+                    ]"
+                  >
+                    <span
+                      class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-shori-green-8/70 to-transparent"
+                    ></span>
+
+                    <RouterLink
+                      :to="{ name: 'products', params: { category: category.category } }"
+                      class="font-bold text-[0.95rem] text-shori-gray-12 tracking-wide hover:text-shori-green-10 transition-colors"
+                      @click="handleCategoryClick"
+                    >
+                      {{ category.label }}
+                    </RouterLink>
+
+                    <div class="grid grid-cols-2 gap-3 mt-2">
+                      <div>
+                        <p class="text-[11px] uppercase tracking-[0.12em] text-shori-gray-9 mb-1.5">
+                          Tipos de producto
+                        </p>
+                        <ul class="space-y-1.5">
+                          <li
+                            v-for="productType in category.productTypes"
+                            :key="`${category.category}-${productType.value}`"
+                          >
+                            <RouterLink
+                              :to="{
+                                name: 'products',
+                                params: { category: category.category },
+                                query: { 'tipo-de-producto': productType.value },
+                              }"
+                              class="text-xs text-shori-gray-11 hover:text-shori-green-10 transition-colors"
+                              @click="handleCategoryClick"
+                            >
+                              {{ productType.label }}
+                            </RouterLink>
+                          </li>
+                        </ul>
+                      </div>
+
+                      <div>
+                        <p class="text-[11px] uppercase tracking-[0.12em] text-shori-gray-9 mb-1.5">
+                          Ultimas expansiones
+                        </p>
+                        <ul class="space-y-1.5">
+                          <li
+                            v-for="expansion in category.latestExpansions"
+                            :key="`${category.category}-${expansion.value}`"
+                          >
+                            <RouterLink
+                              :to="{
+                                name: 'products',
+                                params: { category: category.category },
+                                query: { expansion: expansion.value },
+                              }"
+                              class="text-xs text-shori-gray-11 hover:text-shori-green-10 transition-colors"
+                              @click="handleCategoryClick"
+                            >
+                              {{ expansion.label }}
+                            </RouterLink>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </template>
             </FloatingOptions>
           </div>
@@ -151,7 +196,7 @@ import SocialsLinks from './SocialsLinks.vue';
 import SearchBar from '@/modules/search/components/SearchBar.vue';
 import GeneralHeader from './GeneralHeader.vue';
 import MobileMenu from './MobileMenu.vue';
-import { useProductsCategory } from '@/composables/useProductsCategory';
+import { useProductsCategory, type ProductCategory } from '@/composables/useProductsCategory';
 
 const user = useUserStore();
 const cartStore = useCartStore();
@@ -164,6 +209,93 @@ let lastScrollTop = 0;
 
 const route = useRoute();
 const { currentProductsCategory } = useProductsCategory();
+
+interface ProductCategoryLink {
+  label: string;
+  category: ProductCategory;
+  accentClass: string;
+  productTypes: Array<{ label: string; value: string }>;
+  latestExpansions: Array<{ label: string; value: string }>;
+}
+
+const productCategories: ProductCategoryLink[] = [
+  {
+    label: 'Pokemon',
+    category: 'pokemon',
+    accentClass: 'bg-gradient-to-br from-amber-200/30 via-transparent to-orange-400/15',
+    productTypes: [
+      { label: 'Booster Box', value: 'booster-box' },
+      { label: 'Elite Trainer Box', value: 'elite-trainer-box' },
+      { label: 'Premium Collection', value: 'premium-collection' },
+      // { label: 'Carta suelta', value: 'cartas-sueltas' },
+      // { label: 'Deck competitivo', value: 'decks-competitivos' },
+    ],
+    latestExpansions: [
+      { label: 'Perfect Order', value: 'perfect-order' },
+      { label: 'Ascended Heroes', value: 'ascended-heroes' },
+      { label: 'Phantasmal Flames', value: 'phantasmal-flames' },
+      { label: 'Mega Evolutions', value: 'mega-evolution' },
+      { label: 'Destined Rivals', value: 'destined-rivals' },
+    ],
+  },
+  {
+    label: 'Magic',
+    category: 'magic',
+    accentClass: 'bg-gradient-to-br from-emerald-200/30 via-transparent to-teal-400/15',
+    productTypes: [
+      // { label: 'Booster Box', value: 'booster-box' },
+      { label: 'Producto Sellado', value: 'producto-sellado' },
+      { label: 'Bundles', value: 'bundles' },
+      // { label: 'Carta suelta', value: 'cartas-sueltas' },
+      // { label: 'Deck competitivo', value: 'decks-competitivos' },
+    ],
+    latestExpansions: [
+      // { label: 'Duskmourn', value: 'duskmourn' },
+      // { label: 'Outlaws of Thunder Junction', value: 'outlaws-of-thunder-junction' },
+      // { label: 'Murders at Karlov Manor', value: 'murders-at-karlov-manor' },
+      // { label: 'Bloomburrow', value: 'bloomburrow' },
+      { label: 'Teenage Mutant Ninja Turtles', value: 'teenage-mutant-ninja-turtles' },
+    ],
+  },
+  {
+    label: 'Riftbound',
+    category: 'riftbound',
+    accentClass: 'bg-gradient-to-br from-sky-200/30 via-transparent to-cyan-400/20',
+    productTypes: [
+      { label: 'Booster Display', value: 'booster-display' },
+      { label: 'Decks', value: 'decks' },
+      // { label: 'Bundle', value: 'bundle' },
+      // { label: 'Carta suelta', value: 'cartas-sueltas' },
+      // { label: 'Deck competitivo', value: 'decks-competitivos' },
+    ],
+    latestExpansions: [
+      // { label: 'Origins', value: 'origins' },
+      // { label: 'Awakenings', value: 'awakenings' },
+      // { label: 'Embers of War', value: 'embers-of-war' },
+      // { label: 'Chronicles', value: 'chronicles' },
+      { label: 'Spiritforged', value: 'spiritforged' },
+    ],
+  },
+  {
+    label: 'Otros',
+    category: 'otros',
+    accentClass: 'bg-gradient-to-br from-zinc-200/35 via-transparent to-slate-400/20',
+    productTypes: [
+      { label: 'Micas', value: 'micas' },
+      // { label: 'Accesorios', value: 'accesorios' },
+      // { label: 'Fundas y sleeves', value: 'fundas-y-sleeves' },
+      // { label: 'Binders', value: 'binders' },
+      // { label: 'Deck box', value: 'deck-box' },
+    ],
+    latestExpansions: [
+      // { label: 'Coleccion Especial 151', value: '151' },
+      // { label: 'Mega Evolution', value: 'mega-evolution' },
+      // { label: 'Destined Rivals', value: 'destined-rivals' },
+      // { label: 'Journey Together', value: 'journey-together' },
+      // { label: 'Temporal Forces', value: 'temporal-forces' },
+    ],
+  },
+];
 
 const handleScroll = () => {
   const scrollTop = window.scrollY || document.documentElement.scrollTop;
@@ -196,6 +328,11 @@ const showProductOptions = () => {
 
 const hideProductOptions = () => {
   isProductOptionsVisible.value = false;
+};
+
+const handleCategoryClick = () => {
+  hideProductOptions();
+  updateProducts();
 };
 
 const updateProducts = () => {
