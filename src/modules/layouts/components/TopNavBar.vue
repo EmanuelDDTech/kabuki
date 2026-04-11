@@ -18,7 +18,7 @@
           />
           <div class="hidden sm:flex flex-col leading-tight">
             <span class="text-lg font-extrabold text-shori-gray-12">ShoriKameCards</span>
-            <span class="text-xs text-shori-gray-10">Pokemon TCG Store</span>
+            <!-- <span class="text-xs text-shori-gray-10">Pokemon TCG Store</span> -->
           </div>
         </RouterLink>
 
