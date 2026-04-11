@@ -12,7 +12,7 @@
       <div class="flex items-center gap-3 px-4 py-3 lg:px-6">
         <RouterLink :to="{ name: 'home' }" class="flex items-center gap-3 shrink-0">
           <img
-            src="https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Fkame_01.png?alt=media&token=9c1e6563-2477-4960-8ac0-efffbd5e0634"
+            src="https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Fshorikame-logo(1).webp?alt=media&token=a23cdef9-79f4-4de9-9aee-e968ef1f9bb0"
             class="h-12 w-12 rounded-xl object-cover"
             alt="ShoriKameCards"
           />
