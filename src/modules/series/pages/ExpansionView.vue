@@ -25,6 +25,7 @@
 
       <div>
         <!-- Filter Bar -->
+        <!-- <div class="relative z-10">
         <CardFilterBar
           :sortBy="filters.sortBy"
           :rarities="filters.rarities"
@@ -37,6 +38,7 @@
           @toggle-type="toggleType"
           @clear-filters="clearFilters"
         />
+        </div> -->
 
         <!-- Cards Grid -->
         <ul
@@ -101,6 +103,7 @@ import CardFilterBar from '../components/CardFilterBar.vue';
 
 import ArrowRight from '@/modules/icons/ArrowRight.vue';
 import LeftArrow from '@/modules/icons/ArrowLeft.vue';
+import { set } from 'date-fns';
 
 const route = useRoute();
 const setId = ref<string | null>(null);

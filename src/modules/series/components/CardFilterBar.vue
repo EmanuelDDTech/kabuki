@@ -50,6 +50,7 @@ const typeSummary = computed(() => {
 const activeFiltersCount = computed(() => props.rarities.length + props.types.length);
 
 const onSortChange = (event: Event) => {
+  console.log('Sort option changed:', (event.target as HTMLSelectElement).value);
   const value = (event.target as HTMLSelectElement).value as SortType;
   emit('update:sortBy', value);
 };
