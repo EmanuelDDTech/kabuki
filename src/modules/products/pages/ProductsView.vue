@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onBeforeMount, onBeforeUnmount, onMounted, onUnmounted, ref } from 'vue';
+import { computed, onBeforeMount, onBeforeUnmount, onMounted, onUnmounted, ref, watch } from 'vue';
 import { useRoute, type LocationQueryValue } from 'vue-router';
 import { useInfiniteQuery } from '@tanstack/vue-query';
 
@@ -30,6 +30,12 @@ const currentProductsCategoryId = computed(() => getProductsCategoryId(route.par
 
 onBeforeMount(async () => {
   await filters.findFilters(currentProductsCategoryId.value);
+  await filters.getFilters();
+  priceRange.value.update([filters.minPrice, filters.maxPrice]);
+});
+
+watch(currentProductsCategoryId, async (newId) => {
+  await filters.findFilters(newId);
   await filters.getFilters();
   priceRange.value.update([filters.minPrice, filters.maxPrice]);
 });
