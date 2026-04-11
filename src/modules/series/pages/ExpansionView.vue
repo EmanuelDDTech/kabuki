@@ -24,11 +24,28 @@
       </header>
 
       <div>
+        <!-- Filter Bar -->
+        <!-- <div class="relative z-10">
+        <CardFilterBar
+          :sortBy="filters.sortBy"
+          :rarities="filters.rarities"
+          :types="filters.types"
+          :availableRarities="uniqueRarities"
+          :availableTypes="uniqueTypes"
+          :hasActiveFilters="hasActiveFilters"
+          @update:sortBy="setSortBy"
+          @toggle-rarity="toggleRarity"
+          @toggle-type="toggleType"
+          @clear-filters="clearFilters"
+        />
+        </div> -->
+
+        <!-- Cards Grid -->
         <ul
-          v-if="setStore.setData?.cards && setStore.setData.cards.length > 0"
+          v-if="filteredCards.length > 0 && !setStore.isLoading"
           class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"
         >
-          <li v-for="card in setStore.setData?.cards" :key="card.id" class="flex justify-center">
+          <li v-for="card in filteredCards" :key="card.id" class="flex justify-center">
             <RouterLink
               class="w-full max-w-xs cursor-pointer"
               :to="{ name: 'cards', params: { cardId: card.id } }"
@@ -51,10 +68,17 @@
                 <ArrowRight class="w-4 h-4" />
               </div>
             </RouterLink>
-            <!-- <img :src="`${set.logo}.webp`" :alt="`Imagen de ${set.name}`" /> -->
           </li>
         </ul>
 
+        <!-- Empty State -->
+        <div v-if="filteredCards.length === 0 && !setStore.isLoading" class="text-center py-12">
+          <p class="text-shori-gray-9 text-lg">
+            No se encontraron cartas con los filtros aplicados.
+          </p>
+        </div>
+
+        <!-- Skeleton Loading -->
         <ul
           v-if="setStore.isLoading"
           class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
@@ -69,20 +93,37 @@
 </template>
 
 <script setup lang="ts">
-import { onUnmounted, ref, watch } from 'vue';
+import { computed, onUnmounted, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 
 import { useSetStore } from '../stores/set';
+import { useCardFilters } from '../composables/useCardFilters';
 import ExpansionCardSkeleton from '../components/ExpansionCardSkeleton.vue';
+import CardFilterBar from '../components/CardFilterBar.vue';
 
 import ArrowRight from '@/modules/icons/ArrowRight.vue';
 import LeftArrow from '@/modules/icons/ArrowLeft.vue';
+import { set } from 'date-fns';
 
 const route = useRoute();
 const setId = ref<string | null>(null);
 const skeletonItems = Array.from({ length: 8 }, (_, index) => index);
 
 const setStore = useSetStore();
+
+const cards = computed(() => setStore.setData?.cards || []);
+
+const {
+  filteredCards,
+  uniqueRarities,
+  uniqueTypes,
+  filters,
+  setSortBy,
+  toggleRarity,
+  toggleType,
+  clearFilters,
+  hasActiveFilters,
+} = useCardFilters(cards);
 
 watch(
   route,

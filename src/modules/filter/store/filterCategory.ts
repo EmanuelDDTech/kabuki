@@ -5,6 +5,7 @@ import { useRoute, useRouter } from 'vue-router';
 import { useProductsStore } from '@/modules/products/stores/products';
 import type { FilterCategory } from '../interfaces';
 import type { R } from 'node_modules/vuefire/dist/shared/vuefire.cc4a8ea4.mjs';
+import { getProductsCategoryId } from '@/composables/useProductsCategory';
 
 export const useFilterCategoryStore = defineStore('filterCategory', () => {
   const MAX_PRICE = 20000;
@@ -105,7 +106,10 @@ export const useFilterCategoryStore = defineStore('filterCategory', () => {
   const getProducts = async () => {
     clearTimeout(timer);
     timer = setTimeout(async () => {
-      await products.getProductsWithFilters(createStringQuery.value);
+      await products.getProductsWithFilters(
+        createStringQuery.value,
+        getProductsCategoryId(route.params.category),
+      );
     }, 50);
   };
 

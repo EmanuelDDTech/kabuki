@@ -29,16 +29,16 @@ describe('router lastPath global guard', () => {
   });
 
   it('guarda lastPath cuando la ruta no es auth', async () => {
-    await router.push('/productos');
+    await router.push('/pokemon/productos');
 
-    expect(localStorage.getItem('lastPath')).toBe('/productos');
+    expect(localStorage.getItem('lastPath')).toBe('/pokemon/productos');
   });
 
   it('no guarda lastPath para rutas de auth', async () => {
-    localStorage.setItem('lastPath', '/productos');
+    localStorage.setItem('lastPath', '/pokemon/productos');
 
     await router.push('/auth/login');
 
-    expect(localStorage.getItem('lastPath')).toBe('/productos');
+    expect(localStorage.getItem('lastPath')).toBe('/pokemon/productos');
   });
 });

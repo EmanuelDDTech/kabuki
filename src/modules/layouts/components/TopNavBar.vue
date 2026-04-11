@@ -12,17 +12,17 @@
       <div class="flex items-center gap-3 px-4 py-3 lg:px-6">
         <RouterLink :to="{ name: 'home' }" class="flex items-center gap-3 shrink-0">
           <img
-            src="https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Fkame_01.png?alt=media&token=9c1e6563-2477-4960-8ac0-efffbd5e0634"
+            src="https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Fshorikame-logo(1).webp?alt=media&token=a23cdef9-79f4-4de9-9aee-e968ef1f9bb0"
             class="h-12 w-12 rounded-xl object-cover"
             alt="ShoriKameCards"
           />
           <div class="hidden sm:flex flex-col leading-tight">
             <span class="text-lg font-extrabold text-shori-gray-12">ShoriKameCards</span>
-            <span class="text-xs text-shori-gray-10">Pokemon TCG Store</span>
+            <!-- <span class="text-xs text-shori-gray-10">Pokemon TCG Store</span> -->
           </div>
         </RouterLink>
 
-        <div class="hidden lg:flex flex-1 max-w-xl relative">
+        <div class="hidden lg:flex flex-1 max-w-xl relative px-2">
           <SearchBar class="w-full max-w-none" />
         </div>
 
@@ -37,19 +37,31 @@
             <FloatingOptions v-if="isProductOptionsVisible">
               <template #options>
                 <router-link
-                  :to="{ name: 'products', query: { 'tipo-de-producto': 'producto-cerrado' } }"
+                  :to="{
+                    name: 'products',
+                    params: { category: currentProductsCategory },
+                    query: { 'tipo-de-producto': 'producto-cerrado' },
+                  }"
                   class="whitespace-nowrap px-4 py-2 hover:bg-shori-gray-3 transition-colors rounded"
                   @click="updateProducts"
                   >Producto cerrado</router-link
                 >
                 <router-link
-                  :to="{ name: 'products', query: { 'tipo-de-producto': 'cartas-sueltas' } }"
+                  :to="{
+                    name: 'products',
+                    params: { category: currentProductsCategory },
+                    query: { 'tipo-de-producto': 'cartas-sueltas' },
+                  }"
                   class="whitespace-nowrap px-4 py-2 hover:bg-shori-gray-3 transition-colors rounded"
                   @click="updateProducts"
                   >Carta suelta</router-link
                 >
                 <router-link
-                  :to="{ name: 'products', query: { 'tipo-de-producto': 'decks-competitivos' } }"
+                  :to="{
+                    name: 'products',
+                    params: { category: currentProductsCategory },
+                    query: { 'tipo-de-producto': 'decks-competitivos' },
+                  }"
                   class="whitespace-nowrap px-4 py-2 hover:bg-shori-gray-3 transition-colors rounded"
                   @click="updateProducts"
                   >Decks competitivos</router-link
@@ -139,6 +151,7 @@ import SocialsLinks from './SocialsLinks.vue';
 import SearchBar from '@/modules/search/components/SearchBar.vue';
 import GeneralHeader from './GeneralHeader.vue';
 import MobileMenu from './MobileMenu.vue';
+import { useProductsCategory } from '@/composables/useProductsCategory';
 
 const user = useUserStore();
 const cartStore = useCartStore();
@@ -150,6 +163,7 @@ const isHeaderHidden = ref(false);
 let lastScrollTop = 0;
 
 const route = useRoute();
+const { currentProductsCategory } = useProductsCategory();
 
 const handleScroll = () => {
   const scrollTop = window.scrollY || document.documentElement.scrollTop;

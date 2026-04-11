@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onBeforeMount, onBeforeUnmount, onMounted, onUnmounted, ref, watch } from 'vue';
+import { computed, onBeforeMount, onBeforeUnmount, onMounted, onUnmounted, ref } from 'vue';
 import { useRoute, type LocationQueryValue } from 'vue-router';
 import { useInfiniteQuery } from '@tanstack/vue-query';
 
@@ -18,6 +18,7 @@ import ChevronDownIcon from '@/modules/common/icons/ChevronDownIcon.vue';
 import type { ProductResponse } from '../interfaces';
 import LoaderWithText from '@/modules/common/components/LoaderWithText.vue';
 import OrderSelect from '@/modules/filter/components/OrderSelect.vue';
+import { getProductsCategoryId } from '@/composables/useProductsCategory';
 
 const filters = useFilterCategoryStore();
 const products = useProductsStore();
@@ -25,9 +26,10 @@ const products = useProductsStore();
 const priceRange = ref();
 
 const route = useRoute();
+const currentProductsCategoryId = computed(() => getProductsCategoryId(route.params.category));
 
 onBeforeMount(async () => {
-  await filters.findFilters(1);
+  await filters.findFilters(currentProductsCategoryId.value);
   await filters.getFilters();
   priceRange.value.update([filters.minPrice, filters.maxPrice]);
 });
@@ -88,6 +90,7 @@ const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status } =
     queryFn: ({ pageParam }) => {
       return products.getProductsWithFilters(
         `${filters.createStringQuery}${pageParam ? `&page=${pageParam}` : ''}&limit=12&active=true`,
+        currentProductsCategoryId.value,
       );
     },
     getNextPageParam: (lastPage) => {

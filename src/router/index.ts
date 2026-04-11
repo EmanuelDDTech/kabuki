@@ -4,6 +4,8 @@ import NotFound404 from '@/modules/common/pages/NotFound404.vue';
 import isAdminGuard from '@/modules/auth/guards/is-admin.guard';
 import isAuthenticatedGuard from '@/modules/auth/guards/is-authenticated.guard';
 
+const DEFAULT_PRODUCTS_CATEGORY = 'pokemon';
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -18,6 +20,13 @@ const router = createRouter({
         },
         {
           path: '/productos',
+          redirect: {
+            name: 'products',
+            params: { category: DEFAULT_PRODUCTS_CATEGORY },
+          },
+        },
+        {
+          path: '/:category(pokemon|magic|riftbound)/productos',
           name: 'products',
           component: () => import('@products/pages/ProductsView.vue'),
         },
