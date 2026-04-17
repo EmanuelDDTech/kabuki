@@ -1,96 +1,130 @@
 <template>
-  <aside class="w-56 h-screen" aria-label="Sidebar">
+  <aside class="w-[22rem] max-w-[92vw] h-screen" aria-label="Sidebar">
     <div
-      class="px-4 py-4 h-full overflow-y-auto rounded-lg bg-shori-gray-2 shadow-lg border border-shori-gray-6"
+      class="h-full overflow-y-auto rounded-2xl border border-shori-gray-6 bg-gradient-to-b from-shori-gray-1 via-shori-gray-2 to-shori-gray-1 shadow-2xl"
     >
-      <ul class="h-full gap-2 flex flex-col justify-start">
-        <li class="flex items-center justify-end">
-          <XMarkIcon
+      <div
+        class="sticky top-0 z-10 border-b border-shori-gray-6 bg-shori-gray-1/90 px-4 py-4 backdrop-blur"
+      >
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-[11px] tracking-[0.14em] uppercase text-shori-gray-9">Menú</p>
+            <p class="text-base font-bold text-shori-gray-12">Explora ShoriKameCards</p>
+          </div>
+          <button
+            type="button"
+            class="rounded-xl p-1.5 text-shori-gray-11 transition-colors hover:bg-shori-gray-3"
+            aria-label="Cerrar menu"
             @click="$emit('hideMenu')"
-            class="w-7 mr-3 aspect-square text-shori-gray-11 hover:bg-shori-gray-3 rounded-lg cursor-pointer"
-          />
-        </li>
-        <li>
+          >
+            <XMarkIcon class="w-7 aspect-square" />
+          </button>
+        </div>
+      </div>
+
+      <div class="px-4 py-4 space-y-4">
+        <div class="space-y-2 rounded-xl border border-shori-gray-6 bg-shori-gray-1/70 p-2">
           <router-link
             :to="{ name: 'cart' }"
-            class="flex items-center p-2 text-base font-normal text-shori-gray-12 rounded-lg hover:bg-shori-gray-3"
-            :class="router.name === 'cart' ? 'bg-shori-gray-3' : ''"
+            class="flex items-center rounded-lg px-2.5 py-2 text-sm font-semibold text-shori-gray-12 transition-colors hover:bg-shori-gray-3"
+            :class="route.name === 'cart' ? 'bg-shori-gray-3' : ''"
           >
-            <CartIcon class="w-6 h-6 transition duration-75 group-hover:text-shori-gray-12" />
+            <CartIcon class="h-5 w-5" />
             <span class="ml-3">Carrito</span>
           </router-link>
-        </li>
-        <li>
+
           <router-link
             :to="{ name: 'myPurchases' }"
-            class="flex items-center p-2 text-base font-normal text-shori-gray-12 rounded-lg hover:bg-shori-gray-3"
+            class="flex items-center rounded-lg px-2.5 py-2 text-sm font-semibold text-shori-gray-12 transition-colors hover:bg-shori-gray-3"
+            :class="route.name === 'myPurchases' ? 'bg-shori-gray-3' : ''"
           >
-            <PurchasesIcon
-              class="flex-shrink-0 w-6 h-6 transition duration-75 group-hover:text-shori-gray-12"
-            />
-            <span class="flex-1 ml-3 whitespace-nowrap">Mis compras</span>
-            <!-- <span
-              class="inline-flex items-center justify-center px-2 ml-3 text-sm font-medium text-gray-800 bg-gray-200 rounded-full"
-              >Pro</span
-            > -->
+            <PurchasesIcon class="h-5 w-5" />
+            <span class="ml-3">Mis compras</span>
           </router-link>
-        </li>
-        <!-- <li>
-          <a
-            href="#"
-            target="_blank"
-            class="flex items-center p-2 text-base font-normal text-shori-gray-12 rounded-lg hover:bg-shori-gray-3"
-          >
-            <svg
-              class="flex-shrink-0 w-6 h-6 text-gray-400 transition duration-75 group-hover:text-shori-gray-12"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-              xmlns="http://www.w3.org/2000/svg"
+        </div>
+
+        <section class="rounded-xl border border-shori-gray-6 bg-shori-gray-1/70 p-3">
+          <div class="flex items-center gap-2">
+            <ProductIcon class="h-5 w-5 text-shori-gray-11" />
+            <h2 class="text-sm font-bold tracking-wide text-shori-gray-12">Productos</h2>
+          </div>
+
+          <div class="mt-3 space-y-3">
+            <article
+              v-for="category in mobileProductCategories"
+              :key="category.category"
+              class="rounded-xl border border-shori-gray-6 bg-shori-gray-1/60 p-3"
+              :class="[
+                category.accentClass,
+                isCategoryActive(category.category)
+                  ? 'ring-1 ring-shori-green-8 border-shori-green-8'
+                  : '',
+              ]"
             >
-              <path
-                d="M8.707 7.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l2-2a1 1 0 00-1.414-1.414L11 7.586V3a1 1 0 10-2 0v4.586l-.293-.293z"
-              ></path>
-              <path
-                d="M3 5a2 2 0 012-2h1a1 1 0 010 2H5v7h2l1 2h4l1-2h2V5h-1a1 1 0 110-2h1a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V5z"
-              ></path>
-            </svg>
-            <span class="flex-1 ml-3 whitespace-nowrap">Me gusta</span>
-          </a>
-        </li> -->
-        <li>
-          <router-link
-            :to="{ name: 'products', params: { category: currentProductsCategory } }"
-            class="flex items-center p-2 text-base font-normal text-shori-gray-12 rounded-lg hover:bg-shori-gray-3"
-            :class="router.name === 'products' ? 'bg-shori-gray-3' : ''"
-          >
-            <ProductIcon
-              class="flex-shrink-0 w-6 h-6 transition duration-75 group-hover:text-shori-gray-12"
-            />
-            <span class="flex-1 ml-3 whitespace-nowrap">Productos</span>
-          </router-link>
-        </li>
+              <RouterLink
+                :to="{ name: 'products', params: { category: category.category } }"
+                class="text-sm font-bold text-shori-gray-12 transition-colors hover:text-shori-green-10"
+              >
+                {{ category.label }}
+              </RouterLink>
 
-        <li v-if="user.isSet">
-          <router-link
-            :to="{ name: 'myPurchases' }"
-            class="flex items-center p-2 text-base font-normal text-shori-gray-12 rounded-lg hover:bg-shori-gray-3"
-          >
-            <ProfileIcon
-              class="flex-shrink-0 w-6 h-6 transition duration-75 group-hover:text-shori-gray-12"
-            />
-            <span class="flex-1 ml-3 whitespace-nowrap">{{ user.getUserName }}</span>
-          </router-link>
-        </li>
+              <div v-if="category.productTypes.length" class="mt-2">
+                <p class="text-[10px] uppercase tracking-[0.12em] text-shori-gray-9">Tipos</p>
+                <div class="mt-1.5 flex flex-wrap gap-1.5">
+                  <RouterLink
+                    v-for="productType in category.productTypes"
+                    :key="`${category.category}-${productType.value}`"
+                    :to="{
+                      name: 'products',
+                      params: { category: category.category },
+                      query: { 'tipo-de-producto': productType.value },
+                    }"
+                    class="rounded-md border border-shori-gray-6 px-2 py-1 text-[11px] font-medium text-shori-gray-11 transition-colors hover:border-shori-green-8 hover:text-shori-green-10"
+                  >
+                    {{ productType.label }}
+                  </RouterLink>
+                </div>
+              </div>
 
-        <div class="flex-1 flex-col flex justify-end mt-4">
+              <div v-if="category.latestExpansions.length" class="mt-2">
+                <p class="text-[10px] uppercase tracking-[0.12em] text-shori-gray-9">Expansiones</p>
+                <div class="mt-1.5 flex flex-wrap gap-1.5">
+                  <RouterLink
+                    v-for="expansion in category.latestExpansions"
+                    :key="`${category.category}-${expansion.value}`"
+                    :to="{
+                      name: 'products',
+                      params: { category: category.category },
+                      query: { expansion: expansion.value },
+                    }"
+                    class="rounded-md border border-shori-gray-6 px-2 py-1 text-[11px] font-medium text-shori-gray-11 transition-colors hover:border-shori-green-8 hover:text-shori-green-10"
+                  >
+                    {{ expansion.label }}
+                  </RouterLink>
+                </div>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <router-link
+          v-if="user.isSet"
+          :to="{ name: 'myPurchases' }"
+          class="flex items-center rounded-xl border border-shori-gray-6 bg-shori-gray-1/70 px-3 py-2 text-sm font-semibold text-shori-gray-12 transition-colors hover:bg-shori-gray-3"
+        >
+          <ProfileIcon class="h-5 w-5" />
+          <span class="ml-3 whitespace-nowrap">{{ user.getUserName }}</span>
+        </router-link>
+
+        <div class="space-y-2 p-2">
           <ButtonLink
             v-if="!user.isSet"
             to="login"
             text="Iniciar sesión"
             type="primary"
             size="small"
+            width="full"
             :icon="LoginIcon"
-            class="my-2"
           />
 
           <ButtonLink
@@ -99,29 +133,31 @@
             text="Registrarse"
             type="secondary"
             size="small"
+            width="full"
             :icon="SignupIcon"
-            class="mb-4"
           />
 
-          <div v-if="user.isSet" class="mb-4">
-            <button
-              @click="user.logout"
-              class="flex w-full justify-start items-center p-2 text-base font-normal text-shori-gray-12 rounded-lg hover:bg-shori-gray-3"
-            >
-              <LogoutIcon
-                class="flex-shrink-0 w-6 h-6 transition duration-75 group-hover:text-shori-gray-12"
-              />
-              <span class="ml-3 whitespace-nowrap">Cerrar sesión</span>
-            </button>
-          </div>
-          <SocialsLinks />
+          <button
+            v-if="user.isSet"
+            type="button"
+            @click="user.logout"
+            class="flex w-full items-center rounded-lg px-2.5 py-2 text-sm font-semibold text-shori-red-9 transition-colors hover:bg-shori-red-3/30"
+          >
+            <LogoutIcon class="h-5 w-5" />
+            <span class="ml-3 whitespace-nowrap">Cerrar sesión</span>
+          </button>
         </div>
-      </ul>
+
+        <div class="rounded-xl border border-shori-gray-6 bg-shori-gray-1/70 px-3 py-2">
+          <SocialsLinks class="justify-start" />
+        </div>
+      </div>
     </div>
   </aside>
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue';
 import { useRoute } from 'vue-router';
 import XMarkIcon from './XMarkIcon.vue';
 import { useUserStore } from '@/modules/auth/stores/user';
@@ -134,11 +170,74 @@ import LogoutIcon from '@/modules/common/icons/LogoutIcon.vue';
 import LoginIcon from '@/modules/common/icons/LoginIcon.vue';
 import SignupIcon from '@/modules/common/icons/SignupIcon.vue';
 import ButtonLink from '@/modules/common/components/ButtonLink.vue';
-import { useProductsCategory } from '@/composables/useProductsCategory';
+import { useProductsCategory, type ProductCategory } from '@/composables/useProductsCategory';
 
 defineEmits(['hideMenu']);
 
-const router = useRoute();
+interface ProductShortcut {
+  label: string;
+  category: ProductCategory;
+  accentClass: string;
+  productTypes: Array<{ label: string; value: string }>;
+  latestExpansions: Array<{ label: string; value: string }>;
+}
+
+const route = useRoute();
 const user = useUserStore();
 const { currentProductsCategory } = useProductsCategory();
+
+const mobileProductCategories: ProductShortcut[] = [
+  {
+    label: 'Pokemon',
+    category: 'pokemon',
+    accentClass: 'bg-gradient-to-br from-amber-200/30 via-transparent to-orange-400/15',
+    productTypes: [
+      { label: 'Booster Box', value: 'booster-box' },
+      { label: 'Elite Trainer Box', value: 'elite-trainer-box' },
+      { label: 'Premium Collection', value: 'premium-collection' },
+    ],
+    latestExpansions: [
+      { label: 'Perfect Order', value: 'perfect-order' },
+      { label: 'Ascended Heroes', value: 'ascended-heroes' },
+      { label: 'Phantasmal Flames', value: 'phantasmal-flames' },
+      { label: 'Mega Evolutions', value: 'mega-evolution' },
+      { label: 'Destined Rivals', value: 'destined-rivals' },
+    ],
+  },
+  {
+    label: 'Magic',
+    category: 'magic',
+    accentClass: 'bg-gradient-to-br from-emerald-200/30 via-transparent to-teal-400/15',
+    productTypes: [
+      { label: 'Producto Sellado', value: 'producto-sellado' },
+      { label: 'Bundles', value: 'bundles' },
+    ],
+    latestExpansions: [
+      { label: 'Teenage Mutant Ninja Turtles', value: 'teenage-mutant-ninja-turtles' },
+    ],
+  },
+  {
+    label: 'Riftbound',
+    category: 'riftbound',
+    accentClass: 'bg-gradient-to-br from-sky-200/30 via-transparent to-cyan-400/20',
+    productTypes: [
+      { label: 'Booster Display', value: 'booster-display' },
+      { label: 'Decks', value: 'decks' },
+    ],
+    latestExpansions: [{ label: 'Spiritforged', value: 'spiritforged' }],
+  },
+];
+
+const isProductsRoute = computed(() => route.name === 'products');
+
+const toRouteString = (value: unknown) => {
+  if (Array.isArray(value)) {
+    return value[0] ?? '';
+  }
+
+  return typeof value === 'string' ? value : '';
+};
+
+const isCategoryActive = (category: ProductCategory) =>
+  isProductsRoute.value && toRouteString(route.params.category) === category;
 </script>
