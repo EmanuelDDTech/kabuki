@@ -8,19 +8,21 @@ interface ButtonLinkProps {
   status?: 'enabled' | 'disabled';
   size?: 'small' | 'medium' | 'large';
   icon?: Component;
+  width?: 'full' | 'auto';
 }
 
 withDefaults(defineProps<ButtonLinkProps>(), {
   type: 'primary',
   status: 'enabled',
   size: 'medium',
+  width: 'auto',
 });
 </script>
 
 <template>
   <RouterLink
     :to="{ name: to }"
-    class="gap-2 inline-flex ml-5 font-medium rounded-lg text-center items-center mr-3 transition-colors"
+    class="gap-2 inline-flex font-medium rounded-lg text-center justify-center items-center mr-3 transition-colors"
     :class="[
       type === 'primary' ? 'bg-green-600 hover:bg-green-700 text-white' : '',
       type === 'secondary'
@@ -31,6 +33,7 @@ withDefaults(defineProps<ButtonLinkProps>(), {
       size === 'small' ? 'text-xs px-3 py-1.5' : '',
       size === 'medium' ? 'text-sm px-4 py-2' : '',
       size === 'large' ? 'text-lg px-6 py-3' : '',
+      width === 'full' ? 'w-full' : '',
     ]"
   >
     <component v-if="icon" :is="icon" class="w-6" />
