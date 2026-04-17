@@ -1,5 +1,5 @@
 <template>
-  <aside class="w-[22rem] max-w-[92vw] h-screen" aria-label="Sidebar">
+  <aside ref="mobileMenuRef" class="w-[22rem] max-w-[92vw] h-screen" aria-label="Sidebar">
     <div
       class="h-full overflow-y-auto rounded-2xl border border-shori-gray-6 bg-gradient-to-b from-shori-gray-1 via-shori-gray-2 to-shori-gray-1 shadow-2xl"
     >
@@ -15,7 +15,7 @@
             type="button"
             class="rounded-xl p-1.5 text-shori-gray-11 transition-colors hover:bg-shori-gray-3"
             aria-label="Cerrar menu"
-            @click="$emit('hideMenu')"
+            @click="emit('hideMenu')"
           >
             <XMarkIcon class="w-7 aspect-square" />
           </button>
@@ -157,7 +157,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, onMounted, onUnmounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import XMarkIcon from './XMarkIcon.vue';
 import { useUserStore } from '@/modules/auth/stores/user';
@@ -172,7 +172,7 @@ import SignupIcon from '@/modules/common/icons/SignupIcon.vue';
 import ButtonLink from '@/modules/common/components/ButtonLink.vue';
 import { useProductsCategory, type ProductCategory } from '@/composables/useProductsCategory';
 
-defineEmits(['hideMenu']);
+const emit = defineEmits<{ (event: 'hideMenu'): void }>();
 
 interface ProductShortcut {
   label: string;
@@ -185,6 +185,7 @@ interface ProductShortcut {
 const route = useRoute();
 const user = useUserStore();
 const { currentProductsCategory } = useProductsCategory();
+const mobileMenuRef = ref<HTMLElement | null>(null);
 
 const mobileProductCategories: ProductShortcut[] = [
   {
@@ -240,4 +241,26 @@ const toRouteString = (value: unknown) => {
 
 const isCategoryActive = (category: ProductCategory) =>
   isProductsRoute.value && toRouteString(route.params.category) === category;
+
+const handleOutsidePointerDown = (event: PointerEvent) => {
+  const target = event.target;
+
+  if (!(target instanceof Node)) {
+    return;
+  }
+
+  if (mobileMenuRef.value?.contains(target)) {
+    return;
+  }
+
+  emit('hideMenu');
+};
+
+onMounted(() => {
+  document.addEventListener('pointerdown', handleOutsidePointerDown);
+});
+
+onUnmounted(() => {
+  document.removeEventListener('pointerdown', handleOutsidePointerDown);
+});
 </script>
