@@ -9,8 +9,16 @@
       style="background-color: color-mix(in srgb, var(--gray-1) 84%, transparent)"
       @mouseleave="hideOptions"
     >
-      <div class="flex items-center gap-3 px-4 py-3 lg:px-6">
-        <RouterLink :to="{ name: 'home' }" class="flex items-center gap-3 shrink-0">
+      <div class="relative flex items-center gap-3 px-4 py-3 lg:px-6">
+        <RouterLink
+          :to="{ name: 'home' }"
+          class="flex items-center gap-3 shrink-0 transition-all duration-300"
+          :class="
+            isMobileSearchVisible
+              ? 'max-w-0 -translate-x-3 opacity-0 pointer-events-none overflow-hidden'
+              : 'max-w-[15rem] translate-x-0 opacity-100'
+          "
+        >
           <img
             src="https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Fshorikame-logo(1).webp?alt=media&token=a23cdef9-79f4-4de9-9aee-e968ef1f9bb0"
             class="h-12 w-12 rounded-xl object-cover"
@@ -25,6 +33,73 @@
         <div class="hidden lg:flex flex-1 max-w-xl relative px-2">
           <SearchBar class="w-full max-w-none" />
         </div>
+
+        <button
+          type="button"
+          class="flex h-10 w-10 items-center justify-center rounded-full border border-shori-gray-6 text-shori-gray-11 transition-all duration-300 hover:text-shori-green-9 hover:border-shori-green-8 lg:hidden"
+          :class="
+            isMobileSearchVisible
+              ? 'opacity-0 pointer-events-none -translate-x-2 scale-95'
+              : 'opacity-100 translate-x-0 scale-100'
+          "
+          aria-label="Abrir buscador"
+          aria-controls="mobile-nav-search"
+          :aria-expanded="isMobileSearchVisible"
+          @click="showMobileSearch"
+        >
+          <svg
+            width="20"
+            height="20"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+            ></path>
+          </svg>
+        </button>
+
+        <Transition name="mobile-search-bar">
+          <div
+            v-if="isMobileSearchVisible"
+            id="mobile-nav-search"
+            class="absolute inset-x-4 top-1/2 z-30 flex -translate-y-1/2 items-center gap-2 lg:hidden"
+          >
+            <SearchBar
+              class="w-full max-w-none"
+              input-id="mobile-product-search"
+              :auto-focus="isMobileSearchVisible"
+            />
+
+            <button
+              type="button"
+              class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-shori-gray-6 text-shori-gray-11 transition-colors duration-300 hover:text-shori-green-9 hover:border-shori-green-8"
+              aria-label="Cerrar buscador"
+              @click="hideMobileSearch"
+            >
+              <svg
+                width="16"
+                height="16"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M6 18L18 6M6 6l12 12"
+                ></path>
+              </svg>
+            </button>
+          </div>
+        </Transition>
 
         <nav class="text-sm hidden lg:flex items-center gap-4 ml-1">
           <div class="flex gap-3 text-shori-gray-11 relative">
@@ -169,7 +244,12 @@
         </nav>
 
         <GeneralHeader
-          class="ml-auto"
+          class="ml-auto transition-all duration-300"
+          :class="
+            isMobileSearchVisible
+              ? 'translate-x-6 opacity-0 pointer-events-none lg:translate-x-0 lg:opacity-100 lg:pointer-events-auto'
+              : 'translate-x-0 opacity-100'
+          "
           :is-cart-empty="cartStore.isEmpty"
           :cart-length="cartStore.cartLength"
           @toggle-menu="showMenu"
@@ -205,6 +285,7 @@ const isProductOptionsVisible = ref(false);
 const isProfileOptionsVisible = ref(false);
 const showMobileMenu = ref(false);
 const isHeaderHidden = ref(false);
+const isMobileSearchVisible = ref(false);
 let lastScrollTop = 0;
 
 const route = useRoute();
@@ -303,6 +384,7 @@ const handleScroll = () => {
   if (scrollTop > 180 && scrollTop > lastScrollTop) {
     isHeaderHidden.value = true;
     showMobileMenu.value = false;
+    isMobileSearchVisible.value = false;
   } else {
     isHeaderHidden.value = false;
   }
@@ -358,7 +440,17 @@ const hideOptions = () => {
   hideProfileOptions();
 };
 
+const showMobileSearch = () => {
+  showMobileMenu.value = false;
+  isMobileSearchVisible.value = true;
+};
+
+const hideMobileSearch = () => {
+  isMobileSearchVisible.value = false;
+};
+
 const showMenu = () => {
+  hideMobileSearch();
   showMobileMenu.value = true;
 };
 
@@ -366,3 +458,16 @@ const hideMenu = () => {
   showMobileMenu.value = false;
 };
 </script>
+
+<style scoped>
+.mobile-search-bar-enter-active,
+.mobile-search-bar-leave-active {
+  transition: all 0.28s ease;
+}
+
+.mobile-search-bar-enter-from,
+.mobile-search-bar-leave-to {
+  opacity: 0;
+  transform: translateY(-50%) scale(0.96);
+}
+</style>

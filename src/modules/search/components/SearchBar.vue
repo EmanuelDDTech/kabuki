@@ -1,12 +1,23 @@
 <script lang="ts" setup>
-import { computed, shallowRef } from 'vue';
+import { computed, nextTick, onMounted, ref, shallowRef, watch } from 'vue';
 import { useProductStore } from '@/modules/product/stores/product';
 import ProductSearch from './ProductSearch.vue';
 import { useRouter } from 'vue-router';
 
+interface Props {
+  inputId?: string;
+  autoFocus?: boolean;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  inputId: 'global-product-search',
+  autoFocus: false,
+});
+
 const product = useProductStore();
 const router = useRouter();
 const isFocused = shallowRef(false);
+const searchInputRef = ref<HTMLInputElement | null>(null);
 
 const hasQuery = computed(() => product.searchQuery.trim().length > 0);
 const hasResults = computed(() => product.searchedProducts.length > 0);
@@ -20,6 +31,26 @@ const selectProduct = (id: number) => {
 const clearSearch = () => {
   product.clearSearchQuery();
 };
+
+const focusInput = async () => {
+  await nextTick();
+  searchInputRef.value?.focus();
+};
+
+onMounted(() => {
+  if (props.autoFocus) {
+    void focusInput();
+  }
+});
+
+watch(
+  () => props.autoFocus,
+  (shouldFocus) => {
+    if (shouldFocus) {
+      void focusInput();
+    }
+  },
+);
 </script>
 
 <template>
@@ -48,9 +79,10 @@ const clearSearch = () => {
         </svg>
       </button>
 
-      <label for="global-product-search" class="sr-only">Buscar productos</label>
+      <label :for="props.inputId" class="sr-only">Buscar productos</label>
       <input
-        id="global-product-search"
+        :id="props.inputId"
+        ref="searchInputRef"
         type="search"
         class="search-input w-full bg-transparent pr-2 text-shori-gray-12 focus:outline-none"
         placeholder="Busca cartas, decks o colecciones"
