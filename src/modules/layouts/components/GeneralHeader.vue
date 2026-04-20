@@ -2,13 +2,13 @@
   <div class="flex items-center gap-3">
     <ThemeToggle class="hidden lg:block" />
 
-    <RouterLink :to="{ name: 'home' }" class="hidden lg:flex" aria-label="Notificaciones">
+    <RouterLink :to="{ name: 'home' }" class="hidden" aria-label="Notificaciones">
       <NotificationIcon
         class="w-6 aspect-square text-shori-gray-11 hover:text-shori-green-9 transition-colors"
       />
     </RouterLink>
 
-    <RouterLink :to="{ name: 'cart' }" class="relative" aria-label="Ir al carrito">
+    <RouterLink :to="{ name: 'cart' }" class="relative hidden lg:block" aria-label="Ir al carrito">
       <CartIcon
         class="w-6 aspect-square text-shori-gray-11 hover:text-shori-green-9 transition-colors"
       />
