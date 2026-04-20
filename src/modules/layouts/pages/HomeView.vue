@@ -160,6 +160,36 @@ const closedProductCategories = [
   },
 ];
 
+const otherGameUniverses = [
+  {
+    title: 'Magic: The Gathering',
+    description:
+      'Sobres, bundles y producto sellado para Modern, Commander y coleccionismo.',
+    category: 'magic',
+    chips: ['Producto sellado', 'Bundles', 'Universes Beyond'],
+    heroImg:
+      'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/home%2FOtros%20juegos%2FGemini_Generated_Image_vnsxc4vnsxc4vnsx.webp?alt=media&token=fb8bd2e3-9ddb-4256-8110-2ac02cad0efa',
+  },
+  {
+    title: 'Riftbound',
+    description:
+      'Descubre displays y decks del nuevo TCG para juego competitivo y casual.',
+    category: 'riftbound',
+    chips: ['Booster display', 'Decks', 'Spiritforged'],
+    heroImg:
+      'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/home%2FOtros%20juegos%2FGemini_Generated_Image_6252h06252h06252.webp?alt=media&token=83c86253-7110-475f-95e7-b0f18caeaa05',
+  },
+  {
+    title: 'Juegos de mesa',
+    description:
+      'Amplia tu colección con títulos familiares, estratégicos y party games para todas las mesas.',
+    category: 'otros',
+    chips: ['Estrategia', 'Party', 'Familiares'],
+    heroImg:
+      'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/home%2FOtros%20juegos%2FGemini_Generated_Image_79h1qp79h1qp79h1.webp?alt=media&token=0069ecab-907a-4365-8238-5f163fabdc9a',
+  },
+];
+
 const routes = [
   {
     name: 'products',
@@ -344,6 +374,70 @@ onMounted(async () => {
             :key="featuredProduct.product.id"
             :product="featuredProduct.product"
           />
+        </div>
+      </div>
+    </section>
+
+    <!-- Otras categorias -->
+    <section class="px-3">
+      <div class="max-w-screen-xl mx-auto py-12">
+        <header class="other-universe-header mb-8 md:mb-10">
+          <div>
+            <p class="other-universe-header__kicker">Nuevos terrenos para coleccionar</p>
+            <h2 class="text-3xl md:text-4xl font-bold text-shori-gray-12">Otros universos para jugar</h2>
+          </div>
+
+          <!-- <router-link
+            :to="{ name: 'products', params: { category: 'magic' } }"
+            class="other-universe-header__link"
+          >
+            Explorar categorías
+            <ArrowRight class="w-4 h-4" />
+          </router-link> -->
+        </header>
+
+        <div class="other-universe-showcase">
+          <router-link
+            v-for="universe in otherGameUniverses"
+            :key="universe.title"
+            :to="{ name: 'products', params: { category: universe.category } }"
+            class="other-universe-strip group bg-shori-gray-2 border border-shori-gray-6 shadow-lg"
+          >
+            <article class="other-universe-strip__content">
+              <!-- <p class="other-universe-strip__index">Universo {{ index + 1 }}</p> -->
+
+              <div class="flex items-start justify-between gap-3">
+                <h3
+                  class="text-2xl md:text-3xl font-black tracking-tight text-shori-gray-12 transition-colors"
+                >
+                  {{ universe.title }}
+                </h3>
+                <ArrowRight
+                  class="w-5 h-5 mt-1 text-shori-gray-10 transition-all duration-300 group-hover:translate-x-1"
+                />
+              </div>
+
+              <p class="other-universe-strip__description">
+                {{ universe.description }}
+              </p>
+
+              <ul class="other-universe-strip__chips" aria-label="Características del universo">
+                <li v-for="chip in universe.chips" :key="chip" class="other-universe-strip__chip">
+                  {{ chip }}
+                </li>
+              </ul>
+            </article>
+
+            <div class="other-universe-strip__media" aria-hidden="true">
+              <img
+                :src="universe.heroImg"
+                :alt="`Arte de ${universe.title}`"
+                class="other-universe-strip__image"
+                loading="lazy"
+              />
+              <div class="other-universe-strip__glow" />
+            </div>
+          </router-link>
         </div>
       </div>
     </section>
@@ -610,6 +704,257 @@ onMounted(async () => {
     0 10px 25px -5px rgba(0, 0, 0, 0.08),
     0 8px 10px -6px rgba(0, 0, 0, 0.04);
   transform: translateY(-2px);
+}
+
+.other-universe-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.other-universe-header__kicker {
+  margin-bottom: 0.4rem;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--green-9);
+}
+
+.other-universe-header__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  flex-shrink: 0;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--green-9);
+  transition: color 0.2s ease;
+}
+
+.other-universe-header__link:hover {
+  color: var(--green-11);
+}
+
+.other-universe-showcase {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.other-universe-strip {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  min-height: 250px;
+  overflow: hidden;
+  isolation: isolate;
+  border-radius: 1.35rem;
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+
+.other-universe-strip::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 57%;
+  width: 1px;
+  opacity: 0.4;
+}
+
+.other-universe-strip::after {
+  content: '';
+  position: absolute;
+  inset: auto auto -70px -45px;
+  width: 210px;
+  height: 210px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--universe-accent) 55%, white 45%);
+  opacity: 0.35;
+}
+
+.other-universe-strip:hover {
+  transform: translateY(-4px) scale(1.004);
+}
+
+.other-universe-strip:nth-child(even) {
+  grid-template-columns: 0.8fr 1.2fr;
+}
+
+.other-universe-strip:nth-child(even) .other-universe-strip__content {
+  order: 2;
+}
+
+.other-universe-strip:nth-child(even) .other-universe-strip__media {
+  order: 1;
+}
+
+.other-universe-strip__content {
+  position: relative;
+  z-index: 1;
+  padding: 1.9rem 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.95rem;
+}
+
+.other-universe-strip__index {
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 800;
+  color: color-mix(in srgb, var(--universe-accent) 75%, #1f2937 25%);
+}
+
+.other-universe-strip__description {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--gray-11);
+  max-width: 56ch;
+}
+
+.other-universe-strip__chips {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+}
+
+.other-universe-strip__chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.35rem 0.8rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  color: var(--gray-12);
+  background: color-mix(in srgb, var(--universe-accent) 18%, white 82%);
+  border: 1px solid color-mix(in srgb, var(--universe-accent) 35%, white 65%);
+}
+
+.other-universe-strip__media {
+  position: relative;
+  height: 100%;
+  min-height: 250px;
+  clip-path: polygon(10% 0, 100% 0, 100% 100%, 0 100%);
+}
+
+.other-universe-strip:nth-child(even) .other-universe-strip__media {
+  clip-path: polygon(0 0, 90% 0, 100% 100%, 0 100%);
+}
+
+.other-universe-strip__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.02);
+  transition: transform 0.55s ease;
+}
+
+.other-universe-strip__glow {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(120deg, rgba(15, 23, 42, 0.06), rgba(15, 23, 42, 0.36)),
+    radial-gradient(circle at 80% 20%, color-mix(in srgb, var(--universe-accent) 62%, transparent) 0%, transparent 62%);
+}
+
+.other-universe-strip:hover .other-universe-strip__image {
+  transform: scale(1.08);
+}
+
+:global(.dark-theme) .other-universe-header__kicker {
+  color: var(--green-11);
+}
+
+:global(.dark-theme) .other-universe-header__link {
+  color: var(--green-11);
+}
+
+:global(.dark-theme) .other-universe-header__link:hover {
+  color: var(--green-12);
+}
+
+:global(.dark-theme) .other-universe-strip {
+  background:
+    radial-gradient(circle at 18% 50%, color-mix(in srgb, var(--universe-accent) 18%, var(--gray-1) 82%) 0%, transparent 60%),
+    linear-gradient(132deg, color-mix(in srgb, var(--gray-2) 88%, var(--universe-soft-accent) 12%) 0%, color-mix(in srgb, var(--gray-3) 88%, var(--universe-soft-accent) 12%) 100%);
+  box-shadow:
+    0 16px 28px -22px rgba(0, 0, 0, 0.92),
+    0 8px 16px -10px rgba(0, 0, 0, 0.65);
+}
+
+:global(.dark-theme) .other-universe-strip::before {
+  background: color-mix(in srgb, var(--universe-accent) 52%, var(--gray-8) 48%);
+  opacity: 0.52;
+}
+
+:global(.dark-theme) .other-universe-strip::after {
+  border-color: color-mix(in srgb, var(--universe-accent) 48%, var(--gray-7) 52%);
+  opacity: 0.45;
+}
+
+:global(.dark-theme) .other-universe-strip:hover {
+  box-shadow:
+    0 24px 32px -20px rgba(0, 0, 0, 0.92),
+    0 12px 18px -12px rgba(0, 0, 0, 0.78);
+}
+
+:global(.dark-theme) .other-universe-strip__index {
+  color: color-mix(in srgb, var(--universe-accent) 65%, var(--gray-12) 35%);
+}
+
+:global(.dark-theme) .other-universe-strip__description {
+  color: var(--gray-11);
+}
+
+:global(.dark-theme) .other-universe-strip__chip {
+  color: var(--gray-12);
+  background: color-mix(in srgb, var(--universe-accent) 22%, var(--gray-2) 78%);
+  border-color: color-mix(in srgb, var(--universe-accent) 42%, var(--gray-6) 58%);
+}
+
+:global(.dark-theme) .other-universe-strip__glow {
+  background:
+    linear-gradient(120deg, rgba(2, 6, 23, 0.18), rgba(2, 6, 23, 0.56)),
+    radial-gradient(circle at 80% 20%, color-mix(in srgb, var(--universe-accent) 56%, transparent) 0%, transparent 64%);
+}
+
+@media (max-width: 920px) {
+  .other-universe-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .other-universe-strip,
+  .other-universe-strip:nth-child(even) {
+    grid-template-columns: 1fr;
+  }
+
+  .other-universe-strip::before,
+  .other-universe-strip::after {
+    display: none;
+  }
+
+  .other-universe-strip__content,
+  .other-universe-strip:nth-child(even) .other-universe-strip__content {
+    order: 2;
+    padding: 1.35rem 1.2rem 1.45rem;
+  }
+
+  .other-universe-strip__media,
+  .other-universe-strip:nth-child(even) .other-universe-strip__media {
+    order: 1;
+    min-height: 200px;
+    clip-path: none;
+  }
 }
 
 .cta-section {
