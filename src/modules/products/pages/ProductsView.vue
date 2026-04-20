@@ -202,7 +202,7 @@ onBeforeUnmount(() => {
 
               <div v-for="filterGroup in filters.filters" :key="filterGroup.id" class="mt-3">
                 <details
-                  class="group rounded-xl border border-shori-gray-5 bg-shori-gray-1/40 p-2.5 open:bg-shori-gray-2 transition-colors"
+                  class="group rounded-xl border border-shori-gray-5 bg-shori-gray-1/40 p-2.5 transition-colors"
                 >
                   <summary class="flex justify-between items-center cursor-pointer list-none">
                     <h4 class="font-semibold text-sm mb-0.5 cursor-pointer text-shori-gray-11">
@@ -216,7 +216,7 @@ onBeforeUnmount(() => {
                   <div
                     v-for="filterValue in filterGroup.filter_group.filter_values"
                     :key="filterValue.id"
-                    class="flex text-sm justify-between items-center hover:bg-shori-gray-3 py-1.5 px-2 rounded-lg mt-1 cursor-pointer"
+                    class="flex text-sm justify-between items-center hover:bg-shori-gray-3 py-1.5 px-2 rounded-lg mt-1"
                   >
                     <label
                       :for="filterValue.name"
@@ -236,7 +236,7 @@ onBeforeUnmount(() => {
                       "
                       type="checkbox"
                       :id="filterValue.name"
-                      class="h-4 w-4 accent-shori-green-9"
+                      class="h-4 w-4 accent-shori-green-9 cursor-pointer"
                     />
                   </div>
                 </details>
