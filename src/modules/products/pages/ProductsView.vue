@@ -2,6 +2,7 @@
 import { computed, onBeforeMount, onBeforeUnmount, onMounted, onUnmounted, ref, watch } from 'vue';
 import { useRoute, type LocationQueryValue } from 'vue-router';
 import { useInfiniteQuery } from '@tanstack/vue-query';
+import { onClickOutside } from '@vueuse/core';
 
 import { useSeoMeta } from '@unhead/vue';
 
@@ -24,9 +25,15 @@ const filters = useFilterCategoryStore();
 const products = useProductsStore();
 
 const priceRange = ref();
+const mobileFiltersRef = ref<HTMLElement | null>(null);
 
 const route = useRoute();
 const currentProductsCategoryId = computed(() => getProductsCategoryId(route.params.category));
+
+onClickOutside(mobileFiltersRef, () => {
+  if (!filters.showFilters) return;
+  filters.hideFilterOptions();
+});
 
 onBeforeMount(async () => {
   await filters.findFilters(currentProductsCategoryId.value);
@@ -247,6 +254,7 @@ onBeforeUnmount(() => {
 
         <div class="flex lg:hidden min-h-12 items-center">
           <div
+            ref="mobileFiltersRef"
             class="inline-block absolute top-0 border border-shori-gray-5 bg-shori-gray-surface backdrop-blur-sm overflow-hidden rounded-2xl shadow-[0_10px_30px_rgba(17,24,39,0.1)]"
           >
             <div
@@ -298,7 +306,7 @@ onBeforeUnmount(() => {
                       class="sr-only peer"
                     />
                     <span
-                      class="h-6 w-11 rounded-full bg-shori-gray-5 transition peer-checked:bg-shori-gray-9 after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:h-5 after:w-5 after:rounded-full after:bg-shori-gray-contrast after:shadow-sm after:transition-all peer-checked:after:translate-x-5"
+                      class="h-6 w-11 rounded-full bg-shori-gray-5 transition peer-checked:bg-shori-green-9 after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:h-5 after:w-5 after:rounded-full after:bg-shori-gray-contrast after:shadow-sm after:transition-all peer-checked:after:translate-x-5"
                     ></span>
                   </label>
                 </div>
@@ -360,7 +368,7 @@ onBeforeUnmount(() => {
                           "
                           type="checkbox"
                           :id="filterValue.name"
-                          class="cursor-pointer h-4 w-4 accent-shori-gray-11"
+                          class="cursor-pointer h-4 w-4 accent-shori-green-9"
                         />
                       </div>
                     </details>
