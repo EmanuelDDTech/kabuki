@@ -220,7 +220,7 @@ onBeforeUnmount(() => {
                   >
                     <label
                       :for="filterValue.name"
-                      class="cursor-pointer leading-none text-shori-gray-10"
+                      class="cursor-pointer leading-none text-shori-gray-12"
                       >{{ filterValue.name }}</label
                     >
                     <input
