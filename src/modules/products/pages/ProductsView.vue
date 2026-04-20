@@ -205,7 +205,7 @@ onBeforeUnmount(() => {
                   class="group rounded-xl border border-shori-gray-5 bg-shori-gray-1/40 p-2.5 transition-colors"
                 >
                   <summary class="flex justify-between items-center cursor-pointer list-none">
-                    <h4 class="font-semibold text-sm mb-0.5 cursor-pointer text-shori-gray-11">
+                    <h4 class="font-bold text-sm mb-0.5 cursor-pointer text-shori-gray-12">
                       {{ filterGroup.filter_group.name }}
                     </h4>
                     <ChevronDownIcon
