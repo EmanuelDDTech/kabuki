@@ -140,34 +140,45 @@ onBeforeUnmount(() => {
       <section class="sticky top-6 z-10">
         <div class="flex-1 h-full hidden lg:inline-block">
           <div
-            class="h-fit min-w-60 shadow-lg py-4 rounded-xl border border-shori-gray-6 sticky top-6 bg-shori-gray-2"
+            class="h-fit min-w-72 py-5 rounded-2xl border border-shori-gray-5 sticky top-6 bg-shori-gray-surface backdrop-blur-sm shadow-[0_12px_36px_rgba(17,24,39,0.08)]"
           >
-            <h3 class="font-bold text-xl border-b border-b-shori-gray-6 mb-3 px-3">Filtros</h3>
+            <h3 class="font-bold text-xl border-b border-b-shori-gray-5 mb-4 px-4 pb-3">Filtros</h3>
 
             <div
-              class="max-h-[600px] overflow-y-scroll overflow-x-hidden px-3 scrollbar-thin scrollbar-thumb-shori-gray-3 scrollbar-track-transparent"
+              class="max-h-[620px] overflow-y-scroll overflow-x-hidden px-4 scrollbar-thin scrollbar-thumb-shori-gray-4 scrollbar-track-transparent"
             >
-              <div class="mb-4 mt-3">
+              <div class="mb-5 mt-2 rounded-xl border border-shori-gray-5 bg-shori-gray-1/60 p-3">
+                <p class="text-xs uppercase tracking-[0.12em] text-shori-gray-9 mb-2">Orden</p>
                 <OrderSelect :order="filters.order" @update:order="filters.order = $event" />
               </div>
 
               <div
-                class="flex justify-between items-center py-1 px-2 mb-4 hover:bg-shori-gray-3 rounded"
+                class="flex justify-between items-center py-2.5 px-3 mb-5 rounded-xl bg-shori-gray-1/60 border border-shori-gray-5"
               >
-                <label for="existenceOnly" class="cursor-pointer leading-none"
+                <label
+                  for="existenceOnlyDesktop"
+                  class="cursor-pointer leading-none text-sm font-medium"
                   >Solo con existencia</label
                 >
-                <input
-                  id="existenceOnly"
-                  type="checkbox"
-                  v-model="filters.existenceOnly"
-                  class="cursor-pointer"
-                />
+                <label
+                  for="existenceOnlyDesktop"
+                  class="relative inline-flex items-center cursor-pointer"
+                >
+                  <input
+                    id="existenceOnlyDesktop"
+                    type="checkbox"
+                    v-model="filters.existenceOnly"
+                    class="sr-only peer"
+                  />
+                  <span
+                    class="h-6 w-11 rounded-full bg-shori-gray-5 transition peer-checked:bg-shori-green-9 after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:h-5 after:w-5 after:rounded-full after:bg-shori-gray-contrast after:shadow-sm after:transition-all peer-checked:after:translate-x-5"
+                  ></span>
+                </label>
               </div>
 
-              <div>
-                <label for="price" class="font-bold">Precio</label>
-                <Vueform class="pl-3 pr-6">
+              <div class="rounded-xl border border-shori-gray-5 bg-shori-gray-1/60 p-3 mb-4">
+                <p class="font-semibold text-sm mb-1">Precio</p>
+                <Vueform class="pl-2 pr-4">
                   <SliderElement
                     @change="setPriceRange"
                     ref="priceRange"
@@ -180,7 +191,7 @@ onBeforeUnmount(() => {
                     :min="0"
                     :max="filters.getMaxPrice()"
                     :default="[filters.minPrice, filters.maxPrice]"
-                    class="mt-8"
+                    class="mt-7"
                   />
                 </Vueform>
               </div>
@@ -189,23 +200,29 @@ onBeforeUnmount(() => {
                 <FiltersSkeleton v-for="i in 2" :key="i" />
               </div>
 
-              <div v-for="filterGroup in filters.filters" :key="filterGroup.id" class="mt-4">
-                <details class="group">
-                  <summary class="flex justify-between items-center cursor-pointer">
-                    <h4 class="font-bold mb-1 cursor-pointer">
+              <div v-for="filterGroup in filters.filters" :key="filterGroup.id" class="mt-3">
+                <details
+                  class="group rounded-xl border border-shori-gray-5 bg-shori-gray-1/40 p-2.5 open:bg-shori-gray-2 transition-colors"
+                >
+                  <summary class="flex justify-between items-center cursor-pointer list-none">
+                    <h4 class="font-semibold text-sm mb-0.5 cursor-pointer text-shori-gray-11">
                       {{ filterGroup.filter_group.name }}
                     </h4>
-                    <ChevronDownIcon class="w-6 h-6 group-open:rotate-180 transition-transform" />
+                    <ChevronDownIcon
+                      class="w-5 h-5 text-shori-gray-9 group-open:rotate-180 transition-transform"
+                    />
                   </summary>
 
                   <div
                     v-for="filterValue in filterGroup.filter_group.filter_values"
                     :key="filterValue.id"
-                    class="flex text-sm justify-between items-center hover:bg-shori-gray-3 py-1 px-2 rounded"
+                    class="flex text-sm justify-between items-center hover:bg-shori-gray-3 py-1.5 px-2 rounded-lg mt-1 cursor-pointer"
                   >
-                    <label :for="filterValue.name" class="cursor-pointer leading-none">{{
-                      filterValue.name
-                    }}</label>
+                    <label
+                      :for="filterValue.name"
+                      class="cursor-pointer leading-none text-shori-gray-10"
+                      >{{ filterValue.name }}</label
+                    >
                     <input
                       @change="
                         filters.updateFilters(filterGroup.filter_group.slug, filterValue.slug)
@@ -219,7 +236,7 @@ onBeforeUnmount(() => {
                       "
                       type="checkbox"
                       :id="filterValue.name"
-                      class="cursor-pointer"
+                      class="h-4 w-4 accent-shori-green-9"
                     />
                   </div>
                 </details>
@@ -230,18 +247,18 @@ onBeforeUnmount(() => {
 
         <div class="flex lg:hidden min-h-12 items-center">
           <div
-            class="inline-block absolute top-0 shadow border border-shori-gray-6 bg-shori-gray-2 overflow-hidden"
+            class="inline-block absolute top-0 border border-shori-gray-5 bg-shori-gray-surface backdrop-blur-sm overflow-hidden rounded-2xl shadow-[0_10px_30px_rgba(17,24,39,0.1)]"
           >
             <div
-              class="mb-3 transition-all"
+              class="transition-all"
               :class="
                 !filters.showFilters
-                  ? 'max-h-[40px]'
-                  : 'max-w-[450px] max-h-[500px] overflow-y-scroll scrollbar-thumb-shori-gray-6 scrollbar-track-shori-gray-3 scrollbar-thin '
+                  ? 'max-h-[54px]'
+                  : 'max-w-[450px] max-h-[540px] overflow-y-scroll scrollbar-thumb-shori-gray-5 scrollbar-track-transparent scrollbar-thin '
               "
             >
               <div
-                class="flex justify-between w-full mb-3 py-3 px-4 sticky top-0 bg-shori-gray-2 z-10 shadow"
+                class="flex justify-between w-full py-3 px-4 sticky top-0 bg-shori-gray-surface z-10 border-b border-shori-gray-5"
               >
                 <div class="flex gap-2 items-center" @click="filters.showFilterOptions()">
                   <h3 class="font-bold text-xl">Filtros</h3>
@@ -254,26 +271,41 @@ onBeforeUnmount(() => {
                 />
               </div>
 
-              <div class="px-4 mb-4 mt-3">
+              <div
+                class="px-4 mb-4 mt-4 rounded-xl border border-shori-gray-5 bg-shori-gray-1/60 mx-4 p-3"
+              >
+                <p class="text-xs uppercase tracking-[0.12em] text-shori-gray-9 mb-2">Orden</p>
                 <OrderSelect :order="filters.order" @update:order="filters.order = $event" />
               </div>
 
-              <div class="px-4">
-                <div class="flex justify-between items-center py-1 px-2 mb-3 rounded">
-                  <label for="existenceOnly" class="cursor-pointer leading-none"
+              <div class="px-4 pb-4">
+                <div
+                  class="flex justify-between items-center py-2.5 px-3 mb-4 rounded-xl border border-shori-gray-5 bg-shori-gray-1/60"
+                >
+                  <label
+                    for="existenceOnlyMobile"
+                    class="cursor-pointer leading-none text-sm font-medium"
                     >Solo con existencia</label
                   >
-                  <input
-                    id="existenceOnly"
-                    type="checkbox"
-                    v-model="filters.existenceOnly"
-                    class="cursor-pointer"
-                  />
+                  <label
+                    for="existenceOnlyMobile"
+                    class="relative inline-flex items-center cursor-pointer"
+                  >
+                    <input
+                      id="existenceOnlyMobile"
+                      type="checkbox"
+                      v-model="filters.existenceOnly"
+                      class="sr-only peer"
+                    />
+                    <span
+                      class="h-6 w-11 rounded-full bg-shori-gray-5 transition peer-checked:bg-shori-gray-9 after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:h-5 after:w-5 after:rounded-full after:bg-shori-gray-contrast after:shadow-sm after:transition-all peer-checked:after:translate-x-5"
+                    ></span>
+                  </label>
                 </div>
 
-                <div>
-                  <label for="price" class="font-bold">Precio</label>
-                  <Vueform class="pl-3 pr-6">
+                <div class="rounded-xl border border-shori-gray-5 bg-shori-gray-1/60 p-3 mb-4">
+                  <p class="font-semibold text-sm mb-1">Precio</p>
+                  <Vueform class="pl-2 pr-4">
                     <SliderElement
                       @change="setPriceRange"
                       ref="priceRange"
@@ -286,39 +318,52 @@ onBeforeUnmount(() => {
                       :min="0"
                       :max="filters.getMaxPrice()"
                       :default="[filters.minPrice, filters.maxPrice]"
-                      class="mt-8"
+                      class="mt-7"
                     />
                   </Vueform>
                 </div>
 
                 <div class="mt-3 flex flex-col gap-3">
                   <div v-for="filterGroup in filters.filters" :key="filterGroup.id" class="w-60">
-                    <h4 class="font-bold mb-1">{{ filterGroup.filter_group.name }}</h4>
-
-                    <div
-                      v-for="filterValue in filterGroup.filter_group.filter_values"
-                      :key="filterValue.id"
-                      class="flex items-center justify-between hover:bg-shori-gray-3 py-1 px-2 rounded"
+                    <details
+                      class="group rounded-xl border border-shori-gray-5 bg-shori-gray-1/40 p-2.5 open:bg-shori-gray-2 transition-colors"
                     >
-                      <label :for="filterValue.name" class="cursor-pointer">{{
-                        filterValue.name
-                      }}</label>
-                      <input
-                        @change="
-                          filters.updateFilters(filterGroup.filter_group.slug, filterValue.slug)
-                        "
-                        :checked="
-                          filters.activeFilters[filterGroup.filter_group.slug]?.includes(
-                            filterValue.slug,
-                          )
-                            ? true
-                            : false
-                        "
-                        type="checkbox"
-                        :id="filterValue.name"
-                        class="cursor-pointer"
-                      />
-                    </div>
+                      <summary class="flex justify-between items-center cursor-pointer list-none">
+                        <h4 class="font-semibold text-sm mb-0.5 text-shori-gray-11">
+                          {{ filterGroup.filter_group.name }}
+                        </h4>
+                        <ChevronDownIcon
+                          class="w-5 h-5 text-shori-gray-9 group-open:rotate-180 transition-transform"
+                        />
+                      </summary>
+
+                      <div
+                        v-for="filterValue in filterGroup.filter_group.filter_values"
+                        :key="filterValue.id"
+                        class="flex items-center justify-between hover:bg-shori-gray-3/60 py-1.5 px-2 rounded-lg mt-1"
+                      >
+                        <label
+                          :for="filterValue.name"
+                          class="cursor-pointer text-sm text-shori-gray-10"
+                          >{{ filterValue.name }}</label
+                        >
+                        <input
+                          @change="
+                            filters.updateFilters(filterGroup.filter_group.slug, filterValue.slug)
+                          "
+                          :checked="
+                            filters.activeFilters[filterGroup.filter_group.slug]?.includes(
+                              filterValue.slug,
+                            )
+                              ? true
+                              : false
+                          "
+                          type="checkbox"
+                          :id="filterValue.name"
+                          class="cursor-pointer h-4 w-4 accent-shori-gray-11"
+                        />
+                      </div>
+                    </details>
                   </div>
                 </div>
               </div>
