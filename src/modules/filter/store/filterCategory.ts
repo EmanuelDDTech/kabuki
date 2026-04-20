@@ -9,6 +9,7 @@ import { getProductsCategoryId } from '@/composables/useProductsCategory';
 
 export const useFilterCategoryStore = defineStore('filterCategory', () => {
   const MAX_PRICE = 20000;
+  const DEFAULT_ORDER = { orderBy: 'created_at', orderDirection: 'desc' };
 
   const filters = ref<FilterCategory[]>([]);
   const activeFilters = ref<Record<string, string[]>>({});
@@ -21,7 +22,7 @@ export const useFilterCategoryStore = defineStore('filterCategory', () => {
   const minPrice = ref(0);
   const maxPrice = ref(MAX_PRICE);
 
-  const order = ref({ orderBy: 'created_at', orderDirection: 'desc' });
+  const order = ref({ ...DEFAULT_ORDER });
 
   const isLoading = ref(false);
 
@@ -121,6 +122,14 @@ export const useFilterCategoryStore = defineStore('filterCategory', () => {
     activeFilters.value = {};
   };
 
+  const clearAllFilters = async () => {
+    activeFilters.value = {};
+    existenceOnly.value = false;
+    minPrice.value = 0;
+    maxPrice.value = MAX_PRICE;
+    await updateURL();
+  };
+
   const showFilterOptions = async () => {
     showFilters.value = true;
   };
@@ -150,6 +159,20 @@ export const useFilterCategoryStore = defineStore('filterCategory', () => {
     return MAX_PRICE;
   };
 
+  const hasSelectedFilters = computed(() => {
+    const { orderBy, orderDirection, ...filterQuery } = route.query;
+
+    return Object.values(filterQuery).some((value) => {
+      if (Array.isArray(value)) {
+        return value.some((item) => typeof item === 'string' && item.length > 0);
+      }
+
+      return typeof value === 'string' && value.length > 0;
+    });
+  });
+
+  const activePriceFilter = computed(() => minPrice.value !== 0 || maxPrice.value !== MAX_PRICE);
+
   return {
     filters,
     activeFilters,
@@ -157,7 +180,8 @@ export const useFilterCategoryStore = defineStore('filterCategory', () => {
     existenceOnly,
     minPrice,
     maxPrice,
-    activePriceFilter: computed(() => minPrice.value !== 0 || maxPrice.value !== MAX_PRICE),
+    activePriceFilter,
+    hasSelectedFilters,
     isLoading,
     order,
 
@@ -167,6 +191,7 @@ export const useFilterCategoryStore = defineStore('filterCategory', () => {
     findFilters,
     updateFilters,
     clearActiveFilters,
+    clearAllFilters,
     showFilterOptions,
     hideFilterOptions,
     setPriceRange,

@@ -96,6 +96,11 @@ const setPriceRange = async (e: any) => {
   await filters.setPriceRange(e);
 };
 
+const clearAllFilters = async () => {
+  await filters.clearAllFilters();
+  priceRange.value?.update([filters.minPrice, filters.maxPrice]);
+};
+
 const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status } =
   useInfiniteQuery<ProductResponse>({
     queryKey: computed(() => ['products', route.fullPath]),
@@ -149,7 +154,18 @@ onBeforeUnmount(() => {
           <div
             class="h-fit min-w-72 py-5 rounded-2xl border border-shori-gray-5 sticky top-6 bg-shori-gray-surface backdrop-blur-sm shadow-[0_12px_36px_rgba(17,24,39,0.08)]"
           >
-            <h3 class="font-bold text-xl border-b border-b-shori-gray-5 mb-4 px-4 pb-3">Filtros</h3>
+            <div
+              class="flex items-center justify-between border-b border-b-shori-gray-5 mb-4 px-4 pb-3"
+            >
+              <h3 class="font-bold text-xl">Filtros</h3>
+              <button
+                v-if="filters.hasSelectedFilters"
+                @click="clearAllFilters"
+                class="text-xs font-semibold uppercase tracking-wide text-shori-green-9 hover:text-shori-green-10 transition-colors"
+              >
+                Limpiar filtros
+              </button>
+            </div>
 
             <div
               class="max-h-[620px] overflow-y-scroll overflow-x-hidden px-4 scrollbar-thin scrollbar-thumb-shori-gray-4 scrollbar-track-transparent"
@@ -272,11 +288,20 @@ onBeforeUnmount(() => {
                   <h3 class="font-bold text-xl">Filtros</h3>
                   <FilterIcon class="h-6 w-6" />
                 </div>
-                <XMarkIcon
-                  v-if="filters.showFilters"
-                  @click="filters.hideFilterOptions()"
-                  class="h-6 w-6 text-shori-gray-11 top-2 right-4"
-                />
+                <div class="flex items-center gap-3">
+                  <button
+                    v-if="filters.showFilters && filters.hasSelectedFilters"
+                    @click="clearAllFilters"
+                    class="text-[11px] font-semibold uppercase tracking-wide text-shori-green-9"
+                  >
+                    Limpiar
+                  </button>
+                  <XMarkIcon
+                    v-if="filters.showFilters"
+                    @click="filters.hideFilterOptions()"
+                    class="h-6 w-6 text-shori-gray-11 top-2 right-4"
+                  />
+                </div>
               </div>
 
               <div
