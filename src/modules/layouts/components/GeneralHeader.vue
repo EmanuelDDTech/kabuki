@@ -1,6 +1,6 @@
 <template>
   <div class="flex items-center gap-3">
-    <ThemeToggle />
+    <ThemeToggle class="hidden lg:block" />
 
     <RouterLink :to="{ name: 'home' }" class="hidden lg:flex" aria-label="Notificaciones">
       <NotificationIcon

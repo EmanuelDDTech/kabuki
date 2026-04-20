@@ -20,6 +20,10 @@
             <XMarkIcon class="w-7 aspect-square" />
           </button>
         </div>
+
+        <div class="mt-3 flex justify-end">
+          <ThemeToggle />
+        </div>
       </div>
 
       <div class="px-4 py-4 space-y-4">
@@ -170,6 +174,7 @@ import LogoutIcon from '@/modules/common/icons/LogoutIcon.vue';
 import LoginIcon from '@/modules/common/icons/LoginIcon.vue';
 import SignupIcon from '@/modules/common/icons/SignupIcon.vue';
 import ButtonLink from '@/modules/common/components/ButtonLink.vue';
+import ThemeToggle from '@/modules/common/components/ThemeToggle.vue';
 import { useProductsCategory, type ProductCategory } from '@/composables/useProductsCategory';
 
 const emit = defineEmits<{ (event: 'hideMenu'): void }>();
