@@ -13,7 +13,6 @@ defineEmits<{
 <template>
   <FormKit
     type="select"
-    label="Ordenar por"
     :options="[
       {
         value: { orderBy: 'price', orderDirection: 'asc' },
