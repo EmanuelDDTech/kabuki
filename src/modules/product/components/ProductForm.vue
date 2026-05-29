@@ -1,7 +1,7 @@
 <template>
   <div class="max-w-2xl mx-auto">
     <RouterLink
-      :to="{ name: 'adminProducts' }"
+      :to="{ name: 'adminProductsByCategory', params: { category: CATEGORY_PARAM } }"
       class="inline-block mb-4 text-red-600 font-medium rounded-lg text-sm"
     >
       <div class="flex gap-2 items-center justify-start">
@@ -236,6 +236,7 @@ const { onFileChange, images, deleteImage, updateOrder, deleteImageAll } = useIm
 
 const toast: any = inject('toast');
 const route = useRoute();
+const CATEGORY_PARAM = route.params.category;
 const router = useRouter();
 
 const myEditor = ref<string | null>(null);

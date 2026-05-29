@@ -188,12 +188,12 @@ const router = createRouter({
           component: () => import('@/modules/admin/pages/ProductsView.vue'),
         },
         {
-          path: 'productos/crear',
+          path: 'productos/:category(pokemon|magic|riftbound|otros)/crear',
           name: 'adminCreateProduct',
           component: () => import('@/modules/product/pages/CreateProductView.vue'),
         },
         {
-          path: 'productos/actualizar/:id',
+          path: 'productos/:category(pokemon|magic|riftbound|otros)/actualizar/:id',
           name: 'adminUpdateProducts',
           component: () => import('@/modules/product/pages/UpdateProductView.vue'),
         },

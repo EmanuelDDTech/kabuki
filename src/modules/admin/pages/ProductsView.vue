@@ -28,7 +28,8 @@ const productStore = useProductsStore();
 const filterStore = useFilterCategoryStore();
 
 const route = useRoute();
-const currentProductsCategoryId = computed(() => getProductsCategoryId(route.params.category));
+const CATEGORY_PARAM = route.params.category;
+const currentProductsCategoryId = computed(() => getProductsCategoryId(CATEGORY_PARAM));
 
 onBeforeMount(async () => {
   await filterStore.findFilters(currentProductsCategoryId.value);
@@ -169,7 +170,12 @@ onUnmounted(async () => {
                 </td>
                 <td class="p-2">
                   <div class="flex justify-center">
-                    <RouterLink :to="{ name: 'adminUpdateProducts', params: { id: product.id } }">
+                    <RouterLink
+                      :to="{
+                        name: 'adminUpdateProducts',
+                        params: { category: CATEGORY_PARAM, id: product.id },
+                      }"
+                    >
                       <EditIcon
                         class="h-8 w-8 p-1 rounded-full hover:bg-shori-gray-3 hover:text-blue-600"
                       />
