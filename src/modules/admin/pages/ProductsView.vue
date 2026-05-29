@@ -46,10 +46,13 @@ const { deleteByProductId } = useImage();
 
 const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status } =
   useInfiniteQuery<ProductResponse>({
-    queryKey: ['adminProducts', route.fullPath],
+    queryKey: computed(() => ['adminProducts', route.fullPath]),
     initialPageParam: 1,
     queryFn: ({ pageParam }) => {
-      return productStore.getProducts(`${pageParam ? `page=${pageParam}` : ''}&limit=12`);
+      return productStore.getProductsWithFilters(
+        `${filterStore.createStringQuery}${pageParam ? `&page=${pageParam}` : ''}&limit=12`,
+        currentProductsCategoryId.value,
+      );
     },
     getNextPageParam: (lastPage) => {
       return lastPage.nextPage ? lastPage.nextPage : undefined;

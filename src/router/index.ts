@@ -172,6 +172,19 @@ const router = createRouter({
         {
           path: 'productos',
           name: 'adminProducts',
+          redirect: {
+            name: 'adminProductsCategorySelector',
+            params: { category: DEFAULT_PRODUCTS_CATEGORY },
+          },
+        },
+        {
+          path: 'productos/categoria',
+          name: 'adminProductsCategorySelector',
+          component: () => import('@/modules/admin/pages/AdminProductsCategorySelectorView.vue'),
+        },
+        {
+          path: 'productos/:category(pokemon|magic|riftbound|otros)',
+          name: 'adminProductsByCategory',
           component: () => import('@/modules/admin/pages/ProductsView.vue'),
         },
         {
