@@ -271,7 +271,7 @@ onBeforeUnmount(() => {
         <div class="flex lg:hidden min-h-12 items-center">
           <div
             ref="mobileFiltersRef"
-            class="inline-block absolute top-0 border border-shori-gray-5 bg-shori-gray-surface backdrop-blur-sm overflow-hidden rounded-2xl shadow-[0_10px_30px_rgba(17,24,39,0.1)]"
+            class="inline-block absolute top-0 border border-shori-gray-5 bg-shori-gray-1 backdrop-blur-sm overflow-hidden rounded-2xl shadow-[0_10px_30px_rgba(17,24,39,0.1)]"
           >
             <div
               class="transition-all"
@@ -282,7 +282,7 @@ onBeforeUnmount(() => {
               "
             >
               <div
-                class="flex justify-between w-full py-3 px-4 sticky top-0 bg-shori-gray-surface z-10 border-b border-shori-gray-5"
+                class="flex justify-between w-full py-3 px-4 sticky top-0 bg-shori-gray-1 z-10 border-b border-shori-gray-5"
               >
                 <div class="flex gap-2 items-center" @click="filters.showFilterOptions()">
                   <h3 class="font-bold text-xl">Filtros</h3>
@@ -305,7 +305,7 @@ onBeforeUnmount(() => {
               </div>
 
               <div
-                class="px-4 mb-4 mt-4 rounded-xl border border-shori-gray-5 bg-shori-gray-1/60 mx-4 p-3"
+                class="px-4 mb-4 mt-4 rounded-xl border border-shori-gray-5 bg-shori-gray-1 mx-4 p-3"
               >
                 <p class="text-xs uppercase tracking-[0.12em] text-shori-gray-9 mb-2">Orden</p>
                 <OrderSelect :order="filters.order" @update:order="filters.order = $event" />
@@ -313,7 +313,7 @@ onBeforeUnmount(() => {
 
               <div class="px-4 pb-4">
                 <div
-                  class="flex justify-between items-center py-2.5 px-3 mb-4 rounded-xl border border-shori-gray-5 bg-shori-gray-1/60"
+                  class="flex justify-between items-center py-2.5 px-3 mb-4 rounded-xl border border-shori-gray-5 bg-shori-gray-1"
                 >
                   <label
                     for="existenceOnlyMobile"
@@ -359,7 +359,7 @@ onBeforeUnmount(() => {
                 <div class="mt-3 flex flex-col gap-3">
                   <div v-for="filterGroup in filters.filters" :key="filterGroup.id" class="w-60">
                     <details
-                      class="group rounded-xl border border-shori-gray-5 bg-shori-gray-1/40 p-2.5 open:bg-shori-gray-2 transition-colors"
+                      class="group rounded-xl border border-shori-gray-5 bg-shori-gray-1 p-2.5 transition-colors"
                     >
                       <summary class="flex justify-between items-center cursor-pointer list-none">
                         <h4 class="font-semibold text-sm mb-0.5 text-shori-gray-11">
