@@ -53,6 +53,7 @@ const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status } =
       return productStore.getProductsWithFilters(
         `${filterStore.createStringQuery}${pageParam ? `&page=${pageParam}` : ''}&limit=12`,
         currentProductsCategoryId.value,
+        true,
       );
     },
     getNextPageParam: (lastPage) => {

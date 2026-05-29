@@ -24,11 +24,14 @@ export const useProductsStore = defineStore('products', () => {
   const getProductsWithFilters = async (
     query: string,
     categoryId: number,
+    admin = false,
   ): Promise<ProductResponse> => {
     isLoading.value = true;
     const categoryQuery = `category=${categoryId}`;
     const finalQuery = query ? `${query}&${categoryQuery}` : categoryQuery;
-    const { data } = await ProductsAPI.findProducts(finalQuery);
+    const { data } = admin
+      ? await ProductsAPI.findProductsAdmin(finalQuery)
+      : await ProductsAPI.findProducts(finalQuery);
     products.value = data.data;
     isLoading.value = false;
     return data;
