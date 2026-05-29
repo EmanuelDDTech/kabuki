@@ -2,7 +2,6 @@
 import { computed, onBeforeMount, onBeforeUnmount, onMounted, onUnmounted, ref, watch } from 'vue';
 import { useRoute, type LocationQueryValue } from 'vue-router';
 import { useInfiniteQuery } from '@tanstack/vue-query';
-import { onClickOutside } from '@vueuse/core';
 
 import { useSeoMeta } from '@unhead/vue';
 
@@ -10,41 +9,26 @@ import { useProductsStore } from '../stores/products';
 import { useFilterCategoryStore } from '@/modules/filter/store/filterCategory';
 
 import ProductCard from '../components/ProductCard.vue';
-import FiltersSkeleton from '@/modules/filter/components/FiltersSkeleton.vue';
-
-import XMarkIcon from '@/modules/layouts/components/XMarkIcon.vue';
-import FilterIcon from '@/modules/common/icons/FilterIcon.vue';
-import ChevronDownIcon from '@/modules/common/icons/ChevronDownIcon.vue';
 
 import type { ProductResponse } from '../interfaces';
 import LoaderWithText from '@/modules/common/components/LoaderWithText.vue';
-import OrderSelect from '@/modules/filter/components/OrderSelect.vue';
+import ProductsFiltersTopBar from '@/modules/filter/components/ProductsFiltersTopBar.vue';
 import { getProductsCategoryId } from '@/composables/useProductsCategory';
 
 const filters = useFilterCategoryStore();
 const products = useProductsStore();
 
-const priceRange = ref();
-const mobileFiltersRef = ref<HTMLElement | null>(null);
-
 const route = useRoute();
 const currentProductsCategoryId = computed(() => getProductsCategoryId(route.params.category));
-
-onClickOutside(mobileFiltersRef, () => {
-  if (!filters.showFilters) return;
-  filters.hideFilterOptions();
-});
 
 onBeforeMount(async () => {
   await filters.findFilters(currentProductsCategoryId.value);
   await filters.getFilters();
-  priceRange.value.update([filters.minPrice, filters.maxPrice]);
 });
 
 watch(currentProductsCategoryId, async (newId) => {
   await filters.findFilters(newId);
   await filters.getFilters();
-  priceRange.value.update([filters.minPrice, filters.maxPrice]);
 });
 
 const formatExpansion = (expansion: LocationQueryValue) => {
@@ -92,15 +76,6 @@ onUnmounted(async () => {
   products.clearProducts();
 });
 
-const setPriceRange = async (e: any) => {
-  await filters.setPriceRange(e);
-};
-
-const clearAllFilters = async () => {
-  await filters.clearAllFilters();
-  priceRange.value?.update([filters.minPrice, filters.maxPrice]);
-};
-
 const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status } =
   useInfiniteQuery<ProductResponse>({
     queryKey: computed(() => ['products', route.fullPath]),
@@ -146,266 +121,10 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="w-full">
-    <div
-      class="max-w-screen-xl mx-auto pb-8 px-6 flex flex-col lg:flex-row gap-6 min-h-screen relative"
-    >
-      <section class="sticky top-6 z-10">
-        <div class="flex-1 h-full hidden lg:inline-block">
-          <div
-            class="h-fit min-w-72 py-5 rounded-2xl border border-shori-gray-5 sticky top-6 bg-shori-gray-surface backdrop-blur-sm shadow-[0_12px_36px_rgba(17,24,39,0.08)]"
-          >
-            <div
-              class="flex items-center justify-between border-b border-b-shori-gray-5 mb-4 px-4 pb-3"
-            >
-              <h3 class="font-bold text-xl">Filtros</h3>
-              <button
-                v-if="filters.hasSelectedFilters"
-                @click="clearAllFilters"
-                class="text-xs font-semibold uppercase tracking-wide text-shori-green-9 hover:text-shori-green-10 transition-colors"
-              >
-                Limpiar filtros
-              </button>
-            </div>
-
-            <div
-              class="max-h-[620px] overflow-y-scroll overflow-x-hidden px-4 scrollbar-thin scrollbar-thumb-shori-gray-4 scrollbar-track-transparent"
-            >
-              <div class="mb-5 mt-2 rounded-xl border border-shori-gray-5 bg-shori-gray-1/60 p-3">
-                <p class="text-xs uppercase tracking-[0.12em] text-shori-gray-9 mb-2">Orden</p>
-                <OrderSelect :order="filters.order" @update:order="filters.order = $event" />
-              </div>
-
-              <div
-                class="flex justify-between items-center py-2.5 px-3 mb-5 rounded-xl bg-shori-gray-1/60 border border-shori-gray-5"
-              >
-                <label
-                  for="existenceOnlyDesktop"
-                  class="cursor-pointer leading-none text-sm font-medium"
-                  >Solo con existencia</label
-                >
-                <label
-                  for="existenceOnlyDesktop"
-                  class="relative inline-flex items-center cursor-pointer"
-                >
-                  <input
-                    id="existenceOnlyDesktop"
-                    type="checkbox"
-                    v-model="filters.existenceOnly"
-                    class="sr-only peer"
-                  />
-                  <span
-                    class="h-6 w-11 rounded-full bg-shori-gray-5 transition peer-checked:bg-shori-green-9 after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:h-5 after:w-5 after:rounded-full after:bg-shori-gray-contrast after:shadow-sm after:transition-all peer-checked:after:translate-x-5"
-                  ></span>
-                </label>
-              </div>
-
-              <div class="rounded-xl border border-shori-gray-5 bg-shori-gray-1/60 p-3 mb-4">
-                <p class="font-semibold text-sm mb-1">Precio</p>
-                <Vueform class="pl-2 pr-4">
-                  <SliderElement
-                    @change="setPriceRange"
-                    ref="priceRange"
-                    name="price"
-                    :format="{
-                      prefix: '$',
-                      thousand: ' ',
-                    }"
-                    :step="100"
-                    :min="0"
-                    :max="filters.getMaxPrice()"
-                    :default="[filters.minPrice, filters.maxPrice]"
-                    class="mt-7"
-                  />
-                </Vueform>
-              </div>
-
-              <div v-if="filters.isLoading">
-                <FiltersSkeleton v-for="i in 2" :key="i" />
-              </div>
-
-              <div v-for="filterGroup in filters.filters" :key="filterGroup.id" class="mt-3">
-                <details
-                  class="group rounded-xl border border-shori-gray-5 bg-shori-gray-1/40 p-2.5 transition-colors"
-                >
-                  <summary class="flex justify-between items-center cursor-pointer list-none">
-                    <h4 class="font-bold text-sm mb-0.5 cursor-pointer text-shori-gray-12">
-                      {{ filterGroup.filter_group.name }}
-                    </h4>
-                    <ChevronDownIcon
-                      class="w-5 h-5 text-shori-gray-9 group-open:rotate-180 transition-transform"
-                    />
-                  </summary>
-
-                  <div
-                    v-for="filterValue in filterGroup.filter_group.filter_values"
-                    :key="filterValue.id"
-                    class="flex text-sm justify-between items-center hover:bg-shori-gray-3 py-1.5 px-2 rounded-lg mt-1"
-                  >
-                    <label
-                      :for="filterValue.name"
-                      class="cursor-pointer leading-none text-shori-gray-12"
-                      >{{ filterValue.name }}</label
-                    >
-                    <input
-                      @change="
-                        filters.updateFilters(filterGroup.filter_group.slug, filterValue.slug)
-                      "
-                      :checked="
-                        filters.activeFilters[filterGroup.filter_group.slug]?.includes(
-                          filterValue.slug,
-                        )
-                          ? true
-                          : false
-                      "
-                      type="checkbox"
-                      :id="filterValue.name"
-                      class="h-4 w-4 accent-shori-green-9 cursor-pointer"
-                    />
-                  </div>
-                </details>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="flex lg:hidden min-h-12 items-center">
-          <div
-            ref="mobileFiltersRef"
-            class="inline-block absolute top-0 border border-shori-gray-5 bg-shori-gray-1 backdrop-blur-sm overflow-hidden rounded-2xl shadow-[0_10px_30px_rgba(17,24,39,0.1)]"
-          >
-            <div
-              class="transition-all"
-              :class="
-                !filters.showFilters
-                  ? 'max-h-[54px]'
-                  : 'max-w-[450px] max-h-[540px] overflow-y-scroll scrollbar-thumb-shori-gray-5 scrollbar-track-transparent scrollbar-thin '
-              "
-            >
-              <div
-                class="flex justify-between w-full py-3 px-4 sticky top-0 bg-shori-gray-1 z-10 border-b border-shori-gray-5"
-              >
-                <div class="flex gap-2 items-center" @click="filters.showFilterOptions()">
-                  <h3 class="font-bold text-xl">Filtros</h3>
-                  <FilterIcon class="h-6 w-6" />
-                </div>
-                <div class="flex items-center gap-3">
-                  <button
-                    v-if="filters.showFilters && filters.hasSelectedFilters"
-                    @click="clearAllFilters"
-                    class="text-[11px] font-semibold uppercase tracking-wide text-shori-green-9"
-                  >
-                    Limpiar
-                  </button>
-                  <XMarkIcon
-                    v-if="filters.showFilters"
-                    @click="filters.hideFilterOptions()"
-                    class="h-6 w-6 text-shori-gray-11 top-2 right-4"
-                  />
-                </div>
-              </div>
-
-              <div
-                class="px-4 mb-4 mt-4 rounded-xl border border-shori-gray-5 bg-shori-gray-1 mx-4 p-3"
-              >
-                <p class="text-xs uppercase tracking-[0.12em] text-shori-gray-9 mb-2">Orden</p>
-                <OrderSelect :order="filters.order" @update:order="filters.order = $event" />
-              </div>
-
-              <div class="px-4 pb-4">
-                <div
-                  class="flex justify-between items-center py-2.5 px-3 mb-4 rounded-xl border border-shori-gray-5 bg-shori-gray-1"
-                >
-                  <label
-                    for="existenceOnlyMobile"
-                    class="cursor-pointer leading-none text-sm font-medium"
-                    >Solo con existencia</label
-                  >
-                  <label
-                    for="existenceOnlyMobile"
-                    class="relative inline-flex items-center cursor-pointer"
-                  >
-                    <input
-                      id="existenceOnlyMobile"
-                      type="checkbox"
-                      v-model="filters.existenceOnly"
-                      class="sr-only peer"
-                    />
-                    <span
-                      class="h-6 w-11 rounded-full bg-shori-gray-5 transition peer-checked:bg-shori-green-9 after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:h-5 after:w-5 after:rounded-full after:bg-shori-gray-contrast after:shadow-sm after:transition-all peer-checked:after:translate-x-5"
-                    ></span>
-                  </label>
-                </div>
-
-                <div class="rounded-xl border border-shori-gray-5 bg-shori-gray-1/60 p-3 mb-4">
-                  <p class="font-semibold text-sm mb-1">Precio</p>
-                  <Vueform class="pl-2 pr-4">
-                    <SliderElement
-                      @change="setPriceRange"
-                      ref="priceRange"
-                      name="price"
-                      :format="{
-                        prefix: '$',
-                        thousand: ' ',
-                      }"
-                      :step="100"
-                      :min="0"
-                      :max="filters.getMaxPrice()"
-                      :default="[filters.minPrice, filters.maxPrice]"
-                      class="mt-7"
-                    />
-                  </Vueform>
-                </div>
-
-                <div class="mt-3 flex flex-col gap-3">
-                  <div v-for="filterGroup in filters.filters" :key="filterGroup.id" class="w-60">
-                    <details
-                      class="group rounded-xl border border-shori-gray-5 bg-shori-gray-1 p-2.5 transition-colors"
-                    >
-                      <summary class="flex justify-between items-center cursor-pointer list-none">
-                        <h4 class="font-semibold text-sm mb-0.5 text-shori-gray-11">
-                          {{ filterGroup.filter_group.name }}
-                        </h4>
-                        <ChevronDownIcon
-                          class="w-5 h-5 text-shori-gray-9 group-open:rotate-180 transition-transform"
-                        />
-                      </summary>
-
-                      <div
-                        v-for="filterValue in filterGroup.filter_group.filter_values"
-                        :key="filterValue.id"
-                        class="flex items-center justify-between hover:bg-shori-gray-3/60 py-1.5 px-2 rounded-lg mt-1"
-                      >
-                        <label
-                          :for="filterValue.name"
-                          class="cursor-pointer text-sm text-shori-gray-10"
-                          >{{ filterValue.name }}</label
-                        >
-                        <input
-                          @change="
-                            filters.updateFilters(filterGroup.filter_group.slug, filterValue.slug)
-                          "
-                          :checked="
-                            filters.activeFilters[filterGroup.filter_group.slug]?.includes(
-                              filterValue.slug,
-                            )
-                              ? true
-                              : false
-                          "
-                          type="checkbox"
-                          :id="filterValue.name"
-                          class="cursor-pointer h-4 w-4 accent-shori-green-9"
-                        />
-                      </div>
-                    </details>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-      <section class="flex-1 mb-10">
+    <div class="mx-auto min-h-screen max-w-screen-xl px-6 pb-8">
+      <section class="mb-10">
         <h1 class="text-2xl font-bold border-b border-b-shori-gray-6 mb-6">Busqueda</h1>
+        <ProductsFiltersTopBar />
 
         <LoaderWithText v-if="status === 'pending'" text="Cargando " />
         <div v-if="status === 'error'" class="text-center">Error al cargar</div>
@@ -427,12 +146,3 @@ onBeforeUnmount(() => {
     </div>
   </div>
 </template>
-
-<style scoped>
-details > summary {
-  list-style: none;
-}
-details > summary::-webkit-details-marker {
-  display: none;
-}
-</style>
