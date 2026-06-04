@@ -21,8 +21,13 @@ const toast: any = inject('toast');
 declare const MercadoPago: any;
 
 onMounted(async () => {
-  if (cart.isEmpty || !delivery.isCarrierSelected || address.selectedAddress === 0) {
+  if (cart.isEmpty) {
     router.push({ name: 'cart' });
+    return;
+  }
+
+  if (!delivery.isCarrierSelected || address.selectedAddress === 0 || !cart.payNow) {
+    router.push({ name: 'checkout' });
     return;
   }
 
@@ -252,7 +257,7 @@ const addMercadoPagoScript = async () => {
         </section>
       </div>
 
-      <SideBard />
+      <SideBard checkout-step="payment" />
     </div>
   </main>
 </template>

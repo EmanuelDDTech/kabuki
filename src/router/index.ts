@@ -61,7 +61,13 @@ const router = createRouter({
           component: () => import('@cart/pages/CartView.vue'),
         },
         {
-          path: 'carrito/pagar',
+          path: '/carrito/checkout',
+          beforeEnter: [isAuthenticatedGuard],
+          name: 'checkout',
+          component: () => import('@cart/pages/CheckoutView.vue'),
+        },
+        {
+          path: '/carrito/pagar',
           beforeEnter: [isAuthenticatedGuard],
           name: 'pay',
           component: () => import('@cart/pages/PayView.vue'),

@@ -2,12 +2,23 @@
 import { formatCurrency } from '@/helpers';
 import { useCartStore } from '../stores/cart';
 import { useDeliveryStore } from '../stores/delivery';
-import { inject } from 'vue';
+import { computed, inject } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAddressStore } from '../stores/address';
 import { useUserStore } from '@/modules/auth/stores/user';
 import { useDiscountCodeStore } from '@/modules/discountCode/stores/discountCode';
 import { useProductsCategory } from '@/composables/useProductsCategory';
+
+type CheckoutStep = 'cart' | 'delivery' | 'payment';
+
+const props = withDefaults(
+  defineProps<{
+    checkoutStep?: CheckoutStep;
+  }>(),
+  {
+    checkoutStep: 'cart',
+  },
+);
 
 const cart = useCartStore();
 const address = useAddressStore();
@@ -20,7 +31,20 @@ const toast: any = inject('toast');
 const router = useRouter();
 const { currentProductsCategory } = useProductsCategory();
 
+const showCheckoutAction = computed(
+  () => !cart.payNow && userStore.isSet && props.checkoutStep !== 'payment',
+);
+
+const checkoutActionLabel = computed(() =>
+  props.checkoutStep === 'delivery' ? 'Continuar a pago' : 'Proceder al pago',
+);
+
 const checkout = () => {
+  if (props.checkoutStep === 'cart') {
+    router.push({ name: 'checkout' });
+    return;
+  }
+
   if (address.selectedAddress === 0) {
     toast.open({
       message: 'No se ha seleccionado ninguna dirección de entrega',
@@ -32,7 +56,7 @@ const checkout = () => {
 
   if (!delivery.isCarrierSelected) {
     toast.open({
-      message: 'No se ha seleccionado ningún método de pago',
+      message: 'No se ha seleccionado ningún método de envío',
       type: 'error',
     });
 
@@ -143,15 +167,15 @@ const applyDiscountCode = async () => {
         </h3>
 
         <button
-          v-show="!cart.payNow && userStore.isSet"
+          v-show="showCheckoutAction"
           @click="checkout()"
           class="block text-center text-black w-full rounded-full bg-yellow-300 hover:bg-yellow-400 py-1 mt-3 text-sm transition-colors"
         >
-          Proceder al pago
+          {{ checkoutActionLabel }}
         </button>
 
         <router-link
-          v-show="!cart.payNow && !userStore.isSet"
+          v-show="!cart.payNow && !userStore.isSet && props.checkoutStep !== 'payment'"
           :to="{ name: 'login' }"
           class="block text-center text-black w-full rounded-full bg-yellow-300 hover:bg-yellow-400 py-1 mt-3 text-sm transition-colors"
         >
