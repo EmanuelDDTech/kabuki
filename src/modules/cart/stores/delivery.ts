@@ -8,6 +8,7 @@ import { useUserStore } from '@/modules/auth/stores/user';
 export const useDeliveryStore = defineStore('delivery', () => {
   const carriers = ref<Delivery[] | []>([]);
   const deliveriesAvailable = ref<Delivery[] | []>([]);
+  const loading = ref(false);
   const amountShipping = ref<number>(0);
   const carrierSelected = ref<Delivery | null>(null);
   const productsIds = ref<number[]>([]);
@@ -21,9 +22,11 @@ export const useDeliveryStore = defineStore('delivery', () => {
 
     if (!zipCode || (!userId && !productsIds.value.length)) {
       deliveriesAvailable.value = [];
+      loading.value = false;
       return;
     }
 
+    loading.value = true;
     try {
       const { data } = await DeliveryAPI.findAvailable({
         zipCode,
@@ -33,6 +36,8 @@ export const useDeliveryStore = defineStore('delivery', () => {
       deliveriesAvailable.value = data.options;
     } catch (error) {
       console.log(error);
+    } finally {
+      loading.value = false;
     }
   };
 
@@ -73,10 +78,12 @@ export const useDeliveryStore = defineStore('delivery', () => {
   return {
     carriers,
     deliveriesAvailable,
+    loading,
     amountShipping,
     carrierSelected,
 
     // Getters
+    isLoading: computed(() => loading.value),
     isCarrierSelected: computed(() => carrierSelected.value !== null),
 
     // Methods

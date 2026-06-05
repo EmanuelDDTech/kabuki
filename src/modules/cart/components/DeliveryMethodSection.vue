@@ -78,7 +78,18 @@ const getCarrierEmoji = (deliveryData: Delivery) => {
       v-else
       class="rounded-2xl border border-dashed border-shori-gray-7 bg-shori-gray-2 p-6 text-center"
     >
-      <p v-if="!hasSelectedAddress" class="text-sm font-medium text-shori-gray-11">
+      <div
+        v-if="delivery.isLoading"
+        class="flex flex-col items-center justify-center gap-3 text-shori-gray-11"
+      >
+        <span
+          class="h-6 w-6 animate-spin rounded-full border-2 border-shori-gray-7 border-t-shori-gray-11"
+          aria-hidden="true"
+        />
+        <p class="text-sm font-medium">Consultando métodos de envío...</p>
+      </div>
+
+      <p v-else-if="!hasSelectedAddress" class="text-sm font-medium text-shori-gray-11">
         Selecciona una dirección para ver los métodos de envío disponibles.
       </p>
 
