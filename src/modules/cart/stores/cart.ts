@@ -310,7 +310,6 @@ export const useCartStore = defineStore('cart', () => {
       let error = false;
       localStorage.setItem('_shorikame_cart', JSON.stringify([]));
 
-      console.log(results);
       results.forEach((result) => {
         if (result.status === 'rejected') error = true;
       });
