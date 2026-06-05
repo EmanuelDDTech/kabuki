@@ -6,7 +6,7 @@ import { useDeliveryStore } from '../stores/delivery';
 const delivery = useDeliveryStore();
 
 const getShippingPrice = (deliveryData: Delivery) => {
-  return deliveryData.free_over ? 0 : deliveryData.delivery_price_rules[0].list_base_price;
+  return deliveryData.amount_shipping;
 };
 
 const isCarrierSelected = (deliveryId: number) => {

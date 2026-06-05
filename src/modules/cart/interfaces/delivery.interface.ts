@@ -6,6 +6,7 @@ export interface Delivery {
   servicelevel: string;
   free_over: boolean;
   image: string;
+  amount_shipping: number;
   delivery_price_rules: DeliveryRule[];
 }
 
