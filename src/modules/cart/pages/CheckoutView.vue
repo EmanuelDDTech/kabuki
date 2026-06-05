@@ -1,14 +1,16 @@
 <script setup lang="ts">
 import { onMounted } from 'vue';
-import { useRouter } from 'vue-router';
+import { onBeforeRouteLeave, useRouter } from 'vue-router';
 import AddressSelectionSection from '../components/AddressSelectionSection.vue';
 import DeliveryMethodSection from '../components/DeliveryMethodSection.vue';
 import SideBard from '../components/SideBard.vue';
 import { useAddressStore } from '../stores/address';
 import { useCartStore } from '../stores/cart';
+import { useDeliveryStore } from '../stores/delivery';
 
 const address = useAddressStore();
 const cart = useCartStore();
+const delivery = useDeliveryStore();
 const router = useRouter();
 
 onMounted(async () => {
@@ -18,6 +20,13 @@ onMounted(async () => {
   }
 
   await address.getAddresses();
+});
+
+onBeforeRouteLeave((to) => {
+  if (to.name !== 'pay') {
+    address.clearSelectedAddress();
+    delivery.clearSelectedAddress();
+  }
 });
 </script>
 
