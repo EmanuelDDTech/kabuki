@@ -1,7 +1,13 @@
+export enum DeliveryCarrierType {
+  DELIVERY = 'DELIVERY',
+  PICKUP = 'PICKUP',
+}
+
 export interface Delivery {
   id: number;
   name: string;
   active: boolean;
+  carrier_type: DeliveryCarrierType;
   fized_price: number;
   servicelevel: string;
   free_over: boolean;

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { formatCurrency } from '@/helpers';
-import type { Delivery } from '../interfaces/delivery.interface';
+import { DeliveryCarrierType, type Delivery } from '../interfaces/delivery.interface';
 import { useDeliveryStore } from '../stores/delivery';
 
 const delivery = useDeliveryStore();
@@ -16,6 +16,10 @@ const isCarrierSelected = (deliveryId: number) => {
 const selectCarrier = (deliveryData: Delivery) => {
   delivery.setAmountShipping(getShippingPrice(deliveryData));
   delivery.setCarrierSelected(deliveryData);
+};
+
+const getCarrierEmoji = (deliveryData: Delivery) => {
+  return deliveryData.carrier_type === DeliveryCarrierType.PICKUP ? '🏬' : '🚚';
 };
 </script>
 
@@ -41,7 +45,7 @@ const selectCarrier = (deliveryData: Delivery) => {
             :class="isCarrierSelected(deliveryData.id) ? 'text-shori-gray-12' : ''"
             aria-hidden="true"
           >
-            <span class="text-2xl leading-none">🚚</span>
+            <span class="text-2xl leading-none">{{ getCarrierEmoji(deliveryData) }}</span>
           </div>
 
           <span
