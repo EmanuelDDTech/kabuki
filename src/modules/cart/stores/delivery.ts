@@ -30,7 +30,7 @@ export const useDeliveryStore = defineStore('delivery', () => {
         productsIds: productsIds.value,
         userId,
       });
-      deliveriesAvailable.value = data;
+      deliveriesAvailable.value = data.options;
     } catch (error) {
       console.log(error);
     }
