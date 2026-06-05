@@ -1,4 +1,4 @@
-import { ref, computed, inject } from 'vue';
+import { ref, inject, getCurrentInstance } from 'vue';
 import { uid } from 'uid';
 import { useFirebaseStorage } from 'vuefire';
 import {
@@ -10,18 +10,17 @@ import {
 import { useProductStore } from '@/modules/product/stores/product';
 import ProductGalleryAPI from '@/modules/product/api/ProductGalleryAPI';
 
-const productStore = useProductStore();
-
 export default function useImage() {
+  const productStore = useProductStore();
   const storage = useFirebaseStorage();
   const images = ref([]);
-  const toast: any = inject('toast');
+  const toast: any = getCurrentInstance() ? inject('toast', null) : null;
 
   const onFileChange = (e: any) => {
     const files = e.target.files;
 
     if (productStore.gallery.length >= 5) {
-      toast.open({
+      toast?.open({
         message: 'Máximo de imágenes alcanzado',
         type: 'error',
       });
