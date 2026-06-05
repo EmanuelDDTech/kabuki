@@ -225,7 +225,7 @@ const deleteAddress = async (id: number) => {
         :key="addressData.id"
         :address="addressData"
         :selected="address.isSelected(addressData.id)"
-        @click="address.selectAddress(addressData.id)"
+        @click="address.selectAddress(addressData)"
         @edit="address.editAddress(addressData)"
       />
     </div>

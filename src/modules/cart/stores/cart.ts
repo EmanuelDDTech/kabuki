@@ -335,13 +335,27 @@ export const useCartStore = defineStore('cart', () => {
     items.value.reduce((totalWeight, item) => totalWeight + item.product.weight * item.quantity, 0),
   );
 
+  const itemsIds = computed(() => items.value.map((item) => item.product.id));
+
   watch(
-    items,
-    async (newValue, oldValue) => {
-      await delivery.findDeliveriesAvailable(44298, cartWeight.value);
+    itemsIds,
+    (newItemsIds) => {
+      delivery.setProductsIds(newItemsIds);
     },
-    { immediate: true, deep: true },
+    { immediate: true },
   );
+
+  // watch(
+  //   items,
+  //   async (newValue, oldValue) => {
+  //     await delivery.findDeliveriesAvailable({
+  //       zipCode: address.selectedAddress?.zip,
+  //       productsIds: itemsIds.value,
+  //       userId: userStore.user?.id,
+  //     });
+  //   },
+  //   { immediate: true, deep: true },
+  // );
 
   return {
     subtotal,
@@ -353,6 +367,9 @@ export const useCartStore = defineStore('cart', () => {
     payNow,
     paypalCart,
     discountAmount,
+
+    // Getters
+    itemsIds,
 
     // Methods
     getCart,

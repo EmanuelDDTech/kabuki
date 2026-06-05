@@ -1,7 +1,19 @@
 import api from '@/lib/axios';
 
 export default {
-  async findAvailable(weight: number, zipCode: number) {
-    return await api.get(`/delivery?weight=${weight}&zipCode=${zipCode}`);
+  async findAvailable({
+    zipCode,
+    productsIds,
+    userId,
+  }: {
+    zipCode: string;
+    productsIds: number[];
+    userId: number | undefined;
+  }) {
+    return await api.post(`/delivery/quote`, {
+      zip_code: zipCode,
+      products_ids: productsIds,
+      user_id: userId,
+    });
   },
 };

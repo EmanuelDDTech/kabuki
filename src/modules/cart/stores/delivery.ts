@@ -2,24 +2,51 @@ import { defineStore } from 'pinia';
 import type { Delivery } from '../interfaces/delivery.interface';
 import { computed, ref, watch } from 'vue';
 import DeliveryAPI from '../api/DeliveryAPI';
+import { useAddressStore } from './address';
+import { useUserStore } from '@/modules/auth/stores/user';
 
 export const useDeliveryStore = defineStore('delivery', () => {
   const carriers = ref<Delivery[] | []>([]);
   const deliveriesAvailable = ref<Delivery[] | []>([]);
   const amountShipping = ref<number>(0);
   const carrierSelected = ref<Delivery | null>(null);
-  const panel_cp = ref(true);
+  const productsIds = ref<number[]>([]);
 
-  const findDeliveriesAvailable = async (zipCode: number, cartWeight: number) => {
-    if (cartWeight <= 0) return;
+  const addressStore = useAddressStore();
+  const userStore = useUserStore();
+
+  const findDeliveriesAvailable = async () => {
+    const zipCode = addressStore.getSelectedAddress?.zip;
+    const userId = userStore.user?.id;
+
+    if (!zipCode || (!userId && !productsIds.value.length)) {
+      deliveriesAvailable.value = [];
+      return;
+    }
+
     try {
-      const { data } = await DeliveryAPI.findAvailable(cartWeight, zipCode);
-
+      const { data } = await DeliveryAPI.findAvailable({
+        zipCode,
+        productsIds: productsIds.value,
+        userId,
+      });
       deliveriesAvailable.value = data;
     } catch (error) {
       console.log(error);
     }
   };
+
+  const setProductsIds = (ids: number[]) => {
+    productsIds.value = [...ids];
+  };
+
+  watch(
+    [() => addressStore.getSelectedAddress, () => [...productsIds.value], () => userStore.user?.id],
+    () => {
+      findDeliveriesAvailable();
+    },
+    { deep: true, immediate: true },
+  );
 
   const setAmountShipping = (amount: number) => {
     amountShipping.value = amount;
@@ -34,7 +61,7 @@ export const useDeliveryStore = defineStore('delivery', () => {
     carrierSelected.value = null;
   };
 
-  watch(deliveriesAvailable, (newDeliveries, oldDeliveries) => {
+  watch(deliveriesAvailable, (newDeliveries) => {
     if (carrierSelected.value) {
       const newValue = newDeliveries.find((delivery) => delivery.id === carrierSelected.value?.id)!;
 
@@ -54,6 +81,7 @@ export const useDeliveryStore = defineStore('delivery', () => {
 
     // Methods
     findDeliveriesAvailable,
+    setProductsIds,
     setAmountShipping,
     setCarrierSelected,
     clearSelectedAddress,
