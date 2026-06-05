@@ -1,9 +1,14 @@
 <script setup lang="ts">
+import { computed } from 'vue';
 import { formatCurrency } from '@/helpers';
 import { DeliveryCarrierType, type Delivery } from '../interfaces/delivery.interface';
 import { useDeliveryStore } from '../stores/delivery';
+import { useAddressStore } from '../stores/address';
 
 const delivery = useDeliveryStore();
+const address = useAddressStore();
+
+const hasSelectedAddress = computed(() => Boolean(address.getSelectedAddress));
 
 const getShippingPrice = (deliveryData: Delivery) => {
   return deliveryData.amount_shipping;
@@ -27,7 +32,10 @@ const getCarrierEmoji = (deliveryData: Delivery) => {
   <section class="mt-6 shadow-md border border-shori-gray-6 p-4 rounded-lg">
     <h2 class="text-2xl font-bold border-b-2 border-shori-gray-6 pb-3 mb-6">Método de envío</h2>
 
-    <ul class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    <ul
+      v-if="delivery.deliveriesAvailable.length"
+      class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"
+    >
       <li
         v-for="deliveryData in delivery.deliveriesAvailable"
         :key="deliveryData.id"
@@ -65,5 +73,18 @@ const getCarrierEmoji = (deliveryData: Delivery) => {
         </p>
       </li>
     </ul>
+
+    <div
+      v-else
+      class="rounded-2xl border border-dashed border-shori-gray-7 bg-shori-gray-2 p-6 text-center"
+    >
+      <p v-if="!hasSelectedAddress" class="text-sm font-medium text-shori-gray-11">
+        Selecciona una dirección para ver los métodos de envío disponibles.
+      </p>
+
+      <p v-else class="text-sm font-medium text-shori-gray-11">
+        No hay métodos de envío disponibles para la dirección seleccionada.
+      </p>
+    </div>
   </section>
 </template>
