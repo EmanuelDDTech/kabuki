@@ -11,9 +11,9 @@ export default {
     userId: number | undefined;
   }) {
     return await api.post(`/delivery/quote`, {
-      zip_code: zipCode,
-      products_ids: productsIds,
-      user_id: userId,
+      zipCode: zipCode,
+      productsIds: productsIds,
+      userId: userId,
     });
   },
 };
