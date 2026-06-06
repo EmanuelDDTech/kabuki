@@ -2,12 +2,13 @@
 import { formatCurrency } from '@/helpers';
 import { useCartStore } from '../stores/cart';
 import { useDeliveryStore } from '../stores/delivery';
-import { computed, inject } from 'vue';
+import { computed, inject, shallowRef } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAddressStore } from '../stores/address';
 import { useUserStore } from '@/modules/auth/stores/user';
 import { useDiscountCodeStore } from '@/modules/discountCode/stores/discountCode';
 import { useProductsCategory } from '@/composables/useProductsCategory';
+import { DeliveryCarrierType } from '../interfaces/delivery.interface';
 
 type CheckoutStep = 'cart' | 'delivery' | 'payment';
 
@@ -27,16 +28,34 @@ const userStore = useUserStore();
 const discountCodeStore = useDiscountCodeStore();
 
 const toast: any = inject('toast');
+const discountCodeInput = shallowRef('');
 
 const router = useRouter();
 const { currentProductsCategory } = useProductsCategory();
 
-const showCheckoutAction = computed(
-  () => !cart.payNow && userStore.isSet && props.checkoutStep !== 'payment',
+const showCheckoutAction = computed(() => !cart.payNow && props.checkoutStep !== 'payment');
+
+const shouldShowLoginAction = computed(
+  () => props.checkoutStep === 'cart' && !userStore.isSet && !cart.payNow,
 );
 
+const shouldShowCheckoutAction = computed(() => {
+  if (!showCheckoutAction.value) return false;
+  if (props.checkoutStep === 'cart') return userStore.isSet;
+
+  return true;
+});
+
+const canContinueToPayment = computed(() => {
+  if (props.checkoutStep !== 'delivery') return true;
+  if (!delivery.isCarrierSelected) return false;
+
+  const requiresAddress = delivery.carrierSelected?.carrier_type !== DeliveryCarrierType.PICKUP;
+  return requiresAddress ? Boolean(address.selectedAddress) : true;
+});
+
 const checkoutActionLabel = computed(() =>
-  props.checkoutStep === 'delivery' ? 'Continuar a pago' : 'Proceder al pago',
+  props.checkoutStep === 'delivery' ? 'Realizar pago' : 'Continuar con el pedido',
 );
 
 const checkout = () => {
@@ -45,7 +64,9 @@ const checkout = () => {
     return;
   }
 
-  if (address.selectedAddress === 0) {
+  const requiresAddress = delivery.carrierSelected?.carrier_type !== DeliveryCarrierType.PICKUP;
+
+  if (requiresAddress && !address.selectedAddress) {
     toast.open({
       message: 'No se ha seleccionado ninguna dirección de entrega',
       type: 'error',
@@ -68,9 +89,7 @@ const checkout = () => {
 };
 
 const applyDiscountCode = async () => {
-  const discountCode = document.getElementById('discount-code') as HTMLInputElement;
-
-  if (!discountCode.value) {
+  if (!discountCodeInput.value.trim()) {
     toast.open({
       message: 'No se ha escrito ningún código',
       type: 'error',
@@ -79,9 +98,9 @@ const applyDiscountCode = async () => {
   }
 
   try {
-    await discountCodeStore.getDiscountCodeByCode(discountCode.value);
+    await discountCodeStore.getDiscountCodeByCode(discountCodeInput.value.trim());
 
-    discountCode.value = '';
+    discountCodeInput.value = '';
 
     toast.open({
       message: 'Código de descuento aplicado',
@@ -99,89 +118,273 @@ const applyDiscountCode = async () => {
 <template>
   <div>
     <aside class="h-full mt-6 lg:mt-0">
-      <div
-        v-if="cart.isEmpty"
-        class="w-full max-w-96 lg:w-72 shadow-md border border-shori-gray-6 p-4 rounded-lg sticky top-3 mx-auto"
-      >
-        <h3 class="text-lg flex justify-between text-shori-gray-11">
-          Aún no has agregado ningún producto al carrito
-        </h3>
+      <div v-if="cart.isEmpty" class="cart-summary-card w-full max-w-[360px] sticky top-4 mx-auto">
+        <h3 class="text-lg font-semibold text-shori-gray-12">Tu carrito está vacío</h3>
+        <p class="mt-2 text-sm text-shori-gray-10">
+          Agrega productos para continuar con tu compra.
+        </p>
 
         <router-link
           :to="{ name: 'products', params: { category: currentProductsCategory } }"
-          class="block text-center text-white w-full rounded-full bg-blue-600 hover:bg-blue-500 py-1 mt-3 text-sm transition-colors"
+          class="summary-action summary-action--secondary"
         >
           Ver productos
         </router-link>
       </div>
-      <div
-        v-if="!cart.isEmpty"
-        class="w-full max-w-96 lg:w-72 shadow-md border border-shori-gray-6 p-4 rounded-lg sticky top-3 mx-auto"
-      >
-        <div class="w-full mb-6">
-          <!-- Campo de código de descuento -->
-          <label for="discount-code" class="block text-sm font-medium text-shori-gray-11"
-            >Código de descuento</label
-          >
+      <div v-if="!cart.isEmpty" class="cart-summary-card w-full max-w-[360px] sticky top-4 mx-auto">
+        <div class="summary-header">
+          <div>
+            <p class="summary-eyebrow">Resumen</p>
+            <h3 class="summary-title">Orden ({{ cart.cartLength }})</h3>
+          </div>
+        </div>
 
-          <div class="mt-1 flex">
+        <div class="w-full mb-6">
+          <label for="discount-code" class="summary-label">Código de descuento</label>
+
+          <div class="summary-discount-wrapper">
             <input
               type="text"
               id="discount-code"
+              v-model="discountCodeInput"
               placeholder="Ingresa tu código"
-              class="w-full p-2 border border-shori-gray-6 rounded-l-md focus:outline-none focus:ring-2 focus:ring-shori-green-6 focus:border-shori-green-6 bg-shori-gray-2 placeholder-shori-gray-11"
+              class="summary-discount-input"
               :disabled="discountCodeStore.isDiscountCodeSelected"
             />
             <button
-              class="px-4 bg-shori-green-9 text-black font-semibold rounded-r-md hover:bg-shori-green-10 transition-colors"
+              class="summary-discount-btn"
               @click="applyDiscountCode"
               :disabled="discountCodeStore.isDiscountCodeSelected"
             >
               Aplicar
             </button>
           </div>
+
+          <p v-if="discountCodeStore.isDiscountCodeSelected" class="summary-discount-chip">
+            Código aplicado: {{ discountCodeStore.selectedDiscountCode?.code }}
+          </p>
         </div>
 
-        <h3 class="text-lg flex justify-between">
-          Subtotal: <span class="font-bold">{{ formatCurrency(cart.subtotal) }}</span>
-        </h3>
+        <div class="summary-rows">
+          <div class="summary-row">
+            <span>Subtotal</span>
+            <strong>{{ formatCurrency(cart.subtotal) }}</strong>
+          </div>
+          <div class="summary-row">
+            <span>Envío</span>
+            <strong>{{ formatCurrency(delivery.amountShipping) }}</strong>
+          </div>
+        </div>
 
-        <h3
-          v-if="delivery.isCarrierSelected"
-          class="text-lg flex justify-between mt-2 pb-3 border-b-2 border-shori-gray-6"
-        >
-          Envío: <span class="font-bold">{{ formatCurrency(delivery.amountShipping) }}</span>
-        </h3>
-
-        <h3
+        <div
           v-if="discountCodeStore.isDiscountCodeSelected"
-          class="text-base tracking-tight flex justify-between items-center mt-2 pb-3 border-b-2 border-shori-gray-6"
+          class="summary-row summary-row--discount"
         >
-          {{ discountCodeStore.selectedDiscountCode?.code }}:
-          <span class="font-bold text-lg">- {{ formatCurrency(cart.discountAmount) }}</span>
-        </h3>
+          <span>Descuento</span>
+          <strong>- {{ formatCurrency(cart.discountAmount) }}</strong>
+        </div>
 
-        <h3 class="text-lg flex justify-between mt-3">
-          Total:
-          <span class="font-bold">{{ formatCurrency(cart.total) }}</span>
-        </h3>
+        <div class="summary-total">
+          <span>Total</span>
+          <strong>{{ formatCurrency(cart.total) }}</strong>
+        </div>
 
         <button
-          v-show="showCheckoutAction"
+          v-show="shouldShowCheckoutAction"
           @click="checkout()"
-          class="block text-center text-black w-full rounded-full bg-yellow-300 hover:bg-yellow-400 py-1 mt-3 text-sm transition-colors"
+          class="summary-action summary-action--primary"
+          :disabled="props.checkoutStep === 'delivery' && !canContinueToPayment"
         >
           {{ checkoutActionLabel }}
         </button>
 
         <router-link
-          v-show="!cart.payNow && !userStore.isSet && props.checkoutStep !== 'payment'"
+          v-show="shouldShowLoginAction"
           :to="{ name: 'login' }"
-          class="block text-center text-black w-full rounded-full bg-yellow-300 hover:bg-yellow-400 py-1 mt-3 text-sm transition-colors"
+          class="summary-action summary-action--primary"
         >
-          Inicia sesión para pagar
+          Inicia sesión para continuar
         </router-link>
       </div>
     </aside>
   </div>
 </template>
+
+<style scoped>
+.cart-summary-card {
+  border-radius: 24px;
+  border: 1px solid color-mix(in srgb, var(--gray-6) 80%, transparent);
+  /* background:
+    radial-gradient(circle at top right, color-mix(in srgb, var(--green-3) 55%, transparent), transparent 62%),
+    color-mix(in srgb, var(--gray-1) 88%, var(--gray-2)); */
+  box-shadow:
+    0 28px 56px rgba(19, 35, 64, 0.1),
+    0 8px 20px rgba(12, 20, 32, 0.08);
+  padding: 1.2rem;
+}
+
+.summary-header {
+  margin-bottom: 1rem;
+}
+
+.summary-eyebrow {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gray-10);
+}
+
+.summary-title {
+  margin-top: 0.25rem;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--gray-12);
+}
+
+.summary-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--gray-10);
+}
+
+.summary-discount-wrapper {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.summary-discount-input {
+  width: 100%;
+  border-radius: 14px;
+  border: 1px solid var(--gray-6);
+  background-color: color-mix(in srgb, var(--gray-1) 82%, var(--gray-2));
+  padding: 0.62rem 0.85rem;
+  color: var(--gray-12);
+  transition: border-color 150ms ease;
+}
+
+.summary-discount-input:focus {
+  outline: none;
+  border-color: var(--green-8);
+}
+
+.summary-discount-input:disabled {
+  opacity: 0.75;
+}
+
+.summary-discount-btn {
+  border-radius: 14px;
+  border: 1px solid transparent;
+  background: linear-gradient(130deg, var(--green-8), var(--green-9));
+  color: var(--green-contrast);
+  font-weight: 700;
+  padding: 0.62rem 0.95rem;
+  transition:
+    transform 180ms ease,
+    filter 180ms ease;
+}
+
+.summary-discount-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  filter: brightness(1.04);
+}
+
+.summary-discount-btn:disabled {
+  cursor: not-allowed;
+  filter: grayscale(0.15);
+}
+
+.summary-discount-chip {
+  margin-top: 0.65rem;
+  font-size: 0.78rem;
+  color: var(--green-11);
+  font-weight: 600;
+}
+
+.summary-rows {
+  display: grid;
+  gap: 0.5rem;
+  padding: 0.8rem 0;
+  border-top: 1px solid color-mix(in srgb, var(--gray-6) 80%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--gray-6) 80%, transparent);
+}
+
+.summary-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.97rem;
+  color: var(--gray-11);
+}
+
+.summary-row strong {
+  color: var(--gray-12);
+}
+
+.summary-row--discount {
+  margin-top: 0.75rem;
+  color: var(--green-11);
+}
+
+.summary-row--discount strong {
+  color: var(--green-11);
+}
+
+.summary-total {
+  margin-top: 0.95rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 1.22rem;
+  font-weight: 700;
+  color: var(--gray-12);
+}
+
+.summary-action {
+  width: 100%;
+  margin-top: 0.9rem;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 999px;
+  padding: 0.72rem 1rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  transition:
+    transform 180ms ease,
+    filter 180ms ease;
+}
+
+.summary-action:hover {
+  transform: translateY(-1px);
+}
+
+.summary-action--primary {
+  background: linear-gradient(140deg, var(--green-8), var(--green-9));
+  color: var(--green-contrast);
+  box-shadow: 0 16px 24px color-mix(in srgb, var(--green-9) 40%, transparent);
+}
+
+.summary-action--primary:disabled {
+  cursor: not-allowed;
+  filter: grayscale(0.2) opacity(0.7);
+  transform: none;
+  box-shadow: none;
+}
+
+.summary-action--secondary {
+  background-color: color-mix(in srgb, var(--gray-1) 80%, var(--gray-2));
+  color: var(--gray-12);
+  border: 1px solid var(--gray-6);
+}
+
+@media (max-width: 1023px) {
+  .cart-summary-card {
+    position: static;
+  }
+}
+</style>

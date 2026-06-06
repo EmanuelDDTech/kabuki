@@ -1,35 +1,50 @@
 <template>
-  <article class="flex flex-col items-center sm:flex-row gap-3 my-8">
-    <div class="max-w-64 sm:max-w-40 p-3">
-      <img :src="item.product.product_galleries[0].url" alt="Imagen de producto" class="w-full" />
+  <article
+    class="grid grid-cols-[88px_1fr] md:grid-cols-[116px_1fr_auto] gap-[1.1rem] items-center rounded-3xl border border-[color-mix(in_srgb,var(--gray-6)_82%,transparent)] bg-[color-mix(in_srgb,var(--gray-1)_88%,var(--gray-2))] p-4 my-4 shadow-[0_14px_30px_rgba(18,26,41,0.06)]"
+  >
+    <div
+      class="aspect-square rounded-2xl bg-[radial-gradient(circle_at_24%_10%,color-mix(in_srgb,var(--green-3)_70%,transparent),transparent_55%),color-mix(in_srgb,var(--gray-2)_86%,var(--gray-1))] flex justify-center items-center p-[0.65rem]"
+    >
+      <img
+        :src="item.product.product_galleries[0].url"
+        alt="Imagen de producto"
+        class="w-full h-full object-contain"
+      />
     </div>
-    <div class="flex-1 flex flex-col justify-center">
-      <h3 class="text-xl">{{ item.product.name }}</h3>
 
-      <div class="mt-2 flex gap-3">
-        <p class="font-bold">Precio unitario:</p>
-        <p>{{ formatCurrency(item.product.price) }}</p>
+    <div class="min-w-0">
+      <h3 class="text-[1.24rem] leading-[1.2] font-semibold text-shori-gray-12 mb-3">
+        {{ item.product.name }}
+      </h3>
+
+      <div class="flex items-center gap-4 mt-2">
+        <p class="text-[0.92rem] font-semibold text-shori-gray-11">Precio unitario</p>
+        <p class="text-[0.95rem] text-shori-gray-12">{{ formatCurrency(item.product.price) }}</p>
       </div>
 
-      <div class="mt-2 flex gap-3 items-center">
-        <p class="font-bold">Cantidad:</p>
+      <div class="flex items-center gap-4 mt-2">
+        <p class="text-[0.92rem] font-semibold text-shori-gray-11">Cantidad</p>
         <ProductQuantity
           :value="item.quantity"
-          @res="res(item.product.id, item.quantity, item.product.stock)"
-          @sum="sum(item.product.id, item.quantity, item.product.stock)"
+          @res="res(item.product.id, item.quantity)"
+          @sum="sum(item.product.id, item.quantity, item.product.stock ?? 0)"
           :editable="editable"
         />
       </div>
 
-      <div class="flex text-sm gap-6 mt-2 text-shori-gray-11" v-if="editable">
-        <p class="cursor-pointer hover:text-red-600" @click="removeItem(item.product.id)">
-          Eliminar
-        </p>
-        <!-- <p class="cursor-pointer hover:text-blue-600">Compartir</p> -->
-      </div>
+      <button
+        v-if="editable"
+        class="mt-2 text-shori-gray-11 text-[0.86rem] font-semibold"
+        @click="removeItem(item.product.id)"
+      >
+        Eliminar
+      </button>
     </div>
-    <div class="flex items-center">
-      <p class="text-xl font-bold">{{ formatCurrency(item.product.price * item.quantity) }}</p>
+
+    <div class="justify-self-start md:justify-self-end col-span-2 md:col-span-1 mt-1 md:mt-0">
+      <p class="text-[1.55rem] md:text-[2rem] font-bold text-shori-gray-12 tracking-[-0.02em]">
+        {{ formatCurrency(item.product.price * item.quantity) }}
+      </p>
     </div>
   </article>
 </template>
@@ -40,12 +55,19 @@ import Swal from 'sweetalert2';
 import ProductQuantity from '@/modules/counter/components/ProductQuantity.vue';
 import { formatCurrency } from '@/helpers';
 import { useCartStore } from '@/modules/cart/stores/cart';
+import type { Product } from '@/modules/product/interfaces/product.interface';
 
 const cart = useCartStore();
-const toast = inject('toast');
+const toast: any = inject('toast');
+
+interface CartItem {
+  id?: number;
+  quantity: number;
+  product: Product;
+}
 
 interface Props {
-  item: Object;
+  item: CartItem;
   editable?: boolean;
 }
 
@@ -53,7 +75,7 @@ const props = withDefaults(defineProps<Props>(), {
   editable: true,
 });
 
-const res = async (productId, quantity) => {
+const res = async (productId: number, quantity: number) => {
   if (quantity <= 1) {
     toast.open({
       message: 'La cantidad mínima es 1.',
@@ -68,7 +90,7 @@ const res = async (productId, quantity) => {
       message: 'Cantidad actualizada correctamente',
       type: 'success',
     });
-  } catch (error) {
+  } catch (error: any) {
     toast.open({
       message: error.response.data.msg,
       type: 'error',
@@ -76,8 +98,8 @@ const res = async (productId, quantity) => {
   }
 };
 
-const sum = async (productId, quantity, stock) => {
-  if (quantity >= stock) {
+const sum = async (productId: number, quantity: number, stock: number) => {
+  if (stock <= 0 || quantity >= stock) {
     toast.open({
       message: 'No hay más stock disponible',
       type: 'error',
@@ -91,7 +113,7 @@ const sum = async (productId, quantity, stock) => {
       message: 'Cantidad actualizada correctamente',
       type: 'success',
     });
-  } catch (error) {
+  } catch (error: any) {
     toast.open({
       message: error.response.data.msg,
       type: 'error',
@@ -104,8 +126,8 @@ const removeItem = async (productId: number) => {
     title: 'Seguro quieres eliminar este producto?',
     icon: 'warning',
     showCancelButton: true,
-    confirmButtonColor: '#3085d6',
-    cancelButtonColor: '#d33',
+    confirmButtonColor: 'var(--green-9)',
+    cancelButtonColor: 'var(--gray-9)',
     confirmButtonText: 'Si, Eliminar!',
     cancelButtonText: 'Cancelar',
   }).then(async (result) => {
@@ -116,7 +138,7 @@ const removeItem = async (productId: number) => {
           message: 'Producto eliminado correctamente',
           type: 'success',
         });
-      } catch (error) {
+      } catch (error: any) {
         toast.open({
           message: error.response.data.msg,
           type: 'error',
@@ -126,5 +148,3 @@ const removeItem = async (productId: number) => {
   });
 };
 </script>
-
-<style scoped></style>
