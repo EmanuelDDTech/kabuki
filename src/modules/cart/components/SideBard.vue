@@ -51,7 +51,9 @@ const canContinueToPayment = computed(() => {
   if (!delivery.isCarrierSelected) return false;
 
   const requiresAddress = delivery.carrierSelected?.carrier_type !== DeliveryCarrierType.PICKUP;
-  return requiresAddress ? Boolean(address.selectedAddress) : true;
+  const hasRequiredAddress = requiresAddress ? Boolean(address.selectedAddress) : true;
+
+  return hasRequiredAddress && cart.hasSelectedPaymentMethod;
 });
 
 const checkoutActionLabel = computed(() =>
@@ -78,6 +80,15 @@ const checkout = () => {
   if (!delivery.isCarrierSelected) {
     toast.open({
       message: 'No se ha seleccionado ningún método de envío',
+      type: 'error',
+    });
+
+    return;
+  }
+
+  if (!cart.hasSelectedPaymentMethod) {
+    toast.open({
+      message: 'Selecciona un método de pago para continuar',
       type: 'error',
     });
 
@@ -366,7 +377,7 @@ const applyDiscountCode = async () => {
 .summary-action--primary {
   background: linear-gradient(140deg, var(--green-8), var(--green-9));
   color: var(--green-contrast);
-  box-shadow: 0 16px 24px color-mix(in srgb, var(--green-9) 40%, transparent);
+  /* box-shadow: 0 16px 24px color-mix(in srgb, var(--green-9) 40%, transparent); */
 }
 
 .summary-action--primary:disabled {

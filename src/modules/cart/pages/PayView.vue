@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { inject, onMounted, onUnmounted } from 'vue';
+import { computed, inject, onMounted, onUnmounted } from 'vue';
 import { useAddressStore } from '../stores/address';
 import { useCartStore } from '../stores/cart';
 import { useDeliveryStore } from '../stores/delivery';
@@ -28,18 +28,19 @@ onMounted(async () => {
   }
 
   const requiresAddress = delivery.carrierSelected?.carrier_type !== DeliveryCarrierType.PICKUP;
-
   if (
     !delivery.isCarrierSelected ||
     (requiresAddress && !address.selectedAddress) ||
-    !cart.payNow
+    !cart.payNow ||
+    !cart.hasSelectedPaymentMethod
   ) {
     router.push({ name: 'checkout' });
     return;
   }
 
-  await Promise.all([addPaypalScript()]);
-  // await Promise.all([addPaypalScript(), addMercadoPagoScript()]);
+  if (cart.selectedPaymentMethod === 'paypal') {
+    addPaypalScript();
+  }
 });
 
 onUnmounted(() => {
@@ -47,7 +48,6 @@ onUnmounted(() => {
 });
 
 const addPaypalScript = () => {
-  if (discountCodeStore.isDiscountCodeSelected) return;
   const scriptSdkPaypal = document.createElement('script');
   scriptSdkPaypal.src = `https://www.paypal.com/sdk/js?client-id=${import.meta.env.VITE_PAYPAL_CLIENT_ID}&currency=MXN&components=buttons&disable-funding=venmo,paylater`;
   scriptSdkPaypal.onload = () => {
@@ -174,6 +174,9 @@ const createTransferOrder = async () => {
   router.push({ name: 'thanks', params: { saleOrderId: saleOrder.order.id } });
 };
 
+const isPaypalSelected = computed(() => cart.selectedPaymentMethod === 'paypal');
+const isTransferSelected = computed(() => cart.selectedPaymentMethod === 'transferencia');
+
 const addMercadoPagoScript = async () => {
   const scriptSdkMercadoPago = document.createElement('script');
   scriptSdkMercadoPago.src = `https://sdk.mercadopago.com/js/v2`;
@@ -237,7 +240,7 @@ const addMercadoPagoScript = async () => {
           </header>
 
           <div
-            v-show="cart.payNow && !discountCodeStore.isDiscountCodeSelected"
+            v-if="cart.payNow && isPaypalSelected"
             class="mt-8 rounded-3xl border p-5 [border-color:color-mix(in_srgb,var(--gray-6)_82%,transparent)] [background:linear-gradient(165deg,color-mix(in_srgb,var(--gray-1)_86%,var(--gray-2)),color-mix(in_srgb,var(--gray-1)_78%,var(--gray-2)))]"
           >
             <h3 class="text-[1.6rem] font-bold text-shori-gray-12">PayPal</h3>
@@ -261,7 +264,7 @@ const addMercadoPagoScript = async () => {
           </div> -->
 
           <div
-            v-show="cart.payNow"
+            v-if="cart.payNow && isTransferSelected"
             class="mt-8 rounded-3xl border p-5 [border-color:color-mix(in_srgb,var(--gray-6)_82%,transparent)] [background:linear-gradient(165deg,color-mix(in_srgb,var(--gray-1)_86%,var(--gray-2)),color-mix(in_srgb,var(--gray-1)_78%,var(--gray-2)))]"
           >
             <h3 class="text-[1.6rem] font-bold text-shori-gray-12">Depósito o Transferencia</h3>

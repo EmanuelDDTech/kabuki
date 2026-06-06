@@ -18,6 +18,9 @@ export const useDeliveryStore = defineStore('delivery', () => {
   const userStore = useUserStore();
 
   const findDeliveriesAvailable = async () => {
+    carrierSelected.value = null;
+    amountShipping.value = 0;
+
     const zipCode = addressStore.getSelectedAddress?.zip;
     const userId = userStore.user?.id;
 
@@ -50,17 +53,52 @@ export const useDeliveryStore = defineStore('delivery', () => {
     productsIds.value = [...ids];
   };
 
+  // watch(
+  //   [
+  //     () => addressStore.getSelectedAddress,
+  //     () => [...productsIds.value],
+  //     () => userStore.user?.id,
+  //     () => deliveryType.value,
+  //   ],
+  //   () => {
+  //     console.log('Cambió alguna de las dependencias para encontrar entregas disponibles:', {
+  //       selectedAddress: addressStore.getSelectedAddress,
+  //       productsIds: productsIds.value,
+  //       userId: userStore.user?.id,
+  //       deliveryType: deliveryType.value,
+  //     });
+  //     findDeliveriesAvailable();
+  //   },
+  //   { deep: true, immediate: true },
+  // );
+
   watch(
-    [
-      () => addressStore.getSelectedAddress,
-      () => [...productsIds.value],
-      () => userStore.user?.id,
-      () => deliveryType.value,
-    ],
-    () => {
+    () => addressStore.getSelectedAddress,
+    (newAddress) => {
       findDeliveriesAvailable();
     },
-    { deep: true, immediate: true },
+    { deep: true },
+  );
+
+  watch(
+    () => [...productsIds.value],
+    (newProductsIds) => {
+      findDeliveriesAvailable();
+    },
+  );
+
+  watch(
+    () => userStore.user?.id,
+    (newUserId) => {
+      findDeliveriesAvailable();
+    },
+  );
+
+  watch(
+    () => deliveryType.value,
+    (newDeliveryType) => {
+      findDeliveriesAvailable();
+    },
   );
 
   const setAmountShipping = (amount: number) => {
@@ -80,14 +118,14 @@ export const useDeliveryStore = defineStore('delivery', () => {
     carrierSelected.value = null;
   };
 
-  watch(deliveriesAvailable, (newDeliveries) => {
-    if (carrierSelected.value) {
-      const newValue = newDeliveries.find((delivery) => delivery.id === carrierSelected.value?.id)!;
+  // watch(deliveriesAvailable, (newDeliveries) => {
+  //   if (carrierSelected.value) {
+  //     const newValue = newDeliveries.find((delivery) => delivery.id === carrierSelected.value?.id)!;
 
-      setCarrierSelected(newValue);
-      setAmountShipping(newValue.free_over ? 0 : newValue.delivery_price_rules[0].list_base_price);
-    }
-  });
+  //     setCarrierSelected(newValue);
+  //     setAmountShipping(newValue.amount_shipping);
+  //   } else
+  // });
 
   return {
     carriers,

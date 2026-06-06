@@ -1,17 +1,19 @@
 <script setup lang="ts">
-import { computed, onMounted, shallowRef, watch } from 'vue';
+import { onMounted, watch } from 'vue';
 import { onBeforeRouteLeave, useRouter } from 'vue-router';
 import AddressSelectionSection from '../components/AddressSelectionSection.vue';
 import DeliveryMethodSection from '../components/DeliveryMethodSection.vue';
 import SideBard from '../components/SideBard.vue';
 import { useAddressStore } from '../stores/address';
-import { useCartStore } from '../stores/cart';
+import { type CheckoutPaymentMethod, useCartStore } from '../stores/cart';
 import { useDeliveryStore } from '../stores/delivery';
 import { DeliveryCarrierType } from '../interfaces/delivery.interface';
+import { useDiscountCodeStore } from '@/modules/discountCode/stores/discountCode';
 
 const address = useAddressStore();
 const cart = useCartStore();
 const delivery = useDeliveryStore();
+const discountCodeStore = useDiscountCodeStore();
 const router = useRouter();
 // const fulfillmentMode = shallowRef<'delivery' | 'pickup'>('delivery');
 
@@ -40,10 +42,27 @@ onMounted(async () => {
   await address.getAddresses();
 });
 
+watch(
+  () => discountCodeStore.isDiscountCodeSelected,
+  (isDiscountSelected) => {
+    if (isDiscountSelected && cart.selectedPaymentMethod === 'paypal') {
+      cart.setSelectedPaymentMethod('transferencia');
+    }
+  },
+  { immediate: true },
+);
+
+const selectPaymentMethod = (paymentMethod: CheckoutPaymentMethod) => {
+  if (paymentMethod === 'paypal' && discountCodeStore.isDiscountCodeSelected) return;
+
+  cart.setSelectedPaymentMethod(paymentMethod);
+};
+
 onBeforeRouteLeave((to) => {
   if (to.name !== 'pay') {
     address.clearSelectedAddress();
     delivery.clearSelectedAddress();
+    cart.clearSelectedPaymentMethod();
   }
 });
 </script>
@@ -71,7 +90,11 @@ onBeforeRouteLeave((to) => {
             <button
               type="button"
               class="border rounded-[20px] p-4 flex items-start gap-3 text-left transition-all duration-200 hover:-translate-y-px border-shori-gray-6 [background-color:color-mix(in_srgb,var(--gray-1)_85%,var(--gray-2))]"
-              :class="delivery.isDeliveryTypeDelivery ? 'border-shori-green-6' : ''"
+              :class="
+                delivery.isDeliveryTypeDelivery
+                  ? 'border-shori-green-6 ring-2 ring-shori-green-6'
+                  : ''
+              "
               @click="delivery.setDeliveryType(DeliveryCarrierType.DELIVERY)"
             >
               <span
@@ -89,7 +112,11 @@ onBeforeRouteLeave((to) => {
             <button
               type="button"
               class="border rounded-[20px] p-4 flex items-start gap-3 text-left transition-all duration-200 hover:-translate-y-px border-shori-gray-6 [background-color:color-mix(in_srgb,var(--gray-1)_85%,var(--gray-2))]"
-              :class="delivery.isDeliveryTypePickup ? 'border-shori-green-6' : ''"
+              :class="
+                delivery.isDeliveryTypePickup
+                  ? 'border-shori-green-6 ring-2 ring-shori-green-6'
+                  : ''
+              "
               @click="delivery.setDeliveryType(DeliveryCarrierType.PICKUP)"
             >
               <span
@@ -131,6 +158,42 @@ onBeforeRouteLeave((to) => {
               Cuando selecciones método de entrega y opción disponible, podrás continuar a pago.
             </p>
           </header>
+
+          <div class="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <button
+              type="button"
+              class="payment-method-card"
+              :class="cart.selectedPaymentMethod === 'paypal' ? 'payment-method-card--active' : ''"
+              :disabled="discountCodeStore.isDiscountCodeSelected"
+              @click="selectPaymentMethod('paypal')"
+            >
+              <span class="payment-method-card__title">PayPal</span>
+              <small class="payment-method-card__description"
+                >Paga con tu cuenta PayPal o tarjeta.</small
+              >
+            </button>
+
+            <button
+              type="button"
+              class="payment-method-card"
+              :class="
+                cart.selectedPaymentMethod === 'transferencia' ? 'payment-method-card--active' : ''
+              "
+              @click="selectPaymentMethod('transferencia')"
+            >
+              <span class="payment-method-card__title">Transferencia</span>
+              <small class="payment-method-card__description"
+                >Realiza depósito o transferencia bancaria.</small
+              >
+            </button>
+          </div>
+
+          <p
+            v-if="discountCodeStore.isDiscountCodeSelected"
+            class="mt-4 text-[0.85rem] text-shori-gray-10"
+          >
+            Con descuento aplicado, el pago disponible es transferencia.
+          </p>
         </section>
       </div>
 
@@ -158,5 +221,46 @@ onBeforeRouteLeave((to) => {
   box-shadow:
     0 24px 56px rgba(17, 33, 61, 0.08),
     0 10px 22px rgba(17, 33, 61, 0.04);
+}
+
+.payment-method-card {
+  border: 1px solid color-mix(in srgb, var(--gray-6) 82%, transparent);
+  border-radius: 16px;
+  padding: 0.95rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  text-align: left;
+  background: color-mix(in srgb, var(--gray-1) 86%, var(--gray-2));
+  transition:
+    transform 160ms ease,
+    border-color 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.payment-method-card:hover:not(:disabled) {
+  transform: translateY(-1px);
+  border-color: var(--green-7);
+}
+
+.payment-method-card--active {
+  border-color: var(--green-7);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--green-6) 32%, transparent);
+}
+
+.payment-method-card:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.payment-method-card__title {
+  font-size: 1.03rem;
+  font-weight: 700;
+  color: var(--gray-12);
+}
+
+.payment-method-card__description {
+  color: var(--gray-10);
+  line-height: 1.35;
 }
 </style>
