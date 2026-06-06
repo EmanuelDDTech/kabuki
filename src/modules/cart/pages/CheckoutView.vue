@@ -70,12 +70,8 @@ onBeforeRouteLeave((to) => {
           <div class="grid grid-cols-1 gap-4 md:grid-cols-2 mt-6">
             <button
               type="button"
-              class="border rounded-[20px] p-4 flex items-start gap-3 text-left transition-all duration-200 hover:-translate-y-px [border-color:color-mix(in_srgb,var(--gray-6)_78%,transparent)] [background-color:color-mix(in_srgb,var(--gray-1)_85%,var(--gray-2))]"
-              :class="
-                delivery.isDeliveryTypeDelivery
-                  ? 'border-shori-green-8 [box-shadow:0_12px_24px_color-mix(in_srgb,var(--green-9)_30%,transparent)]'
-                  : ''
-              "
+              class="border rounded-[20px] p-4 flex items-start gap-3 text-left transition-all duration-200 hover:-translate-y-px border-shori-gray-6 [background-color:color-mix(in_srgb,var(--gray-1)_85%,var(--gray-2))]"
+              :class="delivery.isDeliveryTypeDelivery ? 'border-shori-green-6' : ''"
               @click="delivery.setDeliveryType(DeliveryCarrierType.DELIVERY)"
             >
               <span
@@ -92,12 +88,8 @@ onBeforeRouteLeave((to) => {
 
             <button
               type="button"
-              class="border rounded-[20px] p-4 flex items-start gap-3 text-left transition-all duration-200 hover:-translate-y-px [border-color:color-mix(in_srgb,var(--gray-6)_78%,transparent)] [background-color:color-mix(in_srgb,var(--gray-1)_85%,var(--gray-2))]"
-              :class="
-                delivery.isDeliveryTypePickup
-                  ? 'border-shori-green-8 [box-shadow:0_12px_24px_color-mix(in_srgb,var(--green-9)_30%,transparent)]'
-                  : ''
-              "
+              class="border rounded-[20px] p-4 flex items-start gap-3 text-left transition-all duration-200 hover:-translate-y-px border-shori-gray-6 [background-color:color-mix(in_srgb,var(--gray-1)_85%,var(--gray-2))]"
+              :class="delivery.isDeliveryTypePickup ? 'border-shori-green-6' : ''"
               @click="delivery.setDeliveryType(DeliveryCarrierType.PICKUP)"
             >
               <span

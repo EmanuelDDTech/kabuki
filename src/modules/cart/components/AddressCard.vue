@@ -1,7 +1,11 @@
 <template>
   <article
-    class="relative rounded-[20px] border border-[color-mix(in_srgb,var(--gray-6)_82%,transparent)] bg-[color-mix(in_srgb,var(--gray-1)_88%,var(--gray-2))] shadow-[0_10px_20px_rgba(18,26,41,0.06)] p-4 pr-4 pl-[1.05rem] cursor-pointer transition-[border-color,transform,box-shadow] duration-150 hover:-translate-y-px hover:border-shori-green-8"
-    :class="selected ? 'border-shori-green-8 ring-2 ring-shori-green-8/25 shadow-md' : ''"
+    class="relative rounded-[20px] border border-shori-gray-6 bg-[color-mix(in_srgb,var(--gray-1)_88%,var(--gray-2))] p-4 pr-4 pl-[1.05rem] cursor-pointer transition-[border-color,transform,box-shadow] duration-150 hover:-translate-y-px hover:border-shori-green-6"
+    :class="
+      selected
+        ? 'border-shori-green-6 ring-2 ring-shori-green-6 shadow-md shadow-shori-green-6'
+        : ''
+    "
   >
     <h3 class="text-[1.08rem] font-bold text-shori-gray-12">Enviar a:</h3>
 

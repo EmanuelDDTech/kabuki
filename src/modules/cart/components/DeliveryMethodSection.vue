@@ -60,7 +60,7 @@ const getCarrierEmoji = (deliveryData: Delivery) => {
         class="rounded-[18px] border border-[color-mix(in_srgb,var(--gray-6)_80%,transparent)] bg-[color-mix(in_srgb,var(--gray-1)_84%,var(--gray-2))] p-[0.9rem] flex items-center gap-[0.7rem]"
         :class="
           selectedCarrierType === DeliveryCarrierType.DELIVERY
-            ? 'border-shori-green-8 shadow-[0_10px_20px_color-mix(in_srgb,var(--green-9)_30%,transparent)]'
+            ? 'border-shori-green-6 shadow-[0_10px_20px_color-mix(in_srgb,var(--green-6)_30%,transparent)]'
             : ''
         "
       >
@@ -147,10 +147,10 @@ const getCarrierEmoji = (deliveryData: Delivery) => {
       <li
         v-for="deliveryData in delivery.deliveriesAvailable"
         :key="deliveryData.id"
-        class="group relative flex min-h-[172px] cursor-pointer flex-col justify-between rounded-2xl border border-shori-gray-6 bg-gradient-to-b from-shori-gray-1 to-shori-gray-2 p-4 shadow-sm transition-all duration-300 hover:-translate-y-[1px] hover:border-shori-green-8 hover:shadow-md"
+        class="group relative flex min-h-[172px] cursor-pointer flex-col justify-between rounded-2xl border border-shori-gray-6 bg-gradient-to-b from-shori-gray-1 to-shori-gray-2 p-4 shadow-sm transition-all duration-300 hover:-translate-y-[1px] hover:border-shori-green-6 hover:shadow-md"
         :class="
           isCarrierSelected(deliveryData.id)
-            ? 'border-shori-green-8 bg-shori-gray-1 ring-2 ring-shori-green-8/25 shadow-md'
+            ? 'border-shori-green-6 bg-shori-gray-1 ring-2 ring-shori-green-6 shadow-md'
             : ''
         "
         @click="selectCarrier(deliveryData)"
