@@ -11,6 +11,8 @@ import { useDiscountCodeStore } from '@/modules/discountCode/stores/discountCode
 import { DiscountType } from '@/modules/discountCode/interfaces/discountCode.interface';
 import { sub } from 'date-fns';
 
+export type CheckoutPaymentMethod = 'paypal' | 'transferencia';
+
 export const useCartStore = defineStore('cart', () => {
   const items = ref<{ id: number; quantity: number; product: Product }[]>([]);
   const subtotal = ref<number>(0);
@@ -22,6 +24,7 @@ export const useCartStore = defineStore('cart', () => {
 
   const payNow = ref(false);
   const paypalCart = ref([]);
+  const selectedPaymentMethod = ref<CheckoutPaymentMethod | null>(null);
 
   const discountAmount = ref<number>(0);
 
@@ -224,6 +227,14 @@ export const useCartStore = defineStore('cart', () => {
     payNow.value = true;
   }
 
+  function setSelectedPaymentMethod(paymentMethod: CheckoutPaymentMethod) {
+    selectedPaymentMethod.value = paymentMethod;
+  }
+
+  function clearSelectedPaymentMethod() {
+    selectedPaymentMethod.value = null;
+  }
+
   function $reset() {
     items.value = [];
     subtotal.value = 0;
@@ -250,6 +261,7 @@ export const useCartStore = defineStore('cart', () => {
     if (discountCodeStore.isDiscountCodeSelected) await discountCodeStore.updateTimesUsed();
     clearDiscount();
     payNow.value = false;
+    clearSelectedPaymentMethod();
     return data;
   }
 
@@ -310,7 +322,6 @@ export const useCartStore = defineStore('cart', () => {
       let error = false;
       localStorage.setItem('_shorikame_cart', JSON.stringify([]));
 
-      console.log(results);
       results.forEach((result) => {
         if (result.status === 'rejected') error = true;
       });
@@ -335,13 +346,27 @@ export const useCartStore = defineStore('cart', () => {
     items.value.reduce((totalWeight, item) => totalWeight + item.product.weight * item.quantity, 0),
   );
 
+  const itemsIds = computed(() => items.value.map((item) => item.product.id));
+
   watch(
-    items,
-    async (newValue, oldValue) => {
-      await delivery.findDeliveriesAvailable(44298, cartWeight.value);
+    itemsIds,
+    (newItemsIds) => {
+      delivery.setProductsIds(newItemsIds);
     },
-    { immediate: true, deep: true },
+    { immediate: true },
   );
+
+  // watch(
+  //   items,
+  //   async (newValue, oldValue) => {
+  //     await delivery.findDeliveriesAvailable({
+  //       zipCode: address.selectedAddress?.zip,
+  //       productsIds: itemsIds.value,
+  //       userId: userStore.user?.id,
+  //     });
+  //   },
+  //   { immediate: true, deep: true },
+  // );
 
   return {
     subtotal,
@@ -352,7 +377,11 @@ export const useCartStore = defineStore('cart', () => {
     checkProductAvailability,
     payNow,
     paypalCart,
+    selectedPaymentMethod,
     discountAmount,
+
+    // Getters
+    itemsIds,
 
     // Methods
     getCart,
@@ -361,6 +390,8 @@ export const useCartStore = defineStore('cart', () => {
     reduceQuantity,
     increaseQuantity,
     checkout,
+    setSelectedPaymentMethod,
+    clearSelectedPaymentMethod,
     isItemInCart,
     createSaleOrder,
     deleteCart,
@@ -370,6 +401,7 @@ export const useCartStore = defineStore('cart', () => {
     getSaleData,
 
     // Getters
+    hasSelectedPaymentMethod: computed(() => Boolean(selectedPaymentMethod.value)),
     cartWeight,
     cartLength: computed(() => items.value.length),
   };

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { inject, onMounted, onUnmounted } from 'vue';
+import { computed, inject, onMounted, onUnmounted } from 'vue';
 import { useAddressStore } from '../stores/address';
 import { useCartStore } from '../stores/cart';
 import { useDeliveryStore } from '../stores/delivery';
@@ -7,6 +7,7 @@ import SideBard from '../components/SideBard.vue';
 import { useRouter } from 'vue-router';
 import { useDiscountCodeStore } from '@/modules/discountCode/stores/discountCode';
 import { useMercadopagoStore } from '../stores/mercadopago';
+import { DeliveryCarrierType } from '../interfaces/delivery.interface';
 
 const cart = useCartStore();
 const address = useAddressStore();
@@ -21,13 +22,25 @@ const toast: any = inject('toast');
 declare const MercadoPago: any;
 
 onMounted(async () => {
-  if (cart.isEmpty || !delivery.isCarrierSelected || address.selectedAddress === 0) {
+  if (cart.isEmpty) {
     router.push({ name: 'cart' });
     return;
   }
 
-  await Promise.all([addPaypalScript()]);
-  // await Promise.all([addPaypalScript(), addMercadoPagoScript()]);
+  const requiresAddress = delivery.carrierSelected?.carrier_type !== DeliveryCarrierType.PICKUP;
+  if (
+    !delivery.isCarrierSelected ||
+    (requiresAddress && !address.selectedAddress) ||
+    !cart.payNow ||
+    !cart.hasSelectedPaymentMethod
+  ) {
+    router.push({ name: 'checkout' });
+    return;
+  }
+
+  if (cart.selectedPaymentMethod === 'paypal') {
+    addPaypalScript();
+  }
 });
 
 onUnmounted(() => {
@@ -35,7 +48,6 @@ onUnmounted(() => {
 });
 
 const addPaypalScript = () => {
-  if (discountCodeStore.isDiscountCodeSelected) return;
   const scriptSdkPaypal = document.createElement('script');
   scriptSdkPaypal.src = `https://www.paypal.com/sdk/js?client-id=${import.meta.env.VITE_PAYPAL_CLIENT_ID}&currency=MXN&components=buttons&disable-funding=venmo,paylater`;
   scriptSdkPaypal.onload = () => {
@@ -47,7 +59,9 @@ const addPaypalScript = () => {
 };
 
 const createPaypalButtons = () => {
-  window.paypal
+  const paypal = (window as any).paypal;
+
+  paypal
     .Buttons({
       expandCardForm: true,
       style: {
@@ -160,6 +174,9 @@ const createTransferOrder = async () => {
   router.push({ name: 'thanks', params: { saleOrderId: saleOrder.order.id } });
 };
 
+const isPaypalSelected = computed(() => cart.selectedPaymentMethod === 'paypal');
+const isTransferSelected = computed(() => cart.selectedPaymentMethod === 'transferencia');
+
 const addMercadoPagoScript = async () => {
   const scriptSdkMercadoPago = document.createElement('script');
   scriptSdkMercadoPago.src = `https://sdk.mercadopago.com/js/v2`;
@@ -202,17 +219,36 @@ const addMercadoPagoScript = async () => {
 </script>
 
 <template>
-  <main class="min-h-screen px-3 mb-8">
-    <div class="max-w-screen-xl mx-auto block lg:flex gap-10 mt-8">
-      <div class="flex-1">
-        <section class="flex-1 shadow-md border border-shori-gray-6 p-4 rounded-lg">
-          <h2 class="text-2xl font-bold border-b-2 border-shori-gray-6 pb-3">Métodos de pago</h2>
-          <div
-            v-show="cart.payNow && !discountCodeStore.isDiscountCodeSelected"
-            class="mt-10 flex flex-col"
+  <main class="pay-page min-h-screen px-3 pb-10 pt-6">
+    <div class="max-w-screen-xl mx-auto block lg:flex gap-8 xl:gap-10 mt-4">
+      <div class="flex-1 min-w-0">
+        <section class="pay-surface p-6 md:p-7">
+          <header
+            class="border-b pb-[0.95rem] [border-color:color-mix(in_srgb,var(--gray-6)_78%,transparent)]"
           >
-            <h3 class="text-2xl font-bold mb-3">Paypal</h3>
-            <div class="w-full max-w-[750px] mx-auto">
+            <p class="text-[0.72rem] uppercase tracking-[0.1em] text-shori-gray-10 font-bold">
+              Paso final
+            </p>
+            <h2
+              class="mt-[0.35rem] text-[clamp(1.35rem,2.2vw,1.95rem)] font-bold text-shori-gray-12"
+            >
+              Métodos de pago
+            </h2>
+            <p class="mt-2 text-[0.94rem] text-shori-gray-10">
+              Selecciona tu forma de pago para completar la compra.
+            </p>
+          </header>
+
+          <div
+            v-if="cart.payNow && isPaypalSelected"
+            class="mt-8 rounded-3xl border p-5 [border-color:color-mix(in_srgb,var(--gray-6)_82%,transparent)] [background:linear-gradient(165deg,color-mix(in_srgb,var(--gray-1)_86%,var(--gray-2)),color-mix(in_srgb,var(--gray-1)_78%,var(--gray-2)))]"
+          >
+            <h3 class="text-[1.6rem] font-bold text-shori-gray-12">PayPal</h3>
+            <p class="mt-[0.35rem] text-shori-gray-10">
+              Paga con tu cuenta PayPal, débito o tarjeta de crédito.
+            </p>
+
+            <div class="w-full max-w-[760px] mx-auto mt-5">
               <div id="paypal-button-container"></div>
             </div>
           </div>
@@ -227,11 +263,15 @@ const addMercadoPagoScript = async () => {
             </div>
           </div> -->
 
-          <div v-show="cart.payNow" class="mt-10 flex flex-col">
-            <h3 class="text-2xl font-bold mb-3">Depósito o Transferencia</h3>
-            <div>
+          <div
+            v-if="cart.payNow && isTransferSelected"
+            class="mt-8 rounded-3xl border p-5 [border-color:color-mix(in_srgb,var(--gray-6)_82%,transparent)] [background:linear-gradient(165deg,color-mix(in_srgb,var(--gray-1)_86%,var(--gray-2)),color-mix(in_srgb,var(--gray-1)_78%,var(--gray-2)))]"
+          >
+            <h3 class="text-[1.6rem] font-bold text-shori-gray-12">Depósito o Transferencia</h3>
+
+            <div class="mt-4 grid gap-[0.35rem] text-shori-gray-11 text-[1.03rem]">
               <p>Clave: <span class="font-semibold">012 320 02838694095 8</span></p>
-              <p>Si eres BBVA: <span class="font-semibold">283 869 4095 </span></p>
+              <p>Si eres BBVA: <span class="font-semibold">283 869 4095</span></p>
               <p>Beneficiario: <span class="font-semibold">Francisco Javier Ramos S</span></p>
             </div>
             <div class="bg-red-100 text-black p-3 rounded mt-3">
@@ -244,7 +284,7 @@ const addMercadoPagoScript = async () => {
 
             <button
               @click="createTransferOrder"
-              class="mt-6 text-xl text-white font-semibold py-2 px-4 rounded-full bg-orange-600 hover:bg-orange-500 cursor-pointer w-full max-w-[750px] mx-auto"
+              class="mt-7 w-full max-w-[760px] inline-flex justify-center items-center rounded-full bg-gradient-to-br from-shori-green-8 to-shori-green-9 text-shori-green-contrast text-[1.2rem] font-bold py-[0.82rem] px-4 transition duration-150 hover:brightness-105"
             >
               Seleccionar Transferencia
             </button>
@@ -252,7 +292,37 @@ const addMercadoPagoScript = async () => {
         </section>
       </div>
 
-      <SideBard />
+      <SideBard checkout-step="payment" />
     </div>
   </main>
 </template>
+
+<style scoped>
+/* .pay-page {
+  background:
+    radial-gradient(circle at 12% 12%, color-mix(in srgb, var(--green-3) 58%, transparent), transparent 34%),
+    radial-gradient(circle at 85% 10%, color-mix(in srgb, var(--gray-3) 75%, transparent), transparent 35%),
+    var(--color-background);
+} */
+
+.pay-surface {
+  border-radius: 30px;
+  border: 1px solid color-mix(in srgb, var(--gray-6) 80%, transparent);
+  background: linear-gradient(
+    156deg,
+    color-mix(in srgb, var(--gray-1) 92%, var(--gray-2)),
+    color-mix(in srgb, var(--gray-1) 84%, var(--gray-2))
+  );
+  box-shadow:
+    0 24px 56px rgba(17, 33, 61, 0.08),
+    0 10px 22px rgba(17, 33, 61, 0.04);
+}
+
+.transfer-alert {
+  border-radius: 14px;
+  padding: 0.85rem 1rem;
+  background-color: color-mix(in srgb, var(--green-3) 65%, var(--gray-2));
+  border: 1px solid var(--green-6);
+  color: var(--gray-12);
+}
+</style>

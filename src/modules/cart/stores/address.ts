@@ -4,7 +4,7 @@ import AddressAPI from '../api/AddressAPI';
 import type { Address } from '../interfaces/address.interface';
 
 export const useAddressStore = defineStore('address', () => {
-  const selectedAddress = ref(0);
+  const selectedAddress = ref<Address | null>(null);
   const newAddress = ref({
     id: 0,
     country: '',
@@ -57,8 +57,8 @@ export const useAddressStore = defineStore('address', () => {
     };
   };
 
-  const selectAddress = (id: number) => {
-    selectedAddress.value = id;
+  const selectAddress = (addressData: Address) => {
+    selectedAddress.value = addressData;
   };
 
   const editAddress = (addressData: Address) => {
@@ -70,11 +70,11 @@ export const useAddressStore = defineStore('address', () => {
     await AddressAPI.delete(id);
     savedAddresses.value = savedAddresses.value.filter((address) => address.id !== id);
     clearNewAddress();
-    selectedAddress.value = 0;
+    selectedAddress.value = null;
   };
 
   const clearSelectedAddress = () => {
-    selectedAddress.value = 0;
+    selectedAddress.value = null;
   };
 
   return {
@@ -86,10 +86,10 @@ export const useAddressStore = defineStore('address', () => {
     //Getters
     existSavedAddresses: computed(() => savedAddresses.value.length > 0),
     isSelected: computed(() => {
-      return (id: number) => id === selectedAddress.value;
+      return (id: number) => id === selectedAddress.value?.id;
     }),
     getSelectedAddress: computed(
-      () => savedAddresses.value.filter((address) => address.id === selectedAddress.value)[0],
+      () => savedAddresses.value.filter((address) => address.id === selectedAddress.value?.id)[0],
     ),
 
     // Methods
