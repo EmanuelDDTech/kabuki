@@ -13,23 +13,23 @@ const address = useAddressStore();
 const cart = useCartStore();
 const delivery = useDeliveryStore();
 const router = useRouter();
-const fulfillmentMode = shallowRef<'delivery' | 'pickup'>('delivery');
+// const fulfillmentMode = shallowRef<'delivery' | 'pickup'>('delivery');
 
-const isDeliveryMode = computed(() => fulfillmentMode.value === 'delivery');
+// const isDeliveryMode = computed(() => fulfillmentMode.value === 'delivery');
 
-watch(
-  () => delivery.carrierSelected?.carrier_type,
-  (carrierType) => {
-    if (carrierType === DeliveryCarrierType.PICKUP) {
-      fulfillmentMode.value = 'pickup';
-      return;
-    }
+// watch(
+//   () => delivery.carrierSelected?.carrier_type,
+//   (carrierType) => {
+//     if (carrierType === DeliveryCarrierType.PICKUP) {
+//       fulfillmentMode.value = 'pickup';
+//       return;
+//     }
 
-    if (carrierType === DeliveryCarrierType.DELIVERY) {
-      fulfillmentMode.value = 'delivery';
-    }
-  },
-);
+//     if (carrierType === DeliveryCarrierType.DELIVERY) {
+//       fulfillmentMode.value = 'delivery';
+//     }
+//   },
+// );
 
 onMounted(async () => {
   if (cart.isEmpty) {
@@ -72,11 +72,11 @@ onBeforeRouteLeave((to) => {
               type="button"
               class="border rounded-[20px] p-4 flex items-start gap-3 text-left transition-all duration-200 hover:-translate-y-px [border-color:color-mix(in_srgb,var(--gray-6)_78%,transparent)] [background-color:color-mix(in_srgb,var(--gray-1)_85%,var(--gray-2))]"
               :class="
-                isDeliveryMode
+                delivery.isDeliveryTypeDelivery
                   ? 'border-shori-green-8 [box-shadow:0_12px_24px_color-mix(in_srgb,var(--green-9)_30%,transparent)]'
                   : ''
               "
-              @click="fulfillmentMode = 'delivery'"
+              @click="delivery.setDeliveryType(DeliveryCarrierType.DELIVERY)"
             >
               <span
                 class="w-11 h-11 rounded-xl inline-flex items-center justify-center text-[1.35rem] [background-color:color-mix(in_srgb,var(--gray-2)_84%,var(--gray-1))]"
@@ -94,11 +94,11 @@ onBeforeRouteLeave((to) => {
               type="button"
               class="border rounded-[20px] p-4 flex items-start gap-3 text-left transition-all duration-200 hover:-translate-y-px [border-color:color-mix(in_srgb,var(--gray-6)_78%,transparent)] [background-color:color-mix(in_srgb,var(--gray-1)_85%,var(--gray-2))]"
               :class="
-                !isDeliveryMode
+                delivery.isDeliveryTypePickup
                   ? 'border-shori-green-8 [box-shadow:0_12px_24px_color-mix(in_srgb,var(--green-9)_30%,transparent)]'
                   : ''
               "
-              @click="fulfillmentMode = 'pickup'"
+              @click="delivery.setDeliveryType(DeliveryCarrierType.PICKUP)"
             >
               <span
                 class="w-11 h-11 rounded-xl inline-flex items-center justify-center text-[1.35rem] [background-color:color-mix(in_srgb,var(--gray-2)_84%,var(--gray-1))]"
@@ -114,7 +114,7 @@ onBeforeRouteLeave((to) => {
           </div>
         </section>
 
-        <AddressSelectionSection v-if="isDeliveryMode" />
+        <AddressSelectionSection v-if="delivery.isDeliveryTypeDelivery" />
 
         <section v-else class="checkout-surface p-6">
           <h3 class="text-xl font-bold text-shori-gray-12">Dirección de entrega</h3>

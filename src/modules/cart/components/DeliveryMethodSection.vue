@@ -103,8 +103,45 @@ const getCarrierEmoji = (deliveryData: Delivery) => {
       Opciones disponibles
     </h3>
 
+    <div v-if="delivery.isLoading" class="space-y-4" aria-hidden="true">
+      <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
+        <div
+          v-for="index in 3"
+          :key="`delivery-skeleton-${index}`"
+          class="min-h-[172px] rounded-2xl border border-shori-gray-6 bg-gradient-to-b from-shori-gray-1 to-shori-gray-2 p-4 shadow-sm"
+        >
+          <div class="mb-4 flex items-start justify-between">
+            <span
+              class="h-12 w-12 rounded-xl bg-[color-mix(in_srgb,var(--gray-4)_82%,var(--gray-2))] animate-pulse"
+            />
+
+            <div class="flex items-center gap-2">
+              <span
+                class="h-5 w-20 rounded-full bg-[color-mix(in_srgb,var(--gray-4)_78%,var(--gray-2))] animate-pulse"
+              />
+              <span
+                class="h-5 w-14 rounded-full bg-[color-mix(in_srgb,var(--green-4)_65%,var(--gray-2))] animate-pulse"
+              />
+            </div>
+          </div>
+
+          <span
+            class="block h-5 w-3/4 rounded-md bg-[color-mix(in_srgb,var(--gray-4)_82%,var(--gray-2))] animate-pulse"
+          />
+
+          <span
+            class="mt-3 block h-8 w-1/3 rounded-md bg-[color-mix(in_srgb,var(--gray-4)_85%,var(--gray-2))] animate-pulse"
+          />
+        </div>
+      </div>
+
+      <p class="text-sm font-medium text-shori-gray-11 text-center">
+        Consultando metodos de envio...
+      </p>
+    </div>
+
     <ul
-      v-if="delivery.deliveriesAvailable.length"
+      v-else-if="delivery.deliveriesAvailable.length"
       class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3"
     >
       <li
@@ -159,18 +196,7 @@ const getCarrierEmoji = (deliveryData: Delivery) => {
       v-else
       class="rounded-2xl border border-dashed border-shori-gray-7 bg-shori-gray-2 p-6 text-center"
     >
-      <div
-        v-if="delivery.isLoading"
-        class="flex flex-col items-center justify-center gap-3 text-shori-gray-11"
-      >
-        <span
-          class="h-6 w-6 animate-spin rounded-full border-2 border-shori-gray-7 border-t-shori-gray-11"
-          aria-hidden="true"
-        />
-        <p class="text-sm font-medium">Consultando métodos de envío...</p>
-      </div>
-
-      <p v-else-if="!hasSelectedAddress" class="text-sm font-medium text-shori-gray-11">
+      <p v-if="!hasSelectedAddress" class="text-sm font-medium text-shori-gray-11">
         Selecciona una dirección para ver los métodos de envío disponibles.
       </p>
 

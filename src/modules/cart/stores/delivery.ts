@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import type { Delivery } from '../interfaces/delivery.interface';
+import { type Delivery, DeliveryCarrierType } from '../interfaces/delivery.interface';
 import { computed, ref, watch } from 'vue';
 import DeliveryAPI from '../api/DeliveryAPI';
 import { useAddressStore } from './address';
@@ -12,6 +12,7 @@ export const useDeliveryStore = defineStore('delivery', () => {
   const amountShipping = ref<number>(0);
   const carrierSelected = ref<Delivery | null>(null);
   const productsIds = ref<number[]>([]);
+  const deliveryType = ref<DeliveryCarrierType>(DeliveryCarrierType.DELIVERY);
 
   const addressStore = useAddressStore();
   const userStore = useUserStore();
@@ -20,7 +21,10 @@ export const useDeliveryStore = defineStore('delivery', () => {
     const zipCode = addressStore.getSelectedAddress?.zip;
     const userId = userStore.user?.id;
 
-    if (!zipCode || (!userId && !productsIds.value.length)) {
+    if (
+      (deliveryType.value === DeliveryCarrierType.DELIVERY && !zipCode) ||
+      (!userId && !productsIds.value.length)
+    ) {
       deliveriesAvailable.value = [];
       loading.value = false;
       return;
@@ -32,6 +36,7 @@ export const useDeliveryStore = defineStore('delivery', () => {
         zipCode,
         productsIds: productsIds.value,
         userId,
+        deliveryType: deliveryType.value,
       });
       deliveriesAvailable.value = data.options;
     } catch (error) {
@@ -46,7 +51,12 @@ export const useDeliveryStore = defineStore('delivery', () => {
   };
 
   watch(
-    [() => addressStore.getSelectedAddress, () => [...productsIds.value], () => userStore.user?.id],
+    [
+      () => addressStore.getSelectedAddress,
+      () => [...productsIds.value],
+      () => userStore.user?.id,
+      () => deliveryType.value,
+    ],
     () => {
       findDeliveriesAvailable();
     },
@@ -59,6 +69,10 @@ export const useDeliveryStore = defineStore('delivery', () => {
 
   const setCarrierSelected = (delivery: Delivery) => {
     carrierSelected.value = delivery;
+  };
+
+  const setDeliveryType = (type: DeliveryCarrierType) => {
+    deliveryType.value = type;
   };
 
   const clearSelectedAddress = () => {
@@ -85,12 +99,16 @@ export const useDeliveryStore = defineStore('delivery', () => {
     // Getters
     isLoading: computed(() => loading.value),
     isCarrierSelected: computed(() => carrierSelected.value !== null),
+    getDeliveryType: computed(() => deliveryType.value),
+    isDeliveryTypePickup: computed(() => deliveryType.value === DeliveryCarrierType.PICKUP),
+    isDeliveryTypeDelivery: computed(() => deliveryType.value === DeliveryCarrierType.DELIVERY),
 
     // Methods
     findDeliveriesAvailable,
     setProductsIds,
     setAmountShipping,
     setCarrierSelected,
+    setDeliveryType,
     clearSelectedAddress,
   };
 });
