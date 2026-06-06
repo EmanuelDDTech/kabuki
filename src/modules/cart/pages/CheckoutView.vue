@@ -34,6 +34,8 @@ const router = useRouter();
 // );
 
 onMounted(async () => {
+  scrollTo({ top: 0, behavior: 'smooth' });
+
   if (cart.isEmpty) {
     router.push({ name: 'cart' });
     return;
