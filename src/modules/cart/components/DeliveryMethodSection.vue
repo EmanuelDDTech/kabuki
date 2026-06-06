@@ -106,7 +106,7 @@ const getCarrierEmoji = (deliveryData: Delivery) => {
     <div v-if="delivery.isLoading" class="space-y-4" aria-hidden="true">
       <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
         <div
-          v-for="index in 3"
+          v-for="index in 2"
           :key="`delivery-skeleton-${index}`"
           class="min-h-[172px] rounded-2xl border border-shori-gray-6 bg-gradient-to-b from-shori-gray-1 to-shori-gray-2 p-4 shadow-sm"
         >
