@@ -20,7 +20,7 @@ body {
 :root {
   /* Fluid typography scale for text */
   --text-small: clamp(11px, 12px + 0.15vw, 14px);
-  --text-normal: clamp(14px, 16px + 0.2vw, 18px);
+  --text-normal: clamp(14px, 15px + 0.2vw, 16px);
 
   /* Fluid typography scale for headings */
   --title-6: clamp(18px, 19px + 0.3vw, 20px);
