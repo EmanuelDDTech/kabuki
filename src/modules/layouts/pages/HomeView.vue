@@ -7,7 +7,7 @@ import DiscountIcon from '@/modules/icons/DiscountIcon.vue';
 import ClosedBoxIcon from '../components/ClosedBoxIcon.vue';
 import ArrowRight from '@/modules/icons/ArrowRight.vue';
 import { useCampaignStore } from '@/modules/campaign/stores/campaign';
-import { onBeforeMount, onMounted } from 'vue';
+import { onBeforeMount, onMounted, type Component } from 'vue';
 import { converToDDMMYYYY, displayDate } from '@/helpers/date';
 import { date } from '@vueform/vueform';
 import StarIcon from '@/modules/common/icons/StarIcon.vue';
@@ -319,6 +319,13 @@ const campaignTypes = {
   Oferta: DiscountIcon,
 };
 
+function getCampaignIcon(name: string): Component | undefined {
+  if (name in campaignTypes) {
+    return campaignTypes[name as keyof typeof campaignTypes];
+  }
+  return undefined; // o un ícono por defecto
+}
+
 onBeforeMount(async () => {
   await campaign.getCampaignsAll();
 });
@@ -344,7 +351,7 @@ onMounted(async () => {
           :title="`${campaignData.campaign_type.name} ${campaignData.name}`"
           :countdown="campaignData.campaign_type.name === 'Preventa' ? true : false"
           :finish-date="campaignData.to"
-          :icon="campaignTypes[campaignData.campaign_type.name]"
+          :icon="getCampaignIcon(campaignData.campaign_type.name)"
           :campaign-products="campaignData.campaign_products"
         />
       </div>
