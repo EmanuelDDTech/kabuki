@@ -9,6 +9,7 @@ import { useProductsStore } from '../stores/products';
 import { useFilterCategoryStore } from '@/modules/filter/store/filterCategory';
 
 import ProductCard from '../components/ProductCard.vue';
+import ProductList from '../components/ProductList.vue';
 
 import type { ProductResponse } from '../interfaces';
 import LoaderWithText from '@/modules/common/components/LoaderWithText.vue';
@@ -129,14 +130,11 @@ onBeforeUnmount(() => {
         <LoaderWithText v-if="status === 'pending'" text="Cargando " />
         <div v-if="status === 'error'" class="text-center">Error al cargar</div>
 
-        <div class="grid grid-cols-[repeat(auto-fill,minmax(244px,1fr))] gap-4">
-          <ProductCard
-            v-for="product in data?.pages.flatMap((page) => page.data)"
-            :key="product.id"
-            :product="product"
-            class="mx-auto"
-          />
-        </div>
+        <ProductList :items="data?.pages.flatMap((page) => page.data) ?? []">
+          <template #item="{ item }">
+            <ProductCard :product="item" class="mx-auto" />
+          </template>
+        </ProductList>
 
         <div ref="loadMoreProductsRef" style="height: 1px"></div>
 

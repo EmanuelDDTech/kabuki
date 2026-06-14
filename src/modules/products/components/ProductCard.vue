@@ -1,6 +1,6 @@
 <template>
   <article
-    class="flex flex-col relative max-w-72 min-w-56 h-full bg-shori-gray-2 shadow-md rounded-xl cursor-pointer border border-shori-gray-6 overflow-hidden"
+    class="flex flex-col relative w-full h-full bg-shori-gray-2 shadow-md rounded-xl cursor-pointer border border-shori-gray-6 overflow-hidden"
     @click="router.push({ name: 'product', params: { id: product ? product.id : 12345 } })"
   >
     <div
@@ -22,26 +22,27 @@
       />
     </div>
     <div class="flex-1 flex flex-col bg-shori-gray-2 rounded-t-2xl p-2 justify-between">
-      <p class="font-normal text-shori-gray-12 mb-5 flex-1">
+      <p class="font-normal text-body-normal text-shori-gray-12 mb-5 flex-1">
         {{ product ? product.name : 'League Battle Deck -Charizard ex- PREVENTA' }}
       </p>
 
       <div class="mb-2" v-if="product.stock_visible">
-        <span class="text-sm text-shori-gray-11">Disponibles: </span>
-        <span class="font-semibold text-shori-green-9">{{ product.stock }}</span>
+        <span class="text-body-small text-shori-gray-11">Disponibles: </span>
+        <span class="font-semibold text-body-small text-shori-green-9">{{ product.stock }}</span>
       </div>
 
       <div class="flex flex-col items-start relative">
-        <p class="text-xl text-shori-gray-12 font-bold mt-0">
+        <p class="text-title-6 text-shori-gray-12 font-bold mt-0">
           {{ formatCurrency(product.discount ? product.discount : product.price) }}
         </p>
         <p
           v-if="product.discount"
-          class="text-base text-shori-gray-11 line-through font-normal mt-0"
+          class="text-body-normal text-shori-gray-11 line-through font-normal mt-0"
         >
           {{ formatCurrency(product.price) }}
         </p>
         <GeneralButton
+          size="small"
           class="mt-3"
           text="Agregar  al carrito"
           :icon="CartIcon"
@@ -54,7 +55,6 @@
 </template>
 
 <script setup lang="ts">
-import WishlistIcon from '@/modules/cart/components/wishlistIcon.vue';
 import { useRouter } from 'vue-router';
 import { formatCurrency } from '@/helpers';
 import { useCartStore } from '@/modules/cart/stores/cart';
@@ -72,7 +72,7 @@ interface Props {
   cartAvailable?: boolean;
 }
 
-const props = withDefaults(defineProps<Props>(), {
+withDefaults(defineProps<Props>(), {
   cartAvailable: true,
 });
 

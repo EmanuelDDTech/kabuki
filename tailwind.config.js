@@ -10,6 +10,16 @@ export default {
   ],
   theme: {
     extend: {
+      fontSize: {
+        'body-small': ['var(--text-small)', { lineHeight: '1.4' }],
+        'body-normal': ['var(--text-normal)', { lineHeight: '1.5' }],
+        'title-6': ['var(--title-6)', { lineHeight: '1.25' }],
+        'title-5': ['var(--title-5)', { lineHeight: '1.2' }],
+        'title-4': ['var(--title-4)', { lineHeight: '1.2' }],
+        'title-3': ['var(--title-3)', { lineHeight: '1.15' }],
+        'title-2': ['var(--title-2)', { lineHeight: '1.1' }],
+        'title-1': ['var(--title-1)', { lineHeight: '1.05' }],
+      },
       keyframes: {
         customBounce: {
           '0%': { transform: 'translateY(0%)' },

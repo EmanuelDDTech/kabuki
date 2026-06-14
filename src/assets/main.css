@@ -13,6 +13,24 @@ body {
   color: var(--gray-12);
 }
 
+/* html {
+  font-size: 62.5%;
+} */
+
+:root {
+  /* Fluid typography scale for text */
+  --text-small: clamp(11px, 12px + 0.15vw, 14px);
+  --text-normal: clamp(14px, 15px + 0.2vw, 16px);
+
+  /* Fluid typography scale for headings */
+  --title-6: clamp(18px, 19px + 0.3vw, 20px);
+  --title-5: clamp(20px, 22px + 0.6vw, 24px);
+  --title-4: clamp(24px, 28px + 0.85vw, 32px);
+  --title-3: clamp(32px, 36px + 1.1vw, 40px);
+  --title-2: clamp(36px, 42px + 1.8vw, 48px);
+  --title-1: clamp(40px, 48px + 2.4vw, 56px);
+}
+
 :root,
 :before,
 :after,

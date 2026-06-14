@@ -7,7 +7,7 @@ import CampaignProductCard from '../components/CampaignProductCard.vue';
 import { convertToISO, convertToYYYYMMDD } from '@/helpers/date';
 import CampaignProductAPI from '../api/CampaignProductAPI';
 
-const initialValues = {
+const initialValues: Campaign = {
   id: null,
   name: '',
   from: '',
@@ -16,7 +16,7 @@ const initialValues = {
 };
 
 export const useCampaignStore = defineStore('campaign', () => {
-  const campaigns = ref([]);
+  const campaigns = ref<Campaign[]>([]);
   const campaign = ref<Campaign>(initialValues);
   const campaignProducts = ref([]);
 
