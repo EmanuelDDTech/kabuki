@@ -371,11 +371,7 @@ onMounted(async () => {
           </template>
         </ProductList>
 
-        <ProductList
-          v-else
-          :items="featuredProductStore.featuredProducts"
-          :item-key="(featuredProduct) => featuredProduct.product.id"
-        >
+        <ProductList v-else :items="featuredProductStore.featuredProducts">
           <template #item="{ item }">
             <ProductCard :product="item.product" />
           </template>

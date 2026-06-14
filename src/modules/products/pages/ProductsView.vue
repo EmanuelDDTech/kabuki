@@ -130,11 +130,7 @@ onBeforeUnmount(() => {
         <LoaderWithText v-if="status === 'pending'" text="Cargando " />
         <div v-if="status === 'error'" class="text-center">Error al cargar</div>
 
-        <ProductList
-          :items="data?.pages.flatMap((page) => page.data) ?? []"
-          columns-class="grid-cols-[repeat(auto-fill,minmax(244px,1fr))]"
-          gap-class="gap-4"
-        >
+        <ProductList :items="data?.pages.flatMap((page) => page.data) ?? []">
           <template #item="{ item }">
             <ProductCard :product="item" class="mx-auto" />
           </template>
