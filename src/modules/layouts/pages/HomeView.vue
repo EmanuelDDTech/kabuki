@@ -19,10 +19,12 @@ import CollectionIcon from '@/modules/common/icons/CollectionIcon.vue';
 import { useFeaturedProductStore } from '../stores/featuredProduct';
 import ProductCard from '@/modules/products/components/ProductCard.vue';
 import ProductSkeleton from '@/modules/products/components/ProductSkeleton.vue';
+import ProductList from '@/modules/products/components/ProductList.vue';
 
 const campaign = useCampaignStore();
 const featuredProductStore = useFeaturedProductStore();
 const defaultProductsCategory = 'pokemon';
+const featuredProductSkeletons = Array.from({ length: 12 }, (_, index) => index);
 
 const trustBadges = [
   {
@@ -163,8 +165,7 @@ const closedProductCategories = [
 const otherGameUniverses = [
   {
     title: 'Magic: The Gathering',
-    description:
-      'Sobres, bundles y producto sellado para Modern, Commander y coleccionismo.',
+    description: 'Sobres, bundles y producto sellado para Modern, Commander y coleccionismo.',
     category: 'magic',
     chips: ['Producto sellado', 'Bundles', 'Universes Beyond'],
     heroImg:
@@ -172,8 +173,7 @@ const otherGameUniverses = [
   },
   {
     title: 'Riftbound',
-    description:
-      'Descubre displays y decks del nuevo TCG para juego competitivo y casual.',
+    description: 'Descubre displays y decks del nuevo TCG para juego competitivo y casual.',
     category: 'riftbound',
     chips: ['Booster display', 'Decks', 'Spiritforged'],
     heroImg:
@@ -358,23 +358,21 @@ onMounted(async () => {
           <h2 class="text-4xl font-bold">Producto destacado</h2>
         </div>
 
-        <div
-          v-if="featuredProductStore.isLoading"
-          class="grid gap-5 grid-cols-[repeat(auto-fill,minmax(224px,288px))] justify-center"
-        >
-          <ProductSkeleton v-for="i in 12" :key="i" />
-        </div>
+        <ProductList v-if="featuredProductStore.isLoading" :items="featuredProductSkeletons">
+          <template #item>
+            <ProductSkeleton />
+          </template>
+        </ProductList>
 
-        <div
+        <ProductList
           v-else
-          class="grid gap-5 grid-cols-[repeat(auto-fill,minmax(224px,288px))] justify-center"
+          :items="featuredProductStore.featuredProducts"
+          :item-key="(featuredProduct) => featuredProduct.product.id"
         >
-          <ProductCard
-            v-for="featuredProduct in featuredProductStore.featuredProducts"
-            :key="featuredProduct.product.id"
-            :product="featuredProduct.product"
-          />
-        </div>
+          <template #item="{ item }">
+            <ProductCard :product="item.product" />
+          </template>
+        </ProductList>
       </div>
     </section>
 
@@ -384,7 +382,9 @@ onMounted(async () => {
         <header class="other-universe-header mb-8 md:mb-10">
           <div>
             <p class="other-universe-header__kicker">Nuevos terrenos para coleccionar</p>
-            <h2 class="text-3xl md:text-4xl font-bold text-shori-gray-12">Otros universos para jugar</h2>
+            <h2 class="text-3xl md:text-4xl font-bold text-shori-gray-12">
+              Otros universos para jugar
+            </h2>
           </div>
 
           <!-- <router-link
@@ -751,7 +751,9 @@ onMounted(async () => {
   overflow: hidden;
   isolation: isolate;
   border-radius: 1.35rem;
-  transition: transform 0.35s ease, box-shadow 0.35s ease;
+  transition:
+    transform 0.35s ease,
+    box-shadow 0.35s ease;
 }
 
 .other-universe-strip::before {
@@ -861,9 +863,12 @@ onMounted(async () => {
 .other-universe-strip__glow {
   position: absolute;
   inset: 0;
-  background:
-    linear-gradient(120deg, rgba(15, 23, 42, 0.06), rgba(15, 23, 42, 0.36)),
-    radial-gradient(circle at 80% 20%, color-mix(in srgb, var(--universe-accent) 62%, transparent) 0%, transparent 62%);
+  background: linear-gradient(120deg, rgba(15, 23, 42, 0.06), rgba(15, 23, 42, 0.36)),
+    radial-gradient(
+      circle at 80% 20%,
+      color-mix(in srgb, var(--universe-accent) 62%, transparent) 0%,
+      transparent 62%
+    );
 }
 
 .other-universe-strip:hover .other-universe-strip__image {
@@ -883,9 +888,16 @@ onMounted(async () => {
 }
 
 :global(.dark-theme) .other-universe-strip {
-  background:
-    radial-gradient(circle at 18% 50%, color-mix(in srgb, var(--universe-accent) 18%, var(--gray-1) 82%) 0%, transparent 60%),
-    linear-gradient(132deg, color-mix(in srgb, var(--gray-2) 88%, var(--universe-soft-accent) 12%) 0%, color-mix(in srgb, var(--gray-3) 88%, var(--universe-soft-accent) 12%) 100%);
+  background: radial-gradient(
+      circle at 18% 50%,
+      color-mix(in srgb, var(--universe-accent) 18%, var(--gray-1) 82%) 0%,
+      transparent 60%
+    ),
+    linear-gradient(
+      132deg,
+      color-mix(in srgb, var(--gray-2) 88%, var(--universe-soft-accent) 12%) 0%,
+      color-mix(in srgb, var(--gray-3) 88%, var(--universe-soft-accent) 12%) 100%
+    );
   box-shadow:
     0 16px 28px -22px rgba(0, 0, 0, 0.92),
     0 8px 16px -10px rgba(0, 0, 0, 0.65);
@@ -922,9 +934,12 @@ onMounted(async () => {
 }
 
 :global(.dark-theme) .other-universe-strip__glow {
-  background:
-    linear-gradient(120deg, rgba(2, 6, 23, 0.18), rgba(2, 6, 23, 0.56)),
-    radial-gradient(circle at 80% 20%, color-mix(in srgb, var(--universe-accent) 56%, transparent) 0%, transparent 64%);
+  background: linear-gradient(120deg, rgba(2, 6, 23, 0.18), rgba(2, 6, 23, 0.56)),
+    radial-gradient(
+      circle at 80% 20%,
+      color-mix(in srgb, var(--universe-accent) 56%, transparent) 0%,
+      transparent 64%
+    );
 }
 
 @media (max-width: 920px) {
