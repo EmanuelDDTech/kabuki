@@ -13,6 +13,11 @@ const props = defineProps<Props>();
 
 const chartRef = ref(null);
 let chartInstance: ECharts | null = null;
+let resizeObserver: ResizeObserver | null = null;
+
+const handleResize = () => {
+  chartInstance?.resize();
+};
 
 const initChart = () => {
   if (!chartRef.value) return;
@@ -28,23 +33,68 @@ const updateChart = () => {
       text: props.title,
       textStyle: {
         color: colors.primary,
+        fontWeight: 700,
+        fontSize: 34,
       },
     },
     textStyle: {
       color: colors.text,
     },
-    tooltip: {},
+    grid: {
+      left: 36,
+      right: 22,
+      top: 56,
+      bottom: 34,
+      containLabel: true,
+    },
+    tooltip: {
+      backgroundColor: colors.tooltipBg,
+      borderColor: colors.border,
+      textStyle: {
+        color: colors.primary,
+      },
+    },
     xAxis: {
       type: 'category',
       data: props.labels,
+      axisLine: {
+        lineStyle: {
+          color: colors.border,
+        },
+      },
+      axisTick: {
+        show: false,
+      },
+      axisLabel: {
+        color: colors.text,
+      },
     },
     yAxis: {
       type: 'value',
+      axisLine: {
+        show: false,
+      },
+      axisTick: {
+        show: false,
+      },
+      splitLine: {
+        lineStyle: {
+          color: colors.grid,
+        },
+      },
+      axisLabel: {
+        color: colors.text,
+      },
     },
     series: [
       {
         data: props.values,
         type: 'bar',
+        barMaxWidth: 36,
+        itemStyle: {
+          color: colors.accent,
+          borderRadius: [6, 6, 0, 0],
+        },
       },
     ],
   };
@@ -56,35 +106,40 @@ function getColors() {
   return {
     text: styles.getPropertyValue('--gray-11').trim(),
     primary: styles.getPropertyValue('--gray-12').trim(),
+    accent: styles.getPropertyValue('--green-8').trim(),
+    border: styles.getPropertyValue('--gray-6').trim(),
+    grid: styles.getPropertyValue('--gray-a6').trim(),
+    tooltipBg: styles.getPropertyValue('--gray-2').trim(),
   };
 }
 
 onMounted(async () => {
   initChart();
 
-  const observer = new ResizeObserver(() => {
+  resizeObserver = new ResizeObserver(() => {
     chartInstance?.resize();
   });
 
   if (chartRef.value) {
-    observer.observe(chartRef.value);
+    resizeObserver.observe(chartRef.value);
   }
 
-  window.addEventListener('resize', () => {
-    chartInstance?.resize();
-  });
-
-  onBeforeUnmount(() => {
-    observer.disconnect();
-    window.removeEventListener('resize', () => {
-      chartInstance?.resize();
-    });
-  });
+  window.addEventListener('resize', handleResize);
 });
 
-watch(props, async () => {
-  updateChart();
+onBeforeUnmount(() => {
+  resizeObserver?.disconnect();
+  window.removeEventListener('resize', handleResize);
+  chartInstance?.dispose();
 });
+
+watch(
+  () => [props.labels, props.values, props.title],
+  () => {
+    updateChart();
+  },
+  { deep: true },
+);
 </script>
 <template>
   <div>

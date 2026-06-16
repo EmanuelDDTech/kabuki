@@ -10,8 +10,8 @@ interface Props {
 defineProps<Props>();
 </script>
 <template>
-  <div class="bg-shori-gray-1 shadow rounded-lg p-4 sm:p-6 xl:p-8">
-    <div class="mb-4 flex items-center justify-between">
+  <div class="rounded-2xl bg-shori-gray-2 p-4 transition-all duration-300 ease-out sm:p-6 xl:p-8">
+    <div class="mb-4 flex items-center justify-between gap-3">
       <div>
         <h3 class="text-xl font-bold text-shori-gray-12 mb-2">Últimas Transacciones</h3>
         <!-- <span class="text-base font-normal text-gray-500"
@@ -21,17 +21,17 @@ defineProps<Props>();
       <div class="flex-shrink-0">
         <router-link
           :to="{ name: 'sales' }"
-          class="text-sm font-medium text-cyan-600 hover:bg-shori-gray-3 rounded-lg p-2"
+          class="inline-flex items-center rounded-lg border border-shori-gray-6 bg-shori-gray-2 px-2 py-1.5 text-sm font-medium text-shori-green-11 transition-colors duration-200 hover:border-shori-green-7 hover:bg-shori-gray-2 hover:text-shori-green-12"
           >Ver todo</router-link
         >
       </div>
     </div>
-    <div class="flex flex-col mt-8">
+    <div class="mt-6 flex flex-col">
       <div
-        class="overflow-x-auto scrollbar-thin scrollbar-track-shori-gray-6 scrollbar-thumb-shori-gray-3 rounded-lg"
+        class="overflow-x-auto rounded-xl scrollbar-thin scrollbar-track-shori-gray-6 scrollbar-thumb-shori-gray-4"
       >
         <div class="align-middle inline-block min-w-full">
-          <div class="shadow overflow-hidden sm:rounded-lg">
+          <div class="overflow-hidden sm:rounded-lg">
             <table class="min-w-full divide-y divide-shori-gray-6">
               <thead class="bg-shori-gray-2">
                 <tr class="text-shori-gray-11">
@@ -55,8 +55,12 @@ defineProps<Props>();
                   </th>
                 </tr>
               </thead>
-              <tbody class="bg-shori-gray-2">
-                <tr v-for="sale in sales" :key="sale.id">
+              <tbody class="bg-shori-gray-2/55">
+                <tr
+                  v-for="sale in sales"
+                  :key="sale.id"
+                  class="transition-colors duration-200 hover:bg-shori-gray-3/55"
+                >
                   <td class="p-4 whitespace-nowrap text-sm font-normal text-shori-gray-12">
                     Pago de <span class="font-semibold">{{ sale.user?.name }}</span>
                   </td>
