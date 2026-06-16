@@ -39,7 +39,7 @@ useHead({
     {
       property: 'og:image',
       content:
-        'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Fshorikame-logo-edited.webp?alt=media&token=b516cc10-fb19-4d28-a80c-4ba598c10d92',
+        'https://firebasestorage.googleapis.com/v0/b/shorikame-7d2b4.appspot.com/o/assets%2Fshorikame-logo(1).webp?alt=media&token=a23cdef9-79f4-4de9-9aee-e968ef1f9bb0',
     },
     { property: 'og:url', content: 'https://shorikamecards.com/' },
     { property: 'og:type', content: 'website' },
