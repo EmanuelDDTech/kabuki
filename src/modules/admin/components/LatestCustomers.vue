@@ -9,15 +9,15 @@ interface Props {
 defineProps<Props>();
 </script>
 <template>
-  <div class="grid grid-cols-1 2xl:grid-cols-2 xl:gap-4 my-4">
-    <div class="bg-shori-gray-1 shadow rounded-lg mb-4 p-4 sm:p-6 h-full">
+  <div class="grid grid-cols-1 gap-8 2xl:grid-cols-2 xl:gap-8">
+    <div class="h-full rounded-2xl bg-shori-gray-2 p-4 transition-all duration-300 ease-out sm:p-6">
       <div class="flex items-center justify-between mb-4">
         <h3 class="text-xl font-bold leading-none text-shori-gray-12">Usuarios Registrados</h3>
         <router-link
           :to="{ name: 'adminUsers' }"
-          class="text-sm font-medium text-cyan-600 hover:bg-shori-gray-3 rounded-lg inline-flex items-center p-2"
+          class="inline-flex items-center rounded-lg border border-shori-gray-6 bg-shori-gray-2 px-2 py-1.5 text-sm font-medium text-shori-green-11 transition-colors duration-200 hover:border-shori-green-7 hover:bg-shori-gray-2 hover:text-shori-green-12"
         >
-          View all
+          Ver todo
         </router-link>
       </div>
       <div class="flow-root">
@@ -47,7 +47,7 @@ defineProps<Props>();
               >
                 <RouterLink :to="{ name: 'adminUser', params: { userId: user.id } }">
                   <InfoIcon
-                    class="h-8 w-8 p-1 rounded-full hover:bg-shori-gray-3 hover:text-blue-600"
+                    class="h-8 w-8 rounded-full p-1 transition-colors duration-200 hover:bg-shori-green-3/70 hover:text-shori-green-11"
                   />
                 </RouterLink>
               </div>
@@ -152,9 +152,9 @@ defineProps<Props>();
         </ul>
       </div>
     </div>
-    <div class="bg-shori-gray-1 shadow rounded-lg p-4 sm:p-6 xl:p-8">
+    <div class="rounded-2xl bg-shori-gray-2 p-4 transition-all duration-300 ease-out sm:p-6 xl:p-8">
       <h3 class="text-xl leading-none font-bold text-shori-gray-12 mb-10">Acquisition Overview</h3>
-      <div class="block w-full overflow-x-auto">
+      <div class="block w-full overflow-x-auto rounded-xl bg-shori-gray-2">
         <table class="items-center w-full bg-transparent border-collapse">
           <thead>
             <tr class="bg-shori-gray-2">
@@ -174,7 +174,7 @@ defineProps<Props>();
             </tr>
           </thead>
           <tbody class="divide-y divide-shori-gray-6">
-            <tr class="text-shori-gray-11">
+            <tr class="text-shori-gray-11 transition-colors duration-200 hover:bg-shori-gray-3">
               <th
                 class="border-t-0 px-4 align-middle text-sm font-normal whitespace-nowrap p-4 text-left"
               >
@@ -189,14 +189,14 @@ defineProps<Props>();
                 <div class="flex items-center">
                   <span class="mr-2 text-xs font-medium">30%</span>
                   <div class="relative w-full">
-                    <div class="w-full bg-shori-gray-3 rounded-sm h-2">
-                      <div class="bg-cyan-600 h-2 rounded-sm" style="width: 30%"></div>
+                    <div class="w-full bg-shori-gray-4/80 rounded-sm h-2">
+                      <div class="bg-shori-green-8 h-2 rounded-sm" style="width: 30%"></div>
                     </div>
                   </div>
                 </div>
               </td>
             </tr>
-            <tr class="text-shori-gray-11">
+            <tr class="text-shori-gray-11 transition-colors duration-200 hover:bg-shori-gray-3">
               <th
                 class="border-t-0 px-4 align-middle text-sm font-normal whitespace-nowrap p-4 text-left"
               >
@@ -211,14 +211,14 @@ defineProps<Props>();
                 <div class="flex items-center">
                   <span class="mr-2 text-xs font-medium">24%</span>
                   <div class="relative w-full">
-                    <div class="w-full bg-shori-gray-3 rounded-sm h-2">
-                      <div class="bg-orange-300 h-2 rounded-sm" style="width: 24%"></div>
+                    <div class="w-full bg-shori-gray-4/80 rounded-sm h-2">
+                      <div class="bg-shori-green-7 h-2 rounded-sm" style="width: 24%"></div>
                     </div>
                   </div>
                 </div>
               </td>
             </tr>
-            <tr class="text-shori-gray-11">
+            <tr class="text-shori-gray-11 transition-colors duration-200 hover:bg-shori-gray-3/55">
               <th
                 class="border-t-0 px-4 align-middle text-sm font-normal whitespace-nowrap p-4 text-left"
               >
@@ -233,14 +233,14 @@ defineProps<Props>();
                 <div class="flex items-center">
                   <span class="mr-2 text-xs font-medium">18%</span>
                   <div class="relative w-full">
-                    <div class="w-full bg-shori-gray-3 rounded-sm h-2">
-                      <div class="bg-teal-400 h-2 rounded-sm" style="width: 18%"></div>
+                    <div class="w-full bg-shori-gray-4/80 rounded-sm h-2">
+                      <div class="bg-shori-green-6 h-2 rounded-sm" style="width: 18%"></div>
                     </div>
                   </div>
                 </div>
               </td>
             </tr>
-            <tr class="text-shori-gray-11">
+            <tr class="text-shori-gray-11 transition-colors duration-200 hover:bg-shori-gray-3/55">
               <th
                 class="border-t-0 px-4 align-middle text-sm font-normal whitespace-nowrap p-4 text-left"
               >
@@ -255,14 +255,14 @@ defineProps<Props>();
                 <div class="flex items-center">
                   <span class="mr-2 text-xs font-medium">12%</span>
                   <div class="relative w-full">
-                    <div class="w-full bg-shori-gray-3 rounded-sm h-2">
-                      <div class="bg-pink-600 h-2 rounded-sm" style="width: 12%"></div>
+                    <div class="w-full bg-shori-gray-4/80 rounded-sm h-2">
+                      <div class="bg-shori-green-5 h-2 rounded-sm" style="width: 12%"></div>
                     </div>
                   </div>
                 </div>
               </td>
             </tr>
-            <tr class="text-shori-gray-11">
+            <tr class="text-shori-gray-11 transition-colors duration-200 hover:bg-shori-gray-3/55">
               <th
                 class="border-t-0 px-4 align-middle text-sm font-normal whitespace-nowrap p-4 text-left"
               >
@@ -277,14 +277,14 @@ defineProps<Props>();
                 <div class="flex items-center">
                   <span class="mr-2 text-xs font-medium">9%</span>
                   <div class="relative w-full">
-                    <div class="w-full bg-shori-gray-3 rounded-sm h-2">
-                      <div class="bg-indigo-600 h-2 rounded-sm" style="width: 9%"></div>
+                    <div class="w-full bg-shori-gray-4/80 rounded-sm h-2">
+                      <div class="bg-shori-green-4 h-2 rounded-sm" style="width: 9%"></div>
                     </div>
                   </div>
                 </div>
               </td>
             </tr>
-            <tr class="text-shori-gray-11">
+            <tr class="text-shori-gray-11 transition-colors duration-200 hover:bg-shori-gray-3/55">
               <th
                 class="border-t-0 align-middle text-sm font-normal whitespace-nowrap p-4 pb-0 text-left"
               >
@@ -299,8 +299,8 @@ defineProps<Props>();
                 <div class="flex items-center">
                   <span class="mr-2 text-xs font-medium">7%</span>
                   <div class="relative w-full">
-                    <div class="w-full bg-shori-gray-3 rounded-sm h-2">
-                      <div class="bg-purple-500 h-2 rounded-sm" style="width: 7%"></div>
+                    <div class="w-full bg-shori-gray-4/80 rounded-sm h-2">
+                      <div class="bg-shori-green-3 h-2 rounded-sm" style="width: 7%"></div>
                     </div>
                   </div>
                 </div>
