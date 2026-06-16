@@ -9,9 +9,9 @@ import { RouterView } from 'vue-router';
   <!-- component -->
   <!-- This is an example component -->
   <div>
-    <AdminHeader />
+    <!-- <AdminHeader /> -->
 
-    <div class="flex overflow-hidden bg-shori-gray-1 pt-16">
+    <div class="flex overflow-hidden bg-shori-gray-1">
       <AdminSidebar />
 
       <!-- <div class="bg-gray-900 opacity-50 hidden fixed inset-0 z-10" id="sidebarBackdrop"></div> -->

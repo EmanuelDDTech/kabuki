@@ -51,6 +51,11 @@ onMounted(async () => {
   <main class="mx-2 sm:mx-4">
     <div class="relative overflow-hidden rounded-2xl">
       <div class="relative space-y-8 px-8 pb-6 pt-4 sm:space-y-8 sm:px-8 sm:py-8">
+        <div>
+          <h2 class="text-title-2 font-semibold mb-2">Dashboard</h2>
+          <p class="text-sm text-shori-gray-10">Resumen de las métricas y actividades recientes</p>
+        </div>
+
         <section class="grid grid-cols-1 gap-8 xl:grid-cols-2 2xl:grid-cols-3">
           <div
             class="2xl:col-span-2 rounded-2xl bg-shori-gray-2 p-4 transition-all duration-300 ease-out hover:border-shori-gray-6 sm:p-6 xl:p-8"
