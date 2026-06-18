@@ -47,10 +47,10 @@ const categories: Array<{ slug: ProductCategory; title: string; caption: string 
 
 <template>
   <main
-    class="admin-category min-h-[calc(100vh-120px)] mx-4 mt-6 rounded-lg border border-shori-gray-6 bg-shori-gray-1 p-4 shadow sm:p-6 xl:p-8"
+    class="admin-category min-h-[calc(100vh-120px)] mx-4 mt-6 p-4 shadow sm:p-6 xl:p-8 flex items-center justify-center"
   >
     <section
-      class="admin-category__shell mx-auto w-full max-w-4xl rounded-2xl border border-shori-gray-6 bg-shori-gray-2/70 p-4 shadow-sm backdrop-blur-sm sm:p-6"
+      class="mx-auto w-full max-w-4xl rounded-2xl bg-shori-gray-2 p-4 shadow-sm backdrop-blur-sm sm:p-6"
     >
       <!-- <p class="admin-category__eyebrow m-0 text-xs uppercase tracking-[0.08em] text-shori-gray-10">
         Panel de administracion
@@ -72,8 +72,8 @@ const categories: Array<{ slug: ProductCategory; title: string; caption: string 
         >
           <RouterLink
             :to="{ name: 'adminProductsByCategory', params: { category: category.slug } }"
-            class="admin-category__link group block rounded-xl border border-shori-gray-6 bg-shori-gray-1 p-4 no-underline transition-all duration-200"
-            :class="'hover:-translate-y-0.5 hover:border-shori-green-7 hover:bg-shori-gray-2'"
+            class="admin-category__link group block rounded-xl border border-shori-gray-6 bg-shori-gray-3 p-4 no-underline transition-all duration-200"
+            :class="'hover:-translate-y-0.5 hover:border-shori-green-7 hover:bg-shori-gray-4'"
           >
             <span
               class="admin-category__name block text-base font-semibold"
@@ -111,15 +111,6 @@ const categories: Array<{ slug: ProductCategory; title: string; caption: string 
 <style scoped>
 .admin-category {
   animation: admin-shell-rise 380ms cubic-bezier(0.18, 0.84, 0.35, 1) both;
-}
-
-.admin-category__shell {
-  background: radial-gradient(
-      circle at 85% 15%,
-      color-mix(in srgb, var(--green-4) 45%, transparent),
-      transparent 42%
-    ),
-    linear-gradient(140deg, var(--gray-1), var(--gray-2));
 }
 
 .admin-category__grid {
