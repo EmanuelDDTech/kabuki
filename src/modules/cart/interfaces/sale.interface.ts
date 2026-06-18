@@ -1,6 +1,6 @@
 import type { User } from '@/modules/auth/interfaces';
 import type { Product } from '@/modules/product/interfaces/product.interface';
-import type { Delivery } from './delivery.interface';
+import type { Delivery, ShippingCarrier } from './delivery.interface';
 import type { Address } from './address.interface';
 
 export interface Sale {
@@ -24,6 +24,7 @@ export interface Sale {
   amount_shipping: number;
   delivery_carrier_id: number;
   delivery_carrier?: Delivery;
+  shipping_carrier?: ShippingCarrier;
 }
 
 export interface SaleCart {

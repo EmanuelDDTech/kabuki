@@ -21,4 +21,26 @@ export interface DeliveryRule {
   carrier_id: number;
   max_value: number;
   list_base_price: number;
+  pricing_source: 'TABLE' | 'API';
+  is_active: boolean;
+  priority: number;
+  type: 'DELIVERY' | 'PICKUP';
+}
+
+export interface ShippingCarrier {
+  id: number;
+  name: string;
+  pricing_type_id: number;
+}
+
+export interface ShippingCarrierPricingType {
+  id: number;
+  code: ShippingCarrierPricingTypeCode;
+  description: string;
+}
+
+export enum ShippingCarrierPricingTypeCode {
+  FIXED_PLUS_EXTRA = 'FIXED_PLUS_EXTRA',
+  WEIGHT_RANGE = 'WEIGHT_RANGE',
+  PER_KG = 'PER_KG',
 }
