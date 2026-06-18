@@ -148,7 +148,7 @@ const updateState = async (state: State) => {
           </p>
           <p class="text-shori-gray-12">
             Método de envío:
-            <span class="font-bold">{{ saleStore.purchaseInfo?.delivery_carrier?.name }}</span>
+            <span class="font-bold">{{ saleStore.purchaseInfo?.shipping_carrier?.name }}</span>
           </p>
         </div>
 
@@ -175,7 +175,7 @@ const updateState = async (state: State) => {
 
         <div class="mt-8 px-4">
           <h3 class="text-lg text-shori-gray-12">Dirección de entrega</h3>
-          <div class="text-sm text-shori-gray-11 mt-3 mb-6">
+          <div class="text-sm text-shori-gray-11 mt-3 mb-6" v-if="saleStore.purchaseInfo?.address">
             <p class="mb-1">
               {{
                 `${saleStore.purchaseInfo?.address.street}, ${saleStore.purchaseInfo?.address.colony}, ${saleStore.purchaseInfo?.address.city}, ${saleStore.purchaseInfo?.address.state}, ${saleStore.purchaseInfo?.address.country}.`

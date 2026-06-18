@@ -14,6 +14,7 @@ import GeneralButton from '@/modules/common/components/GeneralButton.vue';
 import LogoutIcon from '@/modules/common/icons/LogoutIcon.vue';
 import { useUserStore } from '@/modules/auth/stores/user';
 import { useRouter } from 'vue-router';
+import ThemeToggle from '@/modules/common/components/ThemeToggle.vue';
 
 const user = useUserStore();
 const router = useRouter();
@@ -93,6 +94,10 @@ const closeMobile = () => {
             />
             <span class="text-body-normal self-center whitespace-nowrap">Shorikame Cards</span>
           </RouterLink>
+
+          <div class="flex justify-end">
+            <ThemeToggle class="hidden lg:block" />
+          </div>
 
           <ul class="space-y-2 pb-2 flex-1">
             <li v-for="route in sidebarRoutes" :key="route.name" @click="closeMobile">
