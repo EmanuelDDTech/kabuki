@@ -39,6 +39,8 @@ export const useProductStore = defineStore('product', () => {
   const searchQuery = ref('');
   const searchedProducts = ref<Product[] | []>([]);
 
+  const isLoading = ref(false);
+
   const filterCategory = useFilterCategoryStore();
 
   const route = useRoute();
@@ -102,6 +104,7 @@ export const useProductStore = defineStore('product', () => {
   };
 
   const findProduct = async (productId: any) => {
+    isLoading.value = true;
     try {
       const { data: productData } = await ProductAPI.findById(productId);
       id.value = productData.id;
@@ -126,6 +129,8 @@ export const useProductStore = defineStore('product', () => {
       filters.value = filtersData;
     } catch (error) {
       console.log(error);
+    } finally {
+      isLoading.value = false;
     }
   };
 
@@ -188,6 +193,7 @@ export const useProductStore = defineStore('product', () => {
     // productList: computed(() => [...products.value]),
     imageExist: computed((product) => (product.product_galleries ? true : false)),
     discountPercentage,
+    isLoading: computed(() => isLoading.value),
 
     //Actions
     cleanProduct,
