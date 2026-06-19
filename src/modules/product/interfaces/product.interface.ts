@@ -19,7 +19,7 @@ export interface Product {
 }
 
 export interface ProductGallery {
-  id?: number;
+  id: number;
   order?: number;
   url: string;
   createdAt?: Date;
