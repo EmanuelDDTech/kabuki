@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import { inject, onMounted, onUnmounted, ref, watchEffect } from 'vue';
+import { computed, inject, nextTick, onMounted, onUnmounted, reactive, ref } from 'vue';
 import { Swiper, SwiperSlide } from 'swiper/vue';
-import { useHead, useSeoMeta } from '@unhead/vue';
+import { useSeoMeta } from '@unhead/vue';
 import 'swiper/css';
 import 'swiper/css/free-mode';
 import 'swiper/css/navigation';
 import 'swiper/css/thumbs';
-import { FreeMode, Navigation, Thumbs } from 'swiper/modules';
+import { A11y, FreeMode, Keyboard, Thumbs } from 'swiper/modules';
 import WishlistIcon from '@/modules/cart/components/wishlistIcon.vue';
 import ShareIcon from '../components/ShareIcon.vue';
-import type { SwiperClass } from 'swiper/react';
+import type { Swiper as SwiperInstance } from 'swiper/types';
 import { useRoute } from 'vue-router';
 import { useProductStore } from '@/modules/product/stores/product';
 import { formatCurrency } from '@/helpers';
@@ -18,12 +18,18 @@ import GeneralButton from '@/modules/common/components/GeneralButton.vue';
 import CartIcon from '@/modules/cart/components/CartIcon.vue';
 import type { Product } from '@/modules/product/interfaces/product.interface';
 
-const thumbsSwiper = ref<SwiperClass | null>(null);
+// const thumbsSwiper = ref<SwiperClass | null>(null);
 
-const modules = [FreeMode, Navigation, Thumbs];
+const modules = [Thumbs, Keyboard, A11y];
+const thumbsModules = [Thumbs, FreeMode];
+const thumbsSwiper = ref<SwiperInstance | null>(null);
 
-const setThumbsSwiper = (swiper: SwiperClass) => {
-  thumbsSwiper.value = swiper;
+const thumbsControl = computed(() => {
+  return thumbsSwiper.value && !thumbsSwiper.value.destroyed ? thumbsSwiper.value : null;
+});
+
+const setThumbsSwiper = (s: SwiperInstance) => {
+  thumbsSwiper.value = s;
 };
 
 const product = useProductStore();
@@ -32,6 +38,14 @@ const cart = useCartStore();
 const route = useRoute();
 
 const toast: any = inject('toast');
+
+const shareUrl = computed(() => {
+  if (typeof window === 'undefined') {
+    return `https://shorikamecards.com${route.fullPath}`;
+  }
+
+  return `${window.location.origin}${route.fullPath}`;
+});
 
 useSeoMeta({
   title: () => product.name || 'Cargando... ',
@@ -47,20 +61,29 @@ useSeoMeta({
 
 onMounted(async () => {
   await product.findProduct(route.params.id);
+  await nextTick();
 
   const descripcionContainer = document.querySelector('#description-container');
-  const productDescription = document.createElement('DIV');
-  productDescription.innerHTML = product.description;
-  descripcionContainer?.appendChild(productDescription);
+  if (descripcionContainer && product.description) {
+    const productDescription = document.createElement('div');
+    productDescription.innerHTML = product.description;
+    descripcionContainer.appendChild(productDescription);
+  }
 });
+
+const loadedImages = reactive(new Set<number>());
+
+function markImageLoaded(id: number) {
+  loadedImages.add(id);
+}
 
 onUnmounted(() => {
   product.cleanProduct();
 });
 
-const addItem = async (item: Product) => {
+const addItem = async () => {
   try {
-    await cart.addItem(item);
+    await cart.addItem(product as unknown as Product);
     toast.open({
       message: 'Carrito actualizado correctamente',
       type: 'success',
@@ -68,6 +91,59 @@ const addItem = async (item: Product) => {
   } catch (error) {
     toast.open({
       message: 'Error al actualizar el carrito',
+      type: 'error',
+    });
+  }
+};
+
+const copyShareUrl = async () => {
+  if (navigator.clipboard?.writeText) {
+    await navigator.clipboard.writeText(shareUrl.value);
+    return true;
+  }
+
+  const textArea = document.createElement('textarea');
+  textArea.value = shareUrl.value;
+  textArea.setAttribute('readonly', 'true');
+  textArea.style.position = 'fixed';
+  textArea.style.opacity = '0';
+  textArea.style.pointerEvents = 'none';
+  document.body.appendChild(textArea);
+  textArea.focus();
+  textArea.select();
+  const copied = document.execCommand('copy');
+  document.body.removeChild(textArea);
+
+  return copied;
+};
+
+const shareItem = async () => {
+  if (!product.name) return;
+
+  const shareData: ShareData = {
+    title: product.name,
+    text: `Mira este producto: ${product.name}`,
+    url: shareUrl.value,
+  };
+
+  try {
+    if (navigator.share) {
+      await navigator.share(shareData);
+      // toast?.open({
+      //   message: 'Producto compartido correctamente',
+      //   type: 'success',
+      // });
+      return;
+    }
+
+    const copied = await copyShareUrl();
+    toast?.open({
+      message: copied ? 'Enlace copiado al portapapeles' : 'No se pudo copiar el enlace',
+      type: copied ? 'success' : 'error',
+    });
+  } catch (error) {
+    toast?.open({
+      message: 'No se pudo compartir el producto',
       type: 'error',
     });
   }
@@ -89,211 +165,206 @@ const addItem = async (item: Product) => {
 
 <template>
   <main class="px-6">
-    <section class="max-w-screen-xl mx-auto flex flex-col lg:flex-row gap-16 my-16">
-      <div class="flex flex-col justify-center items-center gap-3 w-full lg:w-2/4">
-        <swiper
-          :style="{
-            '--swiper-navigation-color': '#fff',
-            '--swiper-pagination-color': '#fff',
-          }"
-          :spaceBetween="10"
-          :thumbs="{ swiper: thumbsSwiper }"
-          :modules="modules"
-          class="mySwiper2 w-full max-w-[640px]"
-        >
-          <swiper-slide
-            v-for="image in product.gallery"
-            :key="image.id"
-            class="bg-shori-gray-2 border-2 border-shori-gray-6 rounded-lg p-4 sm:p-10 cursor-grab"
-            ><img :src="image.url" class="w-4/5"
-          /></swiper-slide>
-        </swiper>
-        <swiper
-          @swiper="setThumbsSwiper"
-          :spaceBetween="10"
-          :slidesPerView="5"
-          :freeMode="true"
-          :watchSlidesProgress="true"
-          :modules="modules"
-          class="mySwiper w-full max-w-[640px]"
-        >
-          <swiper-slide
-            v-for="image in product.gallery"
-            :key="image.id"
-            class="bg-shori-gray-2 rounded-lg cursor-pointer p-1 sm:p-3 border-2 border-shori-gray-6 hover:border-shori-green-6 transition-all"
-            ><img :src="image.url" class="w-4/5"
-          /></swiper-slide>
-        </swiper>
-      </div>
-      <div class="w-full lg:w-2/4">
-        <h1 class="text-3xl font-semibold mb-3">{{ product.name }}</h1>
-        <!-- <ul class="flex gap-7 items-center">
-          <li>
-            <div class="flex items-center">
-              <svg
-                class="w-5 h-5 text-yellow-500"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
-                ></path>
-              </svg>
-              <svg
-                class="w-5 h-5 text-yellow-500"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
-                ></path>
-              </svg>
-              <svg
-                class="w-5 h-5 text-yellow-500"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
-                ></path>
-              </svg>
-              <svg
-                class="w-5 h-5 text-yellow-500"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
-                ></path>
-              </svg>
-              <svg
-                class="w-5 h-5 text-yellow-500"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
-                ></path>
-              </svg>
-              <span
-                class="bg-blue-100 text-blue-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded ml-3"
-                >5.0</span
-              >
-            </div>
-          </li>
-          <li class="list-disc">100 Reviews</li>
-        </ul> -->
-
-        <div class="mt-8">
-          <p class="text-3xl font-bold">
-            {{ formatCurrency(product.discount ? product.discount : product.price) }}
-          </p>
-          <div v-if="product.discount" class="flex gap-3 items-end">
-            <p class="text-xl text-shori-gray-11 line-through font-normal mt-0">
-              {{ formatCurrency(product.price) }}
-            </p>
-            <p class="text-xl text-shori-green-12">-{{ product.discountPercentage }}%</p>
-          </div>
-        </div>
-
-        <!-- <div class="mt-8">
-          <h2 class="text-xl font-bold mb-3">Variantes</h2>
-
-          <ul class="flex gap-3">
-            <li
-              class="w-24 aspect-square p-3 rounded-lg bg-gray-200 cursor-pointer border-2 border-gray-200 hover:border-black transition-colors"
-            >
-              <img src="@assets/img/producto.webp" alt="Product image" />
-            </li>
-            <li
-              class="w-24 aspect-square p-3 rounded-lg bg-gray-200 cursor-pointer border-2 border-gray-200 hover:border-black transition-colors"
-            >
-              <img src="@assets/img/producto.webp" alt="Product image" />
-            </li>
-          </ul>
-        </div> -->
-
-        <div class="mt-10">
-          <!-- <button
-            class="w-full py-3 rounded-lg bg-black border-2 border-black text-white mb-3 font-bold hover:bg-gray-200 hover:text-black transition-colors"
-          >
-            Comprar ahora
-          </button> -->
-          <!-- <button
-            @click="addItem(product)"
-            class="w-full py-3 rounded-lg border-2 font-bold hover:text-black transition-colors"
-            :class="
-              cart.isItemInCart(product ? product.id : defaultProduct.id)
-                ? ' bg-green-600 text-black border-green-600 hover:bg-green-500'
-                : 'bg-black text-white border-black hover:bg-gray-200'
-            "
-          >
-            {{ cart.isItemInCart(product.id) ? 'Eliminar del carrito' : 'Agregar al carrito' }}
-          </button> -->
-
-          <GeneralButton
-            @click="addItem(product)"
-            text="Agregar al carrito"
-            size="large"
-            width="full"
-            :icon="CartIcon"
+    <section class="max-w-screen-xl mx-auto grid gap-8 md:grid-cols-2 lg:gap-12">
+      <div class="mx-auto flex w-full min-w-0 max-w-sm flex-col gap-3 sm:max-w-md md:max-w-none">
+        <template v-if="product.isLoading">
+          <div
+            class="aspect-square overflow-hidden rounded-2xl border-2 border-shori-gray-6 bg-shori-gray-3 animate-pulse"
+            aria-hidden="true"
           />
-        </div>
+          <div class="grid grid-cols-4 gap-3 sm:gap-4" aria-hidden="true">
+            <div
+              v-for="thumb in 4"
+              :key="thumb"
+              class="h-16 rounded-xl border-2 border-shori-gray-6 bg-shori-gray-3 animate-pulse sm:h-20"
+            />
+          </div>
+        </template>
+        <template v-else>
+          <div
+            class="aspect-square overflow-hidden rounded-2xl bg-shori-gray-contrast border-2 border-shori-gray-6"
+          >
+            <swiper
+              v-if="product.gallery.length > 0"
+              :key="product.gallery[0].id"
+              :modules="modules"
+              :thumbs="{ swiper: thumbsControl }"
+              :keyboard="{ enabled: true }"
+              :a11y="{ enabled: true }"
+              :slides-per-view="1"
+              :spaceBetween="0"
+              class="product-gallery h-full w-full"
+            >
+              <swiper-slide
+                v-for="(image, i) in product.gallery"
+                :key="image.id"
+                class="sm:p-10 cursor-grab"
+              >
+                <!-- <img :src="image.url" class="w-4/5"/> -->
 
-        <div class="flex pl-4 font-normal mt-5 justify-center">
-          <RouterLink
-            :to="{ name: 'home' }"
-            class="flex items-center gap-2 pr-4 border-r-2 border-shori-gray-6 hover:text-red-500 transition-colors"
+                <div class="relative h-full w-full">
+                  <div
+                    v-show="!loadedImages.has(image.id)"
+                    class="absolute inset-0 animate-pulse bg-shori-gray-2"
+                    aria-hidden="true"
+                  />
+                  <img
+                    :src="image.url"
+                    :alt="'Imagen de ' + product.name"
+                    class="h-full w-full object-cover transition-opacity duration-500 ease-out"
+                    :class="loadedImages.has(image.id) ? 'opacity-100' : 'opacity-0'"
+                    :loading="i === 0 ? 'eager' : 'lazy'"
+                    :fetchpriority="i === 0 ? 'high' : 'auto'"
+                    decoding="async"
+                    draggable="false"
+                    @load="markImageLoaded(image.id)"
+                    @error="markImageLoaded(image.id)"
+                  />
+                </div>
+              </swiper-slide>
+            </swiper>
+            <div v-else class="grid h-full place-items-center text-muted">Sin imagen</div>
+          </div>
+          <swiper
+            v-if="product.gallery.length > 0"
+            :key="`thumbs-${product.id}`"
+            :modules="thumbsModules"
+            :slides-per-view="'auto'"
+            :space-between="12"
+            :watch-slides-progress="true"
+            :free-mode="true"
+            class="product-thumbs w-full"
+            @swiper="setThumbsSwiper"
           >
-            <WishlistIcon class="h-6 aspect-square font-normal" />
-            Favoritos</RouterLink
-          >
-          <RouterLink
-            :to="{ name: 'home' }"
-            class="flex items-center gap-2 pl-4 hover:text-blue-500 transition-colors"
-          >
-            <ShareIcon class="h-6 aspect-square font-normal" />
-            Compartir</RouterLink
-          >
-        </div>
+            <swiper-slide v-for="image in product.gallery" :key="image.id" class="!w-16 sm:!w-20">
+              <!-- <img :src="image.url" class="w-4/5"/> -->
 
-        <div id="description-container" class="mt-8">
-          <h2 class="text-2xl font-bold mb-6">Detalles del producto</h2>
-          <!-- <QuillEditor :read-only="true" theme="snow" ref="myEditor" content-type="html" /> -->
+              <div
+                class="product-thumb-container relative h-16 w-16 cursor-pointer overflow-hidden rounded-xl border-2 border-shori-gray-6 transition-colors sm:h-20 sm:w-20"
+                role="button"
+                tabindex="0"
+              >
+                <div
+                  v-show="!loadedImages.has(image.id)"
+                  class="absolute inset-0 animate-pulse bg-shori-gray-contrast"
+                  aria-hidden="true"
+                />
+                <img
+                  :src="image.url"
+                  :alt="`Imagen de ${product.name}`"
+                  class="h-full w-full object-cover transition-opacity duration-300 ease-out"
+                  :class="loadedImages.has(image.id) ? 'opacity-100' : 'opacity-0'"
+                  loading="lazy"
+                  decoding="async"
+                  draggable="false"
+                  @load="markImageLoaded(image.id)"
+                  @error="markImageLoaded(image.id)"
+                />
+              </div>
+            </swiper-slide>
+          </swiper>
+        </template>
+      </div>
 
-          <!-- <ul class="leading-6 text-gray-500">
-            <li class="list-disc ml-4"><p>1 mazo de 60 cartas listo para jugar</p></li>
-            <li class="list-disc ml-4"><p>6 dados para contar daños</p></li>
-            <li class="list-disc ml-4"><p>1 dado para lanzar una moneda</p></li>
-            <li class="list-disc ml-4"><p>2 marcadores de condición de las monedas</p></li>
-            <li class="list-disc ml-4"><p>1 caja para el mazo</p></li>
-            <li class="list-disc ml-4"><p>1 caja de accesorios</p></li>
-            <li class="list-disc ml-4"><p>1 hoja de estrategia</p></li>
-            <li class="list-disc ml-4"><p>1 tarjeta de código para jugar el mazo en línea</p></li>
-          </ul> -->
-        </div>
+      <div class="w-full lg:w-2/4">
+        <template v-if="product.isLoading">
+          <div class="space-y-8" aria-hidden="true">
+            <div class="h-10 w-4/5 rounded-lg bg-shori-gray-3 animate-pulse" />
+
+            <div class="space-y-3">
+              <div class="h-9 w-36 rounded-lg bg-shori-gray-3 animate-pulse" />
+              <div class="flex items-end gap-3">
+                <div class="h-6 w-24 rounded-md bg-shori-gray-3 animate-pulse" />
+                <div class="h-6 w-16 rounded-md bg-shori-gray-3 animate-pulse" />
+              </div>
+            </div>
+
+            <div class="h-12 w-full rounded-lg bg-shori-gray-3 animate-pulse" />
+
+            <div class="flex items-center justify-center gap-4">
+              <div class="h-6 w-24 rounded-md bg-shori-gray-3 animate-pulse" />
+              <div class="h-6 w-24 rounded-md bg-shori-gray-3 animate-pulse" />
+            </div>
+
+            <div class="space-y-4">
+              <div class="h-8 w-52 rounded-lg bg-shori-gray-3 animate-pulse" />
+              <div class="space-y-2">
+                <div
+                  v-for="line in 5"
+                  :key="line"
+                  class="h-4 rounded bg-shori-gray-3 animate-pulse"
+                  :class="line === 5 ? 'w-2/3' : 'w-full'"
+                />
+              </div>
+            </div>
+          </div>
+        </template>
+        <template v-else>
+          <h1 class="text-3xl font-semibold mb-3">{{ product.name }}</h1>
+
+          <div class="mt-8">
+            <p class="text-3xl font-bold">
+              {{ formatCurrency(product.discount ? product.discount : product.price) }}
+            </p>
+            <div v-if="product.discount" class="flex gap-3 items-end">
+              <p class="text-xl text-shori-gray-11 line-through font-normal mt-0">
+                {{ formatCurrency(product.price) }}
+              </p>
+              <p class="text-xl text-shori-green-12">-{{ product.discountPercentage }}%</p>
+            </div>
+          </div>
+
+          <div class="mt-10">
+            <GeneralButton
+              @click="addItem"
+              text="Agregar al carrito"
+              size="large"
+              width="full"
+              :icon="CartIcon"
+            />
+          </div>
+
+          <div class="flex pl-4 font-normal mt-5 justify-center">
+            <RouterLink
+              :to="{ name: 'home' }"
+              class="flex items-center gap-2 pr-4 border-r-2 border-shori-gray-6 hover:text-red-500 transition-colors"
+            >
+              <WishlistIcon class="h-6 aspect-square font-normal" />
+              Favoritos</RouterLink
+            >
+            <button
+              class="flex items-center gap-2 rounded-xl px-4 py-3 pl-4 hover:text-blue-500 transition-colors"
+              @click="shareItem"
+            >
+              <ShareIcon class="h-6 aspect-square font-normal" />
+              Compartir
+            </button>
+          </div>
+
+          <div id="description-container" class="mt-8">
+            <h2 class="text-2xl font-bold mb-6">Detalles del producto</h2>
+          </div>
+        </template>
       </div>
     </section>
     <!-- <section class="max-w-screen-xl mx-auto mb-10"></section> -->
   </main>
 </template>
 
-<style>
-.mySwiper2 .swiper-slide {
+<style lang="postcss">
+/* .mySwiper2 .swiper-slide {
   @apply flex justify-center items-center;
 }
 
 .mySwiper .swiper-slide {
   @apply flex justify-center items-center aspect-square w-28 max-h-28;
-}
+}*/
 
-.mySwiper .swiper-slide.swiper-slide-thumb-active {
-  @apply border-shori-green-6;
+.product-thumbs .swiper-slide.swiper-slide-thumb-active .product-thumb-container {
+  @apply border-shori-green-9;
+}
+.product-gallery .swiper-slide {
+  height: auto;
 }
 
 #description-container ul {
