@@ -129,10 +129,6 @@ const shareItem = async () => {
   try {
     if (navigator.share) {
       await navigator.share(shareData);
-      // toast?.open({
-      //   message: 'Producto compartido correctamente',
-      //   type: 'success',
-      // });
       return;
     }
 
@@ -148,19 +144,6 @@ const shareItem = async () => {
     });
   }
 };
-
-// watchEffect(() => {
-//   if (product.name) {
-//     useHead({
-//       title: `${product.name} | Shorikame Cards`,
-//       meta: [
-//         { name: 'description', content: product.name },
-//         { property: 'og:title', content: product.name },
-//         { property: 'og:image', content: product.gallery[0]?.url },
-//       ],
-//     });
-//   }
-// });
 </script>
 
 <template>
@@ -266,7 +249,7 @@ const shareItem = async () => {
         </template>
       </div>
 
-      <div class="w-full lg:w-2/4">
+      <div class="w-full flex flex-col gap-6">
         <template v-if="product.isLoading">
           <div class="space-y-8" aria-hidden="true">
             <div class="h-10 w-4/5 rounded-lg bg-shori-gray-3 animate-pulse" />
@@ -300,21 +283,36 @@ const shareItem = async () => {
           </div>
         </template>
         <template v-else>
-          <h1 class="text-3xl font-semibold mb-3">{{ product.name }}</h1>
+          <div>
+            <h1 class="text-title-3 font-semibold mb-3">{{ product.name }}</h1>
 
-          <div class="mt-8">
-            <p class="text-3xl font-bold">
-              {{ formatCurrency(product.discount ? product.discount : product.price) }}
+            <p
+              v-if="product.discount"
+              class="inline-flex w-fit items-center rounded-full border border-shori-green-6 bg-shori-green-2 px-3 py-1 text-body-small font-semibold tracking-wide text-shori-green-12 shadow-sm"
+            >
+              -{{ product.discountPercentage }}%
             </p>
-            <div v-if="product.discount" class="flex gap-3 items-end">
-              <p class="text-xl text-shori-gray-11 line-through font-normal mt-0">
-                {{ formatCurrency(product.price) }}
+
+            <div class="mt-8 flex items-center gap-6">
+              <p class="text-title-4 font-bold">
+                {{ formatCurrency(product.discount ? product.discount : product.price) }}
               </p>
-              <p class="text-xl text-shori-green-12">-{{ product.discountPercentage }}%</p>
+              <div v-if="product.discount" class="flex gap-3 items-end">
+                <p class="text-title-5 text-shori-gray-11 line-through font-normal mt-0">
+                  {{ formatCurrency(product.price) }}
+                </p>
+              </div>
             </div>
           </div>
 
-          <div class="mt-10">
+          <div
+            id="description-container"
+            class="text-shori-gray-11 text-body-normal whitespace-pre-wrap mt-6 mb-8"
+          >
+            <h2 class="mb-3">Contenido del producto:</h2>
+          </div>
+
+          <div>
             <GeneralButton
               @click="addItem"
               text="Agregar al carrito"
@@ -324,7 +322,7 @@ const shareItem = async () => {
             />
           </div>
 
-          <div class="flex pl-4 font-normal mt-5 justify-center">
+          <div class="flex pl-4 font-normal justify-center">
             <RouterLink
               :to="{ name: 'home' }"
               class="flex items-center gap-2 pr-4 border-r-2 border-shori-gray-6 hover:text-red-500 transition-colors"
@@ -339,10 +337,6 @@ const shareItem = async () => {
               <ShareIcon class="h-6 aspect-square font-normal" />
               Compartir
             </button>
-          </div>
-
-          <div id="description-container" class="mt-8">
-            <h2 class="text-2xl font-bold mb-6">Detalles del producto</h2>
           </div>
         </template>
       </div>
